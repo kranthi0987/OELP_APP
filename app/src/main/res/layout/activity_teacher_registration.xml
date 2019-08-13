@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="spinnerBlock"
+            type="android.widget.ArrayAdapter" />
+
+        <variable
+            name="spinnerState"
+            type="android.widget.ArrayAdapter" />
+
+        <variable
+            name="spinnerDistrict"
+            type="android.widget.ArrayAdapter" />
+
+        <variable
+            name="spinnerVillage"
+            type="android.widget.ArrayAdapter" />
+
+        <variable
+            name="registrationViewModel"
+            type="oelp.mahiti.org.newoepl.viewmodel.TeacherRegistrationViewModel" />
+
+
+
+    </data>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            layout="@layout/layout_app_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:text="Register..."
+                            android:textColor="@color/white"
+                            android:textSize="25sp" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp">
+
+
+                        <EditText
+                            android:fontFamily="@font/montserrat_regular"
+                            android:id="@+id/etName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/white"
+                            android:enabled="@{!registrationViewModel.showProgresBar}"
+                            android:hint="@string/name"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etMobileNo"
+                            android:text="@={registrationViewModel.name}"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white" />
+
+
+                        <EditText
+                            android:fontFamily="@font/montserrat_regular"
+                            android:id="@+id/etMobileNo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/white"
+                            android:enabled="false"
+                            android:hint="Phone No."
+                            android:imeOptions="actionNext"
+                            android:inputType="phone"
+                            android:maxLength="10"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etSchool"
+                            android:text="@={registrationViewModel.phoneNo}"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white" />
+
+
+                        <EditText
+                            android:fontFamily="@font/montserrat_regular"
+                            android:id="@+id/etSchool"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/white"
+                            android:enabled="@{!registrationViewModel.showProgresBar}"
+                            android:hint="@string/school"
+                            android:imeOptions="actionDone"
+                            android:inputType="text"
+                            android:text="@={registrationViewModel.school}"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white" />
+
+
+                        <RelativeLayout
+                            android:id="@+id/rlState"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/etState"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/white"
+                                android:enabled="false"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:hint="@string/please_select_state"
+                                android:maxLines="1"
+                                android:text="@{registrationViewModel.state}"
+                                android:textColor="@color/white"
+                                android:textColorHint="@color/white" />
+                            <!--android:text="@={bindUtils.selectedState}"-->
+
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:enabled="@{!registrationViewModel.showProgresBar}"
+                                android:paddingLeft="5dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="10dp">
+
+                                <ImageView
+                                    android:layout_width="15dp"
+                                    android:layout_height="15dp"
+                                    android:layout_centerInParent="true"
+                                    android:src="@drawable/downarrow" />
+
+                                <android.support.v7.widget.AppCompatSpinner
+
+                                    android:id="@+id/spinnerState"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:enabled="@{!registrationViewModel.showProgresBar.getValue()}"
+                                    android:popupBackground="@color/white"
+                                    android:spinnerMode="dialog"
+                                    android:visibility="invisible"
+                                    app:adapter="@{spinnerState}"
+
+                                    />
+                                <!--bind:selectedState="@={bindUtils.selectedState}"-->
+
+
+                            </RelativeLayout>
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rlDistrict"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/etDistrict"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/white"
+                                android:enabled="false"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:hint="@string/please_select_district"
+                                android:maxLines="1"
+                                android:text="@{registrationViewModel.district}"
+                                android:textColor="@color/white"
+                                android:textColorHint="@color/white" />
+                            <!--android:text="@={bindUtils.selectedDistrict}"-->
+
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:enabled="@{!registrationViewModel.showProgresBar}"
+                                android:paddingLeft="5dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="10dp">
+
+                                <android.support.v7.widget.AppCompatSpinner
+                                    android:id="@+id/spinnerDistrict"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:enabled="@{!registrationViewModel.showProgresBar}"
+                                    android:popupBackground="@color/white"
+                                    android:spinnerMode="dialog"
+                                    android:visibility="invisible"
+                                    app:adapter="@{spinnerDistrict}" />
+                                <!--bind:selectedDistrict="@={bindUtils.selectedDistrict}"-->
+
+
+                                <ImageView
+                                    android:layout_width="15dp"
+                                    android:layout_height="15dp"
+                                    android:layout_centerInParent="true"
+                                    android:contentDescription="TODO"
+                                    android:src="@drawable/downarrow" />
+                            </RelativeLayout>
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rlBlock"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+
+                            <EditText
+                                android:id="@+id/etBlock"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/white"
+                                android:enabled="false"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:hint="@string/please_select_block"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:text="@{registrationViewModel.block}"
+                                android:textColor="@color/white"
+                                android:textColorHint="@color/white" />
+                            <!--android:text="@={bindUtils.selectedBlock}"-->
+
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:enabled="@{!registrationViewModel.showProgresBar}"
+                                android:paddingLeft="5dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="10dp">
+
+                                <android.support.v7.widget.AppCompatSpinner
+                                    android:id="@+id/spinnerBlock"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:enabled="@{!registrationViewModel.showProgresBar}"
+                                    android:popupBackground="@color/white"
+                                    android:spinnerMode="dialog"
+                                    android:visibility="invisible"
+                                    app:adapter="@{spinnerBlock}"
+
+                                    />
+                                <!--bind:selectedBlock="@={bindUtils.selectedBlock}"-->
+
+
+                                <ImageView
+                                    android:layout_width="15dp"
+                                    android:layout_height="15dp"
+                                    android:layout_centerInParent="true"
+                                    android:src="@drawable/downarrow" />
+                            </RelativeLayout>
+
+                        </RelativeLayout>
+
+                        <EditText
+                            android:id="@+id/etVillage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/white"
+                            android:enabled="@{!registrationViewModel.showProgresBar}"
+                            android:hint="@string/village"
+                            android:imeOptions="actionDone"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:inputType="text"
+                            android:text="@={registrationViewModel.village}"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white" />
+
+                        <!--<RelativeLayout-->
+
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content">-->
+
+                            <!--<EditText-->
+                                <!--android:id="@+id/etVillage"-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:backgroundTint="@color/white"-->
+                                <!--android:enabled="true"-->
+                                <!--android:focusable="true"-->
+                                <!--android:focusableInTouchMode="true"-->
+                                <!--android:fontFamily="@font/montserrat_regular"-->
+                                <!--android:hint="Village"-->
+                                <!--android:maxLines="1"-->
+                                <!--android:text="@{registrationViewModel.village}"-->
+                                <!--android:textColor="@color/white"-->
+                                <!--android:textColorHint="@color/white" />-->
+                            <!--&lt;!&ndash;android:text="@={registrationViewModel.village}"&ndash;&gt;-->
+
+
+                            <!--<RelativeLayout-->
+                                <!--android:id="@+id/rlVillage"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_alignParentRight="true"-->
+                                <!--android:enabled="@{!registrationViewModel.showProgresBar}"-->
+                                <!--android:paddingLeft="5dp"-->
+                                <!--android:paddingRight="10dp"-->
+                                <!--android:paddingTop="10dp">-->
+
+                                <!--<android.support.v7.widget.AppCompatSpinner-->
+                                    <!--android:id="@+id/spinnerVillage"-->
+                                    <!--android:layout_width="30dp"-->
+                                    <!--android:layout_height="30dp"-->
+                                    <!--android:enabled="@{!registrationViewModel.showProgresBar}"-->
+                                    <!--android:popupBackground="@color/white"-->
+                                    <!--android:spinnerMode="dropdown"-->
+                                    <!--android:visibility="invisible"-->
+                                    <!--app:adapter="@{spinnerVillage}" />-->
+                                <!--&lt;!&ndash;bind:selectedVillage="@={bindUtils.selectedVillage}"&ndash;&gt;-->
+
+                                <!--<ImageView-->
+                                    <!--android:layout_width="15dp"-->
+                                    <!--android:layout_height="15dp"-->
+                                    <!--android:layout_centerInParent="true"-->
+                                    <!--android:src="@drawable/downarrow" />-->
+                            <!--</RelativeLayout>-->
+
+                        <!--</RelativeLayout>-->
+
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/white_bkg_button"
+                            android:enabled="@{!registrationViewModel.showProgresBar}"
+                            android:onClick="@{()->registrationViewModel.onSubmitClick()}"
+                            android:text="Submit"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"
+                    android:visibility="@{registrationViewModel.showProgresBar? View.VISIBLE:View.GONE}" />
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+</layout>

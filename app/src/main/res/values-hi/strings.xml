@@ -1,0 +1,83 @@
+<resources>
+    <string name="app_name">OELP</string>
+    <string name="transition_root" translatable="false">transition_root</string>
+    <string name="transition_image" translatable="false">transition_image</string>
+    <string name="transition_bar" translatable="false">transition_bar</string>
+    <string name="transition_fab" translatable="false">transition_fab</string>
+    <string name="preference_file_name">khpt_shared_pref</string>
+    <string name="please_enter_name">कृपया नाम दर्ज करें</string>
+    <string name="please_enter_phone">कृपया वैध नंबर दर्ज करें</string>
+    <string name="please_enter_school">कृपया स्कूल का नाम दर्ज करें</string>
+    <string name="please_select_state">राज्य का चयन करें</string>
+    <string name="please_select_district">जिला का चयन करें</string>
+    <string name="please_select_block">ब्लॉक का चयन करें</string>
+    <string name="please_select_village">कृपया स्कूल का नाम दर्ज करेंं</string>
+    <string name="otp_has_been_sent_to_your_mobile">ओ.टी.पी भेजा गया है आपके मोबाइल पर XXXXX X</string>
+    <string name="please_enter_the_same">.. कृपया वही दर्ज करें|</string>
+
+    <string name="dummyotp">1</string>
+    <string name="login_again">Login Again</string>
+    <string name="ok">OK</string>
+    <string name="insufficient_memory">\"Insufficient memory!\"</string>
+    <string name="error_downloading">Error while downloading video!</string>
+    <string name="couldnot_connect_to_server">Error in connecting to server!</string>
+    <string name="couldnot_create_file">Folder creation error!</string>
+    <string name="content_size_invalid">Download file size invalid at server!</string>
+    <string name="media_sync">Media sync</string>
+    <string name="video_not_found">Video unavailable, Trying to fetch from server!></string>
+    <string name="check_internet">Please check internet connection and try again! </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="videos">वीडियो</string>
+    <string name="faqs">सामान्य प्रश्न</string>
+    <string name="q_a">Q &amp; A</string>
+    <string name="units">यूनिट्स</string>
+    <string name="aboutus">अबाउट अस</string>
+    <string name="enrichment">इन्रिच्मन्ट</string>
+    <string name="resend_code">Resend code</string>
+    <string name="submit">Submit</string>
+    <string name="app_name_hindi">ऑरग्नाईजेशन फॉर अर्ली लिट्रसी प्रमोशन</string>
+    <string name="name_hindi">नाम</string>
+    <string name="select_state_hindi">राज्य चुनें</string>
+    <string name="select_district_hindi">जिला चुनें</string>
+    <string name="select_block_hindi">ब्लॉक चुनें</string>
+    <string name="select_position_hindi">पद चुनें</string>
+    <string name="school_hindi">स्कूल</string>
+    <string name="register_hindi">पंजीकरण</string>
+    <string name="next">Next</string>
+    <string name="select_all_question">All Questions are mandatory..</string>
+    <string name="activities">गतिविधि</string>
+    <string name="cancel">Cancel</string>
+    <string name="enter_mobile_number">मोबाइल नंबर दर्ज करें</string>
+    <string name="verification">Verification</string>
+    <string name="enter_code_here">Enter code here</string>
+    <string name="please_select_position">Please Select Position</string>
+    <string name="video_not_available_right_now">video not available right now</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="video_is_downloaded_to_play">video is downloaded to play.. Do you want to play?</string>
+    <string name="video_not_available">Video not available</string>
+    <string name="comingsoon">Coming Soon</string>
+    <string name="SOMETHING_WRONG">Something went wrong</string>
+    <string name="please_enter_OTP">Please Enter OTP</string>
+    <string name="please_enter_valid_OTP">Please Enter Valid OTP</string>
+    <string name="there_is_no_section_presents_in_this_unit">There is no section presents in this unit</string>
+    <string name="memory_is_not_there_to_download_the_videos">Memory is not there to download the videos</string>
+    <string name="video_is_already_downlaoding_in_background">Video is already downlaoding in background</string>
+    <string name="please_enter_mobile_number">Please Enter Mobile Number</string>
+    <string name="please_enter_valid_mobile_number">Please Enter Valid Mobile Number</string>
+    <string name="you_are_offline">You are offline , Data Synced offline</string>
+    <string name="want_to_change_phone_number">Want to change Phone Number?</string>
+    <string name="enter_old_phone_no">Enter Old Phone No.</string>
+    <string name="enter_new_phone_no">Enter New Phone No.</string>
+    <string name="please_enter_same_name">Mobile No. does not matches</string>
+    <string name="old_mobile_doesnt_exist">Entered old mobile no does not exist</string>
+    <string name="double_back_exit">Please click BACK again to exit</string>
+    <string name="enrichment_park">Enrichment Park</string>
+    <string name="name">Name</string>
+    <string name="school">School</string>
+    <string name="village">Village</string>
+    <string name="groups">समूह</string>
+    <string name="data_downloading">Data Downloading...</string>
+</resources>

@@ -1,0 +1,139 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="adapterViewModel"
+            type="oelp.mahiti.org.newoepl.viewmodel.HomeViewModel" />
+
+        <variable
+            name="activity"
+            type="oelp.mahiti.org.newoepl.views.activities.HomeActivity" />
+
+        <variable
+            name="catalogueDetailsModel"
+            type="oelp.mahiti.org.newoepl.models.CatalogueDetailsModel" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+
+
+        <LinearLayout
+            android:id="@+id/llRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardViewMain"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="12dp">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/roundedImageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        app:riv_corner_radius="10dip"
+                        app:riv_mutate_background="true"
+                        app:riv_tile_mode="repeat" />
+
+
+                    <!--<com.makeramen.roundedimageview.RoundedImageView-->
+                    <!--android:visibility="@{adapterViewModel.moduleCompleted?View.VISIBLE:View.GONE}"-->
+                    <!--android:id="@+id/rlDisableGreen"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_centerInParent="true"-->
+                    <!--android:background="@color/greenOpaque"-->
+                    <!--app:riv_corner_radius="10dip"-->
+                    <!--app:riv_mutate_background="true"-->
+                    <!--app:riv_tile_mode="repeat" />-->
+                    <!--<com.makeramen.roundedimageview.RoundedImageView-->
+                    <!--android:visibility="@{adapterViewModel.moduleCompleted?View.GONE:View.VISIBLE}"-->
+                    <!--android:id="@+id/rlDisableYellow"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_centerInParent="true"-->
+                    <!--android:background="@color/yellowOpaque"-->
+                    <!--app:riv_corner_radius="10dip"-->
+                    <!--app:riv_mutate_background="true"-->
+                    <!--app:riv_tile_mode="repeat" />-->
+
+                    <!--<com.makeramen.roundedimageview.RoundedImageView-->
+                    <!--android:visibility="@{adapterViewModel.moduleCompleted==null?View.VISIBLE:View.GONE}"-->
+                    <!--android:id="@+id/rlDisableWhite"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_centerInParent="true"-->
+                    <!--android:background="@color/blackOpaque"-->
+                    <!--app:riv_corner_radius="10dip"-->
+                    <!--app:riv_mutate_background="true"-->
+                    <!--app:riv_tile_mode="repeat" />-->
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/rlEnableDisable"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        app:riv_corner_radius="10dip"
+                        app:riv_mutate_background="true"
+                        app:riv_tile_mode="repeat" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/play_button"
+                        android:visibility="@{adapterViewModel.playButton?View.VISIBLE:View.INVISIBLE}" />
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="15dp"
+                        android:src="@drawable/completed_icon"
+                        android:visibility="@{adapterViewModel.moduleCompleted?View.VISIBLE:View.INVISIBLE}" />
+
+
+                </RelativeLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <TextView
+                android:id="@+id/tvCatalog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:maxLines="2"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Unit1"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</layout>
+

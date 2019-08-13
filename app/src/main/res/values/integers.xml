@@ -1,0 +1,6 @@
+<resources>
+    <integer name="animation_duration">250</integer>
+    <integer name="animation_alpha_duration_enter">125</integer>
+    <integer name="animation_alpha_duration_return">125</integer>
+    <integer name="animation_pop">60</integer>
+</resources>

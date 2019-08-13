@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="changeMobileNoViewModel"
+            type="oelp.mahiti.org.newoepl.viewmodel.ChangeMobileNoViewModel" />
+    </data>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            layout="@layout/layout_app_background_logo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".3">
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:onClick="@{()-> changeMobileNoViewModel.onBackPressed()}"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".7">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:text="Change Phone Number..."
+                            android:textColor="@color/white"
+                            android:textSize="25sp" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight=".8"
+                        android:orientation="vertical">
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/white"
+                            style="@style/LoginTextInputLayoutStyle"
+                            app:errorTextAppearance="@color/white"
+                            app:hintTextAppearance="@color/white">
+
+                            <EditText
+                                android:id="@+id/etOldMobile"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/white"
+                                android:enabled="@{!changeMobileNoViewModel.showProgresBar}"
+                                android:hint="@string/enter_old_phone_no"
+                                android:imeOptions="actionDone"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:maxLines="1"
+                                android:text="@={changeMobileNoViewModel.oldMobileNo}"
+                                android:textColor="@color/white"
+                                android:textColorHint="@color/white" />
+
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/white"
+                            style="@style/LoginTextInputLayoutStyle"
+                            app:errorTextAppearance="@color/white"
+                            app:hintTextAppearance="@color/white">
+
+                            <EditText
+                                android:id="@+id/etNewMobileNo"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/white"
+                                android:enabled="@{!changeMobileNoViewModel.showProgresBar}"
+                                android:hint="@string/enter_new_phone_no"
+                                android:imeOptions="actionDone"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:maxLines="1"
+                                android:text="@={changeMobileNoViewModel.newMobileNo}"
+                                android:textColor="@color/white"
+                                android:textColorHint="@color/white" />
+
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColorHint="@color/white"
+                            style="@style/LoginTextInputLayoutStyle"
+                            app:errorTextAppearance="@color/white"
+                            app:hintTextAppearance="@color/white">
+
+                            <EditText
+                                android:id="@+id/etConfirmNewMobileNo"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/white"
+                                android:enabled="@{!changeMobileNoViewModel.showProgresBar}"
+                                android:hint="Confirm New Phone No."
+                                android:imeOptions="actionDone"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:maxLines="1"
+                                android:text="@={changeMobileNoViewModel.confirmNewMobileNo}"
+                                android:textColor="@color/white"
+                                android:textColorHint="@color/white" />
+
+                        </android.support.design.widget.TextInputLayout>
+
+                        <Button
+                            android:id="@+id/btnSubmit"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="40dp"
+                            android:background="@drawable/white_bkg_button"
+                            android:enabled="@{!changeMobileNoViewModel.showProgresBar}"
+                            android:onClick="@{()->changeMobileNoViewModel.onSubmitClick()}"
+                            android:text="Change Phone Number"
+                            android:textAllCaps="false"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                            android:textColor="@color/black" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="20dp"
+                                android:fontFamily="@font/montserrat_medium"
+                                android:padding="5dp"
+                                android:text="@={changeMobileNoViewModel.status}"
+                                android:textAlignment="center"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                android:visibility="@{changeMobileNoViewModel.showProgresBar? View.INVISIBLE:View.VISIBLE}" />
+                            <!--android:visibility="@{changeMobileNoViewModel.status.equals(`true`)? View.GONE: View.VISIBLE}" />-->
+
+                            <ProgressBar
+                                android:id="@+id/progressBar"
+                                style="?android:attr/progressBarStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="8dp"
+                                android:visibility="@{changeMobileNoViewModel.showProgresBar? View.VISIBLE:View.INVISIBLE}" />
+
+                        </RelativeLayout>
+
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</layout>
