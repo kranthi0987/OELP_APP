@@ -41,13 +41,14 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
     Toolbar toolbar;
     private String parentId;
     private String title;
+    private Fragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activitySectionBinding = DataBindingUtil.setContentView(this, R.layout.activity_section);
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-        activitySectionBinding.setHomeViewModel(homeViewModel);
+        activitySectionBinding.setHomeViewModels(homeViewModel);
         activitySectionBinding.setLifecycleOwner(this);
         toolbar = findViewById(R.id.white_toolbar);
         setSupportActionBar(toolbar);
@@ -59,8 +60,6 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
         toolbar.inflateMenu(R.menu.teacher_menu);
         getIntentData();
         checkPermission();
-
-
     }
 
     private void checkPermission() {
@@ -76,7 +75,6 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
     }
 
     private void setFragment(String units) {
-        Fragment fragment = new UnitsFragment();
         Bundle bundle = new Bundle();
         bundle.putString("ParentId", parentId);
         bundle.putString("Title", title);
@@ -84,10 +82,9 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 //        transaction.setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out);
-        transaction.replace(R.id.fragmentContainer, fragment);
+        transaction.replace(R.id.fragmentContainer1, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
-
     }
 
     private void getIntentData() {
@@ -105,7 +102,7 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
                 ShowAboutUsActivity();
                 return true;
             case R.id.logout:
-                makeUserLogout();
+                AppUtils.makeUserLogout(this);
                 return true;
             case android.R.id.home:
                 onBackPressed();
@@ -119,13 +116,7 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
         Toast.makeText(getApplicationContext(), "About Us Clicked", Toast.LENGTH_LONG).show();
     }
 
-    private void makeUserLogout() {
-        new MySharedPref(this).deleteAllData();
-        Intent intent = new Intent(SectionActivity.this, MobileLoginActivity.class);
-        startActivity(intent);
-        this.finish();
-        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
-    }
+
 
     @Override
     public void onItemClick(CatalogueDetailsModel item) {
@@ -145,7 +136,7 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
     private void checkVideoAndDownload(FileModel fileModel) {
 
         if (videoAvailable(fileModel)) {
-            DownloadUtility.playVideo(this, fileModel.getFileUrl(), fileModel.getFileName(), new MySharedPref(this).readInt(Constants.USER_ID, 0), fileModel.getUuid());
+            DownloadUtility.playVideo(this, fileModel.getFileUrl(), fileModel.getFileName(), new MySharedPref(this).readInt(Constants.USER_ID, 0), fileModel.getUuid(), parentId);
         } else {
             downloadVideo(fileModel);
         }
@@ -155,7 +146,7 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
         if (CheckNetwork.checkNet(this)) {
             List<FileModel> fileModelList = new ArrayList<>();
             fileModelList.add(fileModel);
-            new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL_VIDEO, AppUtils.completePathInSDCard(Constants.VIDEO).getAbsolutePath(), fileModelList);
+            new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.VIDEO).getAbsolutePath(), fileModelList);
         } else {
             Toast.makeText(this, getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
         }
@@ -183,7 +174,7 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
     @Override
     public void onMediaDownload(int type, String savedPath, String name, int position, String uuid) {
         if (savedPath != null && !savedPath.isEmpty()) {
-            DownloadUtility.playVideo(this, savedPath, name, new MySharedPref(this).readInt(Constants.USER_ID, 0), uuid);
+            DownloadUtility.playVideo(this, savedPath, name, new MySharedPref(this).readInt(Constants.USER_ID, 0), uuid, parentId);
         } else {
             Toast.makeText(this, getString(R.string.error_downloading), Toast.LENGTH_SHORT).show();
         }

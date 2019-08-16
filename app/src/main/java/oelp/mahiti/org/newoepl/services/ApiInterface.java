@@ -42,6 +42,15 @@ public interface ApiInterface {
     @POST(RetrofitConstant.CATALOGUE_URL)
     Call<MobileVerificationResponseModel> catalogData(@Field("userId") Integer userId, @Field("modified_date") String modifiedDate);
 
+    @FormUrlEncoded
+    @POST(RetrofitConstant.QUESTION_LIST_URL)
+    Call<MobileVerificationResponseModel> getQuestionList(@Field("userId") Integer userId, @Field("modified_date") String modifiedDate);
+
+    @FormUrlEncoded
+    @POST(RetrofitConstant.QUESTION_CHOICES_LIST)
+    Call<MobileVerificationResponseModel> getQuestionChoicesList(@Field("userId") Integer userId, @Field("modified_date") String modifiedDate);
+
+
 //
 //    @Headers({
 //            "un:oelp2018",

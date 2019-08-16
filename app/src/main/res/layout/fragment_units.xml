@@ -71,7 +71,7 @@
                 android:fontFamily="@font/montserrat_bold"
                 android:text="@string/enrichment_park"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_medium" />
+                android:textSize="@dimen/et_text_size" />
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView

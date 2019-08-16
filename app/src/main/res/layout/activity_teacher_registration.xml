@@ -27,7 +27,6 @@
             type="oelp.mahiti.org.newoepl.viewmodel.TeacherRegistrationViewModel" />
 
 
-
     </data>
 
 
@@ -66,7 +65,7 @@
                             android:fontFamily="@font/montserrat_bold"
                             android:text="Register..."
                             android:textColor="@color/white"
-                            android:textSize="25sp" />
+                            android:textSize="@dimen/heading_text_size" />
                     </RelativeLayout>
 
                     <LinearLayout
@@ -77,53 +76,78 @@
 
 
                         <EditText
-                            android:fontFamily="@font/montserrat_regular"
                             android:id="@+id/etName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:backgroundTint="@color/white"
                             android:enabled="@{!registrationViewModel.showProgresBar}"
-                            android:hint="@string/name"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:hint="@string/name_start"
                             android:imeOptions="actionNext"
                             android:inputType="text"
                             android:maxLines="1"
-                            android:nextFocusDown="@id/etMobileNo"
                             android:text="@={registrationViewModel.name}"
                             android:textColor="@color/white"
-                            android:textColorHint="@color/white" />
+                            android:textColorHint="@color/white"
+                            android:textSize="@dimen/et_text_size" />
 
 
-                        <EditText
-                            android:fontFamily="@font/montserrat_regular"
-                            android:id="@+id/etMobileNo"
-                            android:layout_width="match_parent"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:backgroundTint="@color/white"
-                            android:enabled="false"
-                            android:hint="Phone No."
-                            android:imeOptions="actionNext"
-                            android:inputType="phone"
-                            android:maxLength="10"
-                            android:maxLines="1"
-                            android:nextFocusDown="@id/etSchool"
-                            android:text="@={registrationViewModel.phoneNo}"
-                            android:textColor="@color/white"
-                            android:textColorHint="@color/white" />
+                            android:orientation="vertical"
+                            android:paddingBottom="8dp"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:paddingTop="15dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserrat_regular"
+                                android:text="@={registrationViewModel.phoneNo}"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/et_text_size" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/white" />
+                        </LinearLayout>
+
+
+                        <!--<EditText-->
+                        <!--android:fontFamily="@font/montserrat_regular"-->
+                        <!--android:id="@+id/etMobileNo"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:backgroundTint="@color/white"-->
+                        <!--android:enabled="false"-->
+                        <!--android:hint="Phone No."-->
+                        <!--android:imeOptions="actionNext"-->
+                        <!--android:inputType="phone"-->
+                        <!--android:maxLength="10"-->
+                        <!--android:maxLines="1"-->
+                        <!--android:nextFocusDown="@id/etSchool"-->
+                        <!--android:text="@={registrationViewModel.phoneNo}"-->
+                        <!--android:textColor="@color/white"-->
+                        <!--android:textColorHint="@color/white" />-->
 
 
                         <EditText
-                            android:fontFamily="@font/montserrat_regular"
                             android:id="@+id/etSchool"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:backgroundTint="@color/white"
                             android:enabled="@{!registrationViewModel.showProgresBar}"
+                            android:fontFamily="@font/montserrat_regular"
                             android:hint="@string/school"
                             android:imeOptions="actionDone"
                             android:inputType="text"
                             android:text="@={registrationViewModel.school}"
                             android:textColor="@color/white"
-                            android:textColorHint="@color/white" />
+                            android:textColorHint="@color/white"
+                            android:textSize="@dimen/et_text_size" />
 
 
                         <RelativeLayout
@@ -131,21 +155,46 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
-                            <EditText
-                                android:id="@+id/etState"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:backgroundTint="@color/white"
-                                android:enabled="false"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:hint="@string/please_select_state"
-                                android:maxLines="1"
-                                android:text="@{registrationViewModel.state}"
-                                android:textColor="@color/white"
-                                android:textColorHint="@color/white" />
+                            <!--<EditText-->
+                            <!--android:id="@+id/etState"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:backgroundTint="@color/white"-->
+                            <!--android:enabled="false"-->
+                            <!--android:focusable="false"-->
+                            <!--android:focusableInTouchMode="false"-->
+                            <!--android:fontFamily="@font/montserrat_regular"-->
+                            <!--android:hint="@string/please_select_state"-->
+                            <!--android:maxLines="1"-->
+                            <!--android:text="@{registrationViewModel.state}"-->
+                            <!--android:textColor="@color/white"-->
+                            <!--android:textColorHint="@color/white" />-->
                             <!--android:text="@={bindUtils.selectedState}"-->
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingBottom="8dp"
+                                android:paddingLeft="5dp"
+                                android:paddingRight="5dp"
+                                android:paddingTop="15dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:hint="@string/please_select_state_start"
+                                    android:text="@={registrationViewModel.state}"
+                                    android:textColor="@color/white"
+                                    android:textColorHint="@color/white"
+                                    android:textSize="@dimen/et_text_size" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:background="@color/white" />
+                            </LinearLayout>
 
 
                             <RelativeLayout
@@ -185,23 +234,47 @@
                         <RelativeLayout
                             android:id="@+id/rlDistrict"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:clickable="@{registrationViewModel.districtClickable}">
 
-                            <EditText
-                                android:id="@+id/etDistrict"
-                                android:layout_width="match_parent"
+                            <!--<EditText-->
+                            <!--android:id="@+id/etDistrict"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:backgroundTint="@color/white"-->
+                            <!--android:enabled="false"-->
+                            <!--android:focusable="false"-->
+                            <!--android:focusableInTouchMode="false"-->
+                            <!--android:fontFamily="@font/montserrat_regular"-->
+                            <!--android:hint="@string/please_select_district"-->
+                            <!--android:maxLines="1"-->
+                            <!--android:text="@{registrationViewModel.district}"-->
+                            <!--android:textColor="@color/white"-->
+                            <!--android:textColorHint="@color/white" />-->
+                            <!--&lt;!&ndash;android:text="@={bindUtils.selectedDistrict}"&ndash;&gt;-->
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="@color/white"
-                                android:enabled="false"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:hint="@string/please_select_district"
-                                android:maxLines="1"
-                                android:text="@{registrationViewModel.district}"
-                                android:textColor="@color/white"
-                                android:textColorHint="@color/white" />
-                            <!--android:text="@={bindUtils.selectedDistrict}"-->
+                                android:orientation="vertical"
+                                android:paddingBottom="8dp"
+                                android:paddingLeft="5dp"
+                                android:paddingRight="5dp"
+                                android:paddingTop="15dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:text="@{registrationViewModel.district}"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/et_text_size" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:background="@color/white" />
+                            </LinearLayout>
 
 
                             <RelativeLayout
@@ -238,25 +311,49 @@
                         <RelativeLayout
                             android:id="@+id/rlBlock"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:clickable="@{registrationViewModel.blockClickable}">
 
 
-                            <EditText
-                                android:id="@+id/etBlock"
-                                android:layout_width="match_parent"
+                            <!--<EditText-->
+                            <!--android:id="@+id/etBlock"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:backgroundTint="@color/white"-->
+                            <!--android:enabled="false"-->
+                            <!--android:focusable="false"-->
+                            <!--android:focusableInTouchMode="false"-->
+                            <!--android:fontFamily="@font/montserrat_regular"-->
+                            <!--android:hint="@string/please_select_block"-->
+                            <!--android:inputType="text"-->
+                            <!--android:maxLines="1"-->
+                            <!--android:text="@{registrationViewModel.block}"-->
+                            <!--android:textColor="@color/white"-->
+                            <!--android:textColorHint="@color/white" />-->
+                            <!--&lt;!&ndash;android:text="@={bindUtils.selectedBlock}"&ndash;&gt;-->
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="@color/white"
-                                android:enabled="false"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:hint="@string/please_select_block"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:text="@{registrationViewModel.block}"
-                                android:textColor="@color/white"
-                                android:textColorHint="@color/white" />
-                            <!--android:text="@={bindUtils.selectedBlock}"-->
+                                android:orientation="vertical"
+                                android:paddingBottom="8dp"
+                                android:paddingLeft="5dp"
+                                android:paddingRight="5dp"
+                                android:paddingTop="15dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:text="@{registrationViewModel.block}"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/et_text_size" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:background="@color/white" />
+                            </LinearLayout>
 
 
                             <RelativeLayout
@@ -297,76 +394,79 @@
                             android:layout_height="wrap_content"
                             android:backgroundTint="@color/white"
                             android:enabled="@{!registrationViewModel.showProgresBar}"
+                            android:fontFamily="@font/montserrat_regular"
                             android:hint="@string/village"
                             android:imeOptions="actionDone"
-                            android:fontFamily="@font/montserrat_regular"
                             android:inputType="text"
                             android:text="@={registrationViewModel.village}"
                             android:textColor="@color/white"
-                            android:textColorHint="@color/white" />
+                            android:textColorHint="@color/white"
+                            android:textSize="@dimen/et_text_size" />
 
                         <!--<RelativeLayout-->
 
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content">-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content">-->
 
-                            <!--<EditText-->
-                                <!--android:id="@+id/etVillage"-->
-                                <!--android:layout_width="match_parent"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:backgroundTint="@color/white"-->
-                                <!--android:enabled="true"-->
-                                <!--android:focusable="true"-->
-                                <!--android:focusableInTouchMode="true"-->
-                                <!--android:fontFamily="@font/montserrat_regular"-->
-                                <!--android:hint="Village"-->
-                                <!--android:maxLines="1"-->
-                                <!--android:text="@{registrationViewModel.village}"-->
-                                <!--android:textColor="@color/white"-->
-                                <!--android:textColorHint="@color/white" />-->
-                            <!--&lt;!&ndash;android:text="@={registrationViewModel.village}"&ndash;&gt;-->
+                        <!--<EditText-->
+                        <!--android:id="@+id/etVillage"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:backgroundTint="@color/white"-->
+                        <!--android:enabled="true"-->
+                        <!--android:focusable="true"-->
+                        <!--android:focusableInTouchMode="true"-->
+                        <!--android:fontFamily="@font/montserrat_regular"-->
+                        <!--android:hint="Village"-->
+                        <!--android:maxLines="1"-->
+                        <!--android:text="@{registrationViewModel.village}"-->
+                        <!--android:textColor="@color/white"-->
+                        <!--android:textColorHint="@color/white" />-->
+                        <!--&lt;!&ndash;android:text="@={registrationViewModel.village}"&ndash;&gt;-->
 
 
-                            <!--<RelativeLayout-->
-                                <!--android:id="@+id/rlVillage"-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_alignParentRight="true"-->
-                                <!--android:enabled="@{!registrationViewModel.showProgresBar}"-->
-                                <!--android:paddingLeft="5dp"-->
-                                <!--android:paddingRight="10dp"-->
-                                <!--android:paddingTop="10dp">-->
+                        <!--<RelativeLayout-->
+                        <!--android:id="@+id/rlVillage"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_alignParentRight="true"-->
+                        <!--android:enabled="@{!registrationViewModel.showProgresBar}"-->
+                        <!--android:paddingLeft="5dp"-->
+                        <!--android:paddingRight="10dp"-->
+                        <!--android:paddingTop="10dp">-->
 
-                                <!--<android.support.v7.widget.AppCompatSpinner-->
-                                    <!--android:id="@+id/spinnerVillage"-->
-                                    <!--android:layout_width="30dp"-->
-                                    <!--android:layout_height="30dp"-->
-                                    <!--android:enabled="@{!registrationViewModel.showProgresBar}"-->
-                                    <!--android:popupBackground="@color/white"-->
-                                    <!--android:spinnerMode="dropdown"-->
-                                    <!--android:visibility="invisible"-->
-                                    <!--app:adapter="@{spinnerVillage}" />-->
-                                <!--&lt;!&ndash;bind:selectedVillage="@={bindUtils.selectedVillage}"&ndash;&gt;-->
+                        <!--<android.support.v7.widget.AppCompatSpinner-->
+                        <!--android:id="@+id/spinnerVillage"-->
+                        <!--android:layout_width="30dp"-->
+                        <!--android:layout_height="30dp"-->
+                        <!--android:enabled="@{!registrationViewModel.showProgresBar}"-->
+                        <!--android:popupBackground="@color/white"-->
+                        <!--android:spinnerMode="dropdown"-->
+                        <!--android:visibility="invisible"-->
+                        <!--app:adapter="@{spinnerVillage}" />-->
+                        <!--&lt;!&ndash;bind:selectedVillage="@={bindUtils.selectedVillage}"&ndash;&gt;-->
 
-                                <!--<ImageView-->
-                                    <!--android:layout_width="15dp"-->
-                                    <!--android:layout_height="15dp"-->
-                                    <!--android:layout_centerInParent="true"-->
-                                    <!--android:src="@drawable/downarrow" />-->
-                            <!--</RelativeLayout>-->
+                        <!--<ImageView-->
+                        <!--android:layout_width="15dp"-->
+                        <!--android:layout_height="15dp"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--android:src="@drawable/downarrow" />-->
+                        <!--</RelativeLayout>-->
 
                         <!--</RelativeLayout>-->
 
                         <Button
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
+                            android:layout_height="@dimen/button_height"
                             android:layout_marginTop="20dp"
                             android:background="@drawable/white_bkg_button"
                             android:enabled="@{!registrationViewModel.showProgresBar}"
+                            android:fontFamily="@font/montserrat_medium"
                             android:onClick="@{()->registrationViewModel.onSubmitClick()}"
                             android:text="Submit"
                             android:textAllCaps="false"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/button_text_size" />
                     </LinearLayout>
 
                 </LinearLayout>

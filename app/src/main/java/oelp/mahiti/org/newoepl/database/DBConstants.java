@@ -40,6 +40,19 @@ public class DBConstants {
     public static final String DESC = "description";
     public static final String TYPE_CONTENT = "typeContent";
     public static final String CONTENT_UUID = "contentUUID";
+    public static final String QUESTION_TABLE = "questionTable";
+    public static final String Q_TEXT = "questionText";
+    public static final String Q_HELP_TEXT = "helpText";
+    public static final String DCF = "DCF";
+    public static final String MEDIA_CONTENT = "mediaContent";
+    public static final String QUESTION_CHOICES_TABLE = "questionChoices";
+    public static final String IS_CORRECT = "isCorrectAns";
+    public static final String CHOICE_TEXT = "choiceText";
+    public static final String Q_ID = "questionId";
+    public static final String ANS_EXPLAIN = "answerExplain";
+    public static final String SCORE = "score";
+    public static final String NULL = null;
+    public static final String NOT_NULL = " IS NOT NULL";
     public static String EQUAL_TO=" = ";
     public static String NOT_EQUAL_TO=" != ";
     public static String EMPTY="''";
@@ -48,6 +61,7 @@ public class DBConstants {
     public static String TEXT_COMMA=" TEXT, ";
     public static String TEXT=" TEXT ";
     public static String INTEGER_COMMA=" INTEGER, ";
+    public static String INTEGER=" INTEGER ";
     public static String DATETIME_COMMA=" DATETIME, ";
     public static final String SELECT = "select ";
 
@@ -60,6 +74,7 @@ public class DBConstants {
     public static final String CT_NAME = "name";
     public static final String BOUNDARY_LEVEL_TYPE = "boundary_level_type";
     public static final String PARENT = "parent";
+    public static final String Q_TYPE="QuestionType";
 
 
     private DBConstants() {

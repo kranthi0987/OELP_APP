@@ -61,7 +61,7 @@ public class OTPVerificationViewModel extends AndroidViewModel {
         sharedPref = new MySharedPref(context);
         mobileNo = sharedPref.readString(Constants.MOBILE_NO, "");
         clearButtonVisible.setValue(false);
-        String messageText = application.getString(R.string.otp_has_been_sent_to_your_mobile).concat(mobileNo.substring(6, 10)).concat(application.getString(R.string.please_enter_the_same));
+        String messageText = application.getString(R.string.otp_has_been_sent_to_your_mobile).concat(mobileNo.substring(6, 10)).concat("  ").concat(application.getString(R.string.please_enter_the_same));
         otpMobileText.setValue(messageText);
         resendButtonText.setValue(context.getResources().getString(R.string.resend_code));
         resendButtonText.setValue("00");

@@ -37,6 +37,16 @@ public class MobileVerificationResponseModel {
     @Expose
     private List<CatalogueDetailsModel> catalogueDetailsModel;
 
+    @SerializedName("Question")
+    @Expose
+    private List<QuestionModel> questionModelList;
+
+    @SerializedName("Choices")
+    @Expose
+    private List<QuestionChoicesModel> questionChoicesModelList;
+
+
+
 
     public MobileVerificationResponseModel() {
     }
@@ -44,6 +54,22 @@ public class MobileVerificationResponseModel {
     public MobileVerificationResponseModel(Integer status, String message) {
         this.message = message;
         this.status = status;
+    }
+
+    public List<QuestionModel> getQuestionModelList() {
+        return questionModelList;
+    }
+
+    public void setQuestionModelList(List<QuestionModel> questionModelList) {
+        this.questionModelList = questionModelList;
+    }
+
+    public List<QuestionChoicesModel> getQuestionChoicesModelList() {
+        return questionChoicesModelList;
+    }
+
+    public void setQuestionChoicesModelList(List<QuestionChoicesModel> questionChoicesModelList) {
+        this.questionChoicesModelList = questionChoicesModelList;
     }
 
     public List<CatalogueDetailsModel> getCatalogueDetailsModel() {

@@ -15,8 +15,12 @@ import android.widget.Toast;
 
 import oelp.mahiti.org.newoepl.R;
 import oelp.mahiti.org.newoepl.databinding.ActivityHomeBinding;
+import oelp.mahiti.org.newoepl.fileandvideodownloader.DownloadClass;
+import oelp.mahiti.org.newoepl.fileandvideodownloader.OnMediaDownloadListener;
 import oelp.mahiti.org.newoepl.interfaces.ItemClickListerner;
 import oelp.mahiti.org.newoepl.models.CatalogueDetailsModel;
+import oelp.mahiti.org.newoepl.services.RetrofitConstant;
+import oelp.mahiti.org.newoepl.utils.AppUtils;
 import oelp.mahiti.org.newoepl.utils.Constants;
 import oelp.mahiti.org.newoepl.utils.MySharedPref;
 import oelp.mahiti.org.newoepl.viewmodel.HomeViewModel;
@@ -24,7 +28,7 @@ import oelp.mahiti.org.newoepl.views.fragments.GroupsFragment;
 import oelp.mahiti.org.newoepl.views.fragments.HomeFragment;
 import oelp.mahiti.org.newoepl.views.fragments.UnitsFragment;
 
-public class HomeActivity extends AppCompatActivity implements ItemClickListerner{
+public class HomeActivity extends AppCompatActivity implements ItemClickListerner, OnMediaDownloadListener {
 
     Toolbar toolbar;
     ActivityHomeBinding activityHomeBinding;
@@ -46,8 +50,8 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         }
         toolbar.inflateMenu(R.menu.teacher_menu);
 
-        setImageAndTextColor(Constants.Units);
-        setFragment(Constants.Units);
+//        setImageAndTextColor(Constants.Units);
+//        setFragment(Constants.Units);
 
 
         homeViewModel.homeClick.observe(this, aBoolean -> {
@@ -72,17 +76,26 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
             }
         });
 
-        homeViewModel.getInsertLong().observe(this, aLong -> {
-//            homeViewModel.callApiForCatalogData();
+        homeViewModel.getApiErrorMessage().observe(this, s -> {
+            if (s != null)
+                Toast.makeText(HomeActivity.this, s, Toast.LENGTH_SHORT).show();
+        });
+        homeViewModel.getDataInserted().observe(this, integer -> {
+            if (integer!=null)
+                setFragment(Constants.Units);
         });
 
-        homeViewModel.getDataInserted().observe(this, aLong -> {
-            homeViewModel.showProgresBar.setValue(false);
-        });
+//        homeViewModel.getDataInserted().observe(this, aLong -> {
+//            if (aLong != null && !aLong)
+//
+//        });
+
+        homeViewModel.getListOfImageToDownload().observe(this, fileModels ->
+                new DownloadClass(Constants.IMAGE, HomeActivity.this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.IMAGE).getAbsolutePath(), fileModels));
     }
 
     private void setFragment(String type) {
-        Fragment fragment=null;
+        Fragment fragment = null;
         switch (type) {
             case Constants.Home:
                 fragment = new HomeFragment();
@@ -91,8 +104,8 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
                 previouValue = Constants.Units;
                 homeViewModel.parentId.setValue("");
                 Bundle bundle = new Bundle();
-                bundle.putString("ParentId","");
-                bundle.putString("Title",getResources().getString(R.string.units));
+                bundle.putString("ParentId", "");
+                bundle.putString("Title", getResources().getString(R.string.units));
                 fragment = new UnitsFragment();
                 fragment.setArguments(bundle);
                 break;
@@ -100,7 +113,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
                 fragment = new GroupsFragment();
                 break;
         }
-        if (fragment!=null) {
+        if (fragment != null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 //            transaction.setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out);
             transaction.replace(R.id.fragmentContainer, fragment);
@@ -187,7 +200,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, getResources().getString(R.string.double_back_exit), Toast.LENGTH_SHORT).show();
 
-        new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
+        new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 
 
@@ -198,5 +211,11 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         startActivity(intent);
         overridePendingTransition(R.anim.anim_slide_in_left,
                 R.anim.anim_slide_out_left);
+    }
+
+    @Override
+    public void onMediaDownload(int type, String savedPath, String name, int position, String uuid) {
+        homeViewModel.showProgresBar.setValue(false);
+        homeViewModel.setDataInserted(1);
     }
 }

@@ -18,7 +18,6 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:visibility="@{homeViewModel.errorMessage.isEmpty()?View.VISIBLE:View.GONE}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/backgroundColor"
@@ -63,15 +62,14 @@
                             android:weightSum="2">
 
                             <LinearLayout
-                                android:visibility="gone"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:onClick="@{()->homeViewModel.onHomeClick()}"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:visibility="gone">
                                 <!--android:visibility="@{homeViewModel.userType==3?View.VISIBLE:View.GONE}">-->
-
 
 
                                 <ImageView
@@ -166,11 +164,13 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:visibility="@{homeViewModel.errorMessage.isEmpty()?View.VISIBLE:View.GONE}"
-            android:layout_centerInParent="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+            android:layout_centerInParent="true"
+            android:layout_marginTop="20dp"
+            android:visibility="visible">
+
+            <!--android:visibility="@{homeViewModel.apiErrorMessage.isEmpty()?View.VISIBLE:View.GONE}">-->
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -185,16 +185,18 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:visibility="@{homeViewModel.errorMessage.isEmpty()?View.GONE:View.VISIBLE}"
-            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone">
+            <!--android:visibility="@{homeViewModel.apiErrorMessage.isEmpty()?View.GONE:View.VISIBLE}">-->
+
             <TextView
-                android:textColor="@color/red"
-                android:textSize="@dimen/text_large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/SOMETHING_WRONG"/>
+                android:text="@string/SOMETHING_WRONG"
+                android:textColor="@color/red"
+                android:textSize="@dimen/text_large" />
         </RelativeLayout>
 
     </RelativeLayout>

@@ -51,6 +51,7 @@ import oelp.mahiti.org.newoepl.videoplay.utils.DecryptClass;
 import oelp.mahiti.org.newoepl.videoplay.utils.SevendaysVariables;
 import oelp.mahiti.org.newoepl.videoplay.utils.Validation;
 import oelp.mahiti.org.newoepl.videoplay.utils.VideoDecryptionDb;
+import oelp.mahiti.org.newoepl.views.activities.QuestionAnswerActivity;
 
 
 public class VideoViewActivity extends AppCompatActivity implements SevendaysVariables,
@@ -83,6 +84,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     String userId;
     String unitId;
     String videoTitle;
+    String sectionUUID;
     String parentUUID;
     String Selecteduuid="";
     String deviceId = "";
@@ -203,6 +205,11 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
                 videoTitle = getIntent().getStringExtra("videoTitle");
                 toolbarTitle.setText(videoTitle);
                 Log.i("videoname", videoTitle);
+            }
+
+            if (!TextUtils.isEmpty(getIntent().getStringExtra("sectionUUID"))) {
+                sectionUUID = getIntent().getStringExtra("sectionUUID");
+                Log.i("sectionUUID", sectionUUID);
             }
 
             if (!TextUtils.isEmpty(getIntent().getStringExtra("unitId"))) {
@@ -476,7 +483,15 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
             callMediaTrackerApi();
         }
         contentUpdateStatus(Selecteduuid);
-        VideoViewActivity.this.finish();
+        moveToQuestionAnswerActivity();
+    }
+
+    private void moveToQuestionAnswerActivity() {
+        Intent intent = new Intent(VideoViewActivity.this, QuestionAnswerActivity.class);
+        intent.putExtra("sectionUUID", sectionUUID);
+        intent.putExtra("videoTitle", videoTitle);
+        startActivity(intent);
+        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
     }
 
     public void callMediaTrackerApi() {

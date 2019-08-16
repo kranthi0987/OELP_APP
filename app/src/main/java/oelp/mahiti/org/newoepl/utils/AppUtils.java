@@ -1,10 +1,12 @@
 package oelp.mahiti.org.newoepl.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Environment;
+import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
@@ -20,6 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import oelp.mahiti.org.newoepl.R;
+import oelp.mahiti.org.newoepl.views.activities.MobileLoginActivity;
 
 /**
  * Created by sandeep HR on 19/12/18.
@@ -204,7 +207,6 @@ public class AppUtils {
     }
 
 
-
     public static String getParentName(String file) {
         File fil = new File(file);
         return fil.getParent();
@@ -288,6 +290,13 @@ public class AppUtils {
         return data[data.length - 1];
     }
 
+    public static void makeUserLogout(Context context) {
+        new MySharedPref(context).deleteAllData();
+        Intent intent = new Intent(context, MobileLoginActivity.class);
+        context.startActivity(intent);
+        ((AppCompatActivity) context).finish();
+        ((AppCompatActivity) context).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+    }
 }
 
 

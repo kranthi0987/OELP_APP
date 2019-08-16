@@ -13,7 +13,7 @@
     <string name="please_select_block">Select Block</string>
     <string name="please_select_village">Please Select Village</string>
     <string name="otp_has_been_sent_to_your_mobile">OTP has been sent to your mobile XXXXX X</string>
-    <string name="please_enter_the_same">.. Please Enter the Same</string>
+    <string name="please_enter_the_same"> Please Enter the Same</string>
 
     <string name="dummyotp">1</string>
     <string name="login_again">फिर से लॉगिन करें</string>

@@ -55,7 +55,8 @@
                             android:fontFamily="@font/montserrat_bold"
                             android:text="Verification"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                            android:textColor="@color/white" />
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/heading_text_size" />
                     </RelativeLayout>
 
                     <TextView
@@ -73,6 +74,7 @@
                         android:layout_height="wrap_content">
 
                         <TextView
+                            android:textSize="@dimen/et_text_size"
                             android:id="@+id/tvEnterCode"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -84,7 +86,7 @@
                             android:textAlignment="center"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            />
 
                         <LinearLayout
                             android:id="@+id/otplinearlayoutthree"
@@ -107,6 +109,7 @@
                                 android:imeOptions="flagNoExtractUi|actionNext"
                                 android:inputType="number"
                                 android:maxLength="1"
+                                android:textSize="@dimen/et_text_size"
                                 android:maxLines="1"
                                 android:nextFocusForward="@id/etOpt2"
                                 android:text="@={verificationViewModel.otp1}"
@@ -120,6 +123,7 @@
                                 android:id="@+id/etOpt2"
                                 android:layout_width="40dp"
                                 android:layout_height="50dp"
+                                android:textSize="@dimen/et_text_size"
                                 android:layout_margin="2dp"
                                 android:backgroundTint="@color/white"
                                 android:enabled="@{!verificationViewModel.showProgresBar}"
@@ -140,6 +144,7 @@
                                 android:layout_width="40dp"
                                 android:layout_height="50dp"
                                 android:layout_margin="2dp"
+                                android:textSize="@dimen/et_text_size"
                                 android:backgroundTint="@color/white"
                                 android:enabled="@{!verificationViewModel.showProgresBar}"
                                 android:fontFamily="@font/montserrat_medium"
@@ -158,13 +163,13 @@
                                 android:layout_width="40dp"
                                 android:layout_height="50dp"
                                 android:layout_margin="2dp"
-
                                 android:backgroundTint="@color/white"
                                 android:enabled="@{!verificationViewModel.showProgresBar}"
                                 android:fontFamily="@font/montserrat_medium"
                                 android:imeOptions="flagNoExtractUi|actionDone"
                                 android:inputType="number"
                                 android:maxLength="1"
+                                android:textSize="@dimen/et_text_size"
                                 android:maxLines="1"
                                 android:text="@={verificationViewModel.otp4}"
                                 android:textAlignment="center"
@@ -174,14 +179,15 @@
                         </LinearLayout>
 
                         <Button
-                            android:layout_centerHorizontal="true"
                             style="@style/Base.Widget.AppCompat.Button.Borderless"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/otplinearlayoutthree"
+                            android:layout_centerHorizontal="true"
                             android:fontFamily="@font/montserrat_medium"
                             android:onClick="@{()->verificationViewModel.clearOTPText()}"
                             android:text="Clear OTP"
+                            android:textSize="@dimen/button_text_size"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                             android:textColor="@color/white"
                             android:visibility="@{verificationViewModel.clearButtonVisible?View.VISIBLE:View.GONE}" />

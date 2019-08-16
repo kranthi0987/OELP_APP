@@ -27,6 +27,8 @@ public class Constants {
     public static final int PDF = 2;
     public static final int VIDEO = 3;
     public static final int AUDIO = 4;
+    public static final int QA = 2;
+    public static final int FAQ = 1;
 
     public enum TransitionType {
         ExplodeJava, ExplodeXML, SlideJava, SlideXML, FadeJava, FadeXML

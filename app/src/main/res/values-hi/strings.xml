@@ -13,7 +13,7 @@
     <string name="please_select_block">ब्लॉक का चयन करें</string>
     <string name="please_select_village">कृपया स्कूल का नाम दर्ज करेंं</string>
     <string name="otp_has_been_sent_to_your_mobile">ओ.टी.पी भेजा गया है आपके मोबाइल पर XXXXX X</string>
-    <string name="please_enter_the_same">.. कृपया वही दर्ज करें|</string>
+    <string name="please_enter_the_same"> कृपया वही दर्ज करें|</string>
 
     <string name="dummyotp">1</string>
     <string name="login_again">Login Again</string>

@@ -12,12 +12,18 @@ import net.sqlcipher.database.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import oelp.mahiti.org.newoepl.fileandvideodownloader.FileModel;
 import oelp.mahiti.org.newoepl.models.CatalogueDetailsModel;
 import oelp.mahiti.org.newoepl.models.LocationContent;
 import oelp.mahiti.org.newoepl.models.LocationModel;
+import oelp.mahiti.org.newoepl.models.QuestionChoicesModel;
+import oelp.mahiti.org.newoepl.models.QuestionModel;
 import oelp.mahiti.org.newoepl.utils.Logger;
 
 import static oelp.mahiti.org.newoepl.database.DBConstants.CAT_TABLE_NAME;
+import static oelp.mahiti.org.newoepl.database.DBConstants.ICON_PATH;
+import static oelp.mahiti.org.newoepl.database.DBConstants.QUESTION_CHOICES_TABLE;
+import static oelp.mahiti.org.newoepl.database.DBConstants.QUESTION_TABLE;
 
 /**
  * Created by RAJ ARYAN on 02/08/19.
@@ -48,6 +54,41 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         createLocationTable(sqLiteDatabase);
         createCatalogueTable(sqLiteDatabase);
+        createQuestionTable(sqLiteDatabase);
+        createQuestionChoicesTable(sqLiteDatabase);
+
+    }
+
+
+    private void createQuestionChoicesTable(SQLiteDatabase sqLiteDatabase) {
+
+        String query = DBConstants.CREATE_TABLE_IF_NOT_EXIST + DBConstants.QUESTION_CHOICES_TABLE + DBConstants.OPEN_BRACKET +
+                DBConstants.ID + DBConstants.TEXT_PRIMARY_KEY + DBConstants.COMMA +
+                DBConstants.IS_CORRECT + DBConstants.TEXT_COMMA +
+                DBConstants.CHOICE_TEXT + DBConstants.TEXT_COMMA +
+                DBConstants.Q_ID + DBConstants.INTEGER_COMMA +
+                DBConstants.ACTIVE + DBConstants.INTEGER_COMMA +
+                DBConstants.MODIFIED + DBConstants.TEXT_COMMA +
+                DBConstants.ANS_EXPLAIN + DBConstants.TEXT_COMMA +
+                DBConstants.SCORE + DBConstants.INTEGER +
+                DBConstants.CLOSE_BRACKET;
+        Logger.logD(TAG, "Database creation query :" + query);
+        sqLiteDatabase.execSQL(query);
+    }
+
+    private void createQuestionTable(SQLiteDatabase sqLiteDatabase) {
+        String query = DBConstants.CREATE_TABLE_IF_NOT_EXIST + DBConstants.QUESTION_TABLE + DBConstants.OPEN_BRACKET +
+                DBConstants.ID + DBConstants.TEXT_PRIMARY_KEY + DBConstants.COMMA +
+                DBConstants.Q_TYPE + DBConstants.TEXT_COMMA +
+                DBConstants.Q_TEXT + DBConstants.TEXT_COMMA +
+                DBConstants.Q_HELP_TEXT + DBConstants.TEXT_COMMA +
+                DBConstants.ACTIVE + DBConstants.INTEGER_COMMA +
+                DBConstants.MODIFIED + DBConstants.TEXT_COMMA +
+                DBConstants.DCF + DBConstants.INTEGER_COMMA +
+                DBConstants.MEDIA_CONTENT + DBConstants.TEXT+
+                DBConstants.CLOSE_BRACKET;
+        Logger.logD(TAG, "Database creation query :" + query);
+        sqLiteDatabase.execSQL(query);
     }
 
     private void createCatalogueTable(SQLiteDatabase sqLiteDatabase) {
@@ -153,8 +194,9 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         return locationList;
     }
 
-    public String getModifiedDate() {
-        String selectQuery = DBConstants.SELECT + DBConstants.MAX + DBConstants.OPEN_BRACKET + DBConstants.MODIFIED + DBConstants.CLOSE_BRACKET + DBConstants.AS + DBConstants.MODIFIED + DBConstants.FROM + DBConstants.CAT_TABLE_NAME;
+
+    public String getModifiedDate(String tableName) {
+        String selectQuery = DBConstants.SELECT + DBConstants.MAX + DBConstants.OPEN_BRACKET + DBConstants.MODIFIED + DBConstants.CLOSE_BRACKET + DBConstants.AS + DBConstants.MODIFIED + DBConstants.FROM + tableName;
         Logger.logD(TAG, selectQuery);
         android.database.Cursor cursor = database.rawQuery(selectQuery, null);
         String date = null;
@@ -170,22 +212,83 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         return date;
     }
 
+    public void insertDatatoQuestionTable(List<QuestionModel> questionModelList) {
+        initDatabase();
+        database.beginTransaction();
+        try {
+            ContentValues contentValues = new ContentValues();
+            for (QuestionModel questionModel : questionModelList) {
+                contentValues.put(DBConstants.ID, questionModel.getId());
+                contentValues.put(DBConstants.Q_TYPE, questionModel.getQtype());
+                contentValues.put(DBConstants.Q_TEXT, questionModel.getText());
+                contentValues.put(DBConstants.Q_HELP_TEXT, questionModel.getHelpText());
+                contentValues.put(DBConstants.ACTIVE, questionModel.getActive());
+                contentValues.put(DBConstants.MODIFIED, questionModel.getModified());
+                contentValues.put(DBConstants.DCF, questionModel.getDcf());
+                contentValues.put(DBConstants.MEDIA_CONTENT, questionModel.getMediacontent());
+                Log.d(TAG, QUESTION_TABLE + contentValues.toString());
+                database.insertWithOnConflict(QUESTION_TABLE, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+                Log.d(TAG, "Question values inserting into " + QUESTION_TABLE + contentValues.toString());
+            }
+            database.setTransactionSuccessful();
+        } catch (Exception ex) {
+            Logger.logE(TAG, ex.getMessage(), ex);
+        } finally {
+            database.endTransaction();
+        }
+    }
+
+    public void insertDatatoQuestionChoicesTable(List<QuestionChoicesModel> questionChoicesModelList) {
+        initDatabase();
+        database.beginTransaction();
+        try {
+            ContentValues contentValues = new ContentValues();
+            for (QuestionChoicesModel questionModel : questionChoicesModelList) {
+                contentValues.put(DBConstants.ID, questionModel.getId());
+                String isCorrect;
+                if (questionModel.getCorrect()) {
+                    isCorrect = "true";
+                } else {
+                    isCorrect = "false";
+                }
+                contentValues.put(DBConstants.IS_CORRECT, isCorrect);
+                contentValues.put(DBConstants.CHOICE_TEXT, questionModel.getText());
+                contentValues.put(DBConstants.Q_ID, questionModel.getQuestionId());
+                contentValues.put(DBConstants.ACTIVE, questionModel.getActive());
+                contentValues.put(DBConstants.MODIFIED, questionModel.getModifiedDate());
+                contentValues.put(DBConstants.ANS_EXPLAIN, questionModel.getAnswerExplaination());
+                contentValues.put(DBConstants.SCORE, questionModel.getScore());
+                Log.d(TAG, QUESTION_CHOICES_TABLE + contentValues.toString());
+                database.insertWithOnConflict(QUESTION_CHOICES_TABLE, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+                Log.d(TAG, "Question values inserting into " + QUESTION_CHOICES_TABLE + contentValues.toString());
+            }
+            database.setTransactionSuccessful();
+        } catch (Exception ex) {
+            Logger.logE(TAG, ex.getMessage(), ex);
+        } finally {
+            database.endTransaction();
+        }
+    }
+
+
     public Long insertDataToCatalogueTable(List<CatalogueDetailsModel> catalogueDetailsModel) {
-        List<CatalogueDetailsModel> catalogueDetailsModelList = catalogueDetailsModel;
         long insertLong = 0;
 
         initDatabase();
         database.beginTransaction();
         try {
             ContentValues values = new ContentValues();
-            for (CatalogueDetailsModel detailsModel : catalogueDetailsModelList) {
+            for (CatalogueDetailsModel detailsModel : catalogueDetailsModel) {
                 values.put(DBConstants.UUID, detailsModel.getUuid());
                 values.put(DBConstants.ACTIVE, detailsModel.getActive());
                 values.put(DBConstants.NAME, detailsModel.getName());
                 values.put(DBConstants.CODE, detailsModel.getCode());
                 values.put(DBConstants.ORDER, detailsModel.getOrder());
                 values.put(DBConstants.COLOR, detailsModel.getUdf1().getColorCode());
-                values.put(DBConstants.PARENT, detailsModel.getParent());
+                if (detailsModel.getParent() == null)
+                    values.put(DBConstants.PARENT, "");
+                else
+                    values.put(DBConstants.PARENT, detailsModel.getParent());
                 values.put(DBConstants.MODIFIED, detailsModel.getModified());
                 values.put(DBConstants.ICON_PATH, detailsModel.getIcon());
                 values.put(DBConstants.ICON_TYPE, detailsModel.getIconType());
@@ -201,7 +304,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
             }
             database.setTransactionSuccessful();
         } catch (Exception ex) {
-            Logger.logD(TAG, ex.getMessage());
+            Logger.logE(TAG, ex.getMessage(), ex);
         } finally {
             database.endTransaction();
         }
@@ -223,7 +326,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         if (parentId.isEmpty())
             query2 = DBConstants.EMPTY;
         else
-            query2 = "'"+parentId+"'";
+            query2 = "'" + parentId + "'";
         mainQuery = query1 + query2;
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase(DBConstants.DATABASESECRETKEY);
         try {
@@ -263,5 +366,96 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         }
         catalogList.setValue(catalogList1);
         return catalogList;
+    }
+
+    public List<QuestionModel> getQuestion(String videoId, String sectionId, int qa) {
+        MutableLiveData<List<QuestionModel>> questionModelList = new MutableLiveData<>();
+        List<QuestionModel> questionModelsList = new ArrayList<>();
+        QuestionModel questionModel;
+        String query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.QUESTION_TABLE;
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase(DBConstants.DATABASESECRETKEY);
+        try {
+            Logger.logD(TAG, "Getting Question Item : " + query);
+            Cursor cursor = sqLiteDatabase.rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    questionModel = new QuestionModel();
+                    questionModel.setId(cursor.getInt(cursor.getColumnIndex(DBConstants.ID)));
+                    questionModel.setQtype(cursor.getString(cursor.getColumnIndex(DBConstants.Q_TYPE)));
+                    questionModel.setText(cursor.getString(cursor.getColumnIndex(DBConstants.Q_TEXT)));
+                    questionModel.setHelpText(cursor.getString(cursor.getColumnIndex(DBConstants.Q_HELP_TEXT)));
+                    questionModel.setActive(cursor.getInt(cursor.getColumnIndex(DBConstants.ACTIVE)));
+                    questionModel.setModified(cursor.getString(cursor.getColumnIndex(DBConstants.MODIFIED)));
+                    questionModel.setDcf(cursor.getInt(cursor.getColumnIndex(DBConstants.DCF)));
+                    questionModel.setMediacontent(cursor.getString(cursor.getColumnIndex(DBConstants.MEDIA_CONTENT)));
+                    questionModelsList.add(questionModel);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+        } catch (Exception e) {
+            Logger.logE(TAG, "getSubject", e);
+        }
+        questionModelList.setValue(questionModelsList);
+        return questionModelList.getValue();
+    }
+
+    public List<QuestionChoicesModel> getChoices(int questionId) {
+        MutableLiveData<List<QuestionChoicesModel>> questionChoicesModelList1 = new MutableLiveData<>();
+        List<QuestionChoicesModel> questionChoicesModelsList = new ArrayList<>();
+        QuestionChoicesModel questionChoicesModel;
+        String query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.QUESTION_CHOICES_TABLE + DBConstants.WHERE + DBConstants.Q_ID + DBConstants.EQUAL_TO + questionId;
+        initDatabase();
+        try {
+            Logger.logD(TAG, "Getting Question Choices : " + query);
+            Cursor cursor = database.rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    questionChoicesModel = new QuestionChoicesModel();
+                    questionChoicesModel.setId(cursor.getInt(cursor.getColumnIndex(DBConstants.ID)));
+                    questionChoicesModel.setText(cursor.getString(cursor.getColumnIndex(DBConstants.CHOICE_TEXT)));
+                    questionChoicesModel.setQuestionId(cursor.getInt(cursor.getColumnIndex(DBConstants.Q_ID)));
+                    questionChoicesModel.setActive(cursor.getInt(cursor.getColumnIndex(DBConstants.ACTIVE)));
+                    questionChoicesModel.setModifiedDate(cursor.getString(cursor.getColumnIndex(DBConstants.MODIFIED)));
+                    questionChoicesModel.setAnswerExplaination(cursor.getString(cursor.getColumnIndex(DBConstants.ANS_EXPLAIN)));
+                    questionChoicesModel.setScore(cursor.getInt(cursor.getColumnIndex(DBConstants.SCORE)));
+
+                    questionChoicesModelsList.add(questionChoicesModel);
+
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+        } catch (Exception e) {
+            Logger.logE(TAG, "getSubject", e);
+        }
+        questionChoicesModelList1.setValue(questionChoicesModelsList);
+        return questionChoicesModelList1.getValue();
+    }
+
+
+    public List<FileModel> getImageListFromTable() {
+        FileModel fileModel;
+        List<FileModel> imageList = new ArrayList<>();
+        String query = DBConstants.SELECT + DBConstants.ICON_PATH +DBConstants.COMMA+DBConstants.NAME +DBConstants.COMMA+DBConstants.UUID +DBConstants.FROM+ DBConstants.CAT_TABLE_NAME +
+                DBConstants.WHERE + ICON_PATH + DBConstants.NOT_EQUAL_TO + DBConstants.EMPTY +
+                DBConstants.AND + DBConstants.ICON_PATH+DBConstants.NOT_NULL;
+        initDatabase();
+        try {
+            Logger.logD(TAG, "Getting Image List Query : " + query);
+            Cursor cursor = database.rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    fileModel = new FileModel();
+                    fileModel.setFileName(cursor.getString(cursor.getColumnIndex(DBConstants.NAME)));
+                    fileModel.setUuid(cursor.getString(cursor.getColumnIndex(DBConstants.UUID)));
+                    fileModel.setFileUrl(cursor.getString(cursor.getColumnIndex(DBConstants.ICON_PATH)));
+                    imageList.add(fileModel);
+
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+        } catch (Exception e) {
+            Logger.logE(TAG, "get ICON", e);
+        }
+        return imageList;
     }
 }

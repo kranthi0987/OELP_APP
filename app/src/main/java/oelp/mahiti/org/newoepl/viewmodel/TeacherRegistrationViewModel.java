@@ -55,6 +55,10 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
     public MutableLiveData<String> block = new MutableLiveData<>();
     public MutableLiveData<String> district = new MutableLiveData<>();
     public MutableLiveData<Integer> blockId = new MutableLiveData<>();
+    public MutableLiveData<Integer> stateId = new MutableLiveData<>();
+    public MutableLiveData<Integer> districtId = new MutableLiveData<>();
+    public MutableLiveData<Boolean> districtClickable = new MutableLiveData<>();
+    public MutableLiveData<Boolean> blockClickable = new MutableLiveData<>();
 
 
     private MutableLiveData<Action> mAction = new MutableLiveData<>();
@@ -74,6 +78,14 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
         showProgresBar.setValue(true);
         insertLong.setValue(null);
         databaseHandlerClass = new DatabaseHandlerClass(context);
+        districtClickable.setValue(false);
+        blockClickable.setValue(false);
+        stateId.setValue(0);
+        districtId.setValue(0);
+        blockId.setValue(0);
+        state.setValue(context.getResources().getString(R.string.please_select_state_start));
+        district.setValue(context.getResources().getString(R.string.please_select_district));
+        block.setValue(context.getResources().getString(R.string.please_select_block));
         sharedPref = new MySharedPref(context);
         if (CheckNetwork.checkNet(context)) {
             callApiForLocation();
@@ -170,9 +182,14 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
         try{
             JSONObject obj = new JSONObject();
             obj.put("name", name.getValue());
-            obj.put("school", school.getValue());
+            if (school.getValue()==null)
+                obj.put("school", "");
+            else
+                obj.put("school", school.getValue());
             obj.put("mobile_number", phoneNo.getValue());
-            obj.put("blockIds", blockId.getValue());
+            obj.put("stateId", stateId.getValue());
+            obj.put("districtId", districtId.getValue());
+            obj.put("blockId", blockId.getValue());
             userDetails = obj.toString();
 
         }catch (Exception exp){
@@ -180,7 +197,7 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
         }
 
         if (CheckNetwork.checkNet(context)) {
-            callApiForRegistration(userDetails);
+             callApiForRegistration(userDetails);
         }else {
             Toast.makeText(context, context.getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
         }
@@ -244,6 +261,7 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
         }else {
             status = false;
             errorName.setValue(context.getResources().getString(R.string.please_enter_name));
+            return status;
         }
 
 //        if (AppUtils.textEmpty(phoneNo.getValue())){
@@ -253,40 +271,41 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
 //            phoneNo.setValue(context.getResources().getString(R.string.please_enter_phone));
 //        }
 
-        if (!AppUtils.textEmpty(school.getValue())){
-            errorSchool = null;
-        }else {
-            status = false;
-            errorSchool.setValue(context.getResources().getString(R.string.please_enter_school));
-        }
+//        if (!AppUtils.textEmpty(school.getValue())){
+//            errorSchool = null;
+//        }else {
+//            status = false;
+//            errorSchool.setValue(context.getResources().getString(R.string.please_enter_school));
+//        }
 
-        if (!AppUtils.textEmpty(state.getValue())){
+        if (!AppUtils.textEmpty(state.getValue()) && !state.getValue().equalsIgnoreCase(context.getString(R.string.please_select_state_start))){
             errorState = null;
         }else {
             status = false;
             errorState.setValue(context.getResources().getString(R.string.please_select_state));
+            return status;
         }
 
-        if (!AppUtils.textEmpty(district.getValue())){
-            errorDistrict = null;
-        }else {
-            status = false;
-            errorDistrict.setValue(context.getResources().getString(R.string.please_select_district));
-        }
+//        if (!AppUtils.textEmpty(district.getValue())){
+//            errorDistrict = null;
+//        }else {
+//            status = false;
+//            errorDistrict.setValue(context.getResources().getString(R.string.please_select_district));
+//        }
 
-        if (!AppUtils.textEmpty(block.getValue())){
-            errorBlock = null;
-        }else {
-            status = false;
-            errorBlock.setValue(context.getResources().getString(R.string.please_select_block));
-        }
+//        if (!AppUtils.textEmpty(block.getValue())){
+//            errorBlock = null;
+//        }else {
+//            status = false;
+//            errorBlock.setValue(context.getResources().getString(R.string.please_select_block));
+//        }
 
-        if (!AppUtils.textEmpty(village.getValue())){
-            errorVillage = null;
-        }else {
-            status = false;
-            errorVillage.setValue(context.getResources().getString(R.string.please_select_village));
-        }
+//        if (!AppUtils.textEmpty(village.getValue())){
+//            errorVillage = null;
+//        }else {
+//            status = false;
+//            errorVillage.setValue(context.getResources().getString(R.string.please_select_village));
+//        }
 
         return status;
     }

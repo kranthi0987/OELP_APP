@@ -37,15 +37,18 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
     private  ItemClickListerner listener;
 
 
-    Integer[] imageArray = {R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image11, R.drawable.image5,
-            R.drawable.image6, R.drawable.image7, R.drawable.image8, R.drawable.image9, R.drawable.image10, R.drawable.image4};
+//    Integer[] imageArray = {R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image11, R.drawable.image5,
+//            R.drawable.image6, R.drawable.image7, R.drawable.image8, R.drawable.image9, R.drawable.image10, R.drawable.image4};
 
     private AdapterUnitsVideoBinding binding;
+    private Context mContext;
+    private File imageFile;
 
 
     public void setList(List<CatalogueDetailsModel> list, Context context) {
         this.modelList = list;
         listener = (ItemClickListerner) context;
+        mContext = context;
         notifyDataSetChanged();
     }
 
@@ -65,7 +68,20 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
         layout.setViewModel(vm);
         CatalogueDetailsModel model = new CatalogueDetailsModel();
         model = modelList.get(i);
-        layout.binding.roundedImageView.setBackgroundResource(imageArray[i]);
+        try {
+            imageFile = new File(AppUtils.completePathInSDCard(Constants.IMAGE), AppUtils.getFileName(model.getIcon()));
+            if (imageFile.exists()) {
+                Picasso.get()
+                        .load("file://" + imageFile.getPath())
+                        .fit()
+                        .into(layout.binding.roundedImageView);
+            } else {
+                binding.roundedImageView.setBackgroundResource(R.drawable.image3);
+            }
+        }catch (Exception ex){
+            Logger.logE("", ex.getMessage(), ex);
+        }
+
         if (model.getContType().equalsIgnoreCase("video"))
             vm.playButton.setValue(true);
         else

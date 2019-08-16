@@ -6,6 +6,7 @@ package oelp.mahiti.org.newoepl.services;
 public class RetrofitConstant {
 
 
+    public static final String QUESTION_CHOICES_LIST = "/api/choice-list/";
 
     private RetrofitConstant() {
         throw new IllegalStateException("RetrofitConstant Class");
@@ -20,6 +21,7 @@ public class RetrofitConstant {
     public static final String CHANGE_MOBILE_NO_URL = "api/change-mobile-number/";
     public static final String LOCATION_LIST_URL = "/api/location-list/";
     public static final String CATALOGUE_URL = "/api/catalogue/";
+    public static final String QUESTION_LIST_URL = "/api/question-list/";
     public static final Integer STATUS_TRUE = 2;
     public static final Integer STATUS_FALSE = 0;
 

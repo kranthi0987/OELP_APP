@@ -46,8 +46,7 @@ public class MobileLoginActivity extends AppCompatActivity {
         mobileLoginViewModel.status.observe(this, s -> {
             if (!s.isEmpty() && !s.equalsIgnoreCase(Constants.STATUS_TRUE))
                 etMobileNo.setError(s);
-            else
-                etMobileNo.setError(null);
+
         });
 
        

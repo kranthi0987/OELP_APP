@@ -1,23 +1,43 @@
 package oelp.mahiti.org.newoepl.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class QuestionModel {
 
-    Integer id;
-    String name;
-    String hint;
-    Integer active;
-    String modified;
-    Integer unitID;
-    Integer faqType;
-    Integer videoID;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
 
+    @SerializedName("active")
+    @Expose
+    private Integer active;
 
-    public Integer getVideoID() {
-        return videoID;
-    }
+    @SerializedName("dcf")
+    @Expose
+    private Integer dcf;
 
-    public void setVideoID(Integer videoID) {
-        this.videoID = videoID;
+    @SerializedName("mediacontent")
+    @Expose
+    private String mediacontent;
+
+    @SerializedName("qtype")
+    @Expose
+    private String qtype;
+
+    @SerializedName("help_text")
+    @Expose
+    private String helpText;
+
+    @SerializedName("text")
+    @Expose
+    private String text;
+
+    @SerializedName("modified")
+    @Expose
+    private String modified;
+
+    public QuestionModel() {
     }
 
     public Integer getId() {
@@ -28,22 +48,6 @@ public class QuestionModel {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getHint() {
-        return hint;
-    }
-
-    public void setHint(String hint) {
-        this.hint = hint;
-    }
-
     public Integer getActive() {
         return active;
     }
@@ -52,27 +56,51 @@ public class QuestionModel {
         this.active = active;
     }
 
+    public Integer getDcf() {
+        return dcf;
+    }
+
+    public void setDcf(Integer dcf) {
+        this.dcf = dcf;
+    }
+
+    public String getMediacontent() {
+        return mediacontent;
+    }
+
+    public void setMediacontent(String mediacontent) {
+        this.mediacontent = mediacontent;
+    }
+
+    public String getQtype() {
+        return qtype;
+    }
+
+    public void setQtype(String qtype) {
+        this.qtype = qtype;
+    }
+
+    public String getHelpText() {
+        return helpText;
+    }
+
+    public void setHelpText(String helpText) {
+        this.helpText = helpText;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
     public String getModified() {
         return modified;
     }
 
     public void setModified(String modified) {
         this.modified = modified;
-    }
-
-    public Integer getUnitID() {
-        return unitID;
-    }
-
-    public void setUnitID(Integer unitID) {
-        this.unitID = unitID;
-    }
-
-    public Integer getFaqType() {
-        return faqType;
-    }
-
-    public void setFaqType(Integer faqType) {
-        this.faqType = faqType;
     }
 }

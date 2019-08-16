@@ -8,7 +8,7 @@
         <import type="android.view.View" />
 
         <variable
-            name="homeViewModel"
+            name="homeViewModels"
             type="oelp.mahiti.org.newoepl.viewmodel.HomeViewModel" />
     </data>
 
@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             android:background="@color/backgroundColor"
             android:orientation="vertical"
-            android:visibility="@{homeViewModel.errorMessage.isEmpty()?View.VISIBLE:View.GONE}"
+            android:visibility="visible"
             tools:mContext=".views.activities.HomeActivity">
 
             <include
@@ -36,7 +36,7 @@
                 android:weightSum="1">
 
                 <FrameLayout
-                    android:id="@+id/fragmentContainer"
+                    android:id="@+id/fragmentContainer1"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1" />
@@ -51,7 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginTop="20dp"
-            android:visibility="@{homeViewModel.errorMessage.isEmpty()?View.VISIBLE:View.GONE}">
+            android:visibility="visible">
+            <!--android:visibility="@{homeViewModels.errorMessage.isEmpty()?View.VISIBLE:View.GONE}">-->
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -61,7 +62,7 @@
                 android:layout_centerInParent="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
-                android:visibility="@{homeViewModel.showProgresBar? View.VISIBLE:View.INVISIBLE}" />
+                android:visibility="gone" />
 
         </RelativeLayout>
 
@@ -69,7 +70,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="@{homeViewModel.errorMessage.isEmpty()?View.GONE:View.VISIBLE}">
+            android:visibility="gone">
+            <!--android:visibility="@{homeViewModels.errorMessage.isEmpty()?View.GONE:View.VISIBLE}">-->
 
             <TextView
                 android:layout_width="wrap_content"

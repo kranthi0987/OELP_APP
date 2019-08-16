@@ -3,7 +3,6 @@ package oelp.mahiti.org.newoepl.views.activities;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -84,7 +83,6 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
 
         teacherRegistrationViewModel.errorState.observe(this, s -> {
             if (s != null) {
-                showToast(s);
                 setErrorState(s);
             }
         });
@@ -124,7 +122,7 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
     }
 
     private void showToast(String s) {
-        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
     private void setErrorState(String s) {
@@ -134,21 +132,6 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
 
     }
 
-    private void setErrorBlock(String s) {
-        if (s.isEmpty())
-            teacherRegistrationActivityBinding.etBlock.setError(null);
-        else
-            teacherRegistrationActivityBinding.etBlock.setError(s);
-    }
-
-    private void setErrorDistrict(String s) {
-        if (s.isEmpty())
-            teacherRegistrationActivityBinding.etDistrict.setError(null);
-        else
-            teacherRegistrationActivityBinding.etDistrict.setError(s);
-
-
-    }
 
     private void getIntentData() {
         mobileNo = new MySharedPref(this).readString(Constants.MOBILE_NO, "");
@@ -177,7 +160,7 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
         final int[] stateCount = {0};
         List<LocationContent> contentArrayList = new ArrayList<>();
         LocationContent locationContent = new LocationContent();
-        locationContent.setName(getResources().getString(R.string.please_select_state));
+        locationContent.setName(getResources().getString(R.string.please_select_state_start));
         contentArrayList.add(locationContent);
         contentArrayList.addAll(teacherRegistrationViewModel.getStateSpinnerData().getValue());
         if (contentArrayList != null && !contentArrayList.isEmpty()) {
@@ -191,10 +174,11 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
                     if (i == 0) {
                         onNothingSelected(adapterView);
                     } else {
-                        teacherRegistrationActivityBinding.etDistrict.setTextColor(Color.WHITE);
+                        teacherRegistrationViewModel.districtClickable.setValue(true);
                         teacherRegistrationViewModel.errorState.setValue("");
                         LocationContent content = contentArrayList.get(i);
                         teacherRegistrationViewModel.state.setValue(content.getName());
+                        teacherRegistrationViewModel.stateId.setValue(content.getId());
                         setAdapterToDistrictSpinner(content.getId(), content.getBoundaryLevelType() + 1);
                     }
                 }
@@ -203,8 +187,8 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                teacherRegistrationActivityBinding.etDistrict.setTextColor(Color.RED);
-                teacherRegistrationActivityBinding.etState.setText(getResources().getString(R.string.please_select_state));
+                teacherRegistrationViewModel.districtClickable.setValue(false);
+                teacherRegistrationViewModel.state.setValue("");
                 teacherRegistrationViewModel.errorState.setValue(getResources().getString(R.string.please_select_state));
             }
         });
@@ -229,10 +213,11 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
                     if (i == 0) {
                         onNothingSelected(adapterView);
                     } else {
-                        teacherRegistrationActivityBinding.etDistrict.setTextColor(Color.WHITE);
+                        teacherRegistrationViewModel.blockClickable.setValue(true);
                         teacherRegistrationViewModel.errorDistrict.setValue("");
                         LocationContent content = contentArrayList.get(i);
                         teacherRegistrationViewModel.district.setValue(content.getName());
+                        teacherRegistrationViewModel.districtId.setValue(content.getId());
                         setAdapterToBlockSpinner(content.getId(), content.getBoundaryLevelType() + 1);
                     }
                 }
@@ -241,8 +226,8 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                teacherRegistrationActivityBinding.etDistrict.setTextColor(Color.RED);
-                teacherRegistrationActivityBinding.etDistrict.setText(getResources().getString(R.string.please_select_district));
+                teacherRegistrationViewModel.blockId.setValue(0);
+                teacherRegistrationViewModel.blockClickable.setValue(false);
                 teacherRegistrationViewModel.errorDistrict.setValue(getResources().getString(R.string.please_select_district));
 
             }
@@ -268,7 +253,6 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
                     if (i == 0) {
                         onNothingSelected(adapterView);
                     } else {
-                        teacherRegistrationActivityBinding.etBlock.setTextColor(Color.WHITE);
                         teacherRegistrationViewModel.errorBlock.setValue("");
                         LocationContent content = contentArrayList.get(i);
                         teacherRegistrationViewModel.block.setValue(content.getName());
@@ -280,8 +264,7 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                teacherRegistrationActivityBinding.etBlock.setTextColor(Color.RED);
-                teacherRegistrationActivityBinding.etBlock.setText(getResources().getString(R.string.please_select_block));
+                teacherRegistrationViewModel.blockId.setValue(0);
                 teacherRegistrationViewModel.errorBlock.setValue(getResources().getString(R.string.please_select_block));
 
             }
