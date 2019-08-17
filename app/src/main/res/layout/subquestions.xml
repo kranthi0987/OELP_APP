@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="oelp.mahiti.org.newoepl.viewmodel.QuestionAnswerViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/subquestionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/questionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTintMode="@color/black">
+            <!-- <RadioButton
+                 android:id="@+id/radiobutton1"
+                 android:textColor="@color/black"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content" />-->
+        </RadioGroup>
+
+    </LinearLayout>
+</layout>

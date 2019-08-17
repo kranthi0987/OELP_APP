@@ -1,5 +1,6 @@
 package oelp.mahiti.org.newoepl.views.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -7,9 +8,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import oelp.mahiti.org.newoepl.R;
-
+import oelp.mahiti.org.newoepl.fileandvideodownloader.DownloadClass;
+import oelp.mahiti.org.newoepl.fileandvideodownloader.DownloadUtility;
+import oelp.mahiti.org.newoepl.fileandvideodownloader.FileModel;
+import oelp.mahiti.org.newoepl.services.RetrofitConstant;
+import oelp.mahiti.org.newoepl.utils.AppUtils;
+import oelp.mahiti.org.newoepl.utils.Constants;
+import oelp.mahiti.org.newoepl.utils.Logger;
+import oelp.mahiti.org.newoepl.utils.MySharedPref;
 
 
 public class ViewPagerAdapter extends PagerAdapter {
@@ -38,12 +51,54 @@ public class ViewPagerAdapter extends PagerAdapter {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.custom_layout, null);
         ImageView imageView = view.findViewById(R.id.imageView);
+        ImageView ivPlay = view.findViewById(R.id.ivPlay);
         imageView.setImageResource(images[position]);
 
 
         ViewPager vp = (ViewPager) container;
         vp.addView(view, 0);
+
+        if (position>0){
+            ivPlay.setVisibility(View.GONE);
+        }
+
+        RelativeLayout rlVideoView = view.findViewById(R.id.rlVideoView);
+
+
+
+        rlVideoView.setOnClickListener(view1 -> checkVideo());
         return view;
+
+    }
+
+    private void checkVideo() {
+        try{
+            File file = new File(AppUtils.completePathInSDCard(Constants.VIDEO), AppUtils.getFileName("static/media/2019/08/14/1900125913_U001_V001.mp4"));
+            if (!file.exists()){
+                downloadIntroVideo();
+            }else
+                playVideo();
+        }catch (Exception ex){
+            Logger.logE("",ex.getMessage(), ex );
+        }
+    }
+
+    private void downloadIntroVideo() {
+            FileModel fileModel= new FileModel("ओईएलपी किट", "static/media/2019/08/14/1900125913_U001_V001.mp4", "1111");
+            List<FileModel> fileModelList = new ArrayList<>();
+            fileModelList.add(fileModel);
+            new DownloadClass(Constants.VIDEO, context, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.VIDEO).getAbsolutePath(), fileModelList);
+    }
+
+    private void playVideo() {
+
+        try {
+            File f = AppUtils.completePathInSDCard(Constants.VIDEO);
+            DownloadUtility.playVideo((Activity) context, "static/media/2019/08/14/1900125913_U001_V001.mp4", "ओईएलपी किट",
+                    new MySharedPref(context).readInt(Constants.USER_ID, 0), "e7f5738a-4e37-4303-bee2-e0bd9820aab9", "");
+        }catch (Exception ex){
+            Logger.logE("", ex.getMessage(), ex);
+        }
 
     }
 

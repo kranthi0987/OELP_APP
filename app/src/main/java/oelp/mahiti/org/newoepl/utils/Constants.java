@@ -18,6 +18,7 @@ public class Constants {
     public static final String Home = "1";
     public static final String Units = "2";
     public static final String Groups = "3";
+    public static final String School = "4";
 
     public static final String OELPPDF = "OELP/PDF";
     public static final String OELPIMAGE = "OELP/Image";

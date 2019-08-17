@@ -306,7 +306,8 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
 
 
     private void moveToNextActivity() {
-        Intent intent = new Intent(TeacherRegistrationActivity.this, AppIntroActivity.class);
+//        Intent intent = new Intent(TeacherRegistrationActivity.this, AppIntroActivity.class);
+        Intent intent = new Intent(TeacherRegistrationActivity.this, HomeActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.anim_slide_in_left,
                 R.anim.anim_slide_out_left);

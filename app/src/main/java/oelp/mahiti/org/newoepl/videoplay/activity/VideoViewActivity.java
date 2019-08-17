@@ -483,7 +483,10 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
             callMediaTrackerApi();
         }
         contentUpdateStatus(Selecteduuid);
-        moveToQuestionAnswerActivity();
+        if (!getIntent().getStringExtra("sectionUUID").isEmpty())
+            moveToQuestionAnswerActivity();
+        else
+            onBackPressed();
     }
 
     private void moveToQuestionAnswerActivity() {

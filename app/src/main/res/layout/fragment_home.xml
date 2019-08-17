@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".views.activities.AppIntroActivity">
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <data>
-
-        <import type="android.view.View" />
-
-        <variable
-            name="homeViewModel"
-            type="oelp.mahiti.org.newoepl.viewmodel.HomeViewModel" />
-    </data>
+    <include
+        layout="@layout/white_toolabr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:background="@color/greybkg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -20,37 +20,66 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".22"
-            android:visibility="visible">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:src="@drawable/redbanner" />
+            android:layout_weight=".3"
+            android:paddingLeft="30dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:fontFamily="@font/montserrat_medium"
-                android:text="Units"
-                android:textColor="@color/white"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="OELP APP Introduction"
+                android:textColor="@color/black"
                 android:textSize="25sp" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".5"
+            android:background="@color/white"
+            android:paddingLeft="20dp">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+
+            <LinearLayout
+                android:layout_marginTop="2dp"
+                android:layout_below="@id/viewPager"
+                android:id="@+id/llDots"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal" />
+
+
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".66"
-            android:visibility="visible">
+            android:layout_weight=".2">
 
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="none" />
-
+            <Button
+                android:visibility="gone"
+                android:background="@drawable/next_button"
+                android:src="@drawable/next_button"
+                android:id="@+id/btnNext"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="20dp"
+                android:text="Next"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
         </RelativeLayout>
 
     </LinearLayout>
-</layout>
+</LinearLayout>
+

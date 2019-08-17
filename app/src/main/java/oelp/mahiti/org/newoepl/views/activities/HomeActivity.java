@@ -1,5 +1,6 @@
 package oelp.mahiti.org.newoepl.views.activities;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -13,15 +14,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import oelp.mahiti.org.newoepl.R;
 import oelp.mahiti.org.newoepl.databinding.ActivityHomeBinding;
 import oelp.mahiti.org.newoepl.fileandvideodownloader.DownloadClass;
+import oelp.mahiti.org.newoepl.fileandvideodownloader.DownloadUtility;
+import oelp.mahiti.org.newoepl.fileandvideodownloader.FileModel;
 import oelp.mahiti.org.newoepl.fileandvideodownloader.OnMediaDownloadListener;
+import oelp.mahiti.org.newoepl.fileandvideodownloader.PermissionClass;
 import oelp.mahiti.org.newoepl.interfaces.ItemClickListerner;
 import oelp.mahiti.org.newoepl.models.CatalogueDetailsModel;
 import oelp.mahiti.org.newoepl.services.RetrofitConstant;
 import oelp.mahiti.org.newoepl.utils.AppUtils;
 import oelp.mahiti.org.newoepl.utils.Constants;
+import oelp.mahiti.org.newoepl.utils.Logger;
 import oelp.mahiti.org.newoepl.utils.MySharedPref;
 import oelp.mahiti.org.newoepl.viewmodel.HomeViewModel;
 import oelp.mahiti.org.newoepl.views.fragments.GroupsFragment;
@@ -48,6 +57,21 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
         }
+        if (PermissionClass.checkPermission(this)){
+            try{
+                File file = new File(AppUtils.completePathInSDCard(Constants.VIDEO), AppUtils.getFileName("static/media/2019/08/14/1900125913_U001_V001.mp4"));
+                if (!file.exists()){
+                    downloadIntroVideo();
+                }
+            }catch (Exception ex){
+                Logger.logE("",ex.getMessage(), ex );
+            }
+        }else {
+            PermissionClass.requestPermission(this);
+        }
+
+
+
         toolbar.inflateMenu(R.menu.teacher_menu);
 
 //        setImageAndTextColor(Constants.Units);
@@ -81,8 +105,8 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
                 Toast.makeText(HomeActivity.this, s, Toast.LENGTH_SHORT).show();
         });
         homeViewModel.getDataInserted().observe(this, integer -> {
-            if (integer!=null)
-                setFragment(Constants.Units);
+            if (integer != null)
+                setFragment(Constants.Home);
         });
 
 //        homeViewModel.getDataInserted().observe(this, aLong -> {
@@ -92,6 +116,13 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
 
         homeViewModel.getListOfImageToDownload().observe(this, fileModels ->
                 new DownloadClass(Constants.IMAGE, HomeActivity.this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.IMAGE).getAbsolutePath(), fileModels));
+    }
+
+    private void downloadIntroVideo() {
+       FileModel fileModel= new FileModel("ओईएलपी किट", "static/media/2019/08/14/1900125913_U001_V001.mp4", "e7f5738a-4e37-4303-bee2-e0bd9820aab9");
+        List<FileModel> fileModelList = new ArrayList<>();
+        fileModelList.add(fileModel);
+        new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.VIDEO).getAbsolutePath(), fileModelList);
     }
 
     private void setFragment(String type) {
@@ -150,6 +181,15 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
                 activityHomeBinding.tvHome.setTextColor(getResources().getColor(R.color.grey));
                 activityHomeBinding.tvUnits.setTextColor(getResources().getColor(R.color.grey));
                 activityHomeBinding.tvGroups.setTextColor(getResources().getColor(R.color.colorPrimary));
+                break;
+            case Constants.School:
+                activityHomeBinding.ivSchools.setBackgroundResource(R.drawable.school_select);
+                activityHomeBinding.ivUnits.setBackgroundResource(R.drawable.units_normal);
+                activityHomeBinding.ivGroups.setBackgroundResource(R.drawable.group_normal);
+
+                activityHomeBinding.tvSchools.setTextColor(getResources().getColor(R.color.colorPrimary));
+                activityHomeBinding.tvUnits.setTextColor(getResources().getColor(R.color.grey));
+                activityHomeBinding.tvGroups.setTextColor(getResources().getColor(R.color.grey));
                 break;
         }
     }
@@ -217,5 +257,20 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     public void onMediaDownload(int type, String savedPath, String name, int position, String uuid) {
         homeViewModel.showProgresBar.setValue(false);
         homeViewModel.setDataInserted(1);
+        if (uuid.equals("1111")){
+            playVideo();
+        }
     }
+    private void playVideo() {
+
+        try {
+            File f = AppUtils.completePathInSDCard(Constants.VIDEO);
+            DownloadUtility.playVideo((Activity) this, "static/media/2019/08/14/1900125913_U001_V001.mp4", "ओईएलपी किट",
+                    new MySharedPref(this).readInt(Constants.USER_ID, 0), "e7f5738a-4e37-4303-bee2-e0bd9820aab9", "");
+        }catch (Exception ex){
+            Logger.logE("", ex.getMessage(), ex);
+        }
+
+    }
+
 }

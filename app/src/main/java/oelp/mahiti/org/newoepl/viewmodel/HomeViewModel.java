@@ -349,8 +349,8 @@ public class HomeViewModel extends AndroidViewModel {
 //            getCatalogData(parentId.getValue());
         userType.setValue(sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER));
         if (userType.getValue().equals(Constants.USER_TEACHER)) {
-            unitsClick.setValue(true);
-            homeClick.setValue(false);
+            unitsClick.setValue(false);
+            homeClick.setValue(true);
             groupsClick.setValue(false);
         } else {
             unitsClick.setValue(true);
@@ -540,13 +540,11 @@ public class HomeViewModel extends AndroidViewModel {
 
 
     public void onHomeClick() {
-        if (!showProgresBar.getValue()) {
             if (!homeClick.getValue()) {
                 homeClick.setValue(true);
                 groupsClick.setValue(false);
                 unitsClick.setValue(false);
             }
-        }
     }
 
 

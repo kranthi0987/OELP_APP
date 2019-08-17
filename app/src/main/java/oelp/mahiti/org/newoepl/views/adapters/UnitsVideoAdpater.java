@@ -34,7 +34,7 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
 
 
     private List<CatalogueDetailsModel> modelList;
-    private  ItemClickListerner listener;
+    private ItemClickListerner listener;
 
 
 //    Integer[] imageArray = {R.drawable.image1, R.drawable.image2, R.drawable.image3, R.drawable.image11, R.drawable.image5,
@@ -55,7 +55,7 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
     @NonNull
     @Override
     public Layout onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-         binding = DataBindingUtil
+        binding = DataBindingUtil
                 .inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.adapter_units_video, viewGroup, false);
 
 
@@ -78,14 +78,16 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
             } else {
                 binding.roundedImageView.setBackgroundResource(R.drawable.image3);
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             Logger.logE("", ex.getMessage(), ex);
         }
 
-        if (model.getContType().equalsIgnoreCase("video"))
-            vm.playButton.setValue(true);
-        else
-            vm.playButton.setValue(false);
+        if (model.getContType() != null) {
+            if (model.getContType().equalsIgnoreCase("video"))
+                vm.playButton.setValue(true);
+            else
+                vm.playButton.setValue(false);
+        }
 
         if (i == 0) {
             modelList.get(i).setCompleted(RetrofitConstant.STATUS_TRUE);
@@ -114,7 +116,7 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
 //        if (catalogueDetailsModel.getActive().equals(RetrofitConstant.STATUS_TRUE)) {
         if (catalogueDetailsModel.getCompleted() == null) {
             layout.binding.rlEnableDisable.setBackgroundColor(layout.getContext().getResources().getColor(R.color.blackOpaque));
-        }else if (catalogueDetailsModel.getCompleted().equals(RetrofitConstant.STATUS_TRUE)) {
+        } else if (catalogueDetailsModel.getCompleted().equals(RetrofitConstant.STATUS_TRUE)) {
             layout.binding.rlEnableDisable.setBackgroundColor(layout.getContext().getResources().getColor(R.color.greenOpaque));
         } else {
             layout.binding.rlEnableDisable.setBackgroundColor(layout.getContext().getResources().getColor(R.color.yellowOpaque));

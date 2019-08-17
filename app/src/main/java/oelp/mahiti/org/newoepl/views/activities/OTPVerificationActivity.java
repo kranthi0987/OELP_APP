@@ -58,6 +58,8 @@ public class OTPVerificationActivity extends AppCompatActivity {
         btnSubmit = verificationActivityBinding.btnSubmit;
         btnSubmit.setEnabled(false);
 
+
+
         sharedPref = new MySharedPref(this);
 
         etOtp1 = verificationActivityBinding.etOpt1;
@@ -296,7 +298,8 @@ public class OTPVerificationActivity extends AppCompatActivity {
     private void compareUserTypeAndMoveToNextActivity() {
         int userType = sharedPref.readInt(Constants.USER_TYPE, 0);
         if (userType == Constants.USER_TEACHER) {
-            moveToAppIntroNextActivity();
+//            moveToAppIntroNextActivity();
+            moveToHomeActivityNextActivity();
         } else if (userType == Constants.USER_TRAINER) {
             moveToHomeActivityNextActivity();
         }

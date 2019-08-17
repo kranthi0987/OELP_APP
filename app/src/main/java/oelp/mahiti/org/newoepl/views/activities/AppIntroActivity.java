@@ -29,7 +29,7 @@ public class AppIntroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_intro);
-        toolbar = (Toolbar) findViewById(R.id.white_toolbar);
+        toolbar = findViewById(R.id.white_toolbar);
         setSupportActionBar(toolbar);
         if(getSupportActionBar()!=null){
             getSupportActionBar().setTitle("");
