@@ -164,10 +164,12 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
         contentArrayList.add(locationContent);
         contentArrayList.addAll(teacherRegistrationViewModel.getStateSpinnerData().getValue());
         if (contentArrayList != null && !contentArrayList.isEmpty()) {
-            ArrayAdapter<LocationContent> stateArrayAdpter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, contentArrayList);
+//            ArrayAdapter<LocationContent> stateArrayAdpter = new ArrayAdapter<>(this, R.layout.custom_spinner_item,R.id.tvSpinnerItem, contentArrayList);
+            ArrayAdapter<LocationContent> stateArrayAdpter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, contentArrayList);
+//            teacherRegistrationActivityBinding.spinnerState1.setAdapter(stateArrayAdpter);
             teacherRegistrationActivityBinding.setSpinnerState(stateArrayAdpter);
         }
-        teacherRegistrationActivityBinding.spinnerState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        teacherRegistrationActivityBinding.spinnerState1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (stateCount[0] != 0) {
@@ -188,7 +190,12 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 teacherRegistrationViewModel.districtClickable.setValue(false);
+                teacherRegistrationViewModel.blockClickable.setValue(false);
                 teacherRegistrationViewModel.state.setValue("");
+                teacherRegistrationViewModel.district.setValue(getString(R.string.please_select_district));
+                teacherRegistrationViewModel.districtId.setValue(0);
+                teacherRegistrationViewModel.block.setValue(getString(R.string.please_select_block));
+                teacherRegistrationViewModel.blockId.setValue(0);
                 teacherRegistrationViewModel.errorState.setValue(getResources().getString(R.string.please_select_state));
             }
         });
@@ -204,9 +211,11 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
         contentArrayList.add(locationContent);
         contentArrayList.addAll(teacherRegistrationViewModel.getDistrictSpinnerData(id, boundaryLevelType).getValue());
 
-        ArrayAdapter<LocationContent> stateArrayAdpter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, contentArrayList);
+//        ArrayAdapter<LocationContent> stateArrayAdpter = new ArrayAdapter<>(this, R.layout.custom_spinner_item,R.id.tvSpinnerItem, contentArrayList);
+        ArrayAdapter<LocationContent> stateArrayAdpter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, contentArrayList);
         teacherRegistrationActivityBinding.setSpinnerDistrict(stateArrayAdpter);
-        teacherRegistrationActivityBinding.spinnerDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//        teacherRegistrationActivityBinding.spinnerDistrict1.setAdapter(stateArrayAdpter);
+        teacherRegistrationActivityBinding.spinnerDistrict1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (districtCount[0] != 0) {
@@ -226,9 +235,11 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                teacherRegistrationViewModel.blockId.setValue(0);
+                teacherRegistrationViewModel.district.setValue(getResources().getString(R.string.please_select_district));
                 teacherRegistrationViewModel.blockClickable.setValue(false);
                 teacherRegistrationViewModel.errorDistrict.setValue(getResources().getString(R.string.please_select_district));
+                teacherRegistrationViewModel.block.setValue(getString(R.string.please_select_block));
+                teacherRegistrationViewModel.blockId.setValue(0);
 
             }
         });
@@ -239,14 +250,15 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
         final int[] blockCount = {0};
         List<LocationContent> contentArrayList = new ArrayList<>();
         LocationContent locationContent = new LocationContent();
-        locationContent.setName(getResources().getString(R.string.please_select_district));
+        locationContent.setName(getResources().getString(R.string.please_select_block));
         contentArrayList.add(locationContent);
         contentArrayList.addAll(teacherRegistrationViewModel.getBlockSpinnerData(id, boundaryLevelType).getValue());
 
 
-        ArrayAdapter<LocationContent> stateArrayAdpter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, contentArrayList);
+        ArrayAdapter<LocationContent> stateArrayAdpter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, contentArrayList);
         teacherRegistrationActivityBinding.setSpinnerBlock(stateArrayAdpter);
-        teacherRegistrationActivityBinding.spinnerBlock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//        teacherRegistrationActivityBinding.spinnerBlock1.setAdapter(stateArrayAdpter);
+        teacherRegistrationActivityBinding.spinnerBlock1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (blockCount[0] != 0) {
@@ -264,6 +276,7 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+                teacherRegistrationViewModel.block.setValue(getResources().getString(R.string.please_select_block));
                 teacherRegistrationViewModel.blockId.setValue(0);
                 teacherRegistrationViewModel.errorBlock.setValue(getResources().getString(R.string.please_select_block));
 
@@ -273,7 +286,7 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
 
     private void setAdapterToVillageSpinner(Integer id, Integer boundaryLevelType) {
 //        List<LocationContent> contentArrayList = teacherRegistrationViewModel.getVillageSpinnerData(id, boundaryLevelType).getValue();
-//        ArrayAdapter<LocationContent> stateArrayAdpter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, contentArrayList);
+//        ArrayAdapter<LocationContent> stateArrayAdpter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, contentArrayList);
 //        teacherRegistrationActivityBinding.setSpinnerVillage(stateArrayAdpter);
 //        teacherRegistrationActivityBinding.spinnerVillage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
@@ -317,13 +330,13 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rlState:
-                teacherRegistrationActivityBinding.spinnerState.performClick();
+                teacherRegistrationActivityBinding.spinnerState1.performClick();
                 break;
             case R.id.rlDistrict:
-                teacherRegistrationActivityBinding.spinnerDistrict.performClick();
+                teacherRegistrationActivityBinding.spinnerDistrict1.performClick();
                 break;
             case R.id.rlBlock:
-                teacherRegistrationActivityBinding.spinnerBlock.performClick();
+                teacherRegistrationActivityBinding.spinnerBlock1.performClick();
                 break;
 //            case R.id.rlVillage:
 //                teacherRegistrationActivityBinding.spinnerVillage.performClick();

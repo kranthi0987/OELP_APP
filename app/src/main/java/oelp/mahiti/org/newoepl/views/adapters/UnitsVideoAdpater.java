@@ -60,11 +60,13 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
         layout.setViewModel(vm);
         CatalogueDetailsModel model = modelList.get(i);
 //        setImageFoCard(model, layout);
+        binding.ivPlayButton.setVisibility(View.GONE);
         if (model.getContType() != null) {
             if (model.getContType().equalsIgnoreCase("video"))
-                vm.playButton.setValue(true);
+                binding.ivPlayButton.setVisibility(View.VISIBLE);
             else
-                vm.playButton.setValue(false);
+                binding.ivPlayButton.setVisibility(View.GONE);
+
         }
 
         if (i == 0) {

@@ -46,7 +46,6 @@ public class HomeViewModel extends AndroidViewModel {
     public MutableLiveData<Integer> userType = new MutableLiveData<>();
     public MutableLiveData<Boolean> showProgresBar = new MutableLiveData<>();
     public MutableLiveData<Boolean> moduleCompleted = new MutableLiveData<>();
-    public MutableLiveData<Boolean> playButton = new MutableLiveData<>();
     public MutableLiveData<List<CatalogueDetailsModel>> catalogDataList = new MutableLiveData<>();
     public MutableLiveData<String> title = new MutableLiveData<>();
     private MutableLiveData<String> apiErrorMessage = new MutableLiveData<>();

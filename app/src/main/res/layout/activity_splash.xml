@@ -11,17 +11,13 @@
         android:layout_height="match_parent"
         layout="@layout/layout_app_background"/>
 
-    <LinearLayout
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <ImageView
-            android:layout_width="@dimen/logo_height"
-            android:layout_height="@dimen/logo_width"
-            android:src="@drawable/applogowhite"/>
 
-    </LinearLayout>
+        <ImageView
+            android:layout_width="@dimen/logo_width"
+            android:layout_height="@dimen/logo_height"
+            android:src="@drawable/applogowhite"
+            android:layout_centerInParent="true"/>
+
 
 
 </RelativeLayout>

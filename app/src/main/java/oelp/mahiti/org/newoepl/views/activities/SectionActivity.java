@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import oelp.mahiti.org.newoepl.R;
+import oelp.mahiti.org.newoepl.database.DatabaseHandlerClass;
 import oelp.mahiti.org.newoepl.databinding.ActivitySectionBinding;
 import oelp.mahiti.org.newoepl.fileandvideodownloader.DownloadClass;
 import oelp.mahiti.org.newoepl.fileandvideodownloader.DownloadUtility;
@@ -42,6 +43,7 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
     private String parentId;
     private String title;
     private Fragment fragment;
+    private DatabaseHandlerClass handlerClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +65,16 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
     }
 
     private void checkPermission() {
-        if (!PermissionClass.checkPermission(this)){
+        if (!PermissionClass.checkPermission(this)) {
             PermissionClass.requestPermission(this);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handlerClass = new DatabaseHandlerClass(this);
+
     }
 
     @Override
@@ -115,7 +124,6 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
     private void ShowAboutUsActivity() {
         AppUtils.showAboutUsActivity(this);
     }
-
 
 
     @Override

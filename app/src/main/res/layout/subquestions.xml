@@ -28,8 +28,7 @@
         <RadioGroup
             android:id="@+id/radioGroup"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTintMode="@color/black">
+            android:layout_height="wrap_content">
             <!-- <RadioButton
                  android:id="@+id/radiobutton1"
                  android:textColor="@color/black"

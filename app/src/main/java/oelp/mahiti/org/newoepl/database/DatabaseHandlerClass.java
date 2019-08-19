@@ -16,8 +16,10 @@ import oelp.mahiti.org.newoepl.fileandvideodownloader.FileModel;
 import oelp.mahiti.org.newoepl.models.CatalogueDetailsModel;
 import oelp.mahiti.org.newoepl.models.LocationContent;
 import oelp.mahiti.org.newoepl.models.LocationModel;
+import oelp.mahiti.org.newoepl.models.QuestionAnswerModel;
 import oelp.mahiti.org.newoepl.models.QuestionChoicesModel;
 import oelp.mahiti.org.newoepl.models.QuestionModel;
+import oelp.mahiti.org.newoepl.utils.Constants;
 import oelp.mahiti.org.newoepl.utils.Logger;
 
 import static oelp.mahiti.org.newoepl.database.DBConstants.CAT_TABLE_NAME;
@@ -56,7 +58,20 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         createCatalogueTable(sqLiteDatabase);
         createQuestionTable(sqLiteDatabase);
         createQuestionChoicesTable(sqLiteDatabase);
+        createQuestionAnswerTable(sqLiteDatabase);
 
+    }
+
+    private void createQuestionAnswerTable(SQLiteDatabase sqLiteDatabase) {
+        String query = DBConstants.CREATE_TABLE_IF_NOT_EXIST + DBConstants.QA_TABLENAME + DBConstants.OPEN_BRACKET +
+                DBConstants.ID + DBConstants.TEXT_PRIMARY_KEY + DBConstants.COMMA +
+                DBConstants.QA_DATA + DBConstants.TEXT_COMMA +
+                DBConstants.QA_SYNC_STATUS + DBConstants.INTEGER_COMMA +
+                DBConstants.QA_VIDEOID + DBConstants.TEXT_COMMA +
+                DBConstants.QA_SUBMITTED_DATE + DBConstants.DATETIME +
+                DBConstants.CLOSE_BRACKET;
+        Logger.logD(TAG, "Database creation query :" + query);
+        sqLiteDatabase.execSQL(query);
     }
 
 
@@ -108,7 +123,8 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 DBConstants.MEDIA_LEVEL_TYPE + DBConstants.TEXT_COMMA +
                 DBConstants.DESC + DBConstants.TEXT_COMMA +
                 DBConstants.TYPE_CONTENT + DBConstants.TEXT_COMMA +
-                DBConstants.CONTENT_UUID + DBConstants.TEXT +
+                DBConstants.CONTENT_UUID + DBConstants.TEXT_COMMA +
+                DBConstants.WATCH_STATUS + DBConstants.INTEGER +DBConstants.NOT_NULL_DEFAULT_ZERO+  // double not null default 0
                 DBConstants.CLOSE_BRACKET;
         Logger.logD(TAG, "Database creation query :" + query);
         sqLiteDatabase.execSQL(query);
@@ -198,6 +214,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     public String getModifiedDate(String tableName) {
         String selectQuery = DBConstants.SELECT + DBConstants.MAX + DBConstants.OPEN_BRACKET + DBConstants.MODIFIED + DBConstants.CLOSE_BRACKET + DBConstants.AS + DBConstants.MODIFIED + DBConstants.FROM + tableName;
         Logger.logD(TAG, selectQuery);
+        initDatabase();
         android.database.Cursor cursor = database.rawQuery(selectQuery, null);
         String date = null;
         if (cursor.moveToFirst()) {
@@ -368,11 +385,11 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         return catalogList;
     }
 
-    public List<QuestionModel> getQuestion(String videoId, String sectionId, int qa) {
+    public List<QuestionModel> getQuestion(String mediaUUID, String sectionId, int qa) {
         MutableLiveData<List<QuestionModel>> questionModelList = new MutableLiveData<>();
         List<QuestionModel> questionModelsList = new ArrayList<>();
         QuestionModel questionModel;
-        String query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.QUESTION_TABLE;
+        String query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.QUESTION_TABLE+DBConstants.WHERE+DBConstants.MEDIA_CONTENT+DBConstants.EQUAL_TO+"'"+mediaUUID+"'";
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase(DBConstants.DATABASESECRETKEY);
         try {
             Logger.logD(TAG, "Getting Question Item : " + query);
@@ -437,7 +454,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         List<FileModel> imageList = new ArrayList<>();
         String query = DBConstants.SELECT + DBConstants.ICON_PATH +DBConstants.COMMA+DBConstants.NAME +DBConstants.COMMA+DBConstants.UUID +DBConstants.FROM+ DBConstants.CAT_TABLE_NAME +
                 DBConstants.WHERE + ICON_PATH + DBConstants.NOT_EQUAL_TO + DBConstants.EMPTY +
-                DBConstants.AND + DBConstants.ICON_PATH+DBConstants.NOT_NULL;
+                DBConstants.AND + DBConstants.ICON_PATH+DBConstants.IS_NOT_NULL;
         initDatabase();
         try {
             Logger.logD(TAG, "Getting Image List Query : " + query);
@@ -458,4 +475,79 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         }
         return imageList;
     }
+
+    public void saveAnsweredQuestion(String quesAnsText, int questionAnswerAsync, String videoId, String getDateTime) {
+        ContentValues values = new ContentValues();
+        values.put(DBConstants.QA_DATA, quesAnsText);
+        values.put(DBConstants.QA_SYNC_STATUS, questionAnswerAsync);
+        values.put(DBConstants.QA_VIDEOID, videoId);
+        values.put(DBConstants.QA_SUBMITTED_DATE, getDateTime);
+        database.insert(DBConstants.QA_TABLENAME, null, values);
+
+    }
+
+    public List<QuestionAnswerModel> getAnsweredQuestion(String videoId) {
+        List<QuestionAnswerModel> asyncQuestionAnswer = new ArrayList<>();
+        String dataFetchQuery;
+        if (videoId != null) {
+            dataFetchQuery = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.QA_TABLENAME +
+                    DBConstants.WHERE + DBConstants.QA_SYNC_STATUS + DBConstants.EQUAL_TO +
+                    Constants.QUESTION_ANSWER_ASYNC + DBConstants.AND + DBConstants.QA_VIDEOID +
+                    DBConstants.EQUAL_TO + videoId;
+        } else {
+            dataFetchQuery = DBConstants.SELECT + DBConstants.ALL_FROM +  DBConstants.QA_TABLENAME +
+                    DBConstants.WHERE + DBConstants.QA_SYNC_STATUS + DBConstants.EQUAL_TO +
+                    Constants.QUESTION_ANSWER_ASYNC;
+        }
+        initDatabase();
+        Cursor cursor = database.rawQuery(dataFetchQuery, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+
+                asyncQuestionAnswer.add(new QuestionAnswerModel(
+                        cursor.getInt(cursor.getColumnIndex(DBConstants.ID)),
+                        cursor.getString(cursor.getColumnIndex(DBConstants.QA_DATA)),
+                        cursor.getInt(cursor.getColumnIndex(DBConstants.QA_SYNC_STATUS)),
+                        cursor.getInt(cursor.getColumnIndex(DBConstants.QA_VIDEOID)),
+                        cursor.getString(cursor.getColumnIndex(DBConstants.QA_SUBMITTED_DATE))
+                ));
+
+            } while (cursor.moveToNext());
+
+        }
+        return asyncQuestionAnswer;
+
+    }
+
+
+
+    public boolean getContentIsOpen(String uuid) {
+        boolean isOpen = false;
+       initDatabase();
+        String query = DBConstants.SELECT + DBConstants.WATCH_STATUS + DBConstants.FROM + DBConstants.CAT_TABLE_NAME + DBConstants.WHERE + DBConstants.PARENT + " = '" + uuid + "'" + DBConstants.AND + DBConstants.WATCH_STATUS + " = 0";
+        Logger.logD(TAG, "Content View Status Query : " + query);
+        android.database.Cursor cursor = database.rawQuery(query, null);
+        // If count is greater than 0, then module is not fully completed
+        if (cursor.getCount() > 0) {
+            isOpen = false;
+        } else {
+            insertViewStatusToDatabase(uuid, "1");
+            isOpen = true;
+        }
+        cursor.close();
+        return isOpen;
+    }
+
+    public int insertViewStatusToDatabase(String uuid, String status) {
+        if (uuid.isEmpty())
+            return 0;
+        initDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DBConstants.WATCH_STATUS, status);
+        Log.d("CatalogDBHandler", "updating the view status to database" + uuid);
+        return database.update("Catalog", values, "uuid" + " = ?", new String[]{uuid});
+    }
+
+
+
 }

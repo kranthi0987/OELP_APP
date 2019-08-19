@@ -31,6 +31,10 @@ public class Constants {
     public static final int QA = 2;
     public static final int FAQ = 1;
     public static final String IS_INTRO_DISPLAYED = "isIntroScreenDisplayed";
+    public static final int QUESTION_ANSWER_ASYNC = 0;
+    public static final int ISVIDEOPDFPLAYED = 1;
+
+
 
     public enum TransitionType {
         ExplodeJava, ExplodeXML, SlideJava, SlideXML, FadeJava, FadeXML

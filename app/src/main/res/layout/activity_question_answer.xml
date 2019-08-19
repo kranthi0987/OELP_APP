@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/greybkg"
         android:orientation="vertical">
 
@@ -19,66 +19,87 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:visibility="visible">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:src="@drawable/greenbanner" />
-
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_large" />
-        </RelativeLayout>
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/greybkg"
             android:orientation="vertical"
             android:padding="10dp">
 
-            <ScrollView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="0dp"
+                android:layout_weight=".9">
 
-                <LinearLayout
-                    android:id="@+id/questionsAnswersRadioLayout"
+                <ScrollView
+                    android:id="@+id/scrollView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:orientation="vertical"
-                    android:padding="10dp" />
-            </ScrollView>
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="15dp">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-            <Button
-                android:layout_alignParentBottom="true"
-                android:id="@+id/btnSubmit"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:visibility="visible">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/greenbanner" />
+
+                        <TextView
+                            android:id="@+id/tvTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="20dp"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_large" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/questionsAnswersRadioLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:orientation="vertical"
+                        android:padding="10dp" />
+                    </LinearLayout>
+                </ScrollView>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/button_height"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/yellow_bkg_button"
-                android:fontFamily="@font/montserrat_medium"
-                android:onClick="@{()->questionAnswerViewModel.onSubmitClick()}"
-                android:text="Submit"
-                android:textAllCaps="false"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:textColor="@color/black"
-                android:textSize="@dimen/button_text_size" />
+                android:layout_height="0dp"
+                android:layout_weight=".1">
 
 
-        </RelativeLayout>
+                <Button
+                    android:layout_centerInParent="true"
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/yellow_bkg_button"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:onClick="@{()->questionAnswerViewModel.onSubmitClick()}"
+                    android:text="Submit"
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/button_text_size" />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
     </LinearLayout>
 </layout>

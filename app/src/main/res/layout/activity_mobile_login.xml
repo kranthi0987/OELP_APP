@@ -51,7 +51,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/montserrat_bold"
+                            android:fontFamily="@font/montserrat_semibold"
                             android:text="Welcome..."
                             android:textColor="@color/white"
                             android:textSize="@dimen/heading_text_size" />
@@ -97,7 +97,7 @@
                             android:layout_height="@dimen/button_height"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="15dp"
                             android:background="@drawable/white_bkg_button"
                             android:enabled="@{!viewModel.showProgresBar}"
                             android:onClick="@{()->viewModel.onSubmitClick()}"

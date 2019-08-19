@@ -12,6 +12,7 @@
     </data>
 
     <ScrollView
+        android:background="@color/greybkg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
@@ -45,6 +46,8 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:paddingLeft="@dimen/paddling_length"
+                android:paddingRight="@dimen/paddling_length"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/greybkg">
@@ -54,8 +57,6 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
                     android:layout_marginTop="10dp"
                     android:scrollbars="none" />
 

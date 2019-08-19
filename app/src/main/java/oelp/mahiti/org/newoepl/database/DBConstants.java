@@ -52,7 +52,9 @@ public class DBConstants {
     public static final String ANS_EXPLAIN = "answerExplain";
     public static final String SCORE = "score";
     public static final String NULL = null;
-    public static final String NOT_NULL = " IS NOT NULL";
+    public static final String IS_NOT_NULL = " IS NOT NULL";
+    public static final String NOT_NULL_DEFAULT_ZERO = " not null default 0";
+    public static final String WATCH_STATUS = "watchStatus";
     public static String EQUAL_TO=" = ";
     public static String NOT_EQUAL_TO=" != ";
     public static String EMPTY="''";
@@ -63,6 +65,7 @@ public class DBConstants {
     public static String INTEGER_COMMA=" INTEGER, ";
     public static String INTEGER=" INTEGER ";
     public static String DATETIME_COMMA=" DATETIME, ";
+    public static String DATETIME=" DATETIME ";
     public static final String SELECT = "select ";
 
 
@@ -75,6 +78,15 @@ public class DBConstants {
     public static final String BOUNDARY_LEVEL_TYPE = "boundary_level_type";
     public static final String PARENT = "parent";
     public static final String Q_TYPE="QuestionType";
+
+    public static final String QA_TABLENAME = "question_answer";
+    public static final String QA_DATA = "offline_data";
+    public static final String QA_SYNC_STATUS = "sync_status";
+    public static final String QA_SUBMITTED_DATE = "submitted_date";
+    public static final String QA_VIDEOID = "video_id";
+    public static final String QA_COMPLETED = "isCompleted";
+
+
 
 
     private DBConstants() {

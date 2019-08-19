@@ -8,10 +8,10 @@
     <string name="please_enter_name">कृपया नाम दर्ज करें</string>
     <string name="please_enter_phone">कृपया वैध नंबर दर्ज करें</string>
     <string name="please_enter_school">कृपया स्कूल का नाम दर्ज करें</string>
-    <string name="please_select_state">राज्य का चयन करें</string>
-    <string name="please_select_district">जिला का चयन करें</string>
-    <string name="please_select_state_start">State *</string>
-    <string name="please_select_block">ब्लॉक का चयन करें</string>
+    <string name="please_select_state">Select state</string>
+    <string name="please_select_state_start">Select state *</string>
+    <string name="please_select_district">Select district</string>
+    <string name="please_select_block">Select block</string>
     <string name="please_select_village">कृपया स्कूल का नाम दर्ज करेंं</string>
     <string name="otp_has_been_sent_to_your_mobile">ओ.टी.पी भेजा गया है आपके मोबाइल पर XXXXX X</string>
     <string name="please_enter_the_same"> कृपया वही दर्ज करें|</string>

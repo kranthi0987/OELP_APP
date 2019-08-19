@@ -15,31 +15,35 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/greybkg"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight=".3"
-            android:paddingLeft="30dp">
+            android:paddingLeft="@dimen/paddling_length"
+            android:paddingRight="@dimen/paddling_length">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="OELP APP Introduction"
+                android:text="Oelp App Introduction"
                 android:textColor="@color/black"
-                android:textSize="25sp" />
+                android:textSize="@dimen/heading_text_size" />
         </RelativeLayout>
 
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight=".5"
-            android:background="@color/white">
+            android:background="@color/greybkg"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/paddling_length"
+            android:paddingRight="@dimen/paddling_length">
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewPager"
@@ -47,16 +51,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp" />
 
-            <LinearLayout
-                android:id="@+id/llDots"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="@color/red"
-                android:orientation="horizontal" />
+
 
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:id="@+id/llDots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -64,13 +69,12 @@
             android:layout_weight=".2">
 
             <Button
-                android:background="@drawable/next_button"
-                android:src="@drawable/next_button"
                 android:id="@+id/btnNext"
                 android:layout_width="60dp"
                 android:layout_height="50dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="20dp"
+                android:background="@drawable/next_button"
                 android:text="Next"
                 android:textAllCaps="false"
                 android:textColor="@color/black" />

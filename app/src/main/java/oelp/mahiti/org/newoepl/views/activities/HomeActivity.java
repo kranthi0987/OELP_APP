@@ -268,9 +268,9 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     public void onMediaDownload(int type, String savedPath, String name, int position, String uuid) {
         homeViewModel.showProgresBar.setValue(false);
         homeViewModel.setDataInserted(1);
-        if (uuid.equals("1111")) {
-            playVideo();
-        }
+//        if (uuid.equals("1111")) {
+//            playVideo();
+//        }
     }
 
     private void playVideo() {

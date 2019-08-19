@@ -256,7 +256,7 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
 
     private boolean validation() {
         boolean status = true;
-        if (!AppUtils.textEmpty(name.getValue())){
+        if (null!=name.getValue() && !AppUtils.textEmpty(name.getValue().trim())){
             errorName.setValue(null);
         }else {
             status = false;

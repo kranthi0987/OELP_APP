@@ -46,6 +46,10 @@
         <item name="colorAccent">@color/black</item>
     </style>
 
+    <style name="spinnerStyle"  parent="@android:style/Widget.TextView.SpinnerItem">
+        <item name="android:padding">15dp</item>
+    </style>
+
 
 
 

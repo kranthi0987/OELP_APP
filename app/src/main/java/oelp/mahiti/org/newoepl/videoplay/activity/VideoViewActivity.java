@@ -87,7 +87,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     String videoTitle;
     String sectionUUID;
     String parentUUID;
-    String Selecteduuid = "";
+    String mediaUUID = "";
     String deviceId = "";
     private DatabaseHandlerClass catalogDbHandler;
     private String errorMessage;
@@ -146,12 +146,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
                 .setDimAmount(0.5f)
                 .show();
 
-        relativeBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        relativeBack.setOnClickListener(view -> onBackPressed());
 
         rlMain = findViewById(R.id.rlMain);
         mediaController.show(3000);
@@ -176,7 +171,12 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         if (CheckNetwork.checkNet(this)) {
             callMediaTrackerApi();
         }
+        putCompletedStatusForVideo(mediaUUID);
 
+    }
+
+    private void putCompletedStatusForVideo(String mediaUUID) {
+//        catalogDbHandler.insertViewStatusToDatabase(mediaUUID, "1");
     }
 
     @Override
@@ -190,14 +190,10 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     private void getIntentData() {
         try {
 
-            if (!TextUtils.isEmpty(getIntent().getStringExtra("Parent_UUID"))) {
-                parentUUID = getIntent().getStringExtra("Parent_UUID");
-                Log.i("Parent_UUID", parentUUID);
-            }
 
-            if (!TextUtils.isEmpty(getIntent().getStringExtra("Selecteduuid"))) {
-                Selecteduuid = getIntent().getStringExtra("Selecteduuid");
-                Log.i("Selecteduuid", Selecteduuid);
+            if (!TextUtils.isEmpty(getIntent().getStringExtra("mediaUUID"))) {
+                mediaUUID = getIntent().getStringExtra("mediaUUID");
+                Log.i("mediaUUID", mediaUUID);
             }
 
 
@@ -297,7 +293,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
             mediaTracker = new MediaTracker();
             mediaTracker.setStartTime(getDateTime());
             mediaTracker.setEndTime("0");                   //update
-            mediaTracker.setMediaId(Selecteduuid);
+            mediaTracker.setMediaId(mediaUUID);
             mediaTracker.setWatchMin("0");                  //update
             mediaTracker.setComStatus(0);
             mediaTracker.setMediaName("");
@@ -348,7 +344,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         if (CheckNetwork.checkNet(this)) {
             callMediaTrackerApi();
         }
-        contentUpdateStatus(Selecteduuid);
+        contentUpdateStatus(mediaUUID);
         finish();
     }
 
@@ -365,12 +361,12 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
 
         mediaTracker.setStartTime("");
         mediaTracker.setEndTime(getDateTime());
-        mediaTracker.setMediaId(Selecteduuid);
+        mediaTracker.setMediaId(mediaUUID);
         mediaTracker.setWatchMin(getTimeString((long) mediaPlayer.getCurrentPosition()));
         mediaTracker.setComStatus(0);
         mediaTracker.setMediaName("");
 //todo
-        videoDecryptionDb.mediaTrackerUpdateDb(mediaTracker, Selecteduuid);
+        videoDecryptionDb.mediaTrackerUpdateDb(mediaTracker, mediaUUID);
 
 
     }
@@ -482,18 +478,18 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         mediaTracker = new MediaTracker();
         mediaTracker.setStartTime(getDateTime());
         mediaTracker.setEndTime(getDateTime());
-        mediaTracker.setMediaId(Selecteduuid);
+        mediaTracker.setMediaId(mediaUUID);
         mediaTracker.setComStatus(0);
         mediaTracker.setWatchMin(String.valueOf(getTimeString((long) mediaPlayer.getDuration())));
         mediaTracker.setMediaName("");
 
-        videoDecryptionDb.mediaTrackerUpdateDb(mediaTracker, Selecteduuid);
+        videoDecryptionDb.mediaTrackerUpdateDb(mediaTracker, mediaUUID);
 
 
         if (CheckNetwork.checkNet(this)) {
             callMediaTrackerApi();
         }
-        contentUpdateStatus(Selecteduuid);
+        contentUpdateStatus(mediaUUID);
         boolean loginType = new MySharedPref(this).readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER;
         if (!getIntent().getStringExtra("sectionUUID").isEmpty() && loginType)
             moveToQuestionAnswerActivity();
@@ -503,9 +499,10 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
 
     private void moveToQuestionAnswerActivity() {
         Intent intent = new Intent(VideoViewActivity.this, QuestionAnswerActivity.class);
-        intent.putExtra("sectionUUID", sectionUUID);
+        intent.putExtra("mediaUUID", sectionUUID);
         intent.putExtra("videoTitle", videoTitle);
         startActivity(intent);
+        VideoViewActivity.this.finish();
         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
     }
 

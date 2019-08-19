@@ -9,9 +9,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".3">
+        android:layout_weight=".4">
         <ImageView
-            android:layout_marginTop="60dp"
             android:layout_width="@dimen/logo_width"
             android:layout_height="@dimen/logo_height"
             android:src="@drawable/applogowhite"

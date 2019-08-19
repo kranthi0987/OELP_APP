@@ -188,7 +188,7 @@ public class DownloadUtility {
         return convDonwBytesInLong;
     }
 
-    public static void playVideo(Activity activity, String path, String vName, int userId, String uuid, String sectionId) {
+    public static void playVideo(Activity activity, String path, String vName, int userId, String mediaUUID, String sectionUUID) {
         try {
 
             File f = new File(AppUtils.completePathInSDCard(Constants.VIDEO) + File.separator + AppUtils.getFileName(path));
@@ -198,9 +198,9 @@ public class DownloadUtility {
                 i.putExtra("uriPath", f.getAbsolutePath());
                 i.putExtra("userId", String.valueOf(userId));
                 i.putExtra("videoTitle", vName);
-                i.putExtra("UUID", uuid);
+                i.putExtra("mediaUUID", mediaUUID);
                 i.putExtra("mediaTrackerApi", "");
-                i.putExtra("sectionUUID", sectionId);
+                i.putExtra("sectionUUID", sectionUUID);
                 activity.startActivity(i);
                 activity.overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
 
