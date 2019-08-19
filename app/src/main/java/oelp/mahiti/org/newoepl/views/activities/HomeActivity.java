@@ -42,7 +42,6 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     Toolbar toolbar;
     ActivityHomeBinding activityHomeBinding;
     HomeViewModel homeViewModel;
-    private String previouValue;
 
 
     @Override
@@ -57,33 +56,32 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
         }
-        if (PermissionClass.checkPermission(this)){
-            try{
+        if (PermissionClass.checkPermission(this)) {
+            try {
                 File file = new File(AppUtils.completePathInSDCard(Constants.VIDEO), AppUtils.getFileName("static/media/2019/08/14/1900125913_U001_V001.mp4"));
-                if (!file.exists()){
+                if (!file.exists()) {
                     downloadIntroVideo();
                 }
-            }catch (Exception ex){
-                Logger.logE("",ex.getMessage(), ex );
+            } catch (Exception ex) {
+                Logger.logE("", ex.getMessage(), ex);
             }
-        }else {
+        } else {
             PermissionClass.requestPermission(this);
         }
+        if (getIntent().getBooleanExtra("UnitClick", false))
+            homeViewModel.unitsClick.setValue(true);
 
+        if (homeViewModel.teacherLogin)
+            toolbar.inflateMenu(R.menu.teacher_menu);
+        else
+            toolbar.inflateMenu(R.menu.trainer_menu);
 
-
-        toolbar.inflateMenu(R.menu.teacher_menu);
-
-//        setImageAndTextColor(Constants.Units);
-//        setFragment(Constants.Units);
-
-
-        homeViewModel.homeClick.observe(this, aBoolean -> {
-            if (aBoolean != null && aBoolean) {
-                setImageAndTextColor(Constants.Home);
-                setFragment(Constants.Home);
-            }
-        });
+//        homeViewModel.homeClick.observe(this, aBoolean -> {
+//            if (aBoolean != null && aBoolean) {
+//                setImageAndTextColor(Constants.Home);
+//                setFragment(Constants.Home);
+//            }
+//        });
 
         homeViewModel.unitsClick.observe(this, aBoolean -> {
             if (aBoolean != null && aBoolean) {
@@ -105,8 +103,11 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
                 Toast.makeText(HomeActivity.this, s, Toast.LENGTH_SHORT).show();
         });
         homeViewModel.getDataInserted().observe(this, integer -> {
-            if (integer != null)
-                setFragment(Constants.Home);
+            if (integer != null) {
+                setImageAndTextColor(Constants.Units);
+                setFragment(Constants.Units);
+            }
+
         });
 
 //        homeViewModel.getDataInserted().observe(this, aLong -> {
@@ -119,7 +120,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     }
 
     private void downloadIntroVideo() {
-       FileModel fileModel= new FileModel("ओईएलपी किट", "static/media/2019/08/14/1900125913_U001_V001.mp4", "e7f5738a-4e37-4303-bee2-e0bd9820aab9");
+        FileModel fileModel = new FileModel("ओईएलपी किट", "static/media/2019/08/14/1900125913_U001_V001.mp4", "e7f5738a-4e37-4303-bee2-e0bd9820aab9");
         List<FileModel> fileModelList = new ArrayList<>();
         fileModelList.add(fileModel);
         new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.VIDEO).getAbsolutePath(), fileModelList);
@@ -132,7 +133,6 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
                 fragment = new HomeFragment();
                 break;
             case Constants.Units:
-                previouValue = Constants.Units;
                 homeViewModel.parentId.setValue("");
                 Bundle bundle = new Bundle();
                 bundle.putString("ParentId", "");
@@ -156,40 +156,48 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     private void setImageAndTextColor(String type) {
         switch (type) {
             case Constants.Home:
-                activityHomeBinding.ivHome.setBackgroundResource(R.drawable.home_select);
-                activityHomeBinding.ivUnits.setBackgroundResource(R.drawable.units_normal);
-                activityHomeBinding.ivGroups.setBackgroundResource(R.drawable.group_normal);
 
-                activityHomeBinding.tvHome.setTextColor(getResources().getColor(R.color.colorPrimary));
-                activityHomeBinding.tvUnits.setTextColor(getResources().getColor(R.color.grey));
-                activityHomeBinding.tvGroups.setTextColor(getResources().getColor(R.color.grey));
+                activityHomeBinding.ivHomeTeacher.setBackgroundResource(R.drawable.home_select);
+                activityHomeBinding.ivUnitsTeacher.setBackgroundResource(R.drawable.units_normal);
+                activityHomeBinding.ivGroupsTeacher.setBackgroundResource(R.drawable.group_normal);
+
+                activityHomeBinding.tvHomeTeacher.setTextColor(getResources().getColor(R.color.colorPrimary));
+                activityHomeBinding.tvUnitsTeacher.setTextColor(getResources().getColor(R.color.grey));
+                activityHomeBinding.tvGroupsTeacher.setTextColor(getResources().getColor(R.color.grey));
                 break;
             case Constants.Units:
-                activityHomeBinding.ivHome.setBackgroundResource(R.drawable.home_normal);
-                activityHomeBinding.ivUnits.setBackgroundResource(R.drawable.units_select);
-                activityHomeBinding.ivGroups.setBackgroundResource(R.drawable.group_normal);
+                if (homeViewModel.teacherLogin) {
+                    activityHomeBinding.ivHomeTeacher.setBackgroundResource(R.drawable.home_normal);
+                    activityHomeBinding.ivUnitsTeacher.setBackgroundResource(R.drawable.units_select);
+                    activityHomeBinding.ivGroupsTeacher.setBackgroundResource(R.drawable.group_normal);
 
-                activityHomeBinding.tvHome.setTextColor(getResources().getColor(R.color.grey));
-                activityHomeBinding.tvUnits.setTextColor(getResources().getColor(R.color.colorPrimary));
-                activityHomeBinding.tvGroups.setTextColor(getResources().getColor(R.color.grey));
+                    activityHomeBinding.tvHomeTeacher.setTextColor(getResources().getColor(R.color.grey));
+                    activityHomeBinding.tvUnitsTeacher.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    activityHomeBinding.tvGroupsTeacher.setTextColor(getResources().getColor(R.color.grey));
+                } else {
+                    activityHomeBinding.ivUnitsTrainer.setBackgroundResource(R.drawable.units_select);
+                    activityHomeBinding.ivGroupsTrainer.setBackgroundResource(R.drawable.group_normal);
+
+                    activityHomeBinding.tvUnitsTrainer.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    activityHomeBinding.tvGroupsTrainer.setTextColor(getResources().getColor(R.color.grey));
+                }
                 break;
             case Constants.Groups:
-                activityHomeBinding.ivHome.setBackgroundResource(R.drawable.home_normal);
-                activityHomeBinding.ivUnits.setBackgroundResource(R.drawable.units_normal);
-                activityHomeBinding.ivGroups.setBackgroundResource(R.drawable.group_select);
+                if (homeViewModel.teacherLogin) {
+                    activityHomeBinding.ivHomeTeacher.setBackgroundResource(R.drawable.home_normal);
+                    activityHomeBinding.ivUnitsTeacher.setBackgroundResource(R.drawable.units_normal);
+                    activityHomeBinding.ivGroupsTeacher.setBackgroundResource(R.drawable.group_select);
 
-                activityHomeBinding.tvHome.setTextColor(getResources().getColor(R.color.grey));
-                activityHomeBinding.tvUnits.setTextColor(getResources().getColor(R.color.grey));
-                activityHomeBinding.tvGroups.setTextColor(getResources().getColor(R.color.colorPrimary));
-                break;
-            case Constants.School:
-                activityHomeBinding.ivSchools.setBackgroundResource(R.drawable.school_select);
-                activityHomeBinding.ivUnits.setBackgroundResource(R.drawable.units_normal);
-                activityHomeBinding.ivGroups.setBackgroundResource(R.drawable.group_normal);
+                    activityHomeBinding.tvHomeTeacher.setTextColor(getResources().getColor(R.color.grey));
+                    activityHomeBinding.tvUnitsTeacher.setTextColor(getResources().getColor(R.color.grey));
+                    activityHomeBinding.tvGroupsTeacher.setTextColor(getResources().getColor(R.color.colorPrimary));
+                } else {
+                    activityHomeBinding.ivUnitsTrainer.setBackgroundResource(R.drawable.units_normal);
+                    activityHomeBinding.ivGroupsTrainer.setBackgroundResource(R.drawable.group_select);
 
-                activityHomeBinding.tvSchools.setTextColor(getResources().getColor(R.color.colorPrimary));
-                activityHomeBinding.tvUnits.setTextColor(getResources().getColor(R.color.grey));
-                activityHomeBinding.tvGroups.setTextColor(getResources().getColor(R.color.grey));
+                    activityHomeBinding.tvUnitsTrainer.setTextColor(getResources().getColor(R.color.grey));
+                    activityHomeBinding.tvGroupsTrainer.setTextColor(getResources().getColor(R.color.colorPrimary));
+                }
                 break;
         }
     }
@@ -218,13 +226,16 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     }
 
     private void ShowAboutUsActivity() {
-        Toast.makeText(getApplicationContext(), "About Us Clicked", Toast.LENGTH_LONG).show();
+        AppUtils.showAboutUsActivity(this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.teacher_menu, menu);
+        if (homeViewModel.teacherLogin)
+            getMenuInflater().inflate(R.menu.teacher_menu, menu);
+        else
+            getMenuInflater().inflate(R.menu.trainer_menu, menu);
         return true;
     }
 
@@ -257,17 +268,18 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     public void onMediaDownload(int type, String savedPath, String name, int position, String uuid) {
         homeViewModel.showProgresBar.setValue(false);
         homeViewModel.setDataInserted(1);
-        if (uuid.equals("1111")){
+        if (uuid.equals("1111")) {
             playVideo();
         }
     }
+
     private void playVideo() {
 
         try {
             File f = AppUtils.completePathInSDCard(Constants.VIDEO);
             DownloadUtility.playVideo((Activity) this, "static/media/2019/08/14/1900125913_U001_V001.mp4", "ओईएलपी किट",
                     new MySharedPref(this).readInt(Constants.USER_ID, 0), "e7f5738a-4e37-4303-bee2-e0bd9820aab9", "");
-        }catch (Exception ex){
+        } catch (Exception ex) {
             Logger.logE("", ex.getMessage(), ex);
         }
 

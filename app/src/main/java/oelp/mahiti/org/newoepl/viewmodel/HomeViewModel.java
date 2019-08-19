@@ -36,13 +36,13 @@ public class HomeViewModel extends AndroidViewModel {
     private static final String TAG = AndroidViewModel.class.getSimpleName();
     private final Context context;
     private final int userId;
+    public boolean teacherLogin;
     private final boolean catalogApiCalled;
     private final boolean questionApiCalled;
     private final boolean questionChoicesApiCalled;
-    public MutableLiveData<Boolean> homeClick = new MutableLiveData<>();
+//    public MutableLiveData<Boolean> homeClick = new MutableLiveData<>();
     public MutableLiveData<Boolean> unitsClick = new MutableLiveData<>();
     public MutableLiveData<Boolean> groupsClick = new MutableLiveData<>();
-    public MutableLiveData<Boolean> schoolsClick = new MutableLiveData<>();
     public MutableLiveData<Integer> userType = new MutableLiveData<>();
     public MutableLiveData<Boolean> showProgresBar = new MutableLiveData<>();
     public MutableLiveData<Boolean> moduleCompleted = new MutableLiveData<>();
@@ -332,29 +332,21 @@ public class HomeViewModel extends AndroidViewModel {
         databaseHandlerClass = new DatabaseHandlerClass(application);
         showProgresBar.setValue(false);
         userId = sharedPref.readInt(Constants.USER_ID, 0);
+        teacherLogin = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER;
         catalogApiCalled = sharedPref.readBoolean(RetrofitConstant.CATALOGUE_URL, false);
         questionApiCalled = sharedPref.readBoolean(RetrofitConstant.QUESTION_LIST_URL, false);
         questionChoicesApiCalled = sharedPref.readBoolean(RetrofitConstant.QUESTION_CHOICES_LIST, false);
         dataInserted.setValue(null);
         if (!catalogApiCalled)
             callApiForCatalogData(userId);
-//        if (!questionApiCalled)
-//            callApiQuestions(userId);
-//        if (!questionChoicesApiCalled)
-//            callApiForQuestionChoices(userId);
-
         getListOfImageFromDb();
-
-//        if (parentId.getValue() != null)
-//            getCatalogData(parentId.getValue());
         userType.setValue(sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER));
         if (userType.getValue().equals(Constants.USER_TEACHER)) {
             unitsClick.setValue(false);
-            homeClick.setValue(true);
+//            homeClick.setValue(true);
             groupsClick.setValue(false);
         } else {
             unitsClick.setValue(true);
-            schoolsClick.setValue(false);
             groupsClick.setValue(false);
         }
 
@@ -487,12 +479,6 @@ public class HomeViewModel extends AndroidViewModel {
 
     }
 
-    public void onCategoryClick(CatalogueDetailsModel model) {
-        onUnitsClick();
-        parentId.setValue(model.getUuid());
-        getCatalogData(parentId.getValue());
-    }
-
     public void callApiForCatalogData(int userId) {
         showProgresBar.setValue(true);
         String modifiedDate = databaseHandlerClass.getModifiedDate(DBConstants.CAT_TABLE_NAME);
@@ -526,9 +512,6 @@ public class HomeViewModel extends AndroidViewModel {
             databaseHandlerClass.insertDataToCatalogueTable(catalogueDetailsModel);
             sharedPref.writeBoolean(RetrofitConstant.CATALOGUE_URL, true);
         }
-//        else {
-//            callApiQuestions(userId);
-//        }
         callApiQuestions(userId);
 
     }
@@ -539,19 +522,19 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
 
-    public void onHomeClick() {
-            if (!homeClick.getValue()) {
-                homeClick.setValue(true);
-                groupsClick.setValue(false);
-                unitsClick.setValue(false);
-            }
-    }
+//    public void onHomeClick() {
+//        if (!homeClick.getValue()) {
+//            homeClick.setValue(true);
+//            groupsClick.setValue(false);
+//            unitsClick.setValue(false);
+//        }
+//    }
 
 
     public void onUnitsClick() {
         if (!showProgresBar.getValue()) {
             if (!unitsClick.getValue()) {
-                homeClick.setValue(false);
+//                homeClick.setValue(false);
                 unitsClick.setValue(true);
                 groupsClick.setValue(false);
             }
@@ -564,39 +547,17 @@ public class HomeViewModel extends AndroidViewModel {
         if (!showProgresBar.getValue()) {
 
             if (!groupsClick.getValue()) {
-                homeClick.setValue(false);
+//                homeClick.setValue(false);
                 groupsClick.setValue(true);
                 unitsClick.setValue(false);
             }
         }
     }
 
-    public void onSchoolsClick() {
-        if (!showProgresBar.getValue()) {
-
-            if (!groupsClick.getValue()) {
-                homeClick.setValue(false);
-                groupsClick.setValue(true);
-                unitsClick.setValue(false);
-            }
-        }
-    }
 
 
     public MutableLiveData<List<CatalogueDetailsModel>> getCatalogData(String parentId) {
         modelForCatalog = databaseHandlerClass.getCatalogData(parentId);
-//        if (modelForCatalog!=null && !modelForCatalog.getValue().isEmpty()) {
-//            if (modelForCatalog.getValue().get(0).getOrder() == 1) {
-//                title.setValue("Units");
-//            } else {
-//                title.setValue(modelForCatalog.getValue().get(0).getName());
-//            }
-//            if (parentId.isEmpty()) {
-//                title.setValue(context.getResources().getString(R.string.units));
-//            } else {
-//                title.setValue(modelForCatalog.getValue().get(0).getName());
-//            }
-//        }
         return modelForCatalog;
     }
 }

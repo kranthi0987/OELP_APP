@@ -2,13 +2,16 @@ package oelp.mahiti.org.newoepl.views.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ import oelp.mahiti.org.newoepl.utils.AppUtils;
 import oelp.mahiti.org.newoepl.utils.Constants;
 import oelp.mahiti.org.newoepl.utils.Logger;
 import oelp.mahiti.org.newoepl.utils.MySharedPref;
+import oelp.mahiti.org.newoepl.views.activities.AppIntroVideoActivity;
 
 
 public class ViewPagerAdapter extends PagerAdapter {
@@ -50,7 +54,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.custom_layout, null);
-        ImageView imageView = view.findViewById(R.id.imageView);
+        RoundedImageView imageView = view.findViewById(R.id.imageView);
         ImageView ivPlay = view.findViewById(R.id.ivPlay);
         imageView.setImageResource(images[position]);
 
@@ -62,13 +66,15 @@ public class ViewPagerAdapter extends PagerAdapter {
             ivPlay.setVisibility(View.GONE);
         }
 
-        RelativeLayout rlVideoView = view.findViewById(R.id.rlVideoView);
-
-
-
-        rlVideoView.setOnClickListener(view1 -> checkVideo());
+        CardView cdCardView = view.findViewById(R.id.cdCardView);
+        cdCardView.setOnClickListener(view1 -> startVideoActivity());
         return view;
 
+    }
+
+    private void startVideoActivity() {
+        Intent i = new Intent(context, AppIntroVideoActivity.class);
+        context.startActivity(i);
     }
 
     private void checkVideo() {

@@ -34,30 +34,29 @@
         </RelativeLayout>
 
 
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight=".5"
-            android:background="@color/white"
-            android:paddingLeft="30dp">
+            android:background="@color/white">
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewPager"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true" />
+                android:layout_marginBottom="15dp" />
 
             <LinearLayout
                 android:id="@+id/llDots"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/red"
                 android:orientation="horizontal" />
 
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

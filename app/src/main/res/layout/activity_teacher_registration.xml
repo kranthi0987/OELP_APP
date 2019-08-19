@@ -93,6 +93,7 @@
 
 
                         <LinearLayout
+                            android:layout_marginTop="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
@@ -135,6 +136,7 @@
 
 
                         <EditText
+                            android:layout_marginTop="5dp"
                             android:id="@+id/etSchool"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -151,6 +153,7 @@
 
 
                         <RelativeLayout
+                            android:layout_marginTop="5dp"
                             android:id="@+id/rlState"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
@@ -232,6 +235,7 @@
                         </RelativeLayout>
 
                         <RelativeLayout
+                            android:layout_marginTop="5dp"
                             android:id="@+id/rlDistrict"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -309,6 +313,7 @@
                         </RelativeLayout>
 
                         <RelativeLayout
+                            android:layout_marginTop="5dp"
                             android:id="@+id/rlBlock"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -389,6 +394,7 @@
                         </RelativeLayout>
 
                         <EditText
+                            android:layout_marginTop="5dp"
                             android:id="@+id/etVillage"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -458,7 +464,7 @@
                         <Button
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/button_height"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="25dp"
                             android:background="@drawable/white_bkg_button"
                             android:enabled="@{!registrationViewModel.showProgresBar}"
                             android:fontFamily="@font/montserrat_medium"

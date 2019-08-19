@@ -3,7 +3,6 @@ package oelp.mahiti.org.newoepl.views.activities;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
@@ -18,7 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import oelp.mahiti.org.newoepl.R;
@@ -38,6 +40,8 @@ public class QuestionAnswerActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private AlertDialog dialog;
     private LinearLayout questionsAnswersRadioLayout;
+    private List<String> questionsStringList = new ArrayList<>();
+    private HashMap<String, RadioGroup> radioGroupMap = new HashMap<>();
 
 
     @Override
@@ -64,7 +68,11 @@ public class QuestionAnswerActivity extends AppCompatActivity {
 
         viewModel.getSubmitClick().observe(this, aBoolean -> {
             if (aBoolean != null)
-                onBackPressed();
+                if (validationForRadioButton()) {
+//                    submitAnswer();
+                } else {
+                    Toast.makeText(this, getResources().getString(R.string.select_all_question),Toast.LENGTH_SHORT);
+                }
         });
         viewModel.getQuestionAnswerModel().observe(this, questionAnswerModels -> {
             if (questionAnswerModels!=null && !questionAnswerModels.isEmpty()){
@@ -72,6 +80,18 @@ public class QuestionAnswerActivity extends AppCompatActivity {
             }
         });
     }
+
+    public boolean validationForRadioButton() {
+        boolean status = true;
+        for (int i = 0; i < questionsStringList.size(); i++) {
+            RadioGroup rg = radioGroupMap.get(questionsStringList.get(i));
+            if (rg.getCheckedRadioButtonId() == -1) {
+                status = false;
+            }
+        }
+        return status;
+    }
+
 
     private void setLayoutForQuestionAnswer(List<QuestionAnswerModel> questionAnswerModels) {
         TextView questionText;
@@ -83,13 +103,14 @@ public class QuestionAnswerActivity extends AppCompatActivity {
             radioGroup.setTag(questionAnswerModels.get(i).getQuestionModel().getId());
             questionText = v.findViewById(R.id.questionText);
             questionText.setText(i + 1 + ". " + questionAnswerModels.get(i).getQuestionModel().getText());
-//            questionsStringList.add(questionlist.get(i).getId().toString());
-
-//            questionAndAnswerRequestModelList.get(i).setQId(questionlist.get(i).getId().toString());
+            questionsStringList.add(questionAnswerModels.get(i).getQuestionModel().getId().toString());
 
             List<QuestionChoicesModel> choice = questionAnswerModels.get(i).getChoicesModelList();
             for (int j = 0; j < choice.size(); j++) {
                 RadioButton questionChoiceRadioButton = new RadioButton(this);
+                RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
+                params.setMargins(0, 5, 0, 0);
+                questionChoiceRadioButton.setLayoutParams(params);
                 questionChoiceRadioButton.setId(j);
                 questionChoiceRadioButton.setTag(choice.get(j).getId());
                 if (Build.VERSION.SDK_INT >= 21) {
@@ -113,6 +134,8 @@ public class QuestionAnswerActivity extends AppCompatActivity {
                 questionChoiceRadioButton.setTextColor(getResources().getColor(R.color.black));
                 radioGroup.addView(questionChoiceRadioButton);
             }
+            radioGroupMap.put(questionAnswerModels.get(i).getQuestionModel().getId().toString(), radioGroup);
+
 //            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 //                @Override
 //                public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
@@ -143,7 +166,8 @@ public class QuestionAnswerActivity extends AppCompatActivity {
         sectionUUID = getIntent().getStringExtra("sectionUUID");
         videoTitle = getIntent().getStringExtra("videoTitle");
         viewModel.setSectionUUID(sectionUUID);
-        binding.tvTitle.setText(videoTitle);
+        String completeTilte = videoTitle.concat(" - Questions");
+        binding.tvTitle.setText(completeTilte);
     }
 
     @Override
@@ -157,7 +181,7 @@ public class QuestionAnswerActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.aboutus:
-//                ShowAboutUsActivity();
+                ShowAboutUsActivity();
                 return true;
             case R.id.logout:
                 AppUtils.makeUserLogout(this);
@@ -169,12 +193,13 @@ public class QuestionAnswerActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    private void ShowAboutUsActivity() {
+        AppUtils.showAboutUsActivity(this);
+    }
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        QuestionAnswerActivity.this.finish();
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
     }
 }

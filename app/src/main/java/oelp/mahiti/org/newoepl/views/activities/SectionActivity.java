@@ -113,7 +113,7 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
     }
 
     private void ShowAboutUsActivity() {
-        Toast.makeText(getApplicationContext(), "About Us Clicked", Toast.LENGTH_LONG).show();
+        AppUtils.showAboutUsActivity(this);
     }
 
 

@@ -1,5 +1,6 @@
 package oelp.mahiti.org.newoepl.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -22,6 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import oelp.mahiti.org.newoepl.R;
+import oelp.mahiti.org.newoepl.views.activities.AboutUsActivity;
 import oelp.mahiti.org.newoepl.views.activities.MobileLoginActivity;
 
 /**
@@ -296,6 +298,13 @@ public class AppUtils {
         context.startActivity(intent);
         ((AppCompatActivity) context).finish();
         ((AppCompatActivity) context).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+    }
+
+    public static void showAboutUsActivity(Context context) {
+        Intent intent = new Intent(context, AboutUsActivity.class);
+        context.startActivity(intent);
+        ((Activity)context).overridePendingTransition(R.anim.anim_slide_in_left,
+                R.anim.anim_slide_out_left);
     }
 }
 

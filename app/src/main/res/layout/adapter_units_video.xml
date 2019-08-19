@@ -55,39 +55,6 @@
                         app:riv_mutate_background="true"
                         app:riv_tile_mode="repeat" />
 
-
-                    <!--<com.makeramen.roundedimageview.RoundedImageView-->
-                    <!--android:visibility="@{adapterViewModel.moduleCompleted?View.VISIBLE:View.GONE}"-->
-                    <!--android:id="@+id/rlDisableGreen"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_centerInParent="true"-->
-                    <!--android:background="@color/greenOpaque"-->
-                    <!--app:riv_corner_radius="10dip"-->
-                    <!--app:riv_mutate_background="true"-->
-                    <!--app:riv_tile_mode="repeat" />-->
-                    <!--<com.makeramen.roundedimageview.RoundedImageView-->
-                    <!--android:visibility="@{adapterViewModel.moduleCompleted?View.GONE:View.VISIBLE}"-->
-                    <!--android:id="@+id/rlDisableYellow"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_centerInParent="true"-->
-                    <!--android:background="@color/yellowOpaque"-->
-                    <!--app:riv_corner_radius="10dip"-->
-                    <!--app:riv_mutate_background="true"-->
-                    <!--app:riv_tile_mode="repeat" />-->
-
-                    <!--<com.makeramen.roundedimageview.RoundedImageView-->
-                    <!--android:visibility="@{adapterViewModel.moduleCompleted==null?View.VISIBLE:View.GONE}"-->
-                    <!--android:id="@+id/rlDisableWhite"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_centerInParent="true"-->
-                    <!--android:background="@color/blackOpaque"-->
-                    <!--app:riv_corner_radius="10dip"-->
-                    <!--app:riv_mutate_background="true"-->
-                    <!--app:riv_tile_mode="repeat" />-->
-
                     <com.makeramen.roundedimageview.RoundedImageView
                         android:id="@+id/rlEnableDisable"
                         android:layout_width="match_parent"
@@ -98,6 +65,7 @@
                         app:riv_tile_mode="repeat" />
 
                     <ImageView
+                        android:id="@+id/ivPlayButton"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_centerInParent="true"
@@ -105,12 +73,13 @@
                         android:visibility="@{adapterViewModel.playButton?View.VISIBLE:View.INVISIBLE}" />
 
                     <ImageView
+                        android:id="@+id/ivTickMark"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_alignParentRight="true"
-                        android:layout_margin="15dp"
-                        android:src="@drawable/completed_icon"
-                        android:visibility="@{adapterViewModel.moduleCompleted?View.VISIBLE:View.INVISIBLE}" />
+                        android:layout_margin="10dp"
+                        android:src="@drawable/completed_icon"/>
+                        <!--android:visibility="@{adapterViewModel.moduleCompleted?View.VISIBLE:View.INVISIBLE}" />-->
 
 
                 </RelativeLayout>
@@ -125,11 +94,12 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:maxLines="2"
+                android:fontFamily="@font/montserrat_medium"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="Unit1"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="15sp" />
         </LinearLayout>
 
 

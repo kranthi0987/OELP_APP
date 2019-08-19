@@ -42,6 +42,7 @@ import java.util.concurrent.TimeUnit;
 import oelp.mahiti.org.newoepl.R;
 import oelp.mahiti.org.newoepl.database.DatabaseHandlerClass;
 import oelp.mahiti.org.newoepl.utils.CheckNetwork;
+import oelp.mahiti.org.newoepl.utils.Constants;
 import oelp.mahiti.org.newoepl.utils.MySharedPref;
 import oelp.mahiti.org.newoepl.videoplay.UpdateDbInterface;
 import oelp.mahiti.org.newoepl.videoplay.api.VideoAPI;
@@ -57,7 +58,7 @@ import oelp.mahiti.org.newoepl.views.activities.QuestionAnswerActivity;
 public class VideoViewActivity extends AppCompatActivity implements SevendaysVariables,
         MediaPlayer.OnErrorListener, UpdateDbInterface, MediaPlayer.OnPreparedListener,
         View.OnClickListener, MediaPlayer.OnInfoListener, MediaPlayer.OnCompletionListener,
-        MediaPlayer.OnSeekCompleteListener{
+        MediaPlayer.OnSeekCompleteListener {
     private static final String TAG = "VIDEOVIEWACTIVITY";
     private static final int REQUEST_CODE_GALLERY = 0x1;
     private static final int REQ_CODE_PHONESTATE = 123;
@@ -69,7 +70,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     MediaTracker mediaTracker;
     String path;
     int videoMins = 0;
-//    MediaTrackerApi mediaTrackerApi;
+    //    MediaTrackerApi mediaTrackerApi;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     CheckNet checkNet;
@@ -86,9 +87,10 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     String videoTitle;
     String sectionUUID;
     String parentUUID;
-    String Selecteduuid="";
+    String Selecteduuid = "";
     String deviceId = "";
     private DatabaseHandlerClass catalogDbHandler;
+    private String errorMessage;
 
 
     @SuppressLint("DefaultLocale")
@@ -171,7 +173,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         checkNet = new CheckNet(this);
         getIntentData();
 
-        if ( CheckNetwork.checkNet(this)) {
+        if (CheckNetwork.checkNet(this)) {
             callMediaTrackerApi();
         }
 
@@ -180,7 +182,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     @Override
     protected void onPause() {
         super.onPause();
-        if (mediaPlayer!=null && mediaPlayer.isPlaying()){
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
         }
     }
@@ -229,7 +231,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
                 mediaApiUrl = getIntent().getStringExtra("mediaTrackerApi");
 //            Log.i("MediaTrackerApi", mediaApiUrl);
 
-            if (getIntent().getStringExtra("uriPath").equals(null) || getIntent().getStringExtra("uriPath").isEmpty() || getIntent().getStringExtra("uriPath").contentEquals("")) {
+            if (getIntent().getStringExtra("uriPath").isEmpty() || getIntent().getStringExtra("uriPath").contentEquals("")) {
                 Toast.makeText(this, "File path is empty! please check.", Toast.LENGTH_LONG).show();
                 finish();
                 overridePendingTransition(R.anim.anim_slide_in_right,
@@ -392,7 +394,9 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
             if (path == null || path.isEmpty())
                 return;
             if (srcPath.isDirectory()) {
-                Toast.makeText(this, "Input should be a File", Toast.LENGTH_LONG).show();
+                errorMessage = "Input should be a File";
+                Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+                onErrorEncounter(errorMessage);
             } else {
                 String fname = srcPath.getName();
                 Log.i(TAG, " selcted fileName : " + fname);
@@ -401,6 +405,12 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void onErrorEncounter(String errorMessage) {
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        finish();
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
     }
 
     @Override
@@ -462,7 +472,8 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     public boolean onInfo(MediaPlayer mediaPlayer, int i, int i1) {
         return false;
     }
-//
+
+    //
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         int duration = mediaPlayer.getDuration();
@@ -483,7 +494,8 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
             callMediaTrackerApi();
         }
         contentUpdateStatus(Selecteduuid);
-        if (!getIntent().getStringExtra("sectionUUID").isEmpty())
+        boolean loginType = new MySharedPref(this).readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER;
+        if (!getIntent().getStringExtra("sectionUUID").isEmpty() && loginType)
             moveToQuestionAnswerActivity();
         else
             onBackPressed();
@@ -519,6 +531,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
         Log.i(TAG, " onError Track Info" + i);
         Log.i(TAG, " onError Track Info" + i1);
+        onErrorEncounter("Error in Media Playing");
         return false;
     }
 

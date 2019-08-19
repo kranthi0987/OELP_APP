@@ -16,6 +16,8 @@
         android:orientation="vertical">
 
         <TextView
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:id="@+id/questionText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -8,9 +8,9 @@
     <color name="black">#181a25</color>
     <color name="grey">#878787</color>
     <color name="greybkg">#f3f4f5</color>
-    <color name="greenOpaque">#4a009688</color>
-    <color name="yellowOpaque">#4bff9800</color>
-    <color name="blackOpaque">#3b000000</color>
+    <color name="greenOpaque">#B32D9289</color>
+    <color name="yellowOpaque">#B3FF9800</color>
+    <color name="blackOpaque">#80000000</color>
     <color name="red">#dc4939</color>
     <color name="transparent">#25232323</color>
 </resources>

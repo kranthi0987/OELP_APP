@@ -24,7 +24,7 @@ public class QuestionAnswerViewModel extends AndroidViewModel {
     DatabaseHandlerClass handlerClass;
     private List<QuestionModel> questionModelList;
     private MutableLiveData<Boolean> showDialog = new MutableLiveData<>();
-    private MutableLiveData<Boolean> onBackPress = new MutableLiveData<>();
+    private MutableLiveData<Boolean> onSubmitClick = new MutableLiveData<>();
     private List<QuestionChoicesModel> choicesModelList = new ArrayList<>();
     HashMap<String, ArrayList<String>> answerhashmap = new HashMap<String, ArrayList<String>>();
     private MutableLiveData<List<QuestionAnswerModel>> quesAnsModelList = new MutableLiveData<>();
@@ -36,8 +36,9 @@ public class QuestionAnswerViewModel extends AndroidViewModel {
     }
 
     public void onSubmitClick() {
-       onBackPress.setValue(true);
+       onSubmitClick.setValue(true);
     }
+
 
     public void setSectionUUID(String sectionUUID) {
         this.sectionUUID = sectionUUID;
@@ -73,7 +74,7 @@ public class QuestionAnswerViewModel extends AndroidViewModel {
     }
 
     public MutableLiveData<Boolean> getSubmitClick() {
-        return onBackPress;
+        return onSubmitClick;
     }
 
 

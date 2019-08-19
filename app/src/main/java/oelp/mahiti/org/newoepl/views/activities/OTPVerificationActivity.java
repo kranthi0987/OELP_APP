@@ -245,8 +245,12 @@ public class OTPVerificationActivity extends AppCompatActivity {
         }
     }
 
-    private void moveToAppIntroNextActivity() {
-        Intent intent = new Intent(OTPVerificationActivity.this, AppIntroActivity.class);
+    private void moveToAppIntroNextActivity(boolean isIntroDisplayed) {
+        Intent intent;
+        if (isIntroDisplayed)
+            intent = new Intent(OTPVerificationActivity.this, AppIntroActivity.class);
+        else
+            intent = new Intent(OTPVerificationActivity.this, AppIntroActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         overridePendingTransition(R.anim.anim_slide_in_left,
@@ -296,10 +300,10 @@ public class OTPVerificationActivity extends AppCompatActivity {
     }
 
     private void compareUserTypeAndMoveToNextActivity() {
+        boolean isIntroDisplayed = sharedPref.readBoolean(Constants.IS_INTRO_DISPLAYED, false);
         int userType = sharedPref.readInt(Constants.USER_TYPE, 0);
         if (userType == Constants.USER_TEACHER) {
-//            moveToAppIntroNextActivity();
-            moveToHomeActivityNextActivity();
+            moveToAppIntroNextActivity(isIntroDisplayed);
         } else if (userType == Constants.USER_TRAINER) {
             moveToHomeActivityNextActivity();
         }

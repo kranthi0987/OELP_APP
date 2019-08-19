@@ -12,9 +12,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import oelp.mahiti.org.newoepl.R;
+import oelp.mahiti.org.newoepl.utils.AppUtils;
+import oelp.mahiti.org.newoepl.utils.Constants;
 import oelp.mahiti.org.newoepl.utils.Logger;
 import oelp.mahiti.org.newoepl.utils.MySharedPref;
 import oelp.mahiti.org.newoepl.views.adapters.ViewPagerAdapter;
@@ -24,6 +25,7 @@ public class AppIntroActivity extends AppCompatActivity {
     private int dotscount;
     private ImageView[] dots;
     Toolbar toolbar;
+    private MySharedPref sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,17 +36,14 @@ public class AppIntroActivity extends AppCompatActivity {
         if(getSupportActionBar()!=null){
             getSupportActionBar().setTitle("");
         }
+        sharedPref = new MySharedPref(this);
+        sharedPref.writeBoolean(Constants.IS_INTRO_DISPLAYED, true);
         toolbar.inflateMenu(R.menu.teacher_menu);
         initViews();
     }
 
     private void initViews() {
-        findViewById(R.id.btnNext).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                moveToHomeActivity();
-            }
-        });
+        findViewById(R.id.btnNext).setOnClickListener(view -> moveToHomeActivity());
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this);
         ViewPager viewPager = findViewById(R.id.viewPager);
         LinearLayout llDots = findViewById(R.id.llDots);
@@ -132,7 +131,7 @@ public class AppIntroActivity extends AppCompatActivity {
     }
 
     private void ShowAboutUsActivity() {
-        Toast.makeText(getApplicationContext(), "About Us Clicked", Toast.LENGTH_LONG).show();
+        AppUtils.showAboutUsActivity(this);
     }
 
     public void moveToHomeActivity() {

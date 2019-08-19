@@ -21,7 +21,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="120dp"
             android:visibility="visible">
 
             <ImageView
@@ -45,10 +45,7 @@
             android:layout_height="match_parent"
             android:background="@color/greybkg"
             android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:paddingTop="10dp">
+            android:padding="10dp">
 
             <ScrollView
                 android:layout_width="match_parent"
