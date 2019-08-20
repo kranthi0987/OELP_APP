@@ -61,7 +61,7 @@ public class OTPVerificationViewModel extends AndroidViewModel {
         sharedPref = new MySharedPref(context);
         mobileNo = sharedPref.readString(Constants.MOBILE_NO, "");
         clearButtonVisible.setValue(false);
-        String messageText = application.getString(R.string.otp_has_been_sent_to_your_mobile).concat(mobileNo.substring(6, 10)).concat("  ").concat(application.getString(R.string.please_enter_the_same));
+        String messageText = application.getString(R.string.otpmessage1).concat(mobileNo.substring(6, 10)).concat("  ").concat(application.getString(R.string.otpmessage2));
         otpMobileText.setValue(messageText);
         resendButtonText.setValue(context.getResources().getString(R.string.resend_code));
         resendButtonText.setValue("00");
@@ -164,7 +164,7 @@ public class OTPVerificationViewModel extends AndroidViewModel {
                         data.setValue(model);
                     }
                 } else {
-                    MobileVerificationResponseModel model = new MobileVerificationResponseModel(2, "Some Thing Went Wrong");
+                    MobileVerificationResponseModel model = new MobileVerificationResponseModel(2, context.getResources().getString(R.string.SOMETHING_WRONG));
                     model.setmAction(new Action(Action.VERIFY_OTP));
                     data.setValue(model);
                 }
@@ -201,7 +201,7 @@ public class OTPVerificationViewModel extends AndroidViewModel {
                     data.setValue(model);
 
                 } else {
-                    MobileVerificationResponseModel model = new MobileVerificationResponseModel(2, "Some Thing Went Wrong");
+                    MobileVerificationResponseModel model = new MobileVerificationResponseModel(2, context.getResources().getString(R.string.SOMETHING_WRONG));
                     model.setmAction(new Action(Action.RESEND_OTP));
                     data.setValue(model);
                 }

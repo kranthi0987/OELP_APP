@@ -344,7 +344,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         if (CheckNetwork.checkNet(this)) {
             callMediaTrackerApi();
         }
-        contentUpdateStatus(mediaUUID);
+//        contentUpdateStatus(mediaUUID);
         finish();
     }
 
@@ -404,9 +404,11 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     }
 
     private void onErrorEncounter(String errorMessage) {
-        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        srcPath.deleteOnExit();
+//        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
         finish();
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+            srcPath.deleteOnExit();
     }
 
     @Override
@@ -447,11 +449,11 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     }
 
     public void contentUpdateStatus(String uuid) {
-//        if (!uuid.isEmpty()) {
-//            DatabaseHandlerClass catalogDBHandler = new DatabaseHandlerClass(VideoViewActivity.this);
-//            int getInsertedPD = catalogDBHandler.insertViewStatusToDatabase(uuid, "1");
-//            Log.i("getInsertedPD", getInsertedPD + "");
-//        }
+        if (!uuid.isEmpty()) {
+            DatabaseHandlerClass catalogDBHandler = new DatabaseHandlerClass(VideoViewActivity.this);
+            int getInsertedPD = catalogDBHandler.insertViewStatusToDatabase(uuid, "1");
+            Log.i("getInsertedPD", getInsertedPD + "");
+        }
     }
 
     private void updateDbAfterApi() {
@@ -489,7 +491,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         if (CheckNetwork.checkNet(this)) {
             callMediaTrackerApi();
         }
-        contentUpdateStatus(mediaUUID);
+//        contentUpdateStatus(mediaUUID);
         boolean loginType = new MySharedPref(this).readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER;
         if (!getIntent().getStringExtra("sectionUUID").isEmpty() && loginType)
             moveToQuestionAnswerActivity();

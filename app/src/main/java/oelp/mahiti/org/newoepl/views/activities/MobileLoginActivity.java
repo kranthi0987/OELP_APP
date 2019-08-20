@@ -71,9 +71,8 @@ public class MobileLoginActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editable.toString().length()==10){
+                if (editable.toString().length()>=10)
                     checkMobileValidation(editable.toString(), etMobileNo);
-                }
             }
         });
     }

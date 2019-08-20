@@ -24,7 +24,6 @@ import oelp.mahiti.org.newoepl.fileandvideodownloader.DownloadClass;
 import oelp.mahiti.org.newoepl.fileandvideodownloader.DownloadUtility;
 import oelp.mahiti.org.newoepl.fileandvideodownloader.FileModel;
 import oelp.mahiti.org.newoepl.fileandvideodownloader.OnMediaDownloadListener;
-import oelp.mahiti.org.newoepl.fileandvideodownloader.PermissionClass;
 import oelp.mahiti.org.newoepl.interfaces.ItemClickListerner;
 import oelp.mahiti.org.newoepl.models.CatalogueDetailsModel;
 import oelp.mahiti.org.newoepl.services.RetrofitConstant;
@@ -32,6 +31,7 @@ import oelp.mahiti.org.newoepl.utils.AppUtils;
 import oelp.mahiti.org.newoepl.utils.Constants;
 import oelp.mahiti.org.newoepl.utils.Logger;
 import oelp.mahiti.org.newoepl.utils.MySharedPref;
+import oelp.mahiti.org.newoepl.utils.PermissionClass;
 import oelp.mahiti.org.newoepl.viewmodel.HomeViewModel;
 import oelp.mahiti.org.newoepl.views.fragments.GroupsFragment;
 import oelp.mahiti.org.newoepl.views.fragments.HomeFragment;
@@ -56,16 +56,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
         }
-        if (PermissionClass.checkPermission(this)) {
-            try {
-                File file = new File(AppUtils.completePathInSDCard(Constants.VIDEO), AppUtils.getFileName("static/media/2019/08/14/1900125913_U001_V001.mp4"));
-                if (!file.exists()) {
-                    downloadIntroVideo();
-                }
-            } catch (Exception ex) {
-                Logger.logE("", ex.getMessage(), ex);
-            }
-        } else {
+        if (!PermissionClass.checkPermission(this)) {
             PermissionClass.requestPermission(this);
         }
         if (getIntent().getBooleanExtra("UnitClick", false))
@@ -76,12 +67,6 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         else
             toolbar.inflateMenu(R.menu.trainer_menu);
 
-//        homeViewModel.homeClick.observe(this, aBoolean -> {
-//            if (aBoolean != null && aBoolean) {
-//                setImageAndTextColor(Constants.Home);
-//                setFragment(Constants.Home);
-//            }
-//        });
 
         homeViewModel.unitsClick.observe(this, aBoolean -> {
             if (aBoolean != null && aBoolean) {
@@ -161,7 +146,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
                 activityHomeBinding.ivUnitsTeacher.setBackgroundResource(R.drawable.units_normal);
                 activityHomeBinding.ivGroupsTeacher.setBackgroundResource(R.drawable.group_normal);
 
-                activityHomeBinding.tvHomeTeacher.setTextColor(getResources().getColor(R.color.colorPrimary));
+                activityHomeBinding.tvHomeTeacher.setTextColor(getResources().getColor(R.color.red));
                 activityHomeBinding.tvUnitsTeacher.setTextColor(getResources().getColor(R.color.grey));
                 activityHomeBinding.tvGroupsTeacher.setTextColor(getResources().getColor(R.color.grey));
                 break;
@@ -172,13 +157,13 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
                     activityHomeBinding.ivGroupsTeacher.setBackgroundResource(R.drawable.group_normal);
 
                     activityHomeBinding.tvHomeTeacher.setTextColor(getResources().getColor(R.color.grey));
-                    activityHomeBinding.tvUnitsTeacher.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    activityHomeBinding.tvUnitsTeacher.setTextColor(getResources().getColor(R.color.red));
                     activityHomeBinding.tvGroupsTeacher.setTextColor(getResources().getColor(R.color.grey));
                 } else {
                     activityHomeBinding.ivUnitsTrainer.setBackgroundResource(R.drawable.units_select);
                     activityHomeBinding.ivGroupsTrainer.setBackgroundResource(R.drawable.group_normal);
 
-                    activityHomeBinding.tvUnitsTrainer.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    activityHomeBinding.tvUnitsTrainer.setTextColor(getResources().getColor(R.color.red));
                     activityHomeBinding.tvGroupsTrainer.setTextColor(getResources().getColor(R.color.grey));
                 }
                 break;
@@ -190,13 +175,13 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
 
                     activityHomeBinding.tvHomeTeacher.setTextColor(getResources().getColor(R.color.grey));
                     activityHomeBinding.tvUnitsTeacher.setTextColor(getResources().getColor(R.color.grey));
-                    activityHomeBinding.tvGroupsTeacher.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    activityHomeBinding.tvGroupsTeacher.setTextColor(getResources().getColor(R.color.red));
                 } else {
                     activityHomeBinding.ivUnitsTrainer.setBackgroundResource(R.drawable.units_normal);
                     activityHomeBinding.ivGroupsTrainer.setBackgroundResource(R.drawable.group_select);
 
                     activityHomeBinding.tvUnitsTrainer.setTextColor(getResources().getColor(R.color.grey));
-                    activityHomeBinding.tvGroupsTrainer.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    activityHomeBinding.tvGroupsTrainer.setTextColor(getResources().getColor(R.color.red));
                 }
                 break;
         }

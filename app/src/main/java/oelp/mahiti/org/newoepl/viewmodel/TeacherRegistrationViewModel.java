@@ -222,7 +222,7 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
                     showProgresBar.setValue(false);
 
                 }else {
-                    MobileVerificationResponseModel model = new MobileVerificationResponseModel(2, "Some Thing Went Wrong");
+                    MobileVerificationResponseModel model = new MobileVerificationResponseModel(2, context.getResources().getString(R.string.SOMETHING_WRONG));
                     model.setmAction(new Action(Action.STATUS_FALSE));
                     data.setValue(model);
                     showProgresBar.setValue(false);

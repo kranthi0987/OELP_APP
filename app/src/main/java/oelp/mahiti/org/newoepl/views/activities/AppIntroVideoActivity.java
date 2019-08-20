@@ -2,6 +2,7 @@ package oelp.mahiti.org.newoepl.views.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,12 @@ public class AppIntroVideoActivity extends AppCompatActivity {
 
         video_view.setVideoURI(uri);
         video_view.start();
+        video_view.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                onBackPressed();
+            }
+        });
 
 
         rlNextButton.setOnClickListener(view -> {
@@ -39,6 +46,13 @@ public class AppIntroVideoActivity extends AppCompatActivity {
             AppIntroVideoActivity.this.finish();
         });
 
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
 
     }
 }

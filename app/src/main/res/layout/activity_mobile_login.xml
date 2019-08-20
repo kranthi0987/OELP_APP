@@ -52,7 +52,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/montserrat_semibold"
-                            android:text="Welcome..."
+                            android:text="@string/welcome"
                             android:textColor="@color/white"
                             android:textSize="@dimen/heading_text_size" />
                     </RelativeLayout>
@@ -101,7 +101,7 @@
                             android:background="@drawable/white_bkg_button"
                             android:enabled="@{!viewModel.showProgresBar}"
                             android:onClick="@{()->viewModel.onSubmitClick()}"
-                            android:text="Submit"
+                            android:text="@string/submit"
                             android:textAllCaps="false"
                             android:fontFamily="@font/montserrat_medium"
                             android:textSize="@dimen/button_text_size"

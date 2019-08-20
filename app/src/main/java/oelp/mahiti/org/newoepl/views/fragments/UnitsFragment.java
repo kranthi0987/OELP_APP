@@ -58,6 +58,7 @@ public class UnitsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         adapter = new UnitsVideoAdpater();
         recyclerView.setAdapter(adapter);
+        recyclerView.setFocusable(false);
 //        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 //            @Override
 //            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -107,4 +108,16 @@ public class UnitsFragment extends Fragment {
         binding.tvTitle.setText(title);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+//            isOpen = catalogDbHandler.getContentIsOpen(uuid);
+//            if (isOpen)
+//                catalogDbHandler.insertViewStatusToDatabase(uuid, "1");
+//            if (activityName.equalsIgnoreCase(Constants.HorizontalScrollAndView)) {
+//                if (levelcode != 0) {
+//                    upDateSubmitButtonFunctionality(isOpen, levelcode);
+//                }
+//            }
+    }
 }

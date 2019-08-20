@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import oelp.mahiti.org.newoepl.R;
 import oelp.mahiti.org.newoepl.database.DBConstants;
 import oelp.mahiti.org.newoepl.database.DatabaseHandlerClass;
 import oelp.mahiti.org.newoepl.fileandvideodownloader.FileModel;
@@ -40,7 +41,7 @@ public class HomeViewModel extends AndroidViewModel {
     private final boolean catalogApiCalled;
     private final boolean questionApiCalled;
     private final boolean questionChoicesApiCalled;
-//    public MutableLiveData<Boolean> homeClick = new MutableLiveData<>();
+    //    public MutableLiveData<Boolean> homeClick = new MutableLiveData<>();
     public MutableLiveData<Boolean> unitsClick = new MutableLiveData<>();
     public MutableLiveData<Boolean> groupsClick = new MutableLiveData<>();
     public MutableLiveData<Integer> userType = new MutableLiveData<>();
@@ -332,17 +333,15 @@ public class HomeViewModel extends AndroidViewModel {
         showProgresBar.setValue(false);
         userId = sharedPref.readInt(Constants.USER_ID, 0);
         teacherLogin = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER;
-        catalogApiCalled = sharedPref.readBoolean(RetrofitConstant.CATALOGUE_URL, false);
+        catalogApiCalled = sharedPref.readString(RetrofitConstant.CATALOGUE_URL, "").equalsIgnoreCase(AppUtils.getDate());
         questionApiCalled = sharedPref.readBoolean(RetrofitConstant.QUESTION_LIST_URL, false);
         questionChoicesApiCalled = sharedPref.readBoolean(RetrofitConstant.QUESTION_CHOICES_LIST, false);
         dataInserted.setValue(null);
         if (!catalogApiCalled)
             callApiForCatalogData(userId);
-        getListOfImageFromDb();
         userType.setValue(sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER));
         if (userType.getValue().equals(Constants.USER_TEACHER)) {
-            unitsClick.setValue(false);
-//            homeClick.setValue(true);
+            unitsClick.setValue(true);
             groupsClick.setValue(false);
         } else {
             unitsClick.setValue(true);
@@ -370,7 +369,7 @@ public class HomeViewModel extends AndroidViewModel {
 
                 } else {
                     getListOfImageFromDb();
-                    apiErrorMessage.setValue("Some thing went wrong");
+                    apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
                 }
 
             }
@@ -451,7 +450,7 @@ public class HomeViewModel extends AndroidViewModel {
                     Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_LIST_URL + "Response :" + response.body().toString());
 
                 } else {
-                    apiErrorMessage.setValue("Some thing went wrong");
+                    apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
                     callApiForQuestionChoices(userId);
                 }
 
@@ -483,7 +482,7 @@ public class HomeViewModel extends AndroidViewModel {
         String modifiedDate = databaseHandlerClass.getModifiedDate(DBConstants.CAT_TABLE_NAME);
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.CATALOGUE_URL + "Param : userId:" + userId + " modified_date:" + modifiedDate);
-        apiInterface.catalogData(userId, modifiedDate).enqueue(new Callback<MobileVerificationResponseModel>() {
+        apiInterface.catalogData(userId, "").enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.CATALOGUE_URL + " Response :" + response.body());
@@ -493,7 +492,7 @@ public class HomeViewModel extends AndroidViewModel {
                     insertDataIntoCatalogTable(model.getCatalogueDetailsModel());
                 } else {
                     callApiQuestions(userId);
-                    apiErrorMessage.setValue("Something went wrong");
+                    apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
                 }
             }
 
@@ -509,7 +508,7 @@ public class HomeViewModel extends AndroidViewModel {
     private void insertDataIntoCatalogTable(List<CatalogueDetailsModel> catalogueDetailsModel) {
         if (catalogueDetailsModel != null && !catalogueDetailsModel.isEmpty()) {
             databaseHandlerClass.insertDataToCatalogueTable(catalogueDetailsModel);
-            sharedPref.writeBoolean(RetrofitConstant.CATALOGUE_URL, true);
+            sharedPref.writeString(RetrofitConstant.CATALOGUE_URL, AppUtils.getDate());
         }
         callApiQuestions(userId);
 
@@ -552,7 +551,6 @@ public class HomeViewModel extends AndroidViewModel {
             }
         }
     }
-
 
 
     public MutableLiveData<List<CatalogueDetailsModel>> getCatalogData(String parentId) {

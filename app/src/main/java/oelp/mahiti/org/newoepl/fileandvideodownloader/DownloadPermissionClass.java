@@ -13,7 +13,7 @@ import java.util.List;
  * Created by mahiti on 19/01/17.
  */
 
-public class PermissionClass{
+public class DownloadPermissionClass {
 
     public static boolean checkPermission(Activity activity) {
 

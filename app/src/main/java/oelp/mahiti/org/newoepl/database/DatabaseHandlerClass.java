@@ -100,7 +100,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 DBConstants.ACTIVE + DBConstants.INTEGER_COMMA +
                 DBConstants.MODIFIED + DBConstants.TEXT_COMMA +
                 DBConstants.DCF + DBConstants.INTEGER_COMMA +
-                DBConstants.MEDIA_CONTENT + DBConstants.TEXT+
+                DBConstants.MEDIA_CONTENT + DBConstants.TEXT +
                 DBConstants.CLOSE_BRACKET;
         Logger.logD(TAG, "Database creation query :" + query);
         sqLiteDatabase.execSQL(query);
@@ -124,7 +124,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 DBConstants.DESC + DBConstants.TEXT_COMMA +
                 DBConstants.TYPE_CONTENT + DBConstants.TEXT_COMMA +
                 DBConstants.CONTENT_UUID + DBConstants.TEXT_COMMA +
-                DBConstants.WATCH_STATUS + DBConstants.INTEGER +DBConstants.NOT_NULL_DEFAULT_ZERO+  // double not null default 0
+                DBConstants.WATCH_STATUS + DBConstants.INTEGER + DBConstants.NOT_NULL_DEFAULT_ZERO +  // double not null default 0
                 DBConstants.CLOSE_BRACKET;
         Logger.logD(TAG, "Database creation query :" + query);
         sqLiteDatabase.execSQL(query);
@@ -389,7 +389,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         MutableLiveData<List<QuestionModel>> questionModelList = new MutableLiveData<>();
         List<QuestionModel> questionModelsList = new ArrayList<>();
         QuestionModel questionModel;
-        String query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.QUESTION_TABLE+DBConstants.WHERE+DBConstants.MEDIA_CONTENT+DBConstants.EQUAL_TO+"'"+mediaUUID+"'";
+        String query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.QUESTION_TABLE + DBConstants.WHERE + DBConstants.MEDIA_CONTENT + DBConstants.EQUAL_TO + "'" + mediaUUID + "'";
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase(DBConstants.DATABASESECRETKEY);
         try {
             Logger.logD(TAG, "Getting Question Item : " + query);
@@ -452,9 +452,9 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     public List<FileModel> getImageListFromTable() {
         FileModel fileModel;
         List<FileModel> imageList = new ArrayList<>();
-        String query = DBConstants.SELECT + DBConstants.ICON_PATH +DBConstants.COMMA+DBConstants.NAME +DBConstants.COMMA+DBConstants.UUID +DBConstants.FROM+ DBConstants.CAT_TABLE_NAME +
+        String query = DBConstants.SELECT + DBConstants.ICON_PATH + DBConstants.COMMA + DBConstants.NAME + DBConstants.COMMA + DBConstants.UUID + DBConstants.FROM + DBConstants.CAT_TABLE_NAME +
                 DBConstants.WHERE + ICON_PATH + DBConstants.NOT_EQUAL_TO + DBConstants.EMPTY +
-                DBConstants.AND + DBConstants.ICON_PATH+DBConstants.IS_NOT_NULL;
+                DBConstants.AND + DBConstants.ICON_PATH + DBConstants.IS_NOT_NULL;
         initDatabase();
         try {
             Logger.logD(TAG, "Getting Image List Query : " + query);
@@ -495,7 +495,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                     Constants.QUESTION_ANSWER_ASYNC + DBConstants.AND + DBConstants.QA_VIDEOID +
                     DBConstants.EQUAL_TO + videoId;
         } else {
-            dataFetchQuery = DBConstants.SELECT + DBConstants.ALL_FROM +  DBConstants.QA_TABLENAME +
+            dataFetchQuery = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.QA_TABLENAME +
                     DBConstants.WHERE + DBConstants.QA_SYNC_STATUS + DBConstants.EQUAL_TO +
                     Constants.QUESTION_ANSWER_ASYNC;
         }
@@ -520,10 +520,9 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     }
 
 
-
     public boolean getContentIsOpen(String uuid) {
         boolean isOpen = false;
-       initDatabase();
+        initDatabase();
         String query = DBConstants.SELECT + DBConstants.WATCH_STATUS + DBConstants.FROM + DBConstants.CAT_TABLE_NAME + DBConstants.WHERE + DBConstants.PARENT + " = '" + uuid + "'" + DBConstants.AND + DBConstants.WATCH_STATUS + " = 0";
         Logger.logD(TAG, "Content View Status Query : " + query);
         android.database.Cursor cursor = database.rawQuery(query, null);
@@ -545,7 +544,32 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(DBConstants.WATCH_STATUS, status);
         Log.d("CatalogDBHandler", "updating the view status to database" + uuid);
-        return database.update("Catalog", values, "uuid" + " = ?", new String[]{uuid});
+        return database.update(DBConstants.CAT_TABLE_NAME, values, DBConstants.UUID + " = ?", new String[]{uuid});
+    }
+
+    public void deleteAllDataFromDB(int type) {
+        if (database == null || !database.isOpen() || database.isReadOnly())
+            database = this.getWritableDatabase(DBConstants.DATABASESECRETKEY);
+        String query = "";
+        switch (type) {
+            case 1:
+                query = DBConstants.DELETE + DBConstants.FROM + DBConstants.CAT_TABLE_NAME;
+                break;
+            case 2:
+                query = DBConstants.DELETE + DBConstants.FROM + DBConstants.QUESTION_CHOICES_TABLE;
+                break;
+            case 3:
+                query = DBConstants.DELETE + DBConstants.FROM + DBConstants.LOC_TABLE_NAME;
+                break;
+            case 4:
+                query = DBConstants.DELETE + DBConstants.FROM + DBConstants.QUESTION_TABLE;
+                break;
+            case 5:
+                query = DBConstants.DELETE + DBConstants.FROM + DBConstants.QA_TABLENAME;
+                break;
+        }
+        Logger.logD(TAG, "Table Delete Query : " + query);
+        database.execSQL(query);
     }
 
 

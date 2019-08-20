@@ -96,12 +96,12 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
             layout.binding.ivTickMark.setVisibility(View.GONE);
             layout.binding.rlEnableDisable.setBackgroundColor(layout.getContext().getResources().getColor(R.color.blackOpaque));
         } else if (catalogueDetailsModel.getCompleted().equals(RetrofitConstant.STATUS_TRUE)) {
-            layout.binding.ivTickMark.setVisibility(View.VISIBLE);
-            layout.binding.ivTickMark.setVisibility(View.VISIBLE);
+//            layout.binding.ivTickMark.setVisibility(View.VISIBLE);
+//            layout.binding.ivTickMark.setVisibility(View.VISIBLE);
             layout.binding.rlEnableDisable.setBackgroundColor(layout.getContext().getResources().getColor(R.color.greenOpaque));
         } else {
-            layout.binding.ivTickMark.setVisibility(View.GONE);
-            layout.binding.ivTickMark.setVisibility(View.GONE);
+//            layout.binding.ivTickMark.setVisibility(View.GONE);
+//            layout.binding.ivTickMark.setVisibility(View.GONE);
             layout.binding.rlEnableDisable.setBackgroundColor(layout.getContext().getResources().getColor(R.color.yellowOpaque));
         }
 

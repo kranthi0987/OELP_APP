@@ -22,7 +22,6 @@ import oelp.mahiti.org.newoepl.fileandvideodownloader.DownloadClass;
 import oelp.mahiti.org.newoepl.fileandvideodownloader.DownloadUtility;
 import oelp.mahiti.org.newoepl.fileandvideodownloader.FileModel;
 import oelp.mahiti.org.newoepl.fileandvideodownloader.OnMediaDownloadListener;
-import oelp.mahiti.org.newoepl.fileandvideodownloader.PermissionClass;
 import oelp.mahiti.org.newoepl.interfaces.ItemClickListerner;
 import oelp.mahiti.org.newoepl.models.CatalogueDetailsModel;
 import oelp.mahiti.org.newoepl.services.RetrofitConstant;
@@ -31,6 +30,7 @@ import oelp.mahiti.org.newoepl.utils.CheckNetwork;
 import oelp.mahiti.org.newoepl.utils.Constants;
 import oelp.mahiti.org.newoepl.utils.Logger;
 import oelp.mahiti.org.newoepl.utils.MySharedPref;
+import oelp.mahiti.org.newoepl.utils.PermissionClass;
 import oelp.mahiti.org.newoepl.viewmodel.HomeViewModel;
 import oelp.mahiti.org.newoepl.views.fragments.UnitsFragment;
 
@@ -128,16 +128,23 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
 
     @Override
     public void onItemClick(CatalogueDetailsModel item) {
-        if (item.getContType().equalsIgnoreCase("video")) {
-            checkVideoAndDownload(new FileModel(item.getName(), item.getPath(), item.getUuid()));
+        if (item.getContType() != null) {
+            if (item.getContType().equalsIgnoreCase("video")) {
+                checkVideoAndDownload(new FileModel(item.getName(), item.getPath(), item.getUuid()));
+            } else {
+                moveToNext(item);
+            }
         } else {
-            Intent intent = new Intent(this, SectionActivity.class);
-            intent.putExtra("CatalogDetailsModel", item);
-            startActivity(intent);
-            overridePendingTransition(R.anim.anim_slide_in_left,
-                    R.anim.anim_slide_out_left);
+            moveToNext(item);
         }
+    }
 
+    private void moveToNext(CatalogueDetailsModel item) {
+        Intent intent = new Intent(this, SectionActivity.class);
+        intent.putExtra("CatalogDetailsModel", item);
+        startActivity(intent);
+        overridePendingTransition(R.anim.anim_slide_in_left,
+                R.anim.anim_slide_out_left);
     }
 
 

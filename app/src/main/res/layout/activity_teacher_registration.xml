@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_semibold"
-                    android:text="Register..."
+                    android:text="@string/register"
                     android:textColor="@color/white"
                     android:textSize="@dimen/heading_text_size" />
             </RelativeLayout>
@@ -163,7 +163,7 @@
                                     android:backgroundTint="@color/white"
                                     android:enabled="@{!registrationViewModel.showProgresBar}"
                                     android:fontFamily="@font/montserrat_regular"
-                                    android:hint="@string/school"
+                                    android:hint="@string/school1"
                                     android:imeOptions="actionDone"
                                     android:inputType="text"
                                     android:text="@={registrationViewModel.school}"
@@ -236,13 +236,12 @@
                                             android:src="@drawable/downarrow" />
 
                                         <android.support.v7.widget.AppCompatSpinner
-                                            style="@style/spinnerStyle"
                                             android:id="@+id/spinnerState1"
                                             android:layout_width="30dp"
                                             android:layout_height="30dp"
                                             android:enabled="@{!registrationViewModel.showProgresBar.getValue()}"
                                             android:popupBackground="@color/white"
-                                            android:spinnerMode="dropdown"
+                                            android:spinnerMode="dialog"
                                             android:visibility="invisible"
                                             app:adapter="@{spinnerState}"/>
 
@@ -315,7 +314,7 @@
                                             android:layout_height="30dp"
                                             android:enabled="@{!registrationViewModel.showProgresBar}"
                                             android:popupBackground="@color/white"
-                                            android:spinnerMode="dropdown"
+                                            android:spinnerMode="dialog"
                                             android:visibility="invisible"
                                             app:adapter="@{spinnerDistrict}" />
                                         <!--bind:selectedDistrict="@={bindUtils.selectedDistrict}"-->
@@ -392,11 +391,10 @@
                                         <android.support.v7.widget.AppCompatSpinner
                                             android:id="@+id/spinnerBlock1"
                                             android:layout_width="30dp"
-                                            style="@style/spinnerStyle"
                                             android:layout_height="30dp"
                                             android:enabled="@{!registrationViewModel.showProgresBar}"
                                             android:popupBackground="@color/white"
-                                            android:spinnerMode="dropdown"
+                                            android:spinnerMode="dialog"
                                             android:visibility="invisible"
                                             app:adapter="@{spinnerBlock}"/>
                                         <!--bind:selectedBlock="@={bindUtils.selectedBlock}"-->
@@ -465,7 +463,7 @@
                                 <!--android:layout_height="30dp"-->
                                 <!--android:enabled="@{!registrationViewModel.showProgresBar}"-->
                                 <!--android:popupBackground="@color/white"-->
-                                <!--android:spinnerMode="dropdown"-->
+                                <!--android:spinnerMode="dialog"-->
                                 <!--android:visibility="invisible"-->
                                 <!--app:adapter="@{spinnerVillage}" />-->
                                 <!--&lt;!&ndash;bind:selectedVillage="@={bindUtils.selectedVillage}"&ndash;&gt;-->
@@ -487,7 +485,7 @@
                                     android:enabled="@{!registrationViewModel.showProgresBar}"
                                     android:fontFamily="@font/montserrat_medium"
                                     android:onClick="@{()->registrationViewModel.onSubmitClick()}"
-                                    android:text="Submit"
+                                    android:text="@string/submit"
                                     android:textAllCaps="false"
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/button_text_size" />

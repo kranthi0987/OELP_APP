@@ -25,6 +25,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import oelp.mahiti.org.newoepl.R;
+import oelp.mahiti.org.newoepl.database.DatabaseHandlerClass;
 import oelp.mahiti.org.newoepl.views.activities.AboutUsActivity;
 import oelp.mahiti.org.newoepl.views.activities.MobileLoginActivity;
 
@@ -79,6 +80,14 @@ public class AppUtils {
     public static String getDateTime() {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        Date date = new Date();
+        return simpleDateFormat.format(date);
+
+    }
+
+    public static String getDate() {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = new Date();
         return simpleDateFormat.format(date);
 
@@ -304,6 +313,12 @@ public class AppUtils {
     }
 
     public static void makeUserLogout(Context context) {
+        DatabaseHandlerClass dbHandler = new DatabaseHandlerClass(context);
+        dbHandler.deleteAllDataFromDB(1);
+        dbHandler.deleteAllDataFromDB(2);
+        dbHandler.deleteAllDataFromDB(3);
+        dbHandler.deleteAllDataFromDB(4);
+        dbHandler.deleteAllDataFromDB(5);
         new MySharedPref(context).deleteAllData();
         Intent intent = new Intent(context, MobileLoginActivity.class);
         context.startActivity(intent);

@@ -202,7 +202,7 @@ public class QuestionAnswerActivity extends AppCompatActivity {
         mediaUUID = getIntent().getStringExtra("mediaUUID");
         videoTitle = getIntent().getStringExtra("videoTitle");
         viewModel.setMediaUUID(mediaUUID);
-        String completeTilte = videoTitle.concat(" - Questions");
+        String completeTilte = videoTitle.concat(getResources().getString(R.string.hiphen_question));
         binding.tvTitle.setText(completeTilte);
     }
 

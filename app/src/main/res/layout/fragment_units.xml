@@ -39,15 +39,15 @@
                     android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
+                    android:layout_margin="@dimen/paddling_length"
                     android:fontFamily="@font/montserrat_bold"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_large" />
             </RelativeLayout>
 
             <RelativeLayout
-                android:paddingLeft="@dimen/paddling_length"
-                android:paddingRight="@dimen/paddling_length"
+                android:paddingRight="18dp"
+                android:paddingLeft="18dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/greybkg">

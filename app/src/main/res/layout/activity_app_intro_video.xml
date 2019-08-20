@@ -38,7 +38,7 @@
             android:fontFamily="@font/montserrat_regular"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
-            android:text="Next"
+            android:text="@string/next"
             android:textAllCaps="false"
             android:textColor="@color/black" />
     </RelativeLayout>

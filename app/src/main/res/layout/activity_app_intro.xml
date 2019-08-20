@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="Oelp App Introduction"
+                android:text="@string/oelp_app_introduction"
                 android:textColor="@color/black"
                 android:textSize="@dimen/heading_text_size" />
         </RelativeLayout>
@@ -75,7 +75,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/next_button"
-                android:text="Next"
+                android:text="@string/next"
                 android:textAllCaps="false"
                 android:textColor="@color/black" />
         </RelativeLayout>
