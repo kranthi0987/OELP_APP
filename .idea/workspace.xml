@@ -4,6 +4,7 @@
     <shared>
       <config>
         <devices>
+          <device id="pixel" />
           <device id="Nexus S" />
           <device id="pixel_2_xl" />
           <device id="Nexus 5" />
@@ -17,7 +18,12 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="00adbd23-2c5d-448f-88da-e6fe9e0f5b96" name="Default" comment="">
+    <list default="true" id="00adbd23-2c5d-448f-88da-e6fe9e0f5b96" name="Default" comment="About us completed">
+      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/GroupModel.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/Member.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/GroupAdapter.java" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-v24/green_dot.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/adapter_group_view.xml" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.bin" />
@@ -25,63 +31,26 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/1.png" afterPath="$PROJECT_DIR$/app/src/main/assets/1.png" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/2.png" afterPath="$PROJECT_DIR$/app/src/main/assets/2.png" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/3.png" afterPath="$PROJECT_DIR$/app/src/main/assets/3.png" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/4.png" afterPath="$PROJECT_DIR$/app/src/main/assets/4.png" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/THF Logo - new1.jpg" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/content.sqlite" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/needs.png" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/oelp-logo orignal.png" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/page.html" afterPath="$PROJECT_DIR$/app/src/main/assets/page.html" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/whats_new.png" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/database/DBConstants.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/database/DBConstants.java" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/database/DatabaseHandlerClass.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/database/DatabaseHandlerClass.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/fileandvideodownloader/PermissionClass.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/fileandvideodownloader/DownloadPermissionClass.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/utils/AppUtils.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/utils/AppUtils.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/utils/PermissionClass.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/utils/PermissionClass.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/videoplay/activity/VideoViewActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/videoplay/activity/VideoViewActivity.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/MobileVerificationResponseModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/MobileVerificationResponseModel.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/QuestionAnswerModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/QuestionAnswerModel.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/QuestionChoicesModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/QuestionChoicesModel.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/UserDetailsModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/UserDetailsModel.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/services/ApiInterface.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/services/ApiInterface.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/services/RetrofitConstant.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/services/RetrofitConstant.java" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/HomeViewModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/HomeViewModel.java" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/MobileLoginViewModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/MobileLoginViewModel.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/OTPVerificationViewModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/OTPVerificationViewModel.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/QuestionAnswerViewModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/QuestionAnswerViewModel.java" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/TeacherRegistrationViewModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/TeacherRegistrationViewModel.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/AppIntroVideoActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/AppIntroVideoActivity.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/MobileLoginActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/MobileLoginActivity.java" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SectionActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SectionActivity.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SplashActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SplashActivity.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/TeacherRegistrationActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/TeacherRegistrationActivity.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/UnitsVideoAdpater.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/UnitsVideoAdpater.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/UnitsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/UnitsFragment.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/image1.jpg" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/image10.jpg" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/image11.jpg" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/image2.jpg" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/image3.jpg" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/image4.jpg" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/image5.jpg" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/image6.jpg" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/image7.jpg" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/image8.jpg" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/image9.jpg" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_app_intro.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_app_intro.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_app_intro_video.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_app_intro_video.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_mobile_login.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_mobile_login.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_question_answer.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_question_answer.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/ViewPagerAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/ViewPagerAdapter.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/GroupsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/GroupsFragment.java" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_teacher_registration.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_teacher_registration.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_verification.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_verification.xml" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/adapter_units_video.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/adapter_units_video.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/custom_spinner_item.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/custom_spinner_item.xml" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_groups.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_groups.xml" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_units.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_units.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/subquestions.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/subquestions.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/menu/teacher_menu.xml" afterPath="$PROJECT_DIR$/app/src/main/res/menu/teacher_menu.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-en/strings.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-hdpi/dimens.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-hi/strings.xml" afterPath="" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
     </list>
@@ -106,93 +75,115 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="AppUtils.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/utils/AppUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="316" column="32" lean-forward="true" selection-start-line="316" selection-start-column="32" selection-end-line="316" selection-end-column="32" />
-              <folding>
-                <element signature="e#1791#1845#0" expanded="true" />
-                <element signature="e#1954#2008#0" expanded="true" />
-                <element signature="e#2184#2244#0" expanded="true" />
-                <element signature="e#2320#2380#0" expanded="true" />
-                <element signature="e#3094#3138#0" expanded="true" />
-                <element signature="e#3207#3257#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="VideoDownloaderClass.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/fileandvideodownloader/VideoDownloaderClass.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="164" column="0" lean-forward="false" selection-start-line="164" selection-start-column="0" selection-end-line="164" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="page.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/assets/page.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="133" column="20" lean-forward="false" selection-start-line="133" selection-start-column="16" selection-end-line="133" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UnitsVideoAdpater.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/UnitsVideoAdpater.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="758">
-              <caret line="119" column="73" lean-forward="false" selection-start-line="119" selection-start-column="73" selection-end-line="119" selection-end-column="73" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HomeActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HomeViewModel.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="HomeViewModel.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/HomeViewModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="151">
-              <caret line="335" column="0" lean-forward="false" selection-start-line="335" selection-start-column="0" selection-end-line="335" selection-end-column="0" />
+            <state relative-caret-position="302">
+              <caret line="429" column="31" lean-forward="false" selection-start-line="429" selection-start-column="31" selection-end-line="429" selection-end-column="31" />
               <folding>
-                <element signature="e#16982#17040#0" expanded="true" />
-                <element signature="e#20327#20385#0" expanded="true" />
-                <element signature="e#22413#22471#0" expanded="true" />
+                <element signature="e#19484#19485#0" expanded="true" />
+                <element signature="e#19522#19523#0" expanded="true" />
+                <element signature="e#26942#26975#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DatabaseHandlerClass.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/database/DatabaseHandlerClass.java">
+      <file leaf-file-name="GroupsFragment.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/GroupsFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="138">
-              <caret line="549" column="16" lean-forward="false" selection-start-line="549" selection-start-column="16" selection-end-line="549" selection-end-column="16" />
+            <state relative-caret-position="391">
+              <caret line="41" column="67" lean-forward="true" selection-start-line="41" selection-start-column="67" selection-end-line="41" selection-end-column="67" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DBConstants.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/database/DBConstants.java">
+      <file leaf-file-name="fragment_groups.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_groups.xml">
+          <provider editor-type-id="android-designer2">
+            <state />
+          </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="507">
-              <caret line="81" column="31" lean-forward="false" selection-start-line="81" selection-start-column="31" selection-end-line="81" selection-end-column="31" />
+            <state relative-caret-position="631">
+              <caret line="45" column="49" lean-forward="false" selection-start-line="45" selection-start-column="49" selection-end-line="45" selection-end-column="49" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="attrs.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Library/Android/sdk/platforms/android-28/data/res/values/attrs.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="288">
+              <caret line="676" column="20" lean-forward="false" selection-start-line="676" selection-start-column="20" selection-end-line="676" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity_mobile_login.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_mobile_login.xml">
+          <provider editor-type-id="android-designer2">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="471">
+              <caret line="123" column="112" lean-forward="true" selection-start-line="115" selection-start-column="28" selection-end-line="123" selection-end-column="112" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ApiInterface.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/services/ApiInterface.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="149">
+              <caret line="46" column="78" lean-forward="false" selection-start-line="46" selection-start-column="78" selection-end-line="46" selection-end-column="78" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Constants.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/utils/Constants.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="14" column="34" lean-forward="false" selection-start-line="14" selection-start-column="34" selection-end-line="14" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ViewPagerAdapter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/ViewPagerAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="551">
+              <caret line="63" column="0" lean-forward="false" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SectionActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SectionActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="636">
+              <caret line="198" column="44" lean-forward="false" selection-start-line="198" selection-start-column="36" selection-end-line="198" selection-end-column="44" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UserDetailsModel.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/UserDetailsModel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1241">
+              <caret line="105" column="41" lean-forward="false" selection-start-line="105" selection-start-column="41" selection-end-line="105" selection-end-column="41" />
+              <folding>
+                <element signature="e#1109#1110#0" expanded="true" />
+                <element signature="e#1138#1139#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -202,44 +193,45 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="layoutResourceFile" />
         <option value="valueResourceFile" />
+        <option value="layoutResourceFile_vertical" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>onBA</find>
-      <find>onBa</find>
-      <find>Downlo</find>
-      <find>DownloadClass</find>
-      <find>srcPath</find>
-      <find>enabled</find>
-      <find>otpMobileText</find>
-      <find>hud</find>
-      <find>contentUpdateStatus</find>
-      <find>recyclerView</find>
-      <find>setFra</find>
-      <find>colorPrimary</find>
-      <find>RadioGroup</find>
-      <find>&lt;ImageView</find>
-      <find>Error in</find>
-      <find>onItemClick</find>
-      <find>uriPath</find>
-      <find>srcPath =</find>
-      <find>onIte</find>
-      <find>simple_spinner_dropdown_item</find>
-      <find>simple_spinner_item</find>
-      <find>dropdown</find>
-      <find>catalogApiCalled</find>
-      <find>CATALOGUE_URL</find>
-      <find>oelp</find>
-      <find>QUESTION_TABLE</find>
       <find>logout</find>
       <find>QA_TABLENAME</find>
       <find>TABLE</find>
       <find>unitsClick</find>
+      <find>questionText</find>
+      <find>submitAnswerToTable</find>
+      <find>radioGroupMap</find>
+      <find>questionsStringList</find>
+      <find>setLa</find>
+      <find>setLay</find>
+      <find>questionAnswerModelLsit</find>
+      <find>testAttemptCount</find>
+      <find>fdb</find>
+      <find>default</find>
+      <find>score</find>
+      <find>quesAnsModelList</find>
+      <find>text</find>
+      <find>catalogueDetailsModel</find>
+      <find>activity</find>
+      <find>adapterViewModel</find>
+      <find>showProgresBar</find>
+      <find>showProgresBar.setValue(true);</find>
+      <find>showProgresBar.setValue(false);</find>
+      <find>getCata</find>
+      <find>GROUP_ID</find>
+      <find>GROUP_NAME</find>
+      <find>modelForCatalog</find>
+      <find>MEMBER_UUID</find>
+      <find>callApiG</find>
+      <find>userId</find>
     </findStrings>
     <replaceStrings>
       <replace>homeViewModels</replace>
@@ -2384,28 +2376,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/layout_app_background_logo.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_splash.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/ViewPagerAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/custom_layout.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/QuestionAnswerModel.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/fileandvideodownloader/DownloadUtility.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/utils/Constants.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/database/DBConstants.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/QuestionAnswerViewModel.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/UnitsVideoAdpater.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values-hi/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values-en/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_mobile_login.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_app_intro.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/menu/teacher_menu.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/TeacherRegistrationViewModel.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/services/RetrofitClass.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/MobileLoginViewModel.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/OTPVerificationViewModel.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/fileandvideodownloader/PermissionClass.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/fileandvideodownloader/downloadPermissionClass.java" />
@@ -2416,25 +2386,47 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_app_intro_video.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/AppIntroVideoActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_verification.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_groups.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/adapter_units_video.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/UnitsFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_units.xml" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_question_answer.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/subquestions.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/videoplay/activity/VideoViewActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SectionActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/TeacherRegistrationActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/custom_spinner_item.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_teacher_registration.xml" />
         <option value="$PROJECT_DIR$/app/src/main/assets/content.sqlite" />
-        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/HomeViewModel.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/database/DatabaseHandlerClass.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/utils/AppUtils.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_teacher_registration.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/QuestionChoicesModel.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/QuestionAnswerViewModel.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/QuestionAnswerModel.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/HomeFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_units.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/UnitsFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/adapter_units_video.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/active_dot.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable-v24/green_dot.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/adapter_group_view.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/GroupAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/Memeber.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/GroupModel.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/database/DBConstants.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/services/RetrofitConstant.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/Member.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/database/DatabaseHandlerClass.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/MobileVerificationResponseModel.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/TeacherRegistrationViewModel.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/MobileLoginViewModel.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SectionActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/ViewPagerAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/UserDetailsModel.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/services/ApiInterface.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/HomeViewModel.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/GroupsFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_groups.xml" />
       </list>
     </option>
   </component>
@@ -2490,10 +2482,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="ProjectPane" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -2549,12 +2537,38 @@
               <item name="mahiti" type="462c0819:PsiDirectoryNode" />
               <item name="org" type="462c0819:PsiDirectoryNode" />
               <item name="newoepl" type="462c0819:PsiDirectoryNode" />
+              <item name="models" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="OELP_APP" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="oelp" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="mahiti" type="462c0819:PsiDirectoryNode" />
+              <item name="org" type="462c0819:PsiDirectoryNode" />
+              <item name="newoepl" type="462c0819:PsiDirectoryNode" />
               <item name="services" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="OELP_APP" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="assets" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="oelp" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="mahiti" type="462c0819:PsiDirectoryNode" />
+              <item name="org" type="462c0819:PsiDirectoryNode" />
+              <item name="newoepl" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="OELP_APP" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="oelp" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="mahiti" type="462c0819:PsiDirectoryNode" />
+              <item name="org" type="462c0819:PsiDirectoryNode" />
+              <item name="newoepl" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="adapters" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="OELP_APP" type="1abcf292:AndroidViewProjectNode" />
@@ -2565,18 +2579,31 @@
               <item name="OELP_APP" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="drawable" type="ddeffd01:AndroidResFolderTypeNode" />
-            </path>
-            <path>
-              <item name="OELP_APP" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="menu" type="ddeffd01:AndroidResFolderTypeNode" />
+              <item name="values" type="ddeffd01:AndroidResFolderTypeNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="OELP_APP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="OELP_APP" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="OELP_APP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="OELP_APP" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2591,22 +2618,24 @@
     <property name="DEBUGGABLE_PROCESS" value="oelp.mahiti.org.newoepl" />
     <property name="SHOW_ALL_PROCESSES" value="false" />
     <property name="DEBUGGER_ID" value="Auto" />
-    <property name="SearchEverywhereHistoryKey" value="home&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java&#10;AppU&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/utils/AppUtils.java&#10;regi&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_teacher_registration.xml&#10;cust&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/custom_spinner_item.xml&#10;regis&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/TeacherRegistrationActivity.java&#10;homev&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/HomeViewModel.java&#10;hom&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java&#10;sect&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.views.activities.SectionActivity&#10;VideoV&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/videoplay/activity/VideoViewActivity.java&#10;HomeA&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java&#10;Ques&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java&#10;ques&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_question_answer.xml&#10;qu&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_question_answer.xml&#10;sectio&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SectionActivity.java&#10;unit&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/fragment_units.xml&#10;uni&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/adapter_units_video.xml&#10;unitad&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/UnitsVideoAdpater.java&#10;logi&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_mobile_login.xml&#10;grou&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/fragment_groups.xml&#10;ver&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_verification.xml&#10;re&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/TeacherRegistrationViewModel.java&#10;vIdeo&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/videoplay/activity/VideoViewActivity.java&#10;str&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/values/strings.xml&#10;Logi&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/MobileLoginActivity.java&#10;App&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/AppIntroVideoActivity.java&#10;Regis&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/TeacherRegistrationActivity.java&#10;Mobil&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/MobileLoginActivity.java&#10;Spla&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SplashActivity.java&#10;Home&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java&#10;mobil&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/MobileLoginActivity.java&#10;mob&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_mobile_login.xml&#10;VeriA&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.views.activities.OTPVerificationActivity&#10;mobi&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.views.activities.MobileLoginActivity&#10;homeA&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java&#10;unitfr&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/UnitsFragment.java&#10;unita&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/UnitsVideoAdpater.java&#10;Quest&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java&#10;data&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/database/DatabaseHandlerClass.java&#10;reg&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_teacher_registration.xml&#10;app&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/AppIntroVideoActivity.java&#10;cus&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/custom_spinner_item.xml&#10;TeacH&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/TeacherRegistrationViewModel.java&#10;RegisA&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/TeacherRegistrationActivity.java&#10;RegisView&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.viewmodel.TeacherRegistrationViewModel&#10;RegisV&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.viewmodel.TeacherRegistrationViewModel&#10;Da&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/database/DatabaseHandlerClass.java&#10;Reg&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/TeacherRegistrationActivity.java&#10;unitA&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.views.adapters.UnitsVideoAdpater&#10;unitf&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/UnitsFragment.java&#10;homef&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/HomeFragment.java" />
+    <property name="SearchEverywhereHistoryKey" value="login&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_mobile_login.xml&#10;homev&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/HomeViewModel.java&#10;home&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_home.xml&#10;unit&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/fragment_units.xml&#10;fragment_&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/fragment_units.xml&#10;homeFra&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.views.fragments.HomeFragment&#10;grou&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/fragment_groups.xml&#10;regis&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_teacher_registration.xml&#10;QuesA&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/models/QuestionAnswerModel.java&#10;AppU&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/utils/AppUtils.java&#10;regi&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_teacher_registration.xml&#10;cust&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/custom_spinner_item.xml&#10;hom&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java&#10;sect&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.views.activities.SectionActivity&#10;VideoV&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/videoplay/activity/VideoViewActivity.java&#10;HomeA&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java&#10;Ques&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java&#10;ques&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_question_answer.xml&#10;qu&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_question_answer.xml&#10;sectio&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SectionActivity.java&#10;uni&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/adapter_units_video.xml&#10;unitad&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/UnitsVideoAdpater.java&#10;logi&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_mobile_login.xml&#10;ver&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_verification.xml&#10;re&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/TeacherRegistrationViewModel.java&#10;vIdeo&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/videoplay/activity/VideoViewActivity.java&#10;str&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/values/strings.xml&#10;Logi&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/MobileLoginActivity.java&#10;App&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/AppIntroVideoActivity.java&#10;Regis&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/TeacherRegistrationActivity.java&#10;Mobil&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/MobileLoginActivity.java&#10;Spla&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SplashActivity.java&#10;Home&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java&#10;mobil&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/MobileLoginActivity.java&#10;mob&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_mobile_login.xml&#10;VeriA&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.views.activities.OTPVerificationActivity&#10;mobi&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.views.activities.MobileLoginActivity&#10;homeA&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java&#10;unitfr&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/UnitsFragment.java&#10;unita&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/UnitsVideoAdpater.java&#10;Quest&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java&#10;data&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/database/DatabaseHandlerClass.java&#10;reg&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_teacher_registration.xml&#10;app&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/AppIntroVideoActivity.java&#10;cus&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/custom_spinner_item.xml&#10;TeacH&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/TeacherRegistrationViewModel.java&#10;RegisA&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/TeacherRegistrationActivity.java&#10;RegisView&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.viewmodel.TeacherRegistrationViewModel&#10;RegisV&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.viewmodel.TeacherRegistrationViewModel&#10;Da&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/database/DatabaseHandlerClass.java" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/app/src/main/assets" />
-      <recent name="$PROJECT_DIR$/app/src/main/res/drawable" />
-      <recent name="$PROJECT_DIR$/app/src/main/res/font" />
-      <recent name="$PROJECT_DIR$/app/src/main/res/raw" />
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="oelp.mahiti.org.newoepl.models" />
+      <recent name="oelp.mahiti.org.newoepl.utils" />
+      <recent name="oelp.mahiti.org.newoepl.views.activities" />
     </key>
     <key name="android.template.packageName">
       <recent name="oelp.mahiti.org.newoepl.views.activities" />
     </key>
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="oelp.mahiti.org.newoepl.utils" />
-      <recent name="oelp.mahiti.org.newoepl.views.activities" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/res/drawable-v24" />
+      <recent name="$PROJECT_DIR$/app/src/main/assets" />
+      <recent name="$PROJECT_DIR$/app/src/main/res/drawable" />
+      <recent name="$PROJECT_DIR$/app/src/main/res/font" />
+      <recent name="$PROJECT_DIR$/app/src/main/res/raw" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -2821,7 +2850,14 @@
       <option name="project" value="LOCAL" />
       <updated>1566236969284</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="About us completed">
+      <created>1566310331685</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1566310331685</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TodoView">
@@ -2835,8 +2871,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="40" y="38" width="1852" height="1022" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32983425" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.63163716" sideWeight="0.50220996" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Flutter Outline" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32983425" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2847,19 +2884,18 @@
       <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32964602" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24972376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32983425" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39933628" sideWeight="0.49779007" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39933628" sideWeight="0.49779007" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32964602" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32983425" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32983425" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24972376" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24972376" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Android WiFi ADB" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32983425" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32964602" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Fabric" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2871,6 +2907,7 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32964602" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -2881,7 +2918,8 @@
     <MESSAGE value="Question Displaying Done" />
     <MESSAGE value="Video Added for Intro Page" />
     <MESSAGE value="Video Added for Intro Page ...." />
-    <option name="LAST_COMMIT_MESSAGE" value="Video Added for Intro Page ...." />
+    <MESSAGE value="About us completed" />
+    <option name="LAST_COMMIT_MESSAGE" value="About us completed" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -3027,27 +3065,9 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/HomeViewModel.java</url>
-          <line>423</line>
+          <line>502</line>
           <properties />
           <option name="timeStamp" value="110" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/ViewPagerAdapter.java</url>
-          <line>79</line>
-          <properties />
-          <option name="timeStamp" value="126" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/ViewPagerAdapter.java</url>
-          <line>93</line>
-          <properties />
-          <option name="timeStamp" value="127" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/ViewPagerAdapter.java</url>
-          <line>99</line>
-          <properties />
-          <option name="timeStamp" value="128" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/fileandvideodownloader/DownloadUtility.java</url>
@@ -3128,12 +3148,6 @@
           <option name="timeStamp" value="174" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java</url>
-          <line>178</line>
-          <properties />
-          <option name="timeStamp" value="175" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/TeacherRegistrationActivity.java</url>
           <line>166</line>
           <properties />
@@ -3153,7 +3167,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java</url>
-          <line>124</line>
+          <line>161</line>
           <properties />
           <option name="timeStamp" value="182" />
         </line-breakpoint>
@@ -3165,13 +3179,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java</url>
-          <line>79</line>
+          <line>80</line>
           <properties />
           <option name="timeStamp" value="184" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java</url>
-          <line>113</line>
+          <line>149</line>
           <properties />
           <option name="timeStamp" value="185" />
         </line-breakpoint>
@@ -3183,7 +3197,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SplashActivity.java</url>
-          <line>96</line>
+          <line>89</line>
           <properties />
           <option name="timeStamp" value="191" />
         </line-breakpoint>
@@ -3231,21 +3245,15 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/HomeViewModel.java</url>
-          <line>335</line>
+          <line>367</line>
           <properties />
           <option name="timeStamp" value="201" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/HomeViewModel.java</url>
-          <line>510</line>
+          <line>582</line>
           <properties />
           <option name="timeStamp" value="203" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/HomeViewModel.java</url>
-          <line>340</line>
-          <properties />
-          <option name="timeStamp" value="204" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/fileandvideodownloader/VideoDownloaderClass.java</url>
@@ -3291,7 +3299,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/HomeViewModel.java</url>
-          <line>342</line>
+          <line>375</line>
           <properties />
           <option name="timeStamp" value="212" />
         </line-breakpoint>
@@ -3300,12 +3308,6 @@
           <line>71</line>
           <properties />
           <option name="timeStamp" value="213" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/database/DatabaseHandlerClass.java</url>
-          <line>550</line>
-          <properties />
-          <option name="timeStamp" value="214" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/utils/AppUtils.java</url>
@@ -3375,417 +3377,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_app_intro_video.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="40" column="38" lean-forward="false" selection-start-line="40" selection-start-column="38" selection-end-line="40" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/MobileLoginActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="74" column="41" lean-forward="false" selection-start-line="74" selection-start-column="41" selection-end-line="74" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/AppIntroVideoActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="36" column="32" lean-forward="false" selection-start-line="36" selection-start-column="32" selection-end-line="36" selection-end-column="32" />
-          <folding>
-            <element signature="e#1366#1367#0" expanded="false" />
-            <element signature="e#1413#1414#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Documents/AndroidStudio/DeviceExplorer/panasonic-p101-0123456789ABCDEF/data/data/oelp.mahiti.org.newoepl/databases/OelpDatabase.db">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/TeacherRegistrationViewModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1854">
-          <caret line="225" column="28" lean-forward="false" selection-start-line="225" selection-start-column="28" selection-end-line="225" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_verification.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="487">
-          <caret line="65" column="69" lean-forward="false" selection-start-line="65" selection-start-column="69" selection-end-line="65" selection-end-column="69" />
-          <folding>
-            <element signature="e#9660#9679#0" expanded="false" />
-            <element signature="e#9812#9837#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/interfaces/ItemClickListerner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_groups.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="36" lean-forward="false" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="743">
-          <caret line="101" column="47" lean-forward="false" selection-start-line="101" selection-start-column="47" selection-end-line="101" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/units_select.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_mobile_login.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="50" column="24" lean-forward="false" selection-start-line="50" selection-start-column="24" selection-end-line="50" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/adapter_units_video.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="379">
-          <caret line="76" column="51" lean-forward="false" selection-start-line="76" selection-start-column="51" selection-end-line="76" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="17" lean-forward="false" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="133" column="72" lean-forward="false" selection-start-line="133" selection-start-column="57" selection-end-line="133" selection-end-column="72" />
-          <folding>
-            <element signature="e#810#973#0" expanded="false" />
-            <element signature="e#6633#6649#0" expanded="false" />
-            <element signature="e#10065#10939#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/image1.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="17" lean-forward="false" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_units.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="44" column="55" lean-forward="false" selection-start-line="44" selection-start-column="45" selection-end-line="44" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_question_answer.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="434">
-          <caret line="72" column="48" lean-forward="false" selection-start-line="72" selection-start-column="48" selection-end-line="72" selection-end-column="48" />
-          <folding>
-            <element signature="e#474#625#0" expanded="false" />
-            <element signature="e#1284#2284#0" expanded="false" />
-            <element signature="e#2224#2243#0" expanded="false" />
-            <element signature="e#2696#2720#0" expanded="false" />
-            <element signature="e#3037#3061#0" expanded="false" />
-            <element signature="e#3107#3131#0" expanded="false" />
-            <element signature="e#3462#3484#0" expanded="false" />
-            <element signature="e#3834#3850#0" expanded="false" />
-            <element signature="e#4110#4135#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider editor-type-id="android-manifest">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="934">
-          <caret line="69" column="51" lean-forward="false" selection-start-line="69" selection-start-column="51" selection-end-line="69" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/subquestions.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="55" lean-forward="false" selection-start-line="23" selection-start-column="55" selection-end-line="23" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="87">
-          <caret line="135" column="59" lean-forward="false" selection-start-line="135" selection-start-column="59" selection-end-line="135" selection-end-column="59" />
-          <folding>
-            <element signature="e#3192#3246#0" expanded="false" />
-            <element signature="e#8590#8601#0" expanded="false" />
-            <element signature="e#9084#9134#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SplashActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="43" column="0" lean-forward="false" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/UnitsFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="98" column="0" lean-forward="false" selection-start-line="98" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/fileandvideodownloader/DownloadUtility.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
-          <caret line="196" column="0" lean-forward="false" selection-start-line="196" selection-start-column="0" selection-end-line="196" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/videoplay/activity/VideoViewActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="491" column="0" lean-forward="false" selection-start-line="491" selection-start-column="0" selection-end-line="491" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SectionActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="387">
-          <caret line="167" column="5" lean-forward="false" selection-start-line="167" selection-start-column="5" selection-end-line="167" selection-end-column="5" />
-          <folding>
-            <element signature="e#6184#6218#0" expanded="false" />
-            <element signature="e#7201#7238#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/Library/Android/sdk/platforms/android-28/android.jar!/android/widget/ArrayAdapter.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="109" column="16" lean-forward="false" selection-start-line="109" selection-start-column="16" selection-end-line="109" selection-end-column="16" />
-          <folding>
-            <marker date="1544171308000" expanded="false" signature="0:104" ph="/.../" />
-            <marker date="1544171308000" expanded="false" signature="138:433" ph="..." />
-            <marker date="1544171308000" expanded="true" signature="602:654" ph="{...}" />
-            <marker date="1544171308000" expanded="true" signature="752:804" ph="{...}" />
-            <marker date="1544171308000" expanded="true" signature="908:960" ph="{...}" />
-            <marker date="1544171308000" expanded="true" signature="1088:1140" ph="{...}" />
-            <marker date="1544171308000" expanded="true" signature="1248:1300" ph="{...}" />
-            <marker date="1544171308000" expanded="true" signature="1432:1484" ph="{...}" />
-            <marker date="1544171308000" expanded="false" signature="1533:1544" ph=" { " />
-            <marker date="1544171308000" expanded="false" signature="1580:1586" ph=" }" />
-            <marker date="1544171308000" expanded="true" signature="1664:1716" ph="{...}" />
-            <marker date="1544171308000" expanded="false" signature="1752:1763" ph=" { " />
-            <marker date="1544171308000" expanded="false" signature="1799:1805" ph=" }" />
-            <marker date="1544171308000" expanded="true" signature="1869:1921" ph="{...}" />
-            <marker date="1544171308000" expanded="false" signature="1973:1984" ph=" { " />
-            <marker date="1544171308000" expanded="false" signature="2020:2026" ph=" }" />
-            <marker date="1544171308000" expanded="false" signature="2051:2062" ph=" { " />
-            <marker date="1544171308000" expanded="false" signature="2098:2104" ph=" }" />
-            <marker date="1544171308000" expanded="true" signature="2178:2230" ph="{...}" />
-            <marker date="1544171308000" expanded="false" signature="2270:2281" ph=" { " />
-            <marker date="1544171308000" expanded="false" signature="2317:2323" ph=" }" />
-            <marker date="1544171308000" expanded="false" signature="2382:2393" ph=" { " />
-            <marker date="1544171308000" expanded="false" signature="2429:2435" ph=" }" />
-            <marker date="1544171308000" expanded="false" signature="2489:2500" ph=" { " />
-            <marker date="1544171308000" expanded="false" signature="2536:2542" ph=" }" />
-            <marker date="1544171308000" expanded="false" signature="2569:2580" ph=" { " />
-            <marker date="1544171308000" expanded="false" signature="2616:2622" ph=" }" />
-            <marker date="1544171308000" expanded="false" signature="2680:2691" ph=" { " />
-            <marker date="1544171308000" expanded="false" signature="2727:2733" ph=" }" />
-            <marker date="1544171308000" expanded="false" signature="2787:2798" ph=" { " />
-            <marker date="1544171308000" expanded="false" signature="2834:2840" ph=" }" />
-            <marker date="1544171308000" expanded="false" signature="2881:2892" ph=" { " />
-            <marker date="1544171308000" expanded="false" signature="2928:2934" ph=" }" />
-            <marker date="1544171308000" expanded="true" signature="3066:3118" ph="{...}" />
-            <marker date="1544171308000" expanded="false" signature="3173:3184" ph=" { " />
-            <marker date="1544171308000" expanded="false" signature="3220:3226" ph=" }" />
-            <marker date="1544171308000" expanded="true" signature="3296:3348" ph="{...}" />
-            <marker date="1544171308000" expanded="false" signature="3411:3422" ph=" { " />
-            <marker date="1544171308000" expanded="false" signature="3458:3464" ph=" }" />
-            <marker date="1544171308000" expanded="true" signature="3583:3635" ph="{...}" />
-            <marker date="1544171308000" expanded="true" signature="3795:3847" ph="{...}" />
-            <marker date="1544171308000" expanded="false" signature="3899:3910" ph=" { " />
-            <marker date="1544171308000" expanded="false" signature="3946:3952" ph=" }" />
-            <marker date="1544171308000" expanded="false" signature="4000:4011" ph=" { " />
-            <marker date="1544171308000" expanded="false" signature="4047:4053" ph=" }" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/services/RetrofitConstant.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="22" column="36" lean-forward="false" selection-start-line="22" selection-start-column="36" selection-end-line="22" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/TeacherRegistrationActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1387">
-          <caret line="332" column="0" lean-forward="false" selection-start-line="332" selection-start-column="0" selection-end-line="332" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/custom_spinner_item.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_teacher_registration.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="243" column="71" lean-forward="false" selection-start-line="243" selection-start-column="65" selection-end-line="243" selection-end-column="71" />
-          <folding>
-            <element signature="e#1804#1822#0" expanded="false" />
-            <element signature="e#1913#1939#0" expanded="false" />
-            <element signature="e#3640#3660#0" expanded="false" />
-            <element signature="e#4231#4252#0" expanded="false" />
-            <element signature="e#4290#5677#0" expanded="false" />
-            <element signature="e#5341#5362#0" expanded="false" />
-            <element signature="e#7430#7447#0" expanded="false" />
-            <element signature="e#7856#7877#0" expanded="false" />
-            <element signature="e#10261#10296#0" expanded="false" />
-            <element signature="e#10607#10628#0" expanded="false" />
-            <element signature="e#15530#15551#0" expanded="false" />
-            <element signature="e#20579#20600#0" expanded="false" />
-            <element signature="e#23419#23436#0" expanded="false" />
-            <element signature="e#23846#23867#0" expanded="false" />
-            <element signature="e#27249#27271#0" expanded="false" />
-            <element signature="e#27748#27764#0" expanded="false" />
-            <element signature="e#27951#27976#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/OTPVerificationViewModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="137" column="0" lean-forward="false" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/OTPVerificationActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
-          <caret line="303" column="0" lean-forward="false" selection-start-line="303" selection-start-column="0" selection-end-line="303" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/services/ApiInterface.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="40" column="19" lean-forward="false" selection-start-line="40" selection-start-column="19" selection-end-line="40" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/assets/needs.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/assets/oelp-logo orignal.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/assets/page.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="133" column="20" lean-forward="false" selection-start-line="133" selection-start-column="16" selection-end-line="133" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/assets/4.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -3801,43 +3392,20 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/assets/THF Logo - new1.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/assets/whats_new.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/assets/content.sqlite">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/assets/THF Logo - new1.jpg" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/assets/whats_new.png" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/assets/content.sqlite" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/fileandvideodownloader/VideoDownloaderClass.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
+        <state relative-caret-position="2142">
           <caret line="164" column="0" lean-forward="false" selection-start-line="164" selection-start-column="0" selection-end-line="164" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/UnitsVideoAdpater.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="758">
-          <caret line="119" column="73" lean-forward="false" selection-start-line="119" selection-start-column="73" selection-end-line="119" selection-end-column="73" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
+        <state relative-caret-position="697">
           <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
           <folding />
         </state>
@@ -3848,46 +3416,659 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/utils/AppUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4913">
+          <caret line="316" column="32" lean-forward="false" selection-start-line="316" selection-start-column="32" selection-end-line="316" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_teacher_registration.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="399" column="61" lean-forward="false" selection-start-line="399" selection-start-column="61" selection-end-line="399" selection-end-column="61" />
+          <folding>
+            <element signature="e#4290#5677#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/QuestionModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/Library/Android/sdk/platforms/android-28/android.jar!/java/util/HashMap.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+          <folding>
+            <marker date="1544171308000" expanded="false" signature="0:104" ph="/.../" />
+            <marker date="1544171308000" expanded="false" signature="133:383" ph="..." />
+            <marker date="1544171308000" expanded="false" signature="543:554" ph=" { " />
+            <marker date="1544171308000" expanded="false" signature="590:596" ph=" }" />
+            <marker date="1544171308000" expanded="false" signature="637:648" ph=" { " />
+            <marker date="1544171308000" expanded="false" signature="684:690" ph=" }" />
+            <marker date="1544171308000" expanded="false" signature="712:723" ph=" { " />
+            <marker date="1544171308000" expanded="false" signature="759:765" ph=" }" />
+            <marker date="1544171308000" expanded="true" signature="836:888" ph="{...}" />
+            <marker date="1544171308000" expanded="false" signature="911:922" ph=" { " />
+            <marker date="1544171308000" expanded="false" signature="958:964" ph=" }" />
+            <marker date="1544171308000" expanded="false" signature="994:1005" ph=" { " />
+            <marker date="1544171308000" expanded="false" signature="1041:1047" ph=" }" />
+            <marker date="1544171308000" expanded="false" signature="1117:1128" ph=" { " />
+            <marker date="1544171308000" expanded="false" signature="1164:1170" ph=" }" />
+            <marker date="1544171308000" expanded="true" signature="1233:1285" ph="{...}" />
+            <marker date="1544171308000" expanded="false" signature="1341:1352" ph=" { " />
+            <marker date="1544171308000" expanded="false" signature="1388:1394" ph=" }" />
+            <marker date="1544171308000" expanded="true" signature="1469:1521" ph="{...}" />
+            <marker date="1544171308000" expanded="false" signature="1594:1605" ph=" { " />
+            <marker date="1544171308000" expanded="false" signature="1641:1647" ph=" }" />
+            <marker date="1544171308000" expanded="false" signature="1672:1683" ph=" { " />
+            <marker date="1544171308000" expanded="false" signature="1719:1725" ph=" }" />
+            <marker date="1544171308000" expanded="true" signature="1792:1844" ph="{...}" />
+            <marker date="1544171308000" expanded="false" signature="1893:1904" ph=" { " />
+            <marker date="1544171308000" expanded="false" signature="1940:1946" ph=" }" />
+            <marker date="1544171308000" expanded="false" signature="2002:2013" ph=" { " />
+            <marker date="1544171308000" expanded="false" signature="2049:2055" ph=" }" />
+            <marker date="1544171308000" expanded="false" signature="2116:2127" ph=" { " />
+            <marker date="1544171308000" expanded="false" signature="2163:2169" ph=" }" />
+            <marker date="1544171308000" expanded="true" signature="2283:2335" ph="{...}" />
+            <marker date="1544171308000" expanded="false" signature="2399:2410" ph=" { " />
+            <marker date="1544171308000" expanded="false" signature="2446:2452" ph=" }" />
+            <marker date="1544171308000" expanded="true" signature="2542:2594" ph="{...}" />
+            <marker date="1544171308000" expanded="true" signature="2672:2724" ph="{...}" />
+            <marker date="1544171308000" expanded="false" signature="2784:2795" ph=" { " />
+            <marker date="1544171308000" expanded="false" signature="2831:2837" ph=" }" />
+            <marker date="1544171308000" expanded="true" signature="2964:3016" ph="{...}" />
+            <marker date="1544171308000" expanded="true" signature="3159:3211" ph="{...}" />
+            <marker date="1544171308000" expanded="true" signature="3345:3397" ph="{...}" />
+            <marker date="1544171308000" expanded="true" signature="3555:3607" ph="{...}" />
+            <marker date="1544171308000" expanded="true" signature="3691:3743" ph="{...}" />
+            <marker date="1544171308000" expanded="true" signature="3845:3897" ph="{...}" />
+            <marker date="1544171308000" expanded="false" signature="3945:3956" ph=" { " />
+            <marker date="1544171308000" expanded="false" signature="3992:3998" ph=" }" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/5b48eb74288775ff4cc5c9cef7905605/jars/classes.jar!/android/support/v7/widget/AppCompatRadioButton.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="21" column="13" lean-forward="false" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+          <folding>
+            <marker date="1565273425198" expanded="false" signature="0:104" ph="/.../" />
+            <marker date="1565273425198" expanded="false" signature="149:717" ph="..." />
+            <marker date="1565273425198" expanded="false" signature="980:991" ph=" { " />
+            <marker date="1565273425198" expanded="false" signature="1025:1031" ph=" }" />
+            <marker date="1565273425198" expanded="true" signature="1102:1162" ph="{...}" />
+            <marker date="1565273425198" expanded="true" signature="1251:1606" ph="{...}" />
+            <marker date="1565273425198" expanded="true" signature="1667:1846" ph="{...}" />
+            <marker date="1565273425198" expanded="true" signature="1906:2003" ph="{...}" />
+            <marker date="1565273425198" expanded="true" signature="2045:2222" ph="{...}" />
+            <marker date="1565273425198" expanded="true" signature="2335:2474" ph="{...}" />
+            <marker date="1565273425198" expanded="true" signature="2480:2528" ph="@{...}" />
+            <marker date="1565273425198" expanded="true" signature="2582:2703" ph="{...}" />
+            <marker date="1565273425198" expanded="true" signature="2810:2953" ph="{...}" />
+            <marker date="1565273425198" expanded="true" signature="2959:3007" ph="@{...}" />
+            <marker date="1565273425198" expanded="true" signature="3051:3172" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/QuestionChoicesModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-115">
+          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding>
+            <element signature="e#907#908#0" expanded="false" />
+            <element signature="e#943#944#0" expanded="false" />
+            <element signature="e#998#999#0" expanded="false" />
+            <element signature="e#1048#1049#0" expanded="false" />
+            <element signature="e#1092#1093#0" expanded="false" />
+            <element signature="e#1135#1136#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/QuestionAnswerModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="444">
+          <caret line="41" column="38" lean-forward="false" selection-start-line="41" selection-start-column="38" selection-end-line="41" selection-end-column="38" />
+          <folding>
+            <element signature="e#1241#1242#0" expanded="false" />
+            <element signature="e#1275#1276#0" expanded="false" />
+            <element signature="e#1309#1310#0" expanded="false" />
+            <element signature="e#1342#1343#0" expanded="false" />
+            <element signature="e#1381#1382#0" expanded="false" />
+            <element signature="e#1416#1417#0" expanded="false" />
+            <element signature="e#1450#1451#0" expanded="false" />
+            <element signature="e#1483#1484#0" expanded="false" />
+            <element signature="e#1520#1521#0" expanded="false" />
+            <element signature="e#1553#1554#0" expanded="false" />
+            <element signature="e#1585#1586#0" expanded="false" />
+            <element signature="e#1616#1617#0" expanded="false" />
+            <element signature="e#1645#1646#0" expanded="false" />
+            <element signature="e#1673#1674#0" expanded="false" />
+            <element signature="e#1707#1708#0" expanded="false" />
+            <element signature="e#1739#1740#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/QuestionAnswerViewModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="162" column="23" lean-forward="false" selection-start-line="162" selection-start-column="23" selection-end-line="162" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="94" column="23" lean-forward="false" selection-start-line="94" selection-start-column="23" selection-end-line="94" selection-end-column="23" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#9668#9734#0" expanded="false" />
+            <element signature="e#10942#10943#0" expanded="false" />
+            <element signature="e#10992#10993#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/HomeFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="42" column="52" lean-forward="true" selection-start-line="42" selection-start-column="52" selection-end-line="42" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_units.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="51" column="0" lean-forward="false" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-28.0.0.aar/21f725b1827a1eeca936580d9a5001e3/jars/classes.jar!/android/support/v7/widget/LinearLayoutManager.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="57" column="11" lean-forward="false" selection-start-line="57" selection-start-column="11" selection-end-line="57" selection-end-column="11" />
+          <folding>
+            <marker date="1565273427278" expanded="false" signature="0:104" ph="/.../" />
+            <marker date="1565273427278" expanded="false" signature="149:1202" ph="..." />
+            <marker date="1565273427278" expanded="true" signature="2322:2333" ph=" { " />
+            <marker date="1565273427278" expanded="true" signature="2357:2363" ph=" }" />
+            <marker date="1565273427278" expanded="true" signature="2453:3067" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="3172:3953" ph="{...}" />
+            <marker date="1565273427278" expanded="false" signature="3996:4007" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="4019:4025" ph=" }" />
+            <marker date="1565273427278" expanded="false" signature="4080:4091" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="4123:4129" ph=" }" />
+            <marker date="1565273427278" expanded="false" signature="4178:4189" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="4226:4232" ph=" }" />
+            <marker date="1565273427278" expanded="true" signature="4310:4382" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="4459:4657" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="4732:4978" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="5024:6286" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="6345:6537" ph="{...}" />
+            <marker date="1565273427278" expanded="false" signature="6581:6592" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="6622:6628" ph=" }" />
+            <marker date="1565273427278" expanded="false" signature="6670:6681" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="6711:6717" ph=" }" />
+            <marker date="1565273427278" expanded="true" signature="6773:6975" ph="{...}" />
+            <marker date="1565273427278" expanded="false" signature="7013:7024" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="7050:7056" ph=" }" />
+            <marker date="1565273427278" expanded="false" signature="7089:7100" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="7125:7131" ph=" }" />
+            <marker date="1565273427278" expanded="true" signature="7181:7783" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="7831:8049" ph="{...}" />
+            <marker date="1565273427278" expanded="false" signature="8088:8099" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="8126:8132" ph=" }" />
+            <marker date="1565273427278" expanded="true" signature="8190:8396" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="8447:9012" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="9065:9166" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="9261:9485" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="9556:9941" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="10008:17263" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="17312:17532" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="17662:17669" ph="{}" />
+            <marker date="1565273427278" expanded="true" signature="17782:19868" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="19988:20314" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="20436:21983" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="22089:25703" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="25811:26420" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="26532:27151" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="27240:27334" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="27410:27799" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="27890:27986" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="28064:28456" ph="{...}" />
+            <marker date="1565273427278" expanded="false" signature="28493:28504" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="28542:28548" ph=" }" />
+            <marker date="1565273427278" expanded="true" signature="28579:28696" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="28754:28815" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="28864:29120" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="29191:29442" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="29520:29607" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="29683:29770" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="29830:29885" ph="{...}" />
+            <marker date="1565273427278" expanded="false" signature="29942:29953" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="29992:29998" ph=" }" />
+            <marker date="1565273427278" expanded="true" signature="30058:30113" ph="{...}" />
+            <marker date="1565273427278" expanded="false" signature="30170:30181" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="30220:30226" ph=" }" />
+            <marker date="1565273427278" expanded="false" signature="30284:30295" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="30333:30339" ph=" }" />
+            <marker date="1565273427278" expanded="false" signature="30395:30406" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="30444:30450" ph=" }" />
+            <marker date="1565273427278" expanded="true" signature="30501:30943" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="30994:31409" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="31459:31873" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="31934:31989" ph="{...}" />
+            <marker date="1565273427278" expanded="false" signature="32036:32047" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="32083:32089" ph=" }" />
+            <marker date="1565273427278" expanded="true" signature="32208:33831" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="33865:33968" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="34123:34339" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="34458:35373" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="35434:35493" ph="{...}" />
+            <marker date="1565273427278" expanded="false" signature="35539:35550" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="35588:35594" ph=" }" />
+            <marker date="1565273427278" expanded="true" signature="35721:36160" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="36219:37031" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="37091:37210" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="37294:37724" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="37792:38829" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="38895:39971" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="40075:40410" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="40527:42203" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="42349:44831" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="44866:45006" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="45075:45964" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="46008:46105" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="46147:46244" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="46358:46602" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="46714:46958" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="47040:47184" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="47268:47412" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="47487:47598" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="47672:47788" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="47885:49056" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="49159:49345" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="49450:49636" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="49732:49828" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="49923:50024" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="50072:50225" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="50283:50436" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="50483:50641" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="50698:50856" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="50974:51636" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="51718:52740" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="52844:54416" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="54449:54854" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="54886:56749" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="56805:56908" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="57036:58194" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="58241:58627" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="58421:58432" ph="{}" />
+            <marker date="1565273427278" expanded="true" signature="58463:58621" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="58657:62874" ph="{...}" />
+            <marker date="1565273427278" expanded="false" signature="58830:58845" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="58858:58868" ph=" }" />
+            <marker date="1565273427278" expanded="true" signature="58891:59053" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="59098:59257" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="59292:59480" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="59543:59751" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="59832:62464" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="62527:62868" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="62972:64494" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="63192:63513" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="63272:63350" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="63423:63503" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="63544:63555" ph="{}" />
+            <marker date="1565273427278" expanded="true" signature="63587:63753" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="63819:64010" ph="{...}" />
+            <marker date="1565273427278" expanded="false" signature="64044:64059" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="64092:64102" ph=" }" />
+            <marker date="1565273427278" expanded="false" signature="64135:64150" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="64176:64186" ph=" }" />
+            <marker date="1565273427278" expanded="false" signature="64225:64240" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="64249:64259" ph=" }" />
+            <marker date="1565273427278" expanded="true" signature="64319:64488" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="64525:67950" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="65264:65275" ph="{}" />
+            <marker date="1565273427278" expanded="true" signature="65314:65420" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="65459:65772" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="65819:66318" ph="{...}" />
+            <marker date="1565273427278" expanded="false" signature="66369:66384" ph=" { " />
+            <marker date="1565273427278" expanded="false" signature="66429:66439" ph=" }" />
+            <marker date="1565273427278" expanded="true" signature="66502:66798" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="66855:67708" ph="{...}" />
+            <marker date="1565273427278" expanded="true" signature="67729:67944" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="22" lean-forward="false" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/white_border_button.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-mdpi/active_dot.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="33" lean-forward="false" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-v24/green_dot.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="38" lean-forward="false" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="477">
+          <caret line="131" column="0" lean-forward="true" selection-start-line="131" selection-start-column="0" selection-end-line="131" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/UnitsFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="58" column="26" lean-forward="false" selection-start-line="58" selection-start-column="26" selection-end-line="58" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/adapter_group_view.xml">
+      <provider selected="true" editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="88" column="0" lean-forward="true" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+          <folding>
+            <element signature="e#440#3141#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/adapter_units_video.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="34" lean-forward="false" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/UnitsVideoAdpater.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="645">
+          <caret line="89" column="5" lean-forward="true" selection-start-line="86" selection-start-column="2" selection-end-line="89" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/GroupAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="36" lean-forward="true" selection-start-line="22" selection-start-column="36" selection-end-line="22" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1124#1125#0" expanded="false" />
+            <element signature="e#1148#1149#0" expanded="false" />
+            <element signature="e#1480#1481#0" expanded="false" />
+            <element signature="e#1519#1520#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/services/RetrofitConstant.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="59" lean-forward="false" selection-start-line="9" selection-start-column="59" selection-end-line="9" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/GroupModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="32" column="21" lean-forward="false" selection-start-line="32" selection-start-column="21" selection-end-line="32" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#680#681#0" expanded="true" />
+            <element signature="e#712#713#0" expanded="true" />
+            <element signature="e#762#763#0" expanded="true" />
+            <element signature="e#804#805#0" expanded="true" />
+            <element signature="e#842#843#0" expanded="true" />
+            <element signature="e#876#877#0" expanded="true" />
+            <element signature="e#930#931#0" expanded="true" />
+            <element signature="e#976#977#0" expanded="true" />
+            <element signature="e#1012#1013#0" expanded="true" />
+            <element signature="e#1044#1045#0" expanded="true" />
+            <element signature="e#1094#1095#0" expanded="true" />
+            <element signature="e#1136#1137#0" expanded="true" />
+            <element signature="e#1170#1171#0" expanded="true" />
+            <element signature="e#1199#1200#0" expanded="true" />
+            <element signature="e#1244#1245#0" expanded="true" />
+            <element signature="e#1280#1281#0" expanded="true" />
+            <element signature="e#1320#1321#0" expanded="true" />
+            <element signature="e#1350#1351#0" expanded="true" />
+            <element signature="e#1402#1403#0" expanded="true" />
+            <element signature="e#1440#1441#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/Member.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="7" lean-forward="true" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#340#341#0" expanded="true" />
+            <element signature="e#367#368#0" expanded="true" />
+            <element signature="e#407#408#0" expanded="true" />
+            <element signature="e#439#440#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/database/DBConstants.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="507">
-          <caret line="81" column="31" lean-forward="false" selection-start-line="81" selection-start-column="31" selection-end-line="81" selection-end-column="31" />
+        <state relative-caret-position="285">
+          <caret line="62" column="31" lean-forward="false" selection-start-line="62" selection-start-column="31" selection-end-line="62" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/database/DatabaseHandlerClass.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="549" column="16" lean-forward="false" selection-start-line="549" selection-start-column="16" selection-end-line="549" selection-end-column="16" />
+        <state relative-caret-position="171">
+          <caret line="628" column="26" lean-forward="true" selection-start-line="628" selection-start-column="26" selection-end-line="628" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/utils/AppUtils.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/MobileVerificationResponseModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="316" column="32" lean-forward="true" selection-start-line="316" selection-start-column="32" selection-end-line="316" selection-end-column="32" />
+        <state relative-caret-position="248">
+          <caret line="25" column="30" lean-forward="false" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="30" />
           <folding>
-            <element signature="e#1791#1845#0" expanded="true" />
-            <element signature="e#1954#2008#0" expanded="true" />
-            <element signature="e#2184#2244#0" expanded="true" />
-            <element signature="e#2320#2380#0" expanded="true" />
-            <element signature="e#3094#3138#0" expanded="true" />
-            <element signature="e#3207#3257#0" expanded="true" />
+            <element signature="e#1124#1125#0" expanded="true" />
+            <element signature="e#1153#1154#0" expanded="true" />
+            <element signature="e#1207#1208#0" expanded="true" />
+            <element signature="e#1243#1244#0" expanded="true" />
+            <element signature="e#2220#2221#0" expanded="true" />
+            <element signature="e#2249#2250#0" expanded="true" />
+            <element signature="e#2377#2378#0" expanded="true" />
+            <element signature="e#2411#2412#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/TeacherRegistrationViewModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="302">
+          <caret line="247" column="44" lean-forward="false" selection-start-line="247" selection-start-column="44" selection-end-line="247" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/MobileLoginViewModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="105" column="74" lean-forward="true" selection-start-line="105" selection-start-column="74" selection-end-line="105" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/fileandvideodownloader/DownloadUtility.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="186" column="92" lean-forward="false" selection-start-line="186" selection-start-column="92" selection-end-line="186" selection-end-column="92" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SectionActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="636">
+          <caret line="198" column="44" lean-forward="false" selection-start-line="198" selection-start-column="36" selection-end-line="198" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/utils/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="34" lean-forward="false" selection-start-line="14" selection-start-column="34" selection-end-line="14" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/ViewPagerAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="551">
+          <caret line="63" column="0" lean-forward="false" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/UserDetailsModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1241">
+          <caret line="105" column="41" lean-forward="false" selection-start-line="105" selection-start-column="41" selection-end-line="105" selection-end-column="41" />
+          <folding>
+            <element signature="e#1109#1110#0" expanded="true" />
+            <element signature="e#1138#1139#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/services/ApiInterface.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="46" column="78" lean-forward="false" selection-start-line="46" selection-start-column="78" selection-end-line="46" selection-end-column="78" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/HomeViewModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="335" column="0" lean-forward="false" selection-start-line="335" selection-start-column="0" selection-end-line="335" selection-end-column="0" />
+        <state relative-caret-position="302">
+          <caret line="429" column="31" lean-forward="false" selection-start-line="429" selection-start-column="31" selection-end-line="429" selection-end-column="31" />
           <folding>
-            <element signature="e#16982#17040#0" expanded="true" />
-            <element signature="e#20327#20385#0" expanded="true" />
-            <element signature="e#22413#22471#0" expanded="true" />
+            <element signature="e#19484#19485#0" expanded="true" />
+            <element signature="e#19522#19523#0" expanded="true" />
+            <element signature="e#26942#26975#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/GroupsFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="41" column="67" lean-forward="true" selection-start-line="41" selection-start-column="67" selection-end-line="41" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_mobile_login.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="471">
+          <caret line="123" column="112" lean-forward="true" selection-start-line="115" selection-start-column="28" selection-end-line="123" selection-end-column="112" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Android/sdk/platforms/android-28/data/res/values/attrs.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="676" column="20" lean-forward="false" selection-start-line="676" selection-start-column="20" selection-end-line="676" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_groups.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="631">
+          <caret line="45" column="49" lean-forward="false" selection-start-line="45" selection-start-column="49" selection-end-line="45" selection-end-column="49" />
+          <folding />
         </state>
       </provider>
     </entry>

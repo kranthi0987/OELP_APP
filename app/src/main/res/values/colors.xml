@@ -9,6 +9,7 @@
     <color name="grey">#878787</color>
     <color name="greybkg">#f3f4f5</color>
     <color name="greenOpaque">#B32D9289</color>
+    <color name="green">#FF2D9289</color>
     <color name="yellowOpaque">#B3FF9800</color>
     <color name="blackOpaque">#80000000</color>
     <color name="red">#dc4939</color>

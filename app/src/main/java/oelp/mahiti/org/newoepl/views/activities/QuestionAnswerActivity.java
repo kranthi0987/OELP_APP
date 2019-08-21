@@ -2,7 +2,6 @@ package oelp.mahiti.org.newoepl.views.activities;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
@@ -16,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +48,8 @@ public class QuestionAnswerActivity extends AppCompatActivity {
     private HashMap<String, RadioGroup> radioGroupMap = new HashMap<>();
     private List<QuestionAnswerModel> answeredList = new ArrayList<>();
     private String mediaUUID;
+    private List<QuestionAnswerModel> questionAnswerModelLsit;
+    private int testAttemptCount=0;
 
 
     @Override
@@ -77,30 +77,64 @@ public class QuestionAnswerActivity extends AppCompatActivity {
         viewModel.getSubmitClick().observe(this, aBoolean -> {
             if (aBoolean != null)
                 if (validationForRadioButton()) {
-//                    submitAnswerToTable();
-                    onBackPressed();
+                prepareDataToSubmit();
+//                    submitAnswerToTable(finalModelLsit);
                 } else {
-                    Toast.makeText(this, getResources().getString(R.string.select_all_question),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getResources().getString(R.string.select_all_question), Toast.LENGTH_SHORT).show();
                 }
         });
         viewModel.getQuestionAnswerModel().observe(this, questionAnswerModels -> {
-            if (questionAnswerModels!=null && !questionAnswerModels.isEmpty()){
+            if (questionAnswerModels != null && !questionAnswerModels.isEmpty()) {
+                questionAnswerModelLsit = questionAnswerModels;
                 setLayoutForQuestionAnswer(questionAnswerModels);
             }
         });
     }
 
-    private void submitAnswerToTable() {
+    private void prepareDataToSubmit() {
+        List<QuestionAnswerModel> finalModelLsit = new ArrayList<>();
+        String questionText;
+        String choiceText;
+        int choiceId;
+        int questionId;
+        int score;
+        boolean isCorrect;
+        RadioGroup radioGroup;
+        QuestionAnswerModel questionAnswerModel;
+        for (int i =0; i<questionsStringList.size();i++){
+            radioGroup = radioGroupMap.get(questionsStringList.get(i));
+            questionText = questionAnswerModelLsit.get(i).getQuestionModel().getText();
+            questionId = questionAnswerModelLsit.get(i).getQuestionModel().getId();
+            QuestionChoicesModel choicesModel = getChoiceModel(questionAnswerModelLsit.get(i).getChoicesModelList(), radioGroup.getCheckedRadioButtonId());
+            choiceId = choicesModel.getId();
+            choiceText = choicesModel.getText();
+            score = choicesModel.getScore();
+            isCorrect = choicesModel.getCorrect();
+
+            questionAnswerModel= new QuestionAnswerModel(questionText,questionId,choiceText,choiceId,score,isCorrect);
+            finalModelLsit.add(questionAnswerModel);
+        }
+        submitAnswerToTable(finalModelLsit);
+    }
+
+    private QuestionChoicesModel getChoiceModel(List<QuestionChoicesModel> choicesModelList, int checkedRadioButtonId) {
+        QuestionChoicesModel questionChoicesModel=null;
+        for (int i = 0;i<choicesModelList.size(); i++){
+            if (checkedRadioButtonId==choicesModelList.get(i).getRadioButtonId()){
+                questionChoicesModel = choicesModelList.get(i);
+            }
+        }
+        return questionChoicesModel;
+    }
+
+    private void submitAnswerToTable(List<QuestionAnswerModel> finalModelLsit) {
         JSONArray array = new JSONArray();
         try {
-            for (int i = 0; i < questionsStringList.size(); i++) {
-                RadioGroup rg = radioGroupMap.get(questionsStringList.get(i));
-                assert rg != null;
-                RadioButton radioButton = rg.findViewById(rg.getCheckedRadioButtonId());
+            for (int i = 0; i < finalModelLsit.size(); i++) {
                 JSONObject jsonObject = new JSONObject();
                 try {
-                    jsonObject.put("q_id", questionsStringList.get(i));
-                    jsonObject.put("res_id", radioButton.getTag().toString());
+                    jsonObject.put("q_id", finalModelLsit.get(i).getQuetsionId());
+                    jsonObject.put("res_id", finalModelLsit.get(i).getChoiceId());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -111,8 +145,11 @@ public class QuestionAnswerActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         Log.i(TAG, "onClick: " + array);
+        testAttemptCount = viewModel.getTestAttemptCount(mediaUUID);
+//        getTestFinalScore();
         viewModel.saveValueToDb(array, mediaUUID);
     }
+
 
     public boolean validationForRadioButton() {
         boolean status = true;
@@ -127,19 +164,18 @@ public class QuestionAnswerActivity extends AppCompatActivity {
 
 
     private void setLayoutForQuestionAnswer(List<QuestionAnswerModel> questionAnswerModels) {
-        TextView questionText;
+        TextView tvQuestionText;
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        int ij=1;
+        int ij = 1;
         for (int i = 0; i < questionAnswerModels.size(); i++) {
 
             View v = inflater.inflate(R.layout.subquestions, null);
             RadioGroup radioGroup = v.findViewById(R.id.radioGroup);
-//            radioGroup.setTag(questionAnswerModels.get(i).getQuestionModel().getId());
             radioGroup.setId(questionAnswerModels.get(i).getQuestionModel().getId());
-            questionText = v.findViewById(R.id.questionText);
-            questionText.setText(i + 1 + ". " + questionAnswerModels.get(i).getQuestionModel().getText());
+            tvQuestionText = v.findViewById(R.id.questionText);
+            String questionText = i + 1 + ". " + questionAnswerModels.get(i).getQuestionModel().getText();
+            tvQuestionText.setText(questionText);
             questionsStringList.add(questionAnswerModels.get(i).getQuestionModel().getId().toString());
-
             List<QuestionChoicesModel> choice = questionAnswerModels.get(i).getChoicesModelList();
             for (int j = 0; j < choice.size(); j++) {
                 AppCompatRadioButton questionChoiceRadioButton = new AppCompatRadioButton(this);
@@ -147,7 +183,8 @@ public class QuestionAnswerActivity extends AppCompatActivity {
                 params.setMargins(0, 5, 0, 0);
                 questionChoiceRadioButton.setLayoutParams(params);
                 questionChoiceRadioButton.setId(ij);
-                questionChoiceRadioButton.setTag(choice.get(j).getId());
+                choice.get(i).setRadioButtonId(ij);
+                choice.get(i).setRadioCheckedPosition(j);
                 if (Build.VERSION.SDK_INT >= 21) {
                     ColorStateList colorStateList = new ColorStateList(
                             new int[][]{
@@ -172,15 +209,8 @@ public class QuestionAnswerActivity extends AppCompatActivity {
             }
             radioGroupMap.put(questionAnswerModels.get(i).getQuestionModel().getId().toString(), radioGroup);
 
-            final QuestionAnswerModel[] answerModel = new QuestionAnswerModel[1];
-            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-//                    answerModel[0] = new QuestionAnswerModel();
-//                    answerModel[0].setQuestionModel(questionAnswerModels.get(radioGroup.getId()).getQuestionModel());
-//                    answerModel[0].setChoicesModelList(questionAnswerModels.get(radioGroup.getId()).getChoicesModelList());
-//                    answeredList.add(answerModel[0]);
-                }
+            radioGroup.setOnCheckedChangeListener((radioGroup1, checkedId) -> {
+
             });
             questionsAnswersRadioLayout.addView(v);
         }
@@ -188,12 +218,8 @@ public class QuestionAnswerActivity extends AppCompatActivity {
 
     private void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
-        builder.setMessage("There is no question ");
-        builder.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                onBackPressed();
-            }
-        });
+        builder.setMessage(getResources().getString(R.string.there_is_no_question_to_display));
+        builder.setNegativeButton(R.string.ok, (dialog, id) -> onBackPressed());
         dialog = builder.create();
         dialog.show();
     }
@@ -229,6 +255,7 @@ public class QuestionAnswerActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
     private void ShowAboutUsActivity() {
         AppUtils.showAboutUsActivity(this);
     }

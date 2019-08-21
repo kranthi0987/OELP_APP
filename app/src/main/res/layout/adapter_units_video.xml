@@ -9,13 +9,6 @@
             name="adapterViewModel"
             type="oelp.mahiti.org.newoepl.viewmodel.HomeViewModel" />
 
-        <variable
-            name="activity"
-            type="oelp.mahiti.org.newoepl.views.activities.HomeActivity" />
-
-        <variable
-            name="catalogueDetailsModel"
-            type="oelp.mahiti.org.newoepl.models.CatalogueDetailsModel" />
 
     </data>
 

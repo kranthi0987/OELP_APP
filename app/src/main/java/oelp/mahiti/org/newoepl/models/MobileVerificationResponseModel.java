@@ -23,9 +23,9 @@ public class MobileVerificationResponseModel {
     @Expose
     private String message;
 
-    @SerializedName("userid")
+    @SerializedName("user_uuid")
     @Expose
-    private Integer userid;
+    private String userid;
 
     @SerializedName("userDetails")
     @Expose
@@ -45,10 +45,19 @@ public class MobileVerificationResponseModel {
     @Expose
     private List<QuestionChoicesModel> questionChoicesModelList;
 
-
-
+    @SerializedName("groups")
+    @Expose
+    private List<GroupModel> groups;
 
     public MobileVerificationResponseModel() {
+    }
+
+    public List<GroupModel> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<GroupModel> groups) {
+        this.groups = groups;
     }
 
     public MobileVerificationResponseModel(Integer status, String message) {
@@ -80,11 +89,11 @@ public class MobileVerificationResponseModel {
         this.catalogueDetailsModel = catalogueDetailsModel;
     }
 
-    public Integer getUserid() {
+    public String getUserid() {
         return userid;
     }
 
-    public void setUserid(Integer userid) {
+    public void setUserid(String userid) {
         this.userid = userid;
     }
 

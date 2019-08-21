@@ -160,4 +160,8 @@ public class QuestionAnswerViewModel extends AndroidViewModel {
 //        });
     }
 
+    public int getTestAttemptCount(String mediaUUID) {
+        handlerClass.getTestAttemptedCount(mediaUUID);
+        return 0;
+    }
 }

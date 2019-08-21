@@ -150,8 +150,13 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
 
     private void checkVideoAndDownload(FileModel fileModel) {
 
+        String userUUId = new MySharedPref(this).readString(Constants.USER_ID, "");
+        int userUUId1 = 0;
+        if (!userUUId.isEmpty())
+            userUUId1 = Integer.parseInt(userUUId);
+
         if (videoAvailable(fileModel)) {
-            DownloadUtility.playVideo(this, fileModel.getFileUrl(), fileModel.getFileName(), new MySharedPref(this).readInt(Constants.USER_ID, 0), fileModel.getUuid(), parentId);
+            DownloadUtility.playVideo(this, fileModel.getFileUrl(), fileModel.getFileName(), userUUId1, fileModel.getUuid(), parentId);
         } else {
             downloadVideo(fileModel);
         }
@@ -189,7 +194,10 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
     @Override
     public void onMediaDownload(int type, String savedPath, String name, int position, String uuid) {
         if (savedPath != null && !savedPath.isEmpty()) {
-            DownloadUtility.playVideo(this, savedPath, name, new MySharedPref(this).readInt(Constants.USER_ID, 0), uuid, parentId);
+            int userUUID1=0;
+            if (!new MySharedPref(this).readString(Constants.USER_ID, "").isEmpty())
+                userUUID1 = Integer.parseInt(new MySharedPref(this).readString(Constants.USER_ID, ""));
+                DownloadUtility.playVideo(this, savedPath, name,userUUID1 , uuid, parentId);
         } else {
             Toast.makeText(this, getString(R.string.error_downloading), Toast.LENGTH_SHORT).show();
         }

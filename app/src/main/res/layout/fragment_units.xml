@@ -39,7 +39,12 @@
                     android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/paddling_length"
+                    android:layout_marginBottom="@dimen/paddling_length"
+                    android:layout_marginEnd="@dimen/paddling_length"
+                    android:layout_marginLeft="@dimen/paddling_length"
+                    android:layout_marginRight="@dimen/paddling_length"
+                    android:layout_marginStart="@dimen/paddling_length"
+                    android:layout_marginTop="@dimen/paddling_length"
                     android:fontFamily="@font/montserrat_bold"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_large" />

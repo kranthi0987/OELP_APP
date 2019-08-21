@@ -244,8 +244,8 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
 
     }
 
-    private void saveUserIDAndUserTypeAndUserName(Integer userid, Integer isTrainer) {
-        sharedPref.writeInt(Constants.USER_ID, userid);
+    private void saveUserIDAndUserTypeAndUserName(String userid, Integer isTrainer) {
+        sharedPref.writeString(Constants.USER_ID, userid);
         sharedPref.writeInt(Constants.USER_TYPE, isTrainer);
     }
     public LiveData<MobileVerificationResponseModel> getData() {

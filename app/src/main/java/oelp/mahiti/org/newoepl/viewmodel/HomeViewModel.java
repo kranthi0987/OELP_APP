@@ -6,6 +6,8 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.google.gson.Gson;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import oelp.mahiti.org.newoepl.database.DBConstants;
 import oelp.mahiti.org.newoepl.database.DatabaseHandlerClass;
 import oelp.mahiti.org.newoepl.fileandvideodownloader.FileModel;
 import oelp.mahiti.org.newoepl.models.CatalogueDetailsModel;
+import oelp.mahiti.org.newoepl.models.GroupModel;
 import oelp.mahiti.org.newoepl.models.MobileVerificationResponseModel;
 import oelp.mahiti.org.newoepl.models.QuestionChoicesModel;
 import oelp.mahiti.org.newoepl.models.QuestionModel;
@@ -36,11 +39,12 @@ public class HomeViewModel extends AndroidViewModel {
 
     private static final String TAG = AndroidViewModel.class.getSimpleName();
     private final Context context;
-    private final int userId;
+    private final String userId;
     public boolean teacherLogin;
     private final boolean catalogApiCalled;
     private final boolean questionApiCalled;
     private final boolean questionChoicesApiCalled;
+    private final boolean groupApiCalled;
     //    public MutableLiveData<Boolean> homeClick = new MutableLiveData<>();
     public MutableLiveData<Boolean> unitsClick = new MutableLiveData<>();
     public MutableLiveData<Boolean> groupsClick = new MutableLiveData<>();
@@ -322,6 +326,34 @@ public class HomeViewModel extends AndroidViewModel {
             "  \n" +
             "    ]\n" +
             "}";
+    public String groupJson="{\"status\":2,\n" +
+            "\"message\":\"success\",\n" +
+            "\"groups\":[{\"grp_name\":\"Android group\",\n" +
+            "\"creation_key\":\"USYW-98765-JSYW\",\n" +
+            "\"created_on\":\"2019-08-19 14:10:38\", \n" +
+            "\"active\":2,\n" +
+            "\"members\":[{\"uuid\":\"HIE2-JKSO-29H3-1204\"}, {\"uuid\":\"HIE2-JKSO-29H3-1205\"}]\n" +
+            "},\n" +
+            "{\"grp_name\":\"Android group1\",\n" +
+            "\"creation_key\":\"USYW-98765-JSYM\",\n" +
+            "\"created_on\":\"2019-08-19 14:10:38\", \n" +
+            "\"active\":2,\n" +
+            "\"members\":[{\"uuid\":\"HIE2-JKSO-29H3-1206\"}, {\"uuid\":\"HIE2-JKSO-29H3-1207\"}]\n" +
+            "},\n" +
+            "{\"grp_name\":\"Android group2\",\n" +
+            "\"creation_key\":\"USYW-98765-JSYX\",\n" +
+            "\"created_on\":\"2019-08-19 14:10:38\", \n" +
+            "\"active\":2,\n" +
+            "\"members\":[{\"uuid\":\"HIE2-JKSO-29H3-1208\"}, {\"uuid\":\"HIE2-JKSO-29H3-1209\"}]\n" +
+            "},\n" +
+            "{\"grp_name\":\"Android group3\",\n" +
+            "\"creation_key\":\"USYW-98765-JSYZ\",\n" +
+            "\"created_on\":\"2019-08-19 14:10:38\", \n" +
+            "\"active\":2,\n" +
+            "\"members\":[{\"uuid\":\"HIE2-JKSO-29H3-1210\"}, {\"uuid\":\"HIE2-JKSO-29H3-1211\"}]\n" +
+            "}\n" +
+            "]\n" +
+            "}";
     public MutableLiveData<String> parentId = new MutableLiveData<>();
     public MutableLiveData<List<CatalogueDetailsModel>> modelForCatalog = new MutableLiveData<>();
 
@@ -331,14 +363,15 @@ public class HomeViewModel extends AndroidViewModel {
         sharedPref = new MySharedPref(application);
         databaseHandlerClass = new DatabaseHandlerClass(application);
         showProgresBar.setValue(false);
-        userId = sharedPref.readInt(Constants.USER_ID, 0);
+        userId = sharedPref.readString(Constants.USER_ID, "");
         teacherLogin = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER;
         catalogApiCalled = sharedPref.readString(RetrofitConstant.CATALOGUE_URL, "").equalsIgnoreCase(AppUtils.getDate());
-        questionApiCalled = sharedPref.readBoolean(RetrofitConstant.QUESTION_LIST_URL, false);
-        questionChoicesApiCalled = sharedPref.readBoolean(RetrofitConstant.QUESTION_CHOICES_LIST, false);
+        questionApiCalled = sharedPref.readString(RetrofitConstant.QUESTION_LIST_URL, "").equalsIgnoreCase(AppUtils.getDate());
+        questionChoicesApiCalled = sharedPref.readString(RetrofitConstant.QUESTION_CHOICES_LIST_URL, "").equalsIgnoreCase(AppUtils.getDate());
+        groupApiCalled = sharedPref.readString(RetrofitConstant.GROUP_LIST_URL, "").equalsIgnoreCase(AppUtils.getDate());
         dataInserted.setValue(null);
-        if (!catalogApiCalled)
-            callApiForCatalogData(userId);
+        callAllAPI();
+
         userType.setValue(sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER));
         if (userType.getValue().equals(Constants.USER_TEACHER)) {
             unitsClick.setValue(true);
@@ -350,25 +383,77 @@ public class HomeViewModel extends AndroidViewModel {
 
     }
 
+    private void callAllAPI() {
+        if (!catalogApiCalled)
+            callApiForCatalogData(userId);
+        if (!questionApiCalled)
+            callApiQuestions(userId);
+        if (!questionChoicesApiCalled)
+            callApiForQuestionChoices(userId);
+        if (!groupApiCalled)
+            callApiForGroupList(userId);
+    }
+
+    private void callApiForGroupList(String userId) {
+//        ApiInterface apiInterface = RetrofitClass.getAPIService();
+//        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + "Param : userId:" + userId);
+//        apiInterface.getGroupList(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
+//            @Override
+//            public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
+//                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.CATALOGUE_URL + " Response :" + response.body());
+//
+//                MobileVerificationResponseModel model = response.body();
+//                if (model != null) {
+//                    insertDataIntoGroupTable(model.getGroups());
+//                } else {
+//                    apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
+//                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.CATALOGUE_URL + " Response :" + t.getMessage());
+//                apiErrorMessage.setValue(t.getMessage());
+//                getListOfImageFromDb();
+//            }
+//        });
+
+        Gson gson = new Gson();
+        MobileVerificationResponseModel model = gson.fromJson(groupJson, MobileVerificationResponseModel.class);
+        insertDataIntoGroupTable(model.getGroups());
+    }
+
+    private MutableLiveData<Long> groupDataInsert = new MutableLiveData<>();
+
+    public MutableLiveData<Long> getGroupInserted(){
+        return groupDataInsert;
+    }
+
+    private void insertDataIntoGroupTable(List<GroupModel> groups) {
+        if (!groups.isEmpty()) {
+            groupDataInsert.setValue(databaseHandlerClass.insertDatatoGroupsTable(groups));
+            sharedPref.writeBoolean(RetrofitConstant.GROUP_LIST_URL, true);
+        }
+    }
+
     public void setDataInserted(Integer dataInserted) {
         this.dataInserted.setValue(dataInserted);
     }
 
-    private void callApiForQuestionChoices(int userId) {
+    private void callApiForQuestionChoices(String userId) {
 //        String modifiedDate = databaseHandlerClass.getModifiedDate(DBConstants.QUESTION_TABLE);
         String modifiedDate = "";
-        showProgresBar.setValue(true);
         ApiInterface apiInterface = RetrofitClass.getAPIService();
-        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_CHOICES_LIST + "Param : userId:" + userId + " modified_date:" + modifiedDate);
+        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_CHOICES_LIST_URL + "Param : userId:" + userId + " modified_date:" + modifiedDate);
         apiInterface.getQuestionChoicesList(userId, modifiedDate).enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                 if (response.body() != null) {
                     insertQuestionChoicesToTable(response.body().getQuestionChoicesModelList());
-                    Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_CHOICES_LIST + "Response :" + response.body().toString());
+                    Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_CHOICES_LIST_URL + "Response :" + response.body().toString());
 
                 } else {
-                    getListOfImageFromDb();
                     apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
                 }
 
@@ -377,8 +462,7 @@ public class HomeViewModel extends AndroidViewModel {
             @Override
             public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
                 apiErrorMessage.setValue(t.getMessage());
-                getListOfImageFromDb();
-                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_CHOICES_LIST + " Response :" + t.getMessage());
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_CHOICES_LIST_URL + " Response :" + t.getMessage());
             }
         });
     }
@@ -386,14 +470,9 @@ public class HomeViewModel extends AndroidViewModel {
     private void insertQuestionChoicesToTable(List<QuestionChoicesModel> questionChoicesModelList) {
         if (!questionChoicesModelList.isEmpty()) {
             databaseHandlerClass.insertDatatoQuestionChoicesTable(questionChoicesModelList);
-            sharedPref.writeBoolean(RetrofitConstant.QUESTION_CHOICES_LIST, true);
+            sharedPref.writeBoolean(RetrofitConstant.QUESTION_CHOICES_LIST_URL, true);
 
         }
-//        else {
-//            getListOfImageFromDb();
-//        }
-        getListOfImageFromDb();
-
     }
 
     private void getListOfImageFromDb() {
@@ -401,9 +480,9 @@ public class HomeViewModel extends AndroidViewModel {
         if (!imageList.isEmpty()) {
             checkOfflineAvailable(imageList);
         } else {
-            showProgresBar.setValue(false);
             dataInserted.setValue(2);
         }
+        showProgresBar.setValue(false);
     }
 
     private void checkOfflineAvailable(List<FileModel> imageList) {
@@ -424,7 +503,6 @@ public class HomeViewModel extends AndroidViewModel {
             listToDownloadImage.setValue(imageList);
         } else {
             dataInserted.setValue(3);
-            showProgresBar.setValue(false);
         }
     }
 
@@ -436,10 +514,9 @@ public class HomeViewModel extends AndroidViewModel {
         return listToDownloadImage;
     }
 
-    private void callApiQuestions(int userId) {
+    private void callApiQuestions(String userId) {
 //        String modifiedDate = databaseHandlerClass.getModifiedDate(DBConstants.QUESTION_TABLE);
         String modifiedDate = "";
-        showProgresBar.setValue(true);
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_LIST_URL + "Param : userId:" + userId + " modified_date:" + modifiedDate);
         apiInterface.getQuestionList(userId, modifiedDate).enqueue(new Callback<MobileVerificationResponseModel>() {
@@ -451,7 +528,6 @@ public class HomeViewModel extends AndroidViewModel {
 
                 } else {
                     apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
-                    callApiForQuestionChoices(userId);
                 }
 
             }
@@ -460,7 +536,6 @@ public class HomeViewModel extends AndroidViewModel {
             public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
                 apiErrorMessage.setValue(t.getMessage());
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_LIST_URL + " Response :" + t.getMessage());
-                callApiForQuestionChoices(userId);
             }
         });
     }
@@ -470,14 +545,10 @@ public class HomeViewModel extends AndroidViewModel {
             databaseHandlerClass.insertDatatoQuestionTable(questionModelList);
             sharedPref.writeBoolean(RetrofitConstant.QUESTION_LIST_URL, true);
         }
-//        else {
-//            callApiForQuestionChoices(userId);
-//        }
-        callApiForQuestionChoices(userId);
 
     }
 
-    public void callApiForCatalogData(int userId) {
+    public void callApiForCatalogData(String userId) {
         showProgresBar.setValue(true);
         String modifiedDate = databaseHandlerClass.getModifiedDate(DBConstants.CAT_TABLE_NAME);
         ApiInterface apiInterface = RetrofitClass.getAPIService();
@@ -491,16 +562,17 @@ public class HomeViewModel extends AndroidViewModel {
                 if (model != null) {
                     insertDataIntoCatalogTable(model.getCatalogueDetailsModel());
                 } else {
-                    callApiQuestions(userId);
                     apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
                 }
+                getListOfImageFromDb();
+
             }
 
             @Override
             public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.CATALOGUE_URL + " Response :" + t.getMessage());
                 apiErrorMessage.setValue(t.getMessage());
-                callApiQuestions(userId);
+                getListOfImageFromDb();
             }
         });
     }
@@ -510,8 +582,6 @@ public class HomeViewModel extends AndroidViewModel {
             databaseHandlerClass.insertDataToCatalogueTable(catalogueDetailsModel);
             sharedPref.writeString(RetrofitConstant.CATALOGUE_URL, AppUtils.getDate());
         }
-        callApiQuestions(userId);
-
     }
 
 
@@ -556,5 +626,9 @@ public class HomeViewModel extends AndroidViewModel {
     public MutableLiveData<List<CatalogueDetailsModel>> getCatalogData(String parentId) {
         modelForCatalog = databaseHandlerClass.getCatalogData(parentId);
         return modelForCatalog;
+    }
+
+    public MutableLiveData<List<GroupModel>> getGroupList(){
+        return databaseHandlerClass.getGroupList();
     }
 }

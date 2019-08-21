@@ -130,8 +130,8 @@ public class MobileLoginViewModel extends AndroidViewModel {
 
     }
 
-    private void saveUserIDAndUserType(Integer userid, Integer isTrainer) {
-       sharedPref.writeInt(Constants.USER_ID, userid);
+    private void saveUserIDAndUserType(String userid, Integer isTrainer) {
+       sharedPref.writeString(Constants.USER_ID, userid);
        sharedPref.writeInt(Constants.USER_TYPE, isTrainer);
     }
 

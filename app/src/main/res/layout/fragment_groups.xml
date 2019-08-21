@@ -10,19 +10,48 @@
             type="oelp.mahiti.org.newoepl.viewmodel.HomeViewModel" />
     </data>
 
-<RelativeLayout
-    android:background="@color/greybkg"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:layout_centerInParent="true"
-        android:text="@string/coming_soon"
-        android:textColor="@color/black"
-        android:fontFamily="@font/montserrat_medium"
-        android:textSize="@dimen/text_large"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</RelativeLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:paddingLeft="@dimen/paddling_length"
+        android:paddingRight="@dimen/paddling_length"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="Group"
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_large" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:scrollbars="none" />
+
+    </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp" />
+    </RelativeLayout>
+
+
+
 
 </layout>

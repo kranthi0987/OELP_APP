@@ -14,8 +14,10 @@ import java.util.List;
 
 import oelp.mahiti.org.newoepl.fileandvideodownloader.FileModel;
 import oelp.mahiti.org.newoepl.models.CatalogueDetailsModel;
+import oelp.mahiti.org.newoepl.models.GroupModel;
 import oelp.mahiti.org.newoepl.models.LocationContent;
 import oelp.mahiti.org.newoepl.models.LocationModel;
+import oelp.mahiti.org.newoepl.models.Member;
 import oelp.mahiti.org.newoepl.models.QuestionAnswerModel;
 import oelp.mahiti.org.newoepl.models.QuestionChoicesModel;
 import oelp.mahiti.org.newoepl.models.QuestionModel;
@@ -23,7 +25,9 @@ import oelp.mahiti.org.newoepl.utils.Constants;
 import oelp.mahiti.org.newoepl.utils.Logger;
 
 import static oelp.mahiti.org.newoepl.database.DBConstants.CAT_TABLE_NAME;
+import static oelp.mahiti.org.newoepl.database.DBConstants.GROUP_TABLE;
 import static oelp.mahiti.org.newoepl.database.DBConstants.ICON_PATH;
+import static oelp.mahiti.org.newoepl.database.DBConstants.MEMBER_TABLE;
 import static oelp.mahiti.org.newoepl.database.DBConstants.QUESTION_CHOICES_TABLE;
 import static oelp.mahiti.org.newoepl.database.DBConstants.QUESTION_TABLE;
 
@@ -59,7 +63,29 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         createQuestionTable(sqLiteDatabase);
         createQuestionChoicesTable(sqLiteDatabase);
         createQuestionAnswerTable(sqLiteDatabase);
+        createGroupTable(sqLiteDatabase);
+        createGroupMemberTable(sqLiteDatabase);
 
+    }
+
+    private void createGroupMemberTable(SQLiteDatabase sqLiteDatabase) {
+        String query = DBConstants.CREATE_TABLE_IF_NOT_EXIST+DBConstants.MEMBER_TABLE+DBConstants.OPEN_BRACKET+
+                DBConstants.GROUP_ID+DBConstants.TEXT_COMMA+
+                DBConstants.MEMBER_UUID+DBConstants.TEXT+
+                DBConstants.CLOSE_BRACKET;
+        Logger.logD(TAG, "Database creation query :" + query);
+        sqLiteDatabase.execSQL(query);
+    }
+
+    private void createGroupTable(SQLiteDatabase sqLiteDatabase) {
+        String query = DBConstants.CREATE_TABLE_IF_NOT_EXIST+DBConstants.GROUP_TABLE+DBConstants.OPEN_BRACKET+
+                DBConstants.UUID+DBConstants.TEXT_PRIMARY_KEY+DBConstants.COMMA+
+                DBConstants.GROUP_NAME+DBConstants.TEXT_COMMA+
+                DBConstants.ACTIVE+DBConstants.INTEGER+
+                DBConstants.CREATED+DBConstants.DATETIME_COMMA+
+                DBConstants.CLOSE_BRACKET;
+        Logger.logD(TAG, "Database creation query :" + query);
+        sqLiteDatabase.execSQL(query);
     }
 
     private void createQuestionAnswerTable(SQLiteDatabase sqLiteDatabase) {
@@ -68,7 +94,10 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 DBConstants.QA_DATA + DBConstants.TEXT_COMMA +
                 DBConstants.QA_SYNC_STATUS + DBConstants.INTEGER_COMMA +
                 DBConstants.QA_VIDEOID + DBConstants.TEXT_COMMA +
-                DBConstants.QA_SUBMITTED_DATE + DBConstants.DATETIME +
+                DBConstants.QA_ATTMEPTS + DBConstants.DATETIME_COMMA +
+                DBConstants.QA_SCORE + DBConstants.INTEGER_COMMA + DBConstants.NOT_NULL_DEFAULT_ZERO + DBConstants.COMMA +
+                DBConstants.QA_TOTAL + DBConstants.INTEGER_COMMA + DBConstants.NOT_NULL_DEFAULT_ZERO + DBConstants.COMMA +
+                DBConstants.QA_ATTMEPTS + DBConstants.INTEGER + DBConstants.NOT_NULL_DEFAULT_ZERO +
                 DBConstants.CLOSE_BRACKET;
         Logger.logD(TAG, "Database creation query :" + query);
         sqLiteDatabase.execSQL(query);
@@ -481,7 +510,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         values.put(DBConstants.QA_DATA, quesAnsText);
         values.put(DBConstants.QA_SYNC_STATUS, questionAnswerAsync);
         values.put(DBConstants.QA_VIDEOID, videoId);
-        values.put(DBConstants.QA_SUBMITTED_DATE, getDateTime);
+        values.put(DBConstants.QA_ATTMEPTS, getDateTime);
         database.insert(DBConstants.QA_TABLENAME, null, values);
 
     }
@@ -509,7 +538,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                         cursor.getString(cursor.getColumnIndex(DBConstants.QA_DATA)),
                         cursor.getInt(cursor.getColumnIndex(DBConstants.QA_SYNC_STATUS)),
                         cursor.getInt(cursor.getColumnIndex(DBConstants.QA_VIDEOID)),
-                        cursor.getString(cursor.getColumnIndex(DBConstants.QA_SUBMITTED_DATE))
+                        cursor.getString(cursor.getColumnIndex(DBConstants.QA_ATTMEPTS))
                 ));
 
             } while (cursor.moveToNext());
@@ -548,8 +577,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     }
 
     public void deleteAllDataFromDB(int type) {
-        if (database == null || !database.isOpen() || database.isReadOnly())
-            database = this.getWritableDatabase(DBConstants.DATABASESECRETKEY);
+        initDatabase();
         String query = "";
         switch (type) {
             case 1:
@@ -573,5 +601,126 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     }
 
 
+    public List<QuestionAnswerModel> getTestAttemptedCount(String mediaUUID) {
+        List<QuestionAnswerModel> list = new ArrayList<>();
+        QuestionAnswerModel answerModel;
+        String query = DBConstants.SELECT + DBConstants.QA_ATTMEPTS + DBConstants.COMMA + DBConstants.SCORE +
+                DBConstants.FROM + DBConstants.QA_TABLENAME + DBConstants.WHERE + DBConstants.QA_VIDEOID + DBConstants.EQUAL_TO + mediaUUID;
+        initDatabase();
+        try {
+            Cursor cursor = database.rawQuery(query, null);
+            Logger.logD(TAG, "");
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    answerModel = new QuestionAnswerModel(cursor.getInt(cursor.getColumnIndex(DBConstants.QA_SCORE)),
+                            cursor.getInt(cursor.getColumnIndex(DBConstants.QA_TOTAL)),
+                            cursor.getInt(cursor.getColumnIndex(DBConstants.QA_ATTMEPTS)));
+                    list.add(answerModel);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception ex) {
+            Logger.logE(TAG, ex.getMessage(), ex);
+        }
 
+        return null;
+
+    }
+
+    public long insertDatatoGroupsTable(List<GroupModel> groups) {
+        long insertData = 0;
+        initDatabase();
+        database.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            for (GroupModel groupModel : groups) {
+                values.put(DBConstants.UUID, groupModel.getCreationkey());
+                values.put(DBConstants.ACTIVE, groupModel.getActive());
+                values.put(DBConstants.GROUP_NAME, groupModel.getGroupName());
+                values.put(DBConstants.CREATED, groupModel.getCreatedOn());
+                insertDataToMembersTable(groupModel.getMembers(), groupModel.getCreationkey());
+                Log.d(TAG, CAT_TABLE_NAME + values.toString());
+                insertData = database.insertWithOnConflict(GROUP_TABLE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                Log.d(TAG, "Group values inserting into  " + GROUP_TABLE + values.toString());
+            }
+            database.setTransactionSuccessful();
+        } catch (Exception ex) {
+            Logger.logE(TAG, ex.getMessage(), ex);
+        } finally {
+            database.endTransaction();
+        }
+        return insertData;
+    }
+
+    private void insertDataToMembersTable(List<Member> members, String creationkey) {
+        initDatabase();
+        database.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            for (Member groupModel : members) {
+                values.put(DBConstants.GROUP_ID, creationkey);
+                values.put(DBConstants.MEMBER_UUID, groupModel.getUuid());
+                Log.d(TAG, CAT_TABLE_NAME + values.toString());
+                database.insertWithOnConflict(GROUP_TABLE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                Log.d(TAG, "Content values inserting into " + MEMBER_TABLE + values.toString());
+            }
+            database.setTransactionSuccessful();
+        } catch (Exception ex) {
+            Logger.logE(TAG, ex.getMessage(), ex);
+        } finally {
+            database.endTransaction();
+        }
+    }
+
+    public MutableLiveData<List<GroupModel>> getGroupList() {
+        MutableLiveData<List<GroupModel>> groupList = new MutableLiveData<>();
+        List<GroupModel> groupList1 = new ArrayList<>();
+        GroupModel groupModel;
+        String query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.GROUP_TABLE ;
+        initDatabase();
+        try {
+            Logger.logD(TAG, "Getting Group Item : " + query);
+            Cursor cursor = database.rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    groupModel = new GroupModel();
+                    String uuid = cursor.getString(cursor.getColumnIndex(DBConstants.UUID));
+                    groupModel.setCreationkey(uuid);
+                    groupModel.setActive(cursor.getInt(cursor.getColumnIndex(DBConstants.ACTIVE)));
+                    groupModel.setCreatedOn(cursor.getString(cursor.getColumnIndex(DBConstants.CREATED)));
+                    groupModel.setGroupName(cursor.getString(cursor.getColumnIndex(DBConstants.GROUP_NAME)));
+                    groupModel.setMembers(getMembersList(uuid));
+                    groupList1.add(groupModel);
+
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+        } catch (Exception e) {
+            Logger.logE(TAG, "getSubject", e);
+        }
+        groupList.setValue(groupList1);
+        return groupList;
+    }
+
+    private List<Member> getMembersList(String uuid) {
+        List<Member> memberList = new ArrayList<>();
+        Member member;
+        String query = DBConstants.SELECT+DBConstants.ALL_FROM+DBConstants.MEMBER_TABLE+DBConstants.WHERE+DBConstants.GROUP_ID+DBConstants.EQUAL_TO+"'"+uuid+"'";
+        initDatabase();
+        Logger.logD(TAG, "Getting Group Item : " + query);
+        try {
+            Cursor cursor = database.rawQuery(query, null);
+            if (cursor.moveToFirst()){
+                do {
+                   member = new Member(cursor.getString(cursor.getColumnIndex(DBConstants.MEMBER_UUID)));
+                   memberList.add(member);
+                }while (cursor.moveToNext());
+                cursor.close();
+            }
+
+        }catch (Exception ex){
+            Logger.logE(TAG, ex.getMessage(), ex);
+        }
+        return memberList;
+
+    }
 }

@@ -40,15 +40,19 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(RetrofitConstant.CATALOGUE_URL)
-    Call<MobileVerificationResponseModel> catalogData(@Field("userId") Integer userId, @Field("modified_date") String modifiedDate);
+    Call<MobileVerificationResponseModel> catalogData(@Field("user_uuid") String userId, @Field("modified_date") String modifiedDate);
+
+    @FormUrlEncoded
+    @POST(RetrofitConstant.GROUP_LIST_URL)
+    Call<MobileVerificationResponseModel> getGroupList(@Field("userId") String userId);
 
     @FormUrlEncoded
     @POST(RetrofitConstant.QUESTION_LIST_URL)
-    Call<MobileVerificationResponseModel> getQuestionList(@Field("userId") Integer userId, @Field("modified_date") String modifiedDate);
+    Call<MobileVerificationResponseModel> getQuestionList(@Field("userId") String userId, @Field("modified_date") String modifiedDate);
 
     @FormUrlEncoded
-    @POST(RetrofitConstant.QUESTION_CHOICES_LIST)
-    Call<MobileVerificationResponseModel> getQuestionChoicesList(@Field("userId") Integer userId, @Field("modified_date") String modifiedDate);
+    @POST(RetrofitConstant.QUESTION_CHOICES_LIST_URL)
+    Call<MobileVerificationResponseModel> getQuestionChoicesList(@Field("userId") String userId, @Field("modified_date") String modifiedDate);
 
 
 //

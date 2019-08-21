@@ -1,15 +1,23 @@
 package oelp.mahiti.org.newoepl.views.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import oelp.mahiti.org.newoepl.R;
+import oelp.mahiti.org.newoepl.databinding.FragmentGroupsBinding;
+import oelp.mahiti.org.newoepl.models.GroupModel;
 import oelp.mahiti.org.newoepl.viewmodel.HomeViewModel;
 
 /**
@@ -18,6 +26,9 @@ import oelp.mahiti.org.newoepl.viewmodel.HomeViewModel;
 public class GroupsFragment extends Fragment {
 
     HomeViewModel homeViewModel;
+    FragmentGroupsBinding binding;
+    RecyclerView recyclerView;
+    List<GroupModel> groupModelList = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,6 +39,19 @@ public class GroupsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_groups, container, false);
+        View view = binding.getRoot();
+        recyclerView = binding.recyclerView;
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(manager);
+
+        homeViewModel.getGroupInserted().observe(getActivity(), aLong -> {
+            if (aLong!=null){
+                groupModelList = homeViewModel.getGroupList().getValue();
+            }
+        });
+
         return inflater.inflate(R.layout.fragment_groups, container, false);
     }
 }

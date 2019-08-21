@@ -40,6 +40,25 @@ public class QuestionChoicesModel {
     @Expose
     private Integer score;
 
+    private int radioButtonId;
+    private int radioCheckedPosition;
+
+    public int getRadioButtonId() {
+        return radioButtonId;
+    }
+
+    public void setRadioButtonId(int radioButtonId) {
+        this.radioButtonId = radioButtonId;
+    }
+
+    public int getRadioCheckedPosition() {
+        return radioCheckedPosition;
+    }
+
+    public void setRadioCheckedPosition(int radioCheckedPosition) {
+        this.radioCheckedPosition = radioCheckedPosition;
+    }
+
     public QuestionChoicesModel() {
     }
 

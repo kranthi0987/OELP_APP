@@ -221,24 +221,24 @@
 
 
                                     <RelativeLayout
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentRight="true"
                                         android:enabled="@{!registrationViewModel.showProgresBar}"
                                         android:paddingLeft="5dp"
-                                        android:paddingRight="10dp"
+                                        android:paddingRight="15dp"
                                         android:paddingTop="10dp">
 
                                         <ImageView
                                             android:layout_width="15dp"
                                             android:layout_height="15dp"
-                                            android:layout_centerInParent="true"
+                                            android:layout_alignParentRight="true"
                                             android:src="@drawable/downarrow" />
 
                                         <android.support.v7.widget.AppCompatSpinner
                                             android:id="@+id/spinnerState1"
-                                            android:layout_width="30dp"
-                                            android:layout_height="30dp"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
                                             android:enabled="@{!registrationViewModel.showProgresBar.getValue()}"
                                             android:popupBackground="@color/white"
                                             android:spinnerMode="dialog"
@@ -300,17 +300,17 @@
 
 
                                     <RelativeLayout
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentRight="true"
                                         android:enabled="@{!registrationViewModel.showProgresBar}"
                                         android:paddingLeft="5dp"
-                                        android:paddingRight="10dp"
+                                        android:paddingRight="15dp"
                                         android:paddingTop="10dp">
 
                                         <android.support.v7.widget.AppCompatSpinner
                                             android:id="@+id/spinnerDistrict1"
-                                            android:layout_width="30dp"
+                                            android:layout_width="match_parent"
                                             android:layout_height="30dp"
                                             android:enabled="@{!registrationViewModel.showProgresBar}"
                                             android:popupBackground="@color/white"
@@ -321,6 +321,7 @@
 
 
                                         <ImageView
+                                            android:layout_alignParentRight="true"
                                             android:layout_width="15dp"
                                             android:layout_height="15dp"
                                             android:layout_centerInParent="true"
@@ -380,17 +381,17 @@
 
 
                                     <RelativeLayout
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentRight="true"
                                         android:enabled="@{!registrationViewModel.showProgresBar}"
                                         android:paddingLeft="5dp"
-                                        android:paddingRight="10dp"
+                                        android:paddingRight="15dp"
                                         android:paddingTop="10dp">
 
                                         <android.support.v7.widget.AppCompatSpinner
                                             android:id="@+id/spinnerBlock1"
-                                            android:layout_width="30dp"
+                                            android:layout_width="match_parent"
                                             android:layout_height="30dp"
                                             android:enabled="@{!registrationViewModel.showProgresBar}"
                                             android:popupBackground="@color/white"
@@ -401,6 +402,7 @@
 
 
                                         <ImageView
+                                            android:layout_alignParentRight="true"
                                             android:layout_width="15dp"
                                             android:layout_height="15dp"
                                             android:layout_centerInParent="true"

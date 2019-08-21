@@ -55,6 +55,13 @@ public class DBConstants {
     public static final String IS_NOT_NULL = " IS NOT NULL";
     public static final String NOT_NULL_DEFAULT_ZERO = " not null default 0";
     public static final String WATCH_STATUS = "watchStatus";
+    public static final String QA_SCORE = "score";
+    public static final String QA_TOTAL = "totalMarks";
+    public static final String GROUP_TABLE = "groupTable";
+    public static final String GROUP_NAME = "groupName";
+    public static final String MEMBER_TABLE = "memberTable";
+    public static final String GROUP_ID = "groupId";
+    public static final String MEMBER_UUID = "memberUUID";
     public static String EQUAL_TO=" = ";
     public static String NOT_EQUAL_TO=" != ";
     public static String EMPTY="''";
@@ -82,7 +89,7 @@ public class DBConstants {
     public static final String QA_TABLENAME = "question_answer";
     public static final String QA_DATA = "offline_data";
     public static final String QA_SYNC_STATUS = "sync_status";
-    public static final String QA_SUBMITTED_DATE = "submitted_date";
+    public static final String QA_ATTMEPTS = "submitted_date";
     public static final String QA_VIDEOID = "video_id";
     public static final String QA_COMPLETED = "isCompleted";
 

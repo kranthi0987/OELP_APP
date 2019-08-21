@@ -18,9 +18,9 @@ public class UserDetailsModel implements Parcelable{
     @Expose
     private String name;
 
-    @SerializedName("userid")
+    @SerializedName("user_uuid")
     @Expose
-    private Integer userid;
+    private String userid;
 
     @SerializedName("active")
     @Expose
@@ -54,11 +54,11 @@ public class UserDetailsModel implements Parcelable{
         this.name = name;
     }
 
-    public Integer getUserid() {
+    public String getUserid() {
         return userid;
     }
 
-    public void setUserid(Integer userid) {
+    public void setUserid(String userid) {
         this.userid = userid;
     }
 
@@ -103,7 +103,7 @@ public class UserDetailsModel implements Parcelable{
     public void writeToParcel(Parcel parcel, int i) {
         this.school = parcel.readString();
         this.name = parcel.readString();
-        this.userid = parcel.readInt();
+        this.userid = parcel.readString();
         this.isTrainer = parcel.readInt();
         this.mobile_number = parcel.readString();
         this.active = parcel.readInt();
@@ -123,7 +123,7 @@ public class UserDetailsModel implements Parcelable{
     public UserDetailsModel(Parcel in){
         this.school = in.readString();
         this.name = in.readString();
-        this.userid =  in.readInt();
+        this.userid =  in.readString();
         this.isTrainer =  in.readInt();
         this.mobile_number =  in.readString();
         this.active =  in.readInt();
