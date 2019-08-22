@@ -82,7 +82,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 DBConstants.UUID+DBConstants.TEXT_PRIMARY_KEY+DBConstants.COMMA+
                 DBConstants.GROUP_NAME+DBConstants.TEXT_COMMA+
                 DBConstants.ACTIVE+DBConstants.INTEGER+
-                DBConstants.CREATED+DBConstants.DATETIME_COMMA+
+                DBConstants.CREATED+DBConstants.DATETIME+
                 DBConstants.CLOSE_BRACKET;
         Logger.logD(TAG, "Database creation query :" + query);
         sqLiteDatabase.execSQL(query);
@@ -95,9 +95,8 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 DBConstants.QA_SYNC_STATUS + DBConstants.INTEGER_COMMA +
                 DBConstants.QA_VIDEOID + DBConstants.TEXT_COMMA +
                 DBConstants.QA_ATTMEPTS + DBConstants.DATETIME_COMMA +
-                DBConstants.QA_SCORE + DBConstants.INTEGER_COMMA + DBConstants.NOT_NULL_DEFAULT_ZERO + DBConstants.COMMA +
-                DBConstants.QA_TOTAL + DBConstants.INTEGER_COMMA + DBConstants.NOT_NULL_DEFAULT_ZERO + DBConstants.COMMA +
-                DBConstants.QA_ATTMEPTS + DBConstants.INTEGER + DBConstants.NOT_NULL_DEFAULT_ZERO +
+                DBConstants.QA_SCORE + DBConstants.INTEGER + DBConstants.NOT_NULL_DEFAULT_ZERO + DBConstants.COMMA +
+                DBConstants.QA_TOTAL + DBConstants.INTEGER + DBConstants.NOT_NULL_DEFAULT_ZERO +
                 DBConstants.CLOSE_BRACKET;
         Logger.logD(TAG, "Database creation query :" + query);
         sqLiteDatabase.execSQL(query);

@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".views.activities.TeacherInfoTabActivity"></activity>
         <activity android:name=".views.activities.AnswerPreviewActivity" />
         <activity
             android:name=".views.activities.SplashActivity"
@@ -66,12 +67,14 @@
         <activity
             android:name=".videoplay.activity.VideoViewActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".views.activities.QuestionAnswerActivity"
-            android:screenOrientation="userPortrait"/>
+        <activity
+            android:name=".views.activities.QuestionAnswerActivity"
+            android:screenOrientation="userPortrait" />
         <activity
             android:name=".views.activities.AppIntroVideoActivity"
             android:screenOrientation="userLandscape" />
-        <activity android:name=".views.activities.AboutUsActivity"/>
+        <activity android:name=".views.activities.AboutUsActivity" />
+        <activity android:name=".views.activities.GroupTabsActivity" />
     </application>
 
 </manifest>
