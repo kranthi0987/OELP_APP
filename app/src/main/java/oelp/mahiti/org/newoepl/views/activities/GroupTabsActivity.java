@@ -1,5 +1,6 @@
 package oelp.mahiti.org.newoepl.views.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -7,11 +8,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +37,12 @@ public class GroupTabsActivity extends AppCompatActivity implements ViewPager.On
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private ViewPagerAdapter adapter;
+    private ImageView ivBack;
+    private ImageView ivMore;
+
+    private RelativeLayout relativeLayout;
+
+    View actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +50,8 @@ public class GroupTabsActivity extends AppCompatActivity implements ViewPager.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_tabs);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+       // setSupportActionBar(toolbar);
 
 
         initViews();
@@ -52,6 +64,42 @@ public class GroupTabsActivity extends AppCompatActivity implements ViewPager.On
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        actionBar = findViewById(R.id.toolbar);
+        /*toolbar = (Toolbar) findViewById(R.id.custom_toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.group_menu);*/
+
+        ivBack = (ImageView)findViewById(R.id.ivBack);
+        ivBack.setOnClickListener(view -> onBackPressed());
+
+        ivMore = (ImageView)findViewById(R.id.ivMore);
+
+        ivMore.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Context wrapper = new ContextThemeWrapper(GroupTabsActivity.this, R.style.PopupMenu);
+               // PopupMenu popup = new PopupMenu(wrapper, view);
+                PopupMenu popupMenu = new PopupMenu(wrapper, ivMore);
+               // popupMenu.getMenuInflater().inflate(R.menu.group_menu, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        switch (item.getItemId()) {
+                            case R.id.groupInfo:
+                                // item one clicked
+                                return true;
+
+                        }
+
+                        return false;
+                    }
+                });
+                popupMenu.inflate(R.menu.group_menu);
+                popupMenu.show();
+            }
+            });
 
     }
 
@@ -117,7 +165,7 @@ public class GroupTabsActivity extends AppCompatActivity implements ViewPager.On
     }
 
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.group_menu,menu);
         return true;
@@ -133,10 +181,15 @@ public class GroupTabsActivity extends AppCompatActivity implements ViewPager.On
                 startActivity(intent);
                 finish();
                 break;
+                *//*case R.id.bac*//*
 
         }
 
         return true;
-    }
+    }*/
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }
