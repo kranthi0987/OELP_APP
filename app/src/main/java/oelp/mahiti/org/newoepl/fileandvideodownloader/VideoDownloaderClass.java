@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import oelp.mahiti.org.newoepl.R;
+import oelp.mahiti.org.newoepl.database.DatabaseHandlerClass;
 import oelp.mahiti.org.newoepl.utils.AppUtils;
 import oelp.mahiti.org.newoepl.utils.Logger;
 import oelp.mahiti.org.newoepl.utils.MySharedPref;
@@ -128,6 +129,7 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
             file = new File(file.getAbsolutePath());
             Logger.logD(TAG, " file path to download : " + file.getAbsolutePath());
             totalSize = connection.getContentLength();
+
 //            putVideoFileSizeInDB(totalSize, videoId);
             Logger.logV(TAG, "the  size of the url and file size  is........." + url + "......" + totalSize);
             long megaBytes = DownloadUtility.getExternalFreeSpace();
@@ -139,6 +141,7 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
                     Logger.logD(TAG, context.getString(R.string.content_size_invalid));
                 }
                 checkFileExits(file);
+
             } else {
                 ToastUtils.displayToast(context.getString(R.string.memory_is_not_there_to_download_the_videos), context);
                 Logger.logD(TAG, context.getString(R.string.insufficient_memory));
@@ -251,6 +254,9 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
                         dismissDialog();
                         dismissNotification(true);
                         onMediaDownloadListener.onMediaDownload(type, downloadPath+"/"+ videoLastName, videoTitle,0, uuid);
+                        if(totalSize!=0) {
+                            updateFileSizeInDatabase(uuid, totalSize);
+                        }
                     }
 
                     @Override
@@ -406,6 +412,12 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
     private void dismissDownloading() {
         PRDownloader.cancel(downloadId);
     }
-
+    public void updateFileSizeInDatabase(String uuid,long fileSize) {
+        if (!uuid.isEmpty()) {
+            DatabaseHandlerClass catalogDBHandler = new DatabaseHandlerClass(context);
+            boolean getupdatedStatus = catalogDBHandler.addFileSize(uuid,fileSize );
+            Log.i("getUpdatedPD", getupdatedStatus + "");
+        }
+    }
 
 }

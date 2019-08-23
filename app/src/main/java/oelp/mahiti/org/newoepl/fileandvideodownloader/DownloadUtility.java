@@ -34,6 +34,7 @@ import java.util.Map;
 
 import oelp.mahiti.org.newoepl.BuildConfig;
 import oelp.mahiti.org.newoepl.R;
+import oelp.mahiti.org.newoepl.database.DatabaseHandlerClass;
 import oelp.mahiti.org.newoepl.utils.AppUtils;
 import oelp.mahiti.org.newoepl.utils.Constants;
 import oelp.mahiti.org.newoepl.utils.Logger;
@@ -407,4 +408,42 @@ public class DownloadUtility {
         return mb * 1024 * 1024;
 
     }
+
+    public static boolean checkFileCorruptStatus(FileModel fileModel,Context context){
+        boolean corrupted=false;
+
+//        URL url = null;
+//        URLConnection urlConnection = null;
+//        try {
+//            url = new URL(RetrofitConstant.BASE_URL + DownloadConstant.Slash +fileModel.getFileUrl());
+//            urlConnection = url.openConnection();
+//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//            StrictMode.setThreadPolicy(policy);
+//            urlConnection.connect();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        long file_size=0;
+//        if (urlConnection != null) {
+//            file_size = u
+//        }
+
+        DatabaseHandlerClass databaseHandlerClass=new DatabaseHandlerClass(context);
+        String fileSizeFromDatabase=databaseHandlerClass.getFileSize(fileModel.getUuid());
+        File f = new File(AppUtils.completePathInSDCard(Constants.VIDEO) + File.separator + AppUtils.getFileName(fileModel.getFileUrl()));
+        Logger.logD(TAG, " complete video path : " + f);
+        String fileSize= String.valueOf(f.length());
+        Logger.logD(TAG,"Video Size"+fileSize);
+        if(fileSize.equalsIgnoreCase(fileSizeFromDatabase)){
+            corrupted=true;
+            Logger.logD(TAG,"size compared"+true);
+        }else{
+            Logger.logD(TAG,"size compared"+false);
+        }
+
+        return corrupted;
+    }
+
+
 }

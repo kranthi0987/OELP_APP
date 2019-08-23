@@ -69,20 +69,20 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     }
 
     private void createGroupMemberTable(SQLiteDatabase sqLiteDatabase) {
-        String query = DBConstants.CREATE_TABLE_IF_NOT_EXIST+DBConstants.MEMBER_TABLE+DBConstants.OPEN_BRACKET+
-                DBConstants.GROUP_ID+DBConstants.TEXT_COMMA+
-                DBConstants.MEMBER_UUID+DBConstants.TEXT+
+        String query = DBConstants.CREATE_TABLE_IF_NOT_EXIST + DBConstants.MEMBER_TABLE + DBConstants.OPEN_BRACKET +
+                DBConstants.GROUP_ID + DBConstants.TEXT_COMMA +
+                DBConstants.MEMBER_UUID + DBConstants.TEXT +
                 DBConstants.CLOSE_BRACKET;
         Logger.logD(TAG, "Database creation query :" + query);
         sqLiteDatabase.execSQL(query);
     }
 
     private void createGroupTable(SQLiteDatabase sqLiteDatabase) {
-        String query = DBConstants.CREATE_TABLE_IF_NOT_EXIST+DBConstants.GROUP_TABLE+DBConstants.OPEN_BRACKET+
-                DBConstants.UUID+DBConstants.TEXT_PRIMARY_KEY+DBConstants.COMMA+
-                DBConstants.GROUP_NAME+DBConstants.TEXT_COMMA+
-                DBConstants.ACTIVE+DBConstants.INTEGER+
-                DBConstants.CREATED+DBConstants.DATETIME+
+        String query = DBConstants.CREATE_TABLE_IF_NOT_EXIST + DBConstants.GROUP_TABLE + DBConstants.OPEN_BRACKET +
+                DBConstants.UUID + DBConstants.TEXT_PRIMARY_KEY + DBConstants.COMMA +
+                DBConstants.GROUP_NAME + DBConstants.TEXT_COMMA +
+                DBConstants.ACTIVE + DBConstants.INTEGER +
+                DBConstants.CREATED + DBConstants.DATETIME +
                 DBConstants.CLOSE_BRACKET;
         Logger.logD(TAG, "Database creation query :" + query);
         sqLiteDatabase.execSQL(query);
@@ -152,6 +152,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 DBConstants.DESC + DBConstants.TEXT_COMMA +
                 DBConstants.TYPE_CONTENT + DBConstants.TEXT_COMMA +
                 DBConstants.CONTENT_UUID + DBConstants.TEXT_COMMA +
+                DBConstants.FILE_SIZE + DBConstants.TEXT_COMMA +
                 DBConstants.WATCH_STATUS + DBConstants.INTEGER + DBConstants.NOT_NULL_DEFAULT_ZERO +  // double not null default 0
                 DBConstants.CLOSE_BRACKET;
         Logger.logD(TAG, "Database creation query :" + query);
@@ -674,7 +675,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         MutableLiveData<List<GroupModel>> groupList = new MutableLiveData<>();
         List<GroupModel> groupList1 = new ArrayList<>();
         GroupModel groupModel;
-        String query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.GROUP_TABLE ;
+        String query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.GROUP_TABLE;
         initDatabase();
         try {
             Logger.logD(TAG, "Getting Group Item : " + query);
@@ -703,23 +704,56 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     private List<Member> getMembersList(String uuid) {
         List<Member> memberList = new ArrayList<>();
         Member member;
-        String query = DBConstants.SELECT+DBConstants.ALL_FROM+DBConstants.MEMBER_TABLE+DBConstants.WHERE+DBConstants.GROUP_ID+DBConstants.EQUAL_TO+"'"+uuid+"'";
+        String query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.MEMBER_TABLE + DBConstants.WHERE + DBConstants.GROUP_ID + DBConstants.EQUAL_TO + "'" + uuid + "'";
         initDatabase();
         Logger.logD(TAG, "Getting Group Item : " + query);
         try {
             Cursor cursor = database.rawQuery(query, null);
-            if (cursor.moveToFirst()){
+            if (cursor.moveToFirst()) {
                 do {
-                   member = new Member(cursor.getString(cursor.getColumnIndex(DBConstants.MEMBER_UUID)));
-                   memberList.add(member);
-                }while (cursor.moveToNext());
+                    member = new Member(cursor.getString(cursor.getColumnIndex(DBConstants.MEMBER_UUID)));
+                    memberList.add(member);
+                } while (cursor.moveToNext());
                 cursor.close();
             }
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             Logger.logE(TAG, ex.getMessage(), ex);
         }
         return memberList;
 
     }
+
+    public boolean addFileSize(String fileUuid, long filesize) {
+
+        initDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DBConstants.FILE_SIZE, filesize);
+        Log.d("CatalogDBHandler", "updating the view status to database" + fileUuid);
+        database.update(DBConstants.CAT_TABLE_NAME, values, DBConstants.UUID + " = ?", new String[]{fileUuid});
+
+        return true;
+    }
+
+    public String getFileSize(String fileuuid) {
+        initDatabase();
+        String fileSize = null;
+        String query = "Select filesize from CatalogTable where uuid='" + fileuuid + "'";
+        Logger.logD(TAG, "Getting filesize Item : " + query);
+        try {
+            database.beginTransaction();
+            Cursor cursor = database.rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                    fileSize = cursor.getString(cursor.getColumnIndex("filesize"));
+            }
+            cursor.close();
+            database.setTransactionSuccessful();
+        } catch (Exception ex) {
+            Logger.logE(TAG, ex.getMessage(), ex);
+        } finally {
+            database.endTransaction();
+        }
+        return fileSize;
+    }
+
 }
