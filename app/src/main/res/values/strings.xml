@@ -101,4 +101,7 @@
     <string name="please_enter_valid_OTP">-कृपया वैध ओ.टी.पी दर्ज करें</string>
     <string name="coming_soon">जल्द आ रहा है...</string>
     <string name="there_is_no_question_to_display">प्रदर्शित करने के लिए कोई सवाल नहीं है</string>
+    <string name="search_by_mobile_no">मोबाइल नंबर द्वारा खोजें</string>
+    <string name="enter_group_name">समूह का नाम दर्ज करें</string>
+    <string name="add_teacher">शिक्षक जोड़ें</string>
 </resources>

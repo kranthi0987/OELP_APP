@@ -25,6 +25,7 @@
                 android:src="@drawable/group_select" />
 
             <TextView
+                android:id="@+id/tvMessageCount"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentRight="true"
@@ -67,6 +68,7 @@
                         android:textSize="12sp" />
 
                     <TextView
+                        android:id="@+id/tvMemberNo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"

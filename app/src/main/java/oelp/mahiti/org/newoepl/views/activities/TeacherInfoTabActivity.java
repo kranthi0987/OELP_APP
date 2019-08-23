@@ -16,7 +16,6 @@ import java.util.List;
 import oelp.mahiti.org.newoepl.R;
 import oelp.mahiti.org.newoepl.views.fragments.ContributionsFragment;
 import oelp.mahiti.org.newoepl.views.fragments.NewTeacherFragment;
-import oelp.mahiti.org.newoepl.views.fragments.TeacherInfo1Fragment;
 import oelp.mahiti.org.newoepl.views.fragments.TeacherInfoFragment;
 
 public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener{

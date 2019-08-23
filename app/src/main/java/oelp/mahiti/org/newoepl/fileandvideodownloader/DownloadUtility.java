@@ -188,7 +188,7 @@ public class DownloadUtility {
         return convDonwBytesInLong;
     }
 
-    public static void playVideo(Activity activity, String path, String vName, int userId, String mediaUUID, String sectionUUID) {
+    public static void playVideo(Activity activity, String path, String vName, String userId, String mediaUUID, String sectionUUID) {
         try {
 
             File f = new File(AppUtils.completePathInSDCard(Constants.VIDEO) + File.separator + AppUtils.getFileName(path));
@@ -196,7 +196,7 @@ public class DownloadUtility {
             if (f.exists()) {
                 Intent i = new Intent(activity, VideoViewActivity.class);
                 i.putExtra("uriPath", f.getAbsolutePath());
-                i.putExtra("userId", String.valueOf(userId));
+                i.putExtra("userId", userId);
                 i.putExtra("videoTitle", vName);
                 i.putExtra("mediaUUID", mediaUUID);
                 i.putExtra("mediaTrackerApi", "");

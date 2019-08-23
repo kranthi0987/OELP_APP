@@ -26,6 +26,7 @@ import oelp.mahiti.org.newoepl.fileandvideodownloader.FileModel;
 import oelp.mahiti.org.newoepl.fileandvideodownloader.OnMediaDownloadListener;
 import oelp.mahiti.org.newoepl.interfaces.ItemClickListerner;
 import oelp.mahiti.org.newoepl.models.CatalogueDetailsModel;
+import oelp.mahiti.org.newoepl.models.GroupModel;
 import oelp.mahiti.org.newoepl.services.RetrofitConstant;
 import oelp.mahiti.org.newoepl.utils.AppUtils;
 import oelp.mahiti.org.newoepl.utils.Constants;
@@ -250,6 +251,16 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     }
 
     @Override
+    public void onItemClick(GroupModel item) {
+        if (item!=null){
+            Intent intent = new Intent(HomeActivity.this, SectionActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.anim_slide_in_left,
+                    R.anim.anim_slide_out_left);
+        }
+    }
+
+    @Override
     public void onMediaDownload(int type, String savedPath, String name, int position, String uuid) {
         homeViewModel.showProgresBar.setValue(false);
         homeViewModel.setDataInserted(1);
@@ -263,7 +274,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         try {
             File f = AppUtils.completePathInSDCard(Constants.VIDEO);
             DownloadUtility.playVideo((Activity) this, "static/media/2019/08/14/1900125913_U001_V001.mp4", "ओईएलपी किट",
-                    new MySharedPref(this).readInt(Constants.USER_ID, 0), "e7f5738a-4e37-4303-bee2-e0bd9820aab9", "");
+                    new MySharedPref(this).readString(Constants.USER_ID, ""), "e7f5738a-4e37-4303-bee2-e0bd9820aab9", "");
         } catch (Exception ex) {
             Logger.logE("", ex.getMessage(), ex);
         }

@@ -19,8 +19,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="00adbd23-2c5d-448f-88da-e6fe9e0f5b96" name="Default" comment="About us completed">
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/grey_border_button.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/search_dialog_view.xml" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.bin" />
@@ -28,8 +26,59 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/NEWOEPL.iml" afterPath="" />
       <change beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/1.png" afterPath="$PROJECT_DIR$/app/src/main/assets/1.png" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/2.png" afterPath="$PROJECT_DIR$/app/src/main/assets/2.png" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/3.png" afterPath="$PROJECT_DIR$/app/src/main/assets/3.png" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/4.png" afterPath="$PROJECT_DIR$/app/src/main/assets/4.png" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/assets/page.html" afterPath="$PROJECT_DIR$/app/src/main/assets/page.html" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/fileandvideodownloader/DownloadUtility.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/fileandvideodownloader/DownloadUtility.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/interfaces/ItemClickListerner.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/interfaces/ItemClickListerner.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/GroupModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/GroupModel.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/Member.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/Member.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/TeacherModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/TeacherModel.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/UserDetailsModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/UserDetailsModel.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/HomeViewModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/HomeViewModel.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/AboutUsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/AboutUsActivity.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/AppIntroVideoActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/AppIntroVideoActivity.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/GroupTabsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/GroupTabsActivity.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SectionActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SectionActivity.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SplashActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SplashActivity.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/TeacherInfoTabActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/TeacherInfoTabActivity.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/GroupAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/GroupAdapter.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/TeacherContributionAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/TeacherContributionAdapter.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/ChatFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/ChatFragment.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/ContributionsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/ContributionsFragment.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/GroupsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/GroupsFragment.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/MyContFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/MyContFragment.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/NewTeacherFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/NewTeacherFragment.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/TeacherContFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/TeacherContFragment.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/TeacherInfo1Fragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/TeacherInfo1Fragment.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/TeacherInfoFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/TeacherInfoFragment.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/image3.jpg" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/image3.jpg" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/member_listing_icon.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/member_listing_icon.png" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_about_us.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_about_us.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_app_intro_video.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_app_intro_video.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_group_tabs.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_group_tabs.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_teacherinfo_tab.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_teacherinfo_tab.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/adapter_group_view.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/adapter_group_view.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/adapter_teacher_cont.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/adapter_teacher_cont.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/custom_spinner_item.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/custom_spinner_item.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_chat.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_chat.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_contributions.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_contributions.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_groups.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_groups.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_my_cont.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_my_cont.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_new_teacher.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_new_teacher.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_teacher_cont.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_teacher_cont.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_teacher_info.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_teacher_info.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_teacherinfo.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_teacherinfo.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/search_dialog_view.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/search_dialog_view.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/menu/group_menu.xml" afterPath="$PROJECT_DIR$/app/src/main/res/menu/group_menu.xml" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/raw/intro_vid.mp4" afterPath="$PROJECT_DIR$/app/src/main/res/raw/intro_vid.mp4" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
       <change beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -59,21 +108,35 @@
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="628">
+            <state relative-caret-position="1615">
               <caret line="95" column="63" lean-forward="false" selection-start-line="95" selection-start-column="63" selection-end-line="95" selection-end-column="63" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="search_dialog_view.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="search_dialog_view.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/search_dialog_view.xml">
           <provider editor-type-id="android-designer2">
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="333">
-              <caret line="24" column="32" lean-forward="true" selection-start-line="24" selection-start-column="32" selection-end-line="24" selection-end-column="32" />
+            <state relative-caret-position="503">
+              <caret line="34" column="62" lean-forward="true" selection-start-line="34" selection-start-column="62" selection-end-line="34" selection-end-column="62" />
+              <folding>
+                <element signature="e#1131#1152#0" expanded="true" />
+                <element signature="e#2081#2102#0" expanded="true" />
+                <element signature="e#2985#3011#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SplashActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SplashActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="16" column="19" lean-forward="false" selection-start-line="16" selection-start-column="19" selection-end-line="16" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -82,18 +145,8 @@
       <file leaf-file-name="styles.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="617">
+            <state relative-caret-position="935">
               <caret line="55" column="12" lean-forward="false" selection-start-line="55" selection-start-column="12" selection-end-line="55" selection-end-column="12" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="green_dot.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-v24/green_dot.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="38" lean-forward="false" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -2343,8 +2396,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/QuestionAnswerViewModel.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/models/QuestionAnswerModel.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/HomeFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_units.xml" />
@@ -2392,12 +2443,14 @@
         <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/database/DatabaseHandlerClass.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_groups.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/GroupsFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SplashActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/search_dialog_view.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SplasActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SplashActivity.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" fullScreen="true">
     <option name="x" value="67" />
     <option name="y" value="27" />
     <option name="width" value="1299" />
@@ -2501,11 +2554,11 @@
     <property name="DEBUGGABLE_PROCESS" value="oelp.mahiti.org.newoepl" />
     <property name="DEBUGGER_ID" value="Auto" />
     <property name="SHOW_ALL_PROCESSES" value="false" />
-    <property name="SearchEverywhereHistoryKey" value="login&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_mobile_login.xml&#10;homev&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/HomeViewModel.java&#10;home&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_home.xml&#10;unit&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/fragment_units.xml&#10;fragment_&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/fragment_units.xml&#10;homeFra&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.views.fragments.HomeFragment&#10;grou&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/fragment_groups.xml&#10;regis&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_teacher_registration.xml&#10;QuesA&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/models/QuestionAnswerModel.java&#10;AppU&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/utils/AppUtils.java&#10;regi&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_teacher_registration.xml&#10;cust&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/custom_spinner_item.xml&#10;hom&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java&#10;sect&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.views.activities.SectionActivity&#10;VideoV&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/videoplay/activity/VideoViewActivity.java&#10;HomeA&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java&#10;Ques&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java&#10;ques&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_question_answer.xml&#10;qu&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_question_answer.xml&#10;sectio&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SectionActivity.java&#10;uni&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/adapter_units_video.xml&#10;unitad&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/UnitsVideoAdpater.java&#10;logi&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_mobile_login.xml&#10;ver&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_verification.xml&#10;re&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/TeacherRegistrationViewModel.java&#10;vIdeo&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/videoplay/activity/VideoViewActivity.java&#10;str&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/values/strings.xml&#10;Logi&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/MobileLoginActivity.java&#10;App&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/AppIntroVideoActivity.java&#10;Regis&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/TeacherRegistrationActivity.java&#10;Mobil&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/MobileLoginActivity.java&#10;Spla&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SplashActivity.java&#10;Home&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java&#10;mobil&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/MobileLoginActivity.java&#10;mob&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_mobile_login.xml&#10;VeriA&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.views.activities.OTPVerificationActivity&#10;mobi&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.views.activities.MobileLoginActivity&#10;homeA&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java&#10;unitfr&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/UnitsFragment.java&#10;unita&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/UnitsVideoAdpater.java&#10;Quest&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java&#10;data&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/database/DatabaseHandlerClass.java&#10;reg&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_teacher_registration.xml&#10;app&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/AppIntroVideoActivity.java&#10;cus&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/custom_spinner_item.xml&#10;TeacH&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/TeacherRegistrationViewModel.java&#10;RegisA&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/TeacherRegistrationActivity.java&#10;RegisView&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.viewmodel.TeacherRegistrationViewModel&#10;RegisV&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.viewmodel.TeacherRegistrationViewModel&#10;Da&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/database/DatabaseHandlerClass.java" />
+    <property name="SearchEverywhereHistoryKey" value="Spla&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.views.activities.SplasActivity&#10;login&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_mobile_login.xml&#10;homev&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/HomeViewModel.java&#10;home&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_home.xml&#10;unit&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/fragment_units.xml&#10;fragment_&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/fragment_units.xml&#10;homeFra&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.views.fragments.HomeFragment&#10;grou&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/fragment_groups.xml&#10;regis&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_teacher_registration.xml&#10;QuesA&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/models/QuestionAnswerModel.java&#10;AppU&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/utils/AppUtils.java&#10;regi&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_teacher_registration.xml&#10;cust&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/custom_spinner_item.xml&#10;hom&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java&#10;sect&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.views.activities.SectionActivity&#10;VideoV&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/videoplay/activity/VideoViewActivity.java&#10;HomeA&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java&#10;Ques&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java&#10;ques&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_question_answer.xml&#10;qu&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_question_answer.xml&#10;sectio&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SectionActivity.java&#10;uni&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/adapter_units_video.xml&#10;unitad&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/UnitsVideoAdpater.java&#10;logi&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_mobile_login.xml&#10;ver&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_verification.xml&#10;re&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/TeacherRegistrationViewModel.java&#10;vIdeo&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/videoplay/activity/VideoViewActivity.java&#10;str&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/values/strings.xml&#10;Logi&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/MobileLoginActivity.java&#10;App&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/AppIntroVideoActivity.java&#10;Regis&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/TeacherRegistrationActivity.java&#10;Mobil&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/MobileLoginActivity.java&#10;Home&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java&#10;mobil&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/MobileLoginActivity.java&#10;mob&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_mobile_login.xml&#10;VeriA&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.views.activities.OTPVerificationActivity&#10;mobi&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.views.activities.MobileLoginActivity&#10;homeA&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java&#10;unitfr&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/UnitsFragment.java&#10;unita&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/adapters/UnitsVideoAdpater.java&#10;Quest&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/QuestionAnswerActivity.java&#10;data&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/database/DatabaseHandlerClass.java&#10;reg&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/activity_teacher_registration.xml&#10;app&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/AppIntroVideoActivity.java&#10;cus&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/res/layout/custom_spinner_item.xml&#10;TeacH&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/viewmodel/TeacherRegistrationViewModel.java&#10;RegisA&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/TeacherRegistrationActivity.java&#10;RegisView&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.viewmodel.TeacherRegistrationViewModel&#10;RegisV&#9;PSI&#9;JAVA://oelp.mahiti.org.newoepl.viewmodel.TeacherRegistrationViewModel&#10;Da&#9;FILE&#9;file:///Volumes/Work/AryanProjects/OELP_APP/app/src/main/java/oelp/mahiti/org/newoepl/database/DatabaseHandlerClass.java" />
     <property name="android.project.structure.last.selected" value="SDK Location" />
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
-    <property name="device.picker.selection" value="1701247003962" />
+    <property name="device.picker.selection" value="0123456789ABCDEF" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable" />
     <property name="last_opened_file_path" value="$USER_HOME$/Pallavi/MyProjects/DesignPractice-master" />
     <property name="not.eligible.for.single.variant.sync" value="true" />
@@ -2767,18 +2820,18 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1920" height="1057" extended-state="6" />
+    <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32983425" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290735" sideWeight="0.5021299" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.63163716" sideWeight="0.50220996" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Flutter Outline" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32983425" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.63163716" sideWeight="0.49779007" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="AdbCommander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3290735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24972376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32983425" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39933628" sideWeight="0.49779007" order="3" side_tool="false" content_ui="tabs" />
@@ -2786,12 +2839,12 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32960597" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22044729" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290735" sideWeight="0.4978701" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24920128" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24972376" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Android WiFi ADB" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32983425" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Fabric" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2799,40 +2852,12 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Flutter Inspector" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32983425" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.63163716" sideWeight="0.50220996" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Flutter Outline" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32983425" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.63163716" sideWeight="0.49779007" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="AdbCommander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32964602" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24972376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32983425" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39933628" sideWeight="0.49779007" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32964602" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32983425" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24972376" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32964602" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Android WiFi ADB" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32983425" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Fabric" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Flutter Inspector" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -2924,13 +2949,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java</url>
-          <line>87</line>
+          <line>88</line>
           <properties />
           <option name="timeStamp" value="54" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java</url>
-          <line>103</line>
+          <line>104</line>
           <properties />
           <option name="timeStamp" value="57" />
         </line-breakpoint>
@@ -3014,13 +3039,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java</url>
-          <line>255</line>
+          <line>266</line>
           <properties />
           <option name="timeStamp" value="132" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java</url>
-          <line>254</line>
+          <line>265</line>
           <properties />
           <option name="timeStamp" value="133" />
         </line-breakpoint>
@@ -3044,19 +3069,19 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java</url>
-          <line>72</line>
+          <line>73</line>
           <properties />
           <option name="timeStamp" value="151" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java</url>
-          <line>74</line>
+          <line>75</line>
           <properties />
           <option name="timeStamp" value="152" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java</url>
-          <line>73</line>
+          <line>74</line>
           <properties />
           <option name="timeStamp" value="156" />
         </line-breakpoint>
@@ -3119,12 +3144,6 @@
           <line>103</line>
           <properties />
           <option name="timeStamp" value="186" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SplashActivity.java</url>
-          <line>92</line>
-          <properties />
-          <option name="timeStamp" value="191" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/videoplay/activity/VideoViewActivity.java</url>
@@ -3230,7 +3249,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/HomeActivity.java</url>
-          <line>71</line>
+          <line>72</line>
           <properties />
           <option name="timeStamp" value="213" />
         </line-breakpoint>
@@ -3319,27 +3338,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/fragments/UnitsFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="58" column="26" lean-forward="false" selection-start-line="58" selection-start-column="26" selection-end-line="58" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/adapter_group_view.xml">
-      <provider selected="true" editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="88" column="0" lean-forward="true" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
-          <folding>
-            <element signature="e#440#3141#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/adapter_units_video.xml">
       <provider editor-type-id="android-designer2">
         <state />
@@ -3489,7 +3487,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
           <caret line="676" column="20" lean-forward="false" selection-start-line="676" selection-start-column="20" selection-end-line="676" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3684,7 +3681,7 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="628">
+        <state relative-caret-position="1615">
           <caret line="95" column="63" lean-forward="false" selection-start-line="95" selection-start-column="63" selection-end-line="95" selection-end-column="63" />
           <folding />
         </state>
@@ -3692,7 +3689,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="617">
+        <state relative-caret-position="935">
           <caret line="55" column="12" lean-forward="false" selection-start-line="55" selection-start-column="12" selection-end-line="55" selection-end-column="12" />
           <folding />
         </state>
@@ -3711,8 +3708,28 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="333">
-          <caret line="24" column="32" lean-forward="true" selection-start-line="24" selection-start-column="32" selection-end-line="24" selection-end-column="32" />
+        <state relative-caret-position="503">
+          <caret line="34" column="62" lean-forward="true" selection-start-line="34" selection-start-column="62" selection-end-line="34" selection-end-column="62" />
+          <folding>
+            <element signature="e#1131#1152#0" expanded="true" />
+            <element signature="e#2081#2102#0" expanded="true" />
+            <element signature="e#2985#3011#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-v24/green_dot.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="38" lean-forward="false" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/oelp/mahiti/org/newoepl/views/activities/SplashActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="16" column="19" lean-forward="false" selection-start-line="16" selection-start-column="19" selection-end-line="16" selection-end-column="19" />
           <folding />
         </state>
       </provider>

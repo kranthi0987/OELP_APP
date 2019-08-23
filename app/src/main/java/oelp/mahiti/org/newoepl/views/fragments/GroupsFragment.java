@@ -19,6 +19,7 @@ import oelp.mahiti.org.newoepl.R;
 import oelp.mahiti.org.newoepl.databinding.FragmentGroupsBinding;
 import oelp.mahiti.org.newoepl.models.GroupModel;
 import oelp.mahiti.org.newoepl.viewmodel.HomeViewModel;
+import oelp.mahiti.org.newoepl.views.adapters.GroupAdapter;
 
 /**
  * Created by RAJ ARYAN on 07/08/19.
@@ -45,13 +46,21 @@ public class GroupsFragment extends Fragment {
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(manager);
+        recyclerView.setHasFixedSize(true);
+        GroupAdapter adapter = new GroupAdapter();
+//        recyclerView.setAdapter(adapter);
+        recyclerView.setFocusable(false);
 
-        homeViewModel.getGroupInserted().observe(getActivity(), aLong -> {
-            if (aLong!=null){
+//        homeViewModel.getGroupInserted().observe(getActivity(), aLong -> {
+//            if (aLong!=null){
                 groupModelList = homeViewModel.getGroupList().getValue();
-            }
-        });
+//            }
+//        });
 
-        return inflater.inflate(R.layout.fragment_groups, container, false);
+//        if (!groupModelList.isEmpty()) {
+//            adapter.setList(groupModelList, getActivity());
+//        }
+
+        return view;
     }
 }

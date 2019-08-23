@@ -6,10 +6,28 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Created by RAJ ARYAN on 31/07/19.
  */
 public class UserDetailsModel implements Parcelable{
+    @SerializedName("last_active")
+    @Expose
+    private String lastActive;
+
+    @SerializedName("user_group")
+    @Expose
+    private List<String> userGroup;
+
+    @SerializedName("video_covered_count")
+    @Expose
+    private String videoCoveredCount;
+
+    @SerializedName("last_logged_in")
+    @Expose
+    private String lastLoggedIn;
+
     @SerializedName("school")
     @Expose
     private String school;

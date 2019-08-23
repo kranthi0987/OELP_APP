@@ -433,7 +433,7 @@ public class HomeViewModel extends AndroidViewModel {
     private void insertDataIntoGroupTable(List<GroupModel> groups) {
         if (!groups.isEmpty()) {
             groupDataInsert.setValue(databaseHandlerClass.insertDatatoGroupsTable(groups));
-            sharedPref.writeBoolean(RetrofitConstant.GROUP_LIST_URL, true);
+            sharedPref.writeString(RetrofitConstant.GROUP_LIST_URL, AppUtils.getDate());
         }
     }
 
@@ -470,7 +470,7 @@ public class HomeViewModel extends AndroidViewModel {
     private void insertQuestionChoicesToTable(List<QuestionChoicesModel> questionChoicesModelList) {
         if (!questionChoicesModelList.isEmpty()) {
             databaseHandlerClass.insertDatatoQuestionChoicesTable(questionChoicesModelList);
-            sharedPref.writeBoolean(RetrofitConstant.QUESTION_CHOICES_LIST_URL, true);
+            sharedPref.writeString(RetrofitConstant.QUESTION_CHOICES_LIST_URL, AppUtils.getDate());
 
         }
     }
@@ -543,7 +543,7 @@ public class HomeViewModel extends AndroidViewModel {
     private void insertQuestionToTable(List<QuestionModel> questionModelList) {
         if (!questionModelList.isEmpty()) {
             databaseHandlerClass.insertDatatoQuestionTable(questionModelList);
-            sharedPref.writeBoolean(RetrofitConstant.QUESTION_LIST_URL, true);
+            sharedPref.writeString(RetrofitConstant.QUESTION_LIST_URL, AppUtils.getDate());
         }
 
     }
