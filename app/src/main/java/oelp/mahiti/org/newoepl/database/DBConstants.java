@@ -40,6 +40,7 @@ public class DBConstants {
     public static final String DESC = "description";
     public static final String TYPE_CONTENT = "typeContent";
     public static final String CONTENT_UUID = "contentUUID";
+    public static final String FILE_SIZE = "filesize";
     public static final String QUESTION_TABLE = "questionTable";
     public static final String Q_TEXT = "questionText";
     public static final String Q_HELP_TEXT = "helpText";

@@ -57,18 +57,6 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         }
     }
 
-//    @Override
-//    public void onOpen(SQLiteDatabase db) {
-//        db.disableWriteAheadLogging();
-//        super.onOpen(db);
-//
-//    }
-
-    @Override
-    public void onOpen(SQLiteDatabase db) {
-        super.onOpen(db);
-    }
-
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         createLocationTable(sqLiteDatabase);
@@ -199,6 +187,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 DBConstants.DESC + DBConstants.TEXT_COMMA +
                 DBConstants.TYPE_CONTENT + DBConstants.TEXT_COMMA +
                 DBConstants.CONTENT_UUID + DBConstants.TEXT_COMMA +
+                DBConstants.FILE_SIZE + DBConstants.TEXT_COMMA +
                 DBConstants.WATCH_STATUS + DBConstants.INTEGER + DBConstants.NOT_NULL_DEFAULT_ZERO +  // double not null default 0
                 DBConstants.CLOSE_BRACKET;
         Logger.logD(TAG, "Database creation query :" + query);
@@ -783,4 +772,37 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
 
     public void insertDatatoTeacherTable(List<TeacherModel> teachers) {
     }
+
+    public boolean addFileSize(String fileUuid, long filesize) {
+
+        initDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DBConstants.FILE_SIZE, filesize);
+        Log.d("CatalogDBHandler", "updating the view status to database" + fileUuid);
+        database.update(DBConstants.CAT_TABLE_NAME, values, DBConstants.UUID + " = ?", new String[]{fileUuid});
+
+        return true;
+    }
+
+    public String getFileSize(String fileuuid) {
+        initDatabase();
+        String fileSize = null;
+        String query = "Select filesize from CatalogTable where uuid='" + fileuuid + "'";
+        Logger.logD(TAG, "Getting filesize Item : " + query);
+        try {
+            database.beginTransaction();
+            Cursor cursor = database.rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                    fileSize = cursor.getString(cursor.getColumnIndex("filesize"));
+            }
+            cursor.close();
+            database.setTransactionSuccessful();
+        } catch (Exception ex) {
+            Logger.logE(TAG, ex.getMessage(), ex);
+        } finally {
+            database.endTransaction();
+        }
+        return fileSize;
+    }
+
 }

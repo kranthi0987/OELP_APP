@@ -158,7 +158,7 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
     private void checkVideoAndDownload(FileModel fileModel) {
 
         String userUUId = new MySharedPref(this).readString(Constants.USER_ID, "");
-        if (videoAvailable(fileModel)) {
+        if (videoAvailable(fileModel) && DownloadUtility.checkFileCorruptStatus(fileModel,SectionActivity.this)) {
             DownloadUtility.playVideo(this, fileModel.getFileUrl(), fileModel.getFileName(), userUUId, fileModel.getUuid(), parentId);
         } else {
             downloadVideo(fileModel);

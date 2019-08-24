@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "525399859636",
+    "firebase_url": "https://oelp-mobile-app.firebaseio.com",
+    "project_id": "oelp-mobile-app",
+    "storage_bucket": "oelp-mobile-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525399859636:android:c198266a021f5bae",
+        "android_client_info": {
+          "package_name": "oelp.mahiti.org.newoepl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "525399859636-sfkbpmhfcnohld6cht7qck7ldva30p37.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAo1sa14Cr0VI9hSpsdp8QOTfE2VCtnKQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "525399859636-sfkbpmhfcnohld6cht7qck7ldva30p37.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
