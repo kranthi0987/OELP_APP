@@ -61,7 +61,7 @@ public class HomeViewModel extends AndroidViewModel {
     public MutableLiveData<String> parentId = new MutableLiveData<>();
     public List<CatalogueDetailsModel> modelForCatalog = new ArrayList<>();
     public MutableLiveData<Integer> apiCountMutable = new MutableLiveData<>();
-    public int apiCount =0;
+    public int apiCount = 0;
     public MutableLiveData<Long> insertLong = new MutableLiveData();
 
     public HomeViewModel(@NonNull Application application) {
@@ -140,7 +140,8 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public void callApiForGroupList(String userId) {
-        apiCountMutable.setValue(++apiCount);;
+        apiCountMutable.setValue(++apiCount);
+        ;
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Param : userId:" + userId);
         apiInterface.getGroupList(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
@@ -177,13 +178,13 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
 
-
     public void setDataInserted(Integer dataInserted) {
         this.dataInserted.setValue(dataInserted);
     }
 
     private void callApiForQuestionChoices(String userId) {
-        apiCountMutable.setValue(++apiCount);;
+        apiCountMutable.setValue(++apiCount);
+        ;
 //        String modifiedDate = databaseHandlerClass.getModifiedDate(DBConstants.QUESTION_TABLE);
         String modifiedDate = "";
         ApiInterface apiInterface = RetrofitClass.getAPIService();
@@ -360,9 +361,9 @@ public class HomeViewModel extends AndroidViewModel {
 
     public void onGroupsClick() {
         if (!groupsClick.getValue()) {
-//                homeClick.setValue(false);
-            groupsClick.setValue(true);
+//              homeClick.setValue(false);
             unitsClick.setValue(false);
+            groupsClick.setValue(true);
         }
     }
 

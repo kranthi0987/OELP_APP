@@ -3,6 +3,7 @@ package mahiti.org.oelp.views.fragments;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.CreateGroupActivity;
 import mahiti.org.oelp.databinding.FragmentGroupsBinding;
 import mahiti.org.oelp.models.GroupModel;
 import mahiti.org.oelp.utils.Constants;
@@ -68,11 +70,11 @@ public class GroupsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         fab = binding.fab;
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                moveToCreateGroup.setValue(true);
-            }
+        fab.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getActivity(), CreateGroupActivity.class);
+            startActivity(intent);
+            if (getActivity()!=null)
+                getActivity().overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
         });
 
 

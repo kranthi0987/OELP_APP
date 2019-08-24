@@ -56,6 +56,16 @@ public class UserDetailsModel implements Parcelable{
     @Expose
     private String mobile_number;
 
+    private boolean isCheckBoxChecked;
+
+    public boolean isCheckBoxChecked() {
+        return isCheckBoxChecked;
+    }
+
+    public void setCheckBoxChecked(boolean checkBoxChecked) {
+        isCheckBoxChecked = checkBoxChecked;
+    }
+
     public String getSchool() {
         return school;
     }
@@ -110,6 +120,38 @@ public class UserDetailsModel implements Parcelable{
 
     public void setMobile_number(String mobile_number) {
         this.mobile_number = mobile_number;
+    }
+
+    public String getLastActive() {
+        return lastActive;
+    }
+
+    public void setLastActive(String lastActive) {
+        this.lastActive = lastActive;
+    }
+
+    public List<String> getUserGroup() {
+        return userGroup;
+    }
+
+    public void setUserGroup(List<String> userGroup) {
+        this.userGroup = userGroup;
+    }
+
+    public String getVideoCoveredCount() {
+        return videoCoveredCount;
+    }
+
+    public void setVideoCoveredCount(String videoCoveredCount) {
+        this.videoCoveredCount = videoCoveredCount;
+    }
+
+    public String getLastLoggedIn() {
+        return lastLoggedIn;
+    }
+
+    public void setLastLoggedIn(String lastLoggedIn) {
+        this.lastLoggedIn = lastLoggedIn;
     }
 
     @Override

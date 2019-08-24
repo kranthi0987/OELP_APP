@@ -14,6 +14,7 @@ import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,6 +79,7 @@ public class AppUtils {
         }
         return message;
     }
+
     public static String getDateTime() {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -92,8 +95,6 @@ public class AppUtils {
         return simpleDateFormat.format(date);
 
     }
-
-
 
 
     public static String validateOtp(Context context, String otpString) {
@@ -330,8 +331,24 @@ public class AppUtils {
     public static void showAboutUsActivity(Context context) {
         Intent intent = new Intent(context, AboutUsActivity.class);
         context.startActivity(intent);
-        ((Activity)context).overridePendingTransition(R.anim.anim_slide_in_left,
+        ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_left,
                 R.anim.anim_slide_out_left);
+    }
+
+    public static String getUUID() {
+        return UUID.randomUUID().toString();
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        if (imm != null)
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
 

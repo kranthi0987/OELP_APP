@@ -22,7 +22,8 @@
         <activity
             android:name=".views.activities.TeacherInfoTabActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".views.activities.AnswerPreviewActivity" />
+        <activity android:name=".views.activities.AnswerPreviewActivity"
+            android:screenOrientation="userPortrait"/>
         <activity
             android:name=".views.activities.SplashActivity"
             android:screenOrientation="portrait">
@@ -86,7 +87,8 @@
             android:name="io.fabric.ApiKey"
             android:value="02925ef542d587b0d078678a1e73a90a8291f618" />
 
-        <activity android:name=".database.CreateGroupActivity"></activity>
+        <activity android:name=".database.CreateGroupActivity"
+            android:screenOrientation="userPortrait"/>
     </application>
 
 </manifest>

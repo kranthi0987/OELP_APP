@@ -1,120 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="10dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="15dp">
+    android:background="@color/grey"
+    android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/etGroupName"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/grey"
-        android:fontFamily="@font/montserrat_regular"
-        android:hint="@string/enter_group_name"
-        android:inputType="text"
-        android:maxLines="1"
-        android:text="@={createGroupViewModel.groupName}"
-        android:textColor="@color/grey"
-        android:textColorHint="@color/grey"
-        android:textSize="@dimen/et_text_size" />
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/grey_border_button">
-
-        <EditText
-            android:id="@+id/tvSearchMobile"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="45dp"
-            android:backgroundTint="@color/white"
-            android:fontFamily="@font/montserrat_regular"
-            android:hint="@string/search_by_mobile_no"
-            android:inputType="phone"
-            android:maxLength="10"
-            android:maxLines="1"
-            android:padding="10dp"
-            android:text="@={createGroupViewModel.MobileNo}"
-            android:textColor="@color/black"
-            android:textColorHint="@color/grey"
-            android:textSize="@dimen/et_text_size" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:onClick="@{createGroupViewModel.callApiForTeacher}"
-            android:src="@drawable/search" />
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:fontFamily="@font/montserrat_semibold"
-            android:paddingTop="20dp"
-            android:text="@string/add_teacher"
-            android:textColor="@color/black"
-            android:textSize="@dimen/heading_text_size" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvTeacher"
+            <include
+                layout="@layout/black_toolabr"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"
-                android:theme="@style/AppTheme.WhiteAccent" />
+                android:layout_centerInParent="true" />
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <LinearLayout
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/etGroupName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/grey"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:hint="@string/enter_group_name"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/grey"
+                        android:textSize="@dimen/et_text_size" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/grey_border_button">
+
+                        <EditText
+                            android:layout_marginRight="40dp"
+                            android:id="@+id/etMobileNo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/white"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:hint="@string/search_by_mobile_no"
+                            android:inputType="phone"
+                            android:maxLength="10"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey"
+                            android:textSize="@dimen/et_text_size" />
+
+                        <ImageView
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_search"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/llView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tvAddTeacher"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:paddingTop="10dp"
+                            android:text="@string/add_teacher"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tvAddTeacher">
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/recyclerView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
 
 
-    </LinearLayout>
+                        </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/btnSubmit"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/yellow_bkg_button"
-            android:fontFamily="@font/montserrat_medium"
-            android:onClick="@{()->questionAnswerViewModel.onSubmitClick()}"
-            android:text="@string/create"
-            android:textAllCaps="false"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:textColor="@color/black"
-            android:textSize="@dimen/button_text_size" />
+                    </RelativeLayout>
 
-    </RelativeLayout>
+                </LinearLayout>
 
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"
+                    android:theme="@style/AppTheme.WhiteAccent"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btnCreate"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/yellow_bkg_button"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:onClick="@{()->questionAnswerViewModel.onSubmitClick()}"
+                    android:text="@string/create"
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/button_text_size" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>
+
+
+
 
 

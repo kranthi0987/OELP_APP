@@ -59,6 +59,10 @@ public interface ApiInterface {
     @POST(RetrofitConstant.QUESTION_CHOICES_LIST_URL)
     Call<MobileVerificationResponseModel> getQuestionChoicesList(@Field("userId") String userId, @Field("modified_date") String modifiedDate);
 
+    @FormUrlEncoded
+    @POST(RetrofitConstant.CREATE_GROUP_URL)
+    Call<MobileVerificationResponseModel> createGroup(@Field("user_uuid") String userId, @Field("name") String groupName, @Field("creation_key") String groupCreationKey, @Field("members") String members);
+
 
 //
 //    @Headers({

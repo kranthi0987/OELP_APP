@@ -403,7 +403,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         List<CatalogueDetailsModel> catalogList1 = new ArrayList<>();
         CatalogueDetailsModel catalogueDetailsModel;
         String mainQuery = "";
-        String query1 = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.CAT_TABLE_NAME + DBConstants.WHERE + DBConstants.PARENT + DBConstants.EQUAL_TO+DBConstants.AND+DBConstants.ACTIVE+DBConstants.EQUAL_TO+2;
+        String query1 = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.CAT_TABLE_NAME + DBConstants.WHERE +DBConstants.ACTIVE+DBConstants.EQUAL_TO+2+DBConstants.AND+DBConstants.PARENT+DBConstants.EQUAL_TO;
         String query2;
         if (parentId.isEmpty())
             query2 = DBConstants.EMPTY+DBConstants.ORDER_BY+DBConstants.ORDER;

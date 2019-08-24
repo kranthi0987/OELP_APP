@@ -64,23 +64,23 @@
             </RelativeLayout>
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:weightSum="1">
+                android:orientation="vertical">
 
                 <FrameLayout
                     android:id="@+id/fragmentContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight=".87" />
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="60dp"
+                    />
 
 
                 <RelativeLayout
+                    android:layout_alignParentBottom="true"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight=".13">
+                    android:layout_height="65dp">
 
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
@@ -149,6 +149,7 @@
                                         android:fontFamily="@font/montserrat_medium"
                                         android:text="@string/units"
                                         android:textSize="15sp" />
+
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -239,7 +240,7 @@
 
                 </RelativeLayout>
 
-            </LinearLayout>
+            </RelativeLayout>
 
         </LinearLayout>
 

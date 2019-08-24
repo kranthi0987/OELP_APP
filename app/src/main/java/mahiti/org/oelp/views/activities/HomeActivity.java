@@ -1,13 +1,11 @@
 package mahiti.org.oelp.views.activities;
 
 import android.app.Activity;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.database.CreateGroupActivity;
 import mahiti.org.oelp.databinding.ActivityHomeBinding;
 import mahiti.org.oelp.fileandvideodownloader.DownloadClass;
 import mahiti.org.oelp.fileandvideodownloader.DownloadUtility;
@@ -48,12 +45,12 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     HomeViewModel homeViewModel;
     private int userType;
     private MySharedPref sharedPref;
+    private int clicked=0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activityHomeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         activityHomeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         activityHomeBinding.setHomeViewModel(homeViewModel);
@@ -89,11 +86,15 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
                 setImageAndTextColor(Constants.Units);
                 setFragment(Constants.Units);
                 homeViewModel.title.setValue(getResources().getString(R.string.units));
+                clicked=0;
             }
         });
 
         homeViewModel.groupsClick.observe(this, aBoolean -> {
             if (aBoolean != null && aBoolean) {
+                if (userType==Constants.USER_TEACHER && clicked ==0){
+                    homeViewModel.groupsClick.setValue(false);
+                }
                 checKConditionAndProceed();
             }
         });
@@ -105,6 +106,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
 
         homeViewModel.getDataInserted().observe(this, integer -> {
             if (integer != null) {
+                clicked=0;
                 setImageAndTextColor(Constants.Units);
                 setFragment(Constants.Units);
             }
@@ -112,17 +114,17 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         });
 
 
-        GroupsFragment fragment = new GroupsFragment();
-        fragment.moveToCreateGroup.observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                if (aBoolean!=null) {
-                    Intent intent = new Intent(HomeActivity.this, CreateGroupActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
-                }
-            }
-        });
+//        GroupsFragment fragment = new GroupsFragment();
+//        fragment.moveToCreateGroup.observe(this, new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(@Nullable Boolean aBoolean) {
+//                if (aBoolean!=null) {
+//                    Intent intent = new Intent(HomeActivity.this, CreateGroupActivity.class);
+//                    startActivity(intent);
+//                    overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+//                }
+//            }
+//        });
 
 //        homeViewModel.getDataInserted().observe(this, aLong -> {
 //            if (aLong != null && !aLong)
@@ -147,6 +149,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         Intent intent = new Intent(HomeActivity.this, ChatAndContributionActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+        clicked=0;
     }
 
     private void downloadIntroVideo() {

@@ -43,8 +43,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.LayoutView> 
         GroupModel groupModel = modelList.get(i);
         setValues(groupModel, layout, i);
         layout.binding.llRecyclerView.setOnClickListener(v -> listener.onItemClick(groupModel));
-
-
     }
 
 

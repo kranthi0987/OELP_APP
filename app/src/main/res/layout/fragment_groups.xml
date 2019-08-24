@@ -54,7 +54,7 @@
             android:layout_centerInParent="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:visibility="@{homeViewModel.apiCountMutable>0? View.VISIBLE:View.INVISIBLE}" />
+            android:visibility="@{homeViewModel.apiCountMutable>0? View.VISIBLE:View.GONE}" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
