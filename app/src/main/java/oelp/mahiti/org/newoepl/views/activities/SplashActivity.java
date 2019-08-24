@@ -28,11 +28,7 @@ public class SplashActivity extends AppCompatActivity {
         rlMain = findViewById(R.id.rlMain);
 //        setLocale(1);
         sharedPref = new MySharedPref(this);
-//        checkPermissionAndProceed();
-
-        Intent intent = new Intent(SplashActivity.this,GroupTabsActivity.class);
-        startActivity(intent);
-        finish();
+        checkPermissionAndProceed();
     }
 
     private void checkPermissionAndProceed() {
