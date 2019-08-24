@@ -9,7 +9,7 @@
 
         <variable
             name="homeViewModels"
-            type="oelp.mahiti.org.newoepl.viewmodel.HomeViewModel" />
+            type="mahiti.org.oelp.viewmodel.HomeViewModel" />
     </data>
 
     <RelativeLayout

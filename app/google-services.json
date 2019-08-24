@@ -1,34 +1,42 @@
 {
   "project_info": {
-    "project_number": "525399859636",
-    "firebase_url": "https://oelp-mobile-app.firebaseio.com",
-    "project_id": "oelp-mobile-app",
-    "storage_bucket": "oelp-mobile-app.appspot.com"
+    "project_number": "760519760151",
+    "firebase_url": "https://oelp-94bfc.firebaseio.com",
+    "project_id": "oelp-94bfc",
+    "storage_bucket": "oelp-94bfc.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:525399859636:android:c198266a021f5bae",
+        "mobilesdk_app_id": "1:760519760151:android:c62cf9676ae55533",
         "android_client_info": {
-          "package_name": "oelp.mahiti.org.newoepl"
+          "package_name": "mahiti.org.oelp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "525399859636-sfkbpmhfcnohld6cht7qck7ldva30p37.apps.googleusercontent.com",
+          "client_id": "760519760151-qakv102o0oj4rd0jtee4afo6bchnu1o0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mahiti.org.oelp",
+            "certificate_hash": "d964e8fda1781829f5c0fea8e04f39045de13d77"
+          }
+        },
+        {
+          "client_id": "760519760151-71cqsim0q3mdqb2mgua3lkoconja3so9.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAo1sa14Cr0VI9hSpsdp8QOTfE2VCtnKQo"
+          "current_key": "AIzaSyDoYO5dpCfmJT_lyYPKO1LVn8Eq3LiDkzA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "525399859636-sfkbpmhfcnohld6cht7qck7ldva30p37.apps.googleusercontent.com",
+              "client_id": "760519760151-71cqsim0q3mdqb2mgua3lkoconja3so9.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

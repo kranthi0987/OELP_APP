@@ -1,4 +1,4 @@
-package oelp.mahiti.org.newoepl;
+package mahiti.org.oelp;
 
 import org.junit.Test;
 

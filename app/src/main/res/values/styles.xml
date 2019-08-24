@@ -59,6 +59,10 @@
         <item name="colorAccent">@color/colorPrimary</item> <!-- Whatever color you want-->
     </style>
 
+    <style name="AppTheme.GreenAccent">
+        <item name="colorAccent">@color/green</item> <!-- Whatever color you want-->
+    </style>
+
     <style name="PopupMenu" parent="Widget.AppCompat.PopupMenu">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:itemBackground">@color/backgroundColor</item>

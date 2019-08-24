@@ -10,7 +10,7 @@
 
         <variable
             name="homeViewModel"
-            type="oelp.mahiti.org.newoepl.viewmodel.HomeViewModel" />
+            type="mahiti.org.oelp.viewmodel.HomeViewModel" />
     </data>
 
     <RelativeLayout
@@ -25,11 +25,11 @@
             tools:mContext=".views.activities.HomeActivity">
 
             <!--<include-->
-                <!--android:id="@+id/whiteToolbar"-->
-                <!--layout="@layout/white_toolabr"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerInParent="true" />-->
+            <!--android:id="@+id/whiteToolbar"-->
+            <!--layout="@layout/white_toolabr"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true" />-->
 
             <RelativeLayout
                 android:id="@+id/rlBanner"
@@ -253,6 +253,7 @@
             <!--android:visibility="@{homeViewModel.apiErrorMessage.isEmpty()?View.VISIBLE:View.GONE}">-->
 
             <ProgressBar
+                android:theme="@style/AppTheme.WhiteAccent"
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
@@ -260,7 +261,7 @@
                 android:layout_centerInParent="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
-                android:visibility="@{homeViewModel.showProgresBar? View.VISIBLE:View.INVISIBLE}" />
+                android:visibility="@{homeViewModel.apiCountMutable>0? View.VISIBLE:View.INVISIBLE}" />
 
         </RelativeLayout>
 

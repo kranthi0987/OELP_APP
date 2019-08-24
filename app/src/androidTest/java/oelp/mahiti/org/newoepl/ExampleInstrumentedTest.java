@@ -1,4 +1,4 @@
-package oelp.mahiti.org.newoepl;
+package mahiti.org.oelp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("oelp.mahiti.org.newoepl", appContext.getPackageName());
+        assertEquals("mahiti.org.oelp", appContext.getPackageName());
     }
 }

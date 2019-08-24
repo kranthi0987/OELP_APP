@@ -104,4 +104,6 @@
     <string name="search_by_mobile_no">मोबाइल नंबर द्वारा खोजें</string>
     <string name="enter_group_name">समूह का नाम दर्ज करें</string>
     <string name="add_teacher">शिक्षक जोड़ें</string>
+    <string name="data_not_found">डेटा नहीं मिला</string>
+    <string name="create">रचना</string>
 </resources>

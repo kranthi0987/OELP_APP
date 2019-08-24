@@ -24,7 +24,7 @@
 
         <variable
             name="registrationViewModel"
-            type="oelp.mahiti.org.newoepl.viewmodel.TeacherRegistrationViewModel" />
+            type="mahiti.org.oelp.viewmodel.TeacherRegistrationViewModel" />
 
 
     </data>

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="oelp.mahiti.org.newoepl">
+    package="mahiti.org.oelp">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
 
     <application
         android:allowBackup="true"
@@ -20,11 +19,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".views.activities.TeacherInfoTabActivity"
-            android:configChanges="orientation|screenSize"/>
-
+        <activity
+            android:name=".views.activities.TeacherInfoTabActivity"
+            android:configChanges="orientation|screenSize" />
         <activity android:name=".views.activities.AnswerPreviewActivity" />
-
         <activity
             android:name=".views.activities.SplashActivity"
             android:screenOrientation="portrait">
@@ -34,9 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".views.activities.MainActivity" />
-
         <activity
             android:name=".views.activities.TeacherRegistrationActivity"
             android:screenOrientation="portrait"
@@ -82,8 +78,15 @@
             android:name=".views.activities.AppIntroVideoActivity"
             android:screenOrientation="userLandscape" />
         <activity android:name=".views.activities.AboutUsActivity" />
-        <activity android:name=".views.activities.GroupTabsActivity"
-            android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name=".views.activities.ChatAndContributionActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="02925ef542d587b0d078678a1e73a90a8291f618" />
+
+        <activity android:name=".database.CreateGroupActivity"></activity>
     </application>
 
 </manifest>

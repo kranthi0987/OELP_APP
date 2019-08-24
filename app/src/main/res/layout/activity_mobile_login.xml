@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="oelp.mahiti.org.newoepl.viewmodel.MobileLoginViewModel" />
+            type="mahiti.org.oelp.viewmodel.MobileLoginViewModel" />
     </data>
 
 
