@@ -10,18 +10,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.List;
+
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.models.TeacherModel;
 import mahiti.org.oelp.views.activities.TeacherInfoTabActivity;
 
 public class TeacherContributionAdapter extends RecyclerView.Adapter<TeacherContributionAdapter.ViewHolder> {
 
     private Activity context;
-    private int size;
+    List<TeacherModel> teachersList;
 
-    public TeacherContributionAdapter(Activity context, int size) {
+    public TeacherContributionAdapter(Activity context, List<TeacherModel> teachers) {
         this.context = context;
-        this.size = size;
-
+        this.teachersList = teachers;
     }
 
 
@@ -34,14 +36,14 @@ public class TeacherContributionAdapter extends RecyclerView.Adapter<TeacherCont
 
     @Override
     public void onBindViewHolder(TeacherContributionAdapter.ViewHolder viewHolder, final int position) {
+        viewHolder.textViewBlock.setText(teachersList.get(position).getBlockName());
+        viewHolder.textViewTeacherName.setText(teachersList.get(position).getName());
+        viewHolder.textViewSchool.setText(teachersList.get(position).getSchool());
+        viewHolder.textViewCount.setText(""+position);
 
-        viewHolder.linearLayoutTeacherAdapter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(context, TeacherInfoTabActivity.class);
-                context.startActivity(intent);
-            }
+        viewHolder.linearLayoutTeacherAdapter.setOnClickListener(v -> {
+            Intent intent = new Intent(context, TeacherInfoTabActivity.class);
+            context.startActivity(intent);
         });
 
 
@@ -49,7 +51,7 @@ public class TeacherContributionAdapter extends RecyclerView.Adapter<TeacherCont
 
     @Override
     public int getItemCount() {
-        return size;
+        return teachersList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
