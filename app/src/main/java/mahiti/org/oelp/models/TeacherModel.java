@@ -41,6 +41,35 @@ public class TeacherModel {
     @SerializedName("video_covered_count")
     @Expose
     private String videoCoveredCount;
+
+    public String getBlockName() {
+        return blockName;
+    }
+
+    public void setBlockName(String blockName) {
+        this.blockName = blockName;
+    }
+
+    private String blockName;
+
+
+
+    public Integer getIsTrainer() {
+        return isTrainer;
+    }
+
+    public void setIsTrainer(Integer isTrainer) {
+        this.isTrainer = isTrainer;
+    }
+
+    public String getLastLoggedIn() {
+        return lastLoggedIn;
+    }
+
+    public void setLastLoggedIn(String lastLoggedIn) {
+        this.lastLoggedIn = lastLoggedIn;
+    }
+
     @SerializedName("isTrainer")
     @Expose
     private Integer isTrainer;
@@ -146,5 +175,15 @@ public class TeacherModel {
     public void setVideoCoveredCount(String videoCoveredCount) {
         this.videoCoveredCount = videoCoveredCount;
     }
+
+    public String getUserUuid() {
+        return userUuid;
+    }
+
+    public void setUserUuid(String userUuid) {
+        this.userUuid = userUuid;
+    }
+
+
 
 }

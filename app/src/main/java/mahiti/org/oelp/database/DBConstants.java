@@ -95,7 +95,22 @@ public class DBConstants {
     public static final String QA_ATTMEPTS = "submitted_date";
     public static final String QA_VIDEOID = "video_id";
     public static final String QA_COMPLETED = "isCompleted";
-
+    // below are the teacher table constants
+    public static final String TEACHER_TABLENAME = "teacher";
+    public static final String USER_UID = "user_uuid";
+    public static final String VIDEOCOVERED_COUNT = "video_covered_count";
+    public static final String STATE_ID = "stateId";
+    public static final String GROUP_UUID_COL = "group_uuid";
+    public static final String MOBILE_NUMBER = "mobile_number";
+    //public static final String GROUP_NAME = "group_name";
+    public static final String LAST_ACTIVE = "last_active";
+    public static final String BLOCK_ID = "blockIds";
+    public static final String SCHOOL = "school";
+    public static final String DISTRICT_ID = "districtId";
+    public static final String IS_TRAINER = "isTrainer";
+    public static final String LAST_LOGGEDIN = "last_logged_in";
+    public static final String TEACHER_NAME = "teacher_name";
+    public static final String SINGLE_QUOTES = "'";
 
 
 

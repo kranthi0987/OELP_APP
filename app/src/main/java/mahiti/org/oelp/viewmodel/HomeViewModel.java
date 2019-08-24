@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.DAOs.TeacherDao;
 import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.fileandvideodownloader.FileModel;
@@ -309,6 +310,8 @@ public class HomeViewModel extends AndroidViewModel {
                 MobileVerificationResponseModel model = response.body();
                 if (model != null) {
                     insertDataIntoCatalogTable(model.getCatalogueDetailsModel());
+                    // Call for getting the teacher list belongs to specific trainer
+                    callApiForTeachersList(userId);
                 } else {
                     apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
                     apiCountMutable.setValue(--apiCount);
@@ -375,5 +378,36 @@ public class HomeViewModel extends AndroidViewModel {
 
     public List<GroupModel> getGroupList() {
         return databaseHandlerClass.getGroupList();
+    }
+
+    // Teacher API call
+    public void callApiForTeachersList(String userId) {
+        apiCountMutable.setValue(++apiCount);;
+        ApiInterface apiInterface = RetrofitClass.getAPIService();
+        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Param : userId:" + userId);
+        apiInterface.getTeacherList(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
+            @Override
+            public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Response :" + response.body());
+
+                MobileVerificationResponseModel model = response.body();
+                if (model != null) {
+                    long insertedCount = new TeacherDao(context).insertTeacherDataToDB(model.getTeachers());
+                    Logger.logD(TAG, "teachers inserted count - "+insertedCount);
+                } else {
+                    apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
+                    apiCountMutable.setValue(--apiCount);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Response :" + t.getMessage());
+                apiErrorMessage.setValue(t.getMessage());
+                apiCountMutable.setValue(--apiCount);
+            }
+        });
+
     }
 }

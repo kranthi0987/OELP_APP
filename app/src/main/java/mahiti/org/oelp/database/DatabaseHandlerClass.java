@@ -66,7 +66,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         createQuestionAnswerTable(sqLiteDatabase);
         createGroupTable(sqLiteDatabase);
         createGroupMemberTable(sqLiteDatabase);
-//        createTeacherTable(sqLiteDatabase);
+        createTeacherTable(sqLiteDatabase);
 
     }
 
@@ -207,6 +207,29 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         Logger.logD(TAG, "Database creation query :" + query);
         sqLiteDatabase.execSQL(query);
     }
+
+    private void createTeacherTable(SQLiteDatabase sqLiteDatabase) {
+        String query = DBConstants.CREATE_TABLE_IF_NOT_EXIST + DBConstants.TEACHER_TABLENAME + DBConstants.OPEN_BRACKET +
+                DBConstants.USER_UID + DBConstants.TEXT_PRIMARY_KEY + DBConstants.COMMA +
+                DBConstants.ACTIVE + DBConstants.INTEGER_COMMA +
+                DBConstants.CREATED + DBConstants.DATETIME_COMMA +
+                DBConstants.VIDEOCOVERED_COUNT + DBConstants.TEXT_COMMA +
+                DBConstants.STATE_ID + DBConstants.INTEGER_COMMA +
+                DBConstants.GROUP_UUID_COL + DBConstants.TEXT_COMMA +
+                DBConstants.MOBILE_NUMBER + DBConstants.TEXT_COMMA +
+                DBConstants.GROUP_NAME + DBConstants.TEXT_COMMA +
+                DBConstants.LAST_ACTIVE + DBConstants.TEXT_COMMA +
+                DBConstants.BLOCK_ID + DBConstants.INTEGER_COMMA +
+                DBConstants.SCHOOL + DBConstants.TEXT_COMMA +
+                DBConstants.DISTRICT_ID + DBConstants.INTEGER_COMMA +
+                DBConstants.IS_TRAINER + DBConstants.INTEGER_COMMA +
+                DBConstants.LAST_LOGGEDIN + DBConstants.TEXT_COMMA +
+                DBConstants.TEACHER_NAME + DBConstants.TEXT +
+                DBConstants.CLOSE_BRACKET;
+        Logger.logD(TAG, "Database creation query :" + query);
+        sqLiteDatabase.execSQL(query);
+    }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
@@ -410,10 +433,10 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         else
             query2 = "'" + parentId + "'"+DBConstants.ORDER_BY+DBConstants.ORDER;
         mainQuery = query1 + query2;
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase(DBConstants.DATABASESECRETKEY);
+        initDatabase();
         try {
             Logger.logD(TAG, "Getting Spinner Item : " + mainQuery);
-            Cursor cursor = sqLiteDatabase.rawQuery(mainQuery, null);
+            Cursor cursor = database.rawQuery(mainQuery, null);
             if (cursor.moveToFirst()) {
                 do {
 
