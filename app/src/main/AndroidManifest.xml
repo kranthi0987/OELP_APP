@@ -20,7 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".views.activities.TeacherInfoTabActivity" />
+        <activity android:name=".views.activities.TeacherInfoTabActivity"
+            android:configChanges="orientation|screenSize"/>
 
         <activity android:name=".views.activities.AnswerPreviewActivity" />
 
@@ -81,7 +82,8 @@
             android:name=".views.activities.AppIntroVideoActivity"
             android:screenOrientation="userLandscape" />
         <activity android:name=".views.activities.AboutUsActivity" />
-        <activity android:name=".views.activities.GroupTabsActivity" />
+        <activity android:name=".views.activities.GroupTabsActivity"
+            android:configChanges="orientation|screenSize"/>
     </application>
 
 </manifest>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+    android:gravity="center"
+    >
+
+   <!-- <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_gravity="center"
+        app:cardElevation="3dp">-->
+        <LinearLayout
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:layout_width="180dp"
+            android:layout_height="200dp"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center">
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/imageViewRound"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/video_back"
+                    android:alpha="0.4"
+                    app:riv_corner_radius="10dip"
+                    app:riv_mutate_background="true"/>
+
+                <ImageView
+                    android:id="@+id/imageViewPlayButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/play_button"
+                    android:visibility="visible"/>
+
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/textViewDate"
+                android:gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+
+                android:text="11/07/2019"
+                android:textColor="@color/black" />
+
+
+        </LinearLayout>
+
+
+   <!-- </android.support.v7.widget.CardView>-->
+
+</RelativeLayout>
