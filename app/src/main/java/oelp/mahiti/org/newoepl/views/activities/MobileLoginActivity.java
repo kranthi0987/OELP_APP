@@ -108,7 +108,7 @@ public class MobileLoginActivity extends AppCompatActivity {
 
     private void checkUserIsValid(MobileVerificationResponseModel data) {
         if (data.getUserDetails()!=null) {
-            if (!data.getUserDetails().getUserid().equals(Constants.USER_INVALID)) {
+            if (!data.getUserDetails().getUserid().equals("")) {
                 moveToVerifyActivity(data.getUserDetails());
             } else {
                 moveToRegistrationActivity();

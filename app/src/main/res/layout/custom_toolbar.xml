@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:padding="10dp"
-        android:src="@drawable/ic_back_black"
+        android:src="@drawable/ic_back"
         android:visibility="visible" />
 
     <ImageView
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:padding="10dp"
-        android:src="@drawable/ic_more_black" />
+        android:src="@drawable/ic_more_white" />
 
 
 </RelativeLayout>

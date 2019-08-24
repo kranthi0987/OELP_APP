@@ -10,17 +10,17 @@ import java.util.List;
  */
 public class GroupModel {
 
-    @SerializedName("grp_name")
+    @SerializedName("userroles")
     @Expose
-    private String groupName;
+    private String userUUID;
 
     @SerializedName("creation_key")
     @Expose
-    private String creationkey;
+    private String groupUUID;
 
-    @SerializedName("created_on")
+    @SerializedName("name")
     @Expose
-    private String createdOn;
+    private String groupName;
 
     @SerializedName("active")
     @Expose
@@ -33,28 +33,28 @@ public class GroupModel {
     public GroupModel() {
     }
 
+    public String getUserUUID() {
+        return userUUID;
+    }
+
+    public void setUserUUID(String userUUID) {
+        this.userUUID = userUUID;
+    }
+
+    public String getGroupUUID() {
+        return groupUUID;
+    }
+
+    public void setGroupUUID(String groupUUID) {
+        this.groupUUID = groupUUID;
+    }
+
     public String getGroupName() {
         return groupName;
     }
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
-    }
-
-    public String getCreationkey() {
-        return creationkey;
-    }
-
-    public void setCreationkey(String creationkey) {
-        this.creationkey = creationkey;
-    }
-
-    public String getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(String createdOn) {
-        this.createdOn = createdOn;
     }
 
     public Integer getActive() {

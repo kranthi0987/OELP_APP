@@ -501,7 +501,8 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
 
     private void moveToQuestionAnswerActivity() {
         Intent intent = new Intent(VideoViewActivity.this, QuestionAnswerActivity.class);
-        intent.putExtra("mediaUUID", sectionUUID);
+        intent.putExtra("mediaUUID", mediaUUID);
+        intent.putExtra("sectionUUID", sectionUUID);
         intent.putExtra("videoTitle", videoTitle);
         startActivity(intent);
         VideoViewActivity.this.finish();

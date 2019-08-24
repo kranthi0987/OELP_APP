@@ -48,6 +48,7 @@ public class QuestionAnswerActivity extends AppCompatActivity {
     private HashMap<String, RadioGroup> radioGroupMap = new HashMap<>();
     private List<QuestionAnswerModel> answeredList = new ArrayList<>();
     private String mediaUUID;
+    private String sectionUUID;
     private List<QuestionAnswerModel> questionAnswerModelLsit;
     private int testAttemptCount=0;
 
@@ -77,7 +78,8 @@ public class QuestionAnswerActivity extends AppCompatActivity {
         viewModel.getSubmitClick().observe(this, aBoolean -> {
             if (aBoolean != null)
                 if (validationForRadioButton()) {
-                prepareDataToSubmit();
+                this.finish();
+//                prepareDataToSubmit();
 //                    submitAnswerToTable(finalModelLsit);
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.select_all_question), Toast.LENGTH_SHORT).show();
@@ -168,7 +170,6 @@ public class QuestionAnswerActivity extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int ij = 1;
         for (int i = 0; i < questionAnswerModels.size(); i++) {
-
             View v = inflater.inflate(R.layout.subquestions, null);
             RadioGroup radioGroup = v.findViewById(R.id.radioGroup);
             radioGroup.setId(questionAnswerModels.get(i).getQuestionModel().getId());
@@ -183,8 +184,8 @@ public class QuestionAnswerActivity extends AppCompatActivity {
                 params.setMargins(0, 5, 0, 0);
                 questionChoiceRadioButton.setLayoutParams(params);
                 questionChoiceRadioButton.setId(ij);
-                choice.get(i).setRadioButtonId(ij);
-                choice.get(i).setRadioCheckedPosition(j);
+                choice.get(j).setRadioButtonId(ij);
+                choice.get(j).setRadioCheckedPosition(j);
                 if (Build.VERSION.SDK_INT >= 21) {
                     ColorStateList colorStateList = new ColorStateList(
                             new int[][]{
@@ -226,8 +227,9 @@ public class QuestionAnswerActivity extends AppCompatActivity {
 
     private void getIntentData() {
         mediaUUID = getIntent().getStringExtra("mediaUUID");
+        sectionUUID = getIntent().getStringExtra("sectionUUID");
         videoTitle = getIntent().getStringExtra("videoTitle");
-        viewModel.setMediaUUID(mediaUUID);
+        viewModel.setMediaUUID(sectionUUID);
         String completeTilte = videoTitle.concat(getResources().getString(R.string.hiphen_question));
         binding.tvTitle.setText(completeTilte);
     }

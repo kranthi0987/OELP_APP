@@ -1,6 +1,5 @@
 package oelp.mahiti.org.newoepl.views.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -17,11 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import oelp.mahiti.org.newoepl.R;
+import oelp.mahiti.org.newoepl.utils.AppUtils;
+import oelp.mahiti.org.newoepl.utils.Constants;
+import oelp.mahiti.org.newoepl.utils.MySharedPref;
 import oelp.mahiti.org.newoepl.views.fragments.ChatFragment;
 import oelp.mahiti.org.newoepl.views.fragments.MyContFragment;
 import oelp.mahiti.org.newoepl.views.fragments.TeacherContFragment;
 
-public class GroupTabsActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener{
+public class GroupTabsActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
 
 
     private Toolbar toolbar;
@@ -37,14 +39,50 @@ public class GroupTabsActivity extends AppCompatActivity implements ViewPager.On
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_tabs);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
+        toolbar = findViewById(R.id.black_toolbar);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("");
+        }
+        int userType = new MySharedPref(this).readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
+        if (userType == Constants.USER_TEACHER)
+            toolbar.inflateMenu(R.menu.teacher_menu);
+        else
+            toolbar.inflateMenu(R.menu.trainer_menu);
 
         initViews();
         viewPager.setOnPageChangeListener(this);
     }
+
+    private void ShowAboutUsActivity() {
+        AppUtils.showAboutUsActivity(this);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.aboutus:
+                ShowAboutUsActivity();
+                return true;
+            case R.id.logout:
+                AppUtils.makeUserLogout(this);
+                return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return super.onSupportNavigateUp();
+    }
+
 
     private void initViews() {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -64,7 +102,7 @@ public class GroupTabsActivity extends AppCompatActivity implements ViewPager.On
 
 
         adapter.addFragment(chatFragment, "Chats");
-        adapter.addFragment(teacherContFragment, "Teachers"+"\n"+"Contributions");
+        adapter.addFragment(teacherContFragment, "Teachers" + "\n" + "Contributions");
         adapter.addFragment(myContriFragment, "My Contributions");
 
         viewPager.setAdapter(adapter);
@@ -119,24 +157,9 @@ public class GroupTabsActivity extends AppCompatActivity implements ViewPager.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.group_menu,menu);
+        getMenuInflater().inflate(R.menu.group_menu, menu);
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch(item.getItemId())
-        {
-            case R.id.groupInfo:
-                Intent intent = new Intent(GroupTabsActivity.this, TeacherInfoTabActivity.class);
-                startActivity(intent);
-                finish();
-                break;
-
-        }
-
-        return true;
-    }
 
 }

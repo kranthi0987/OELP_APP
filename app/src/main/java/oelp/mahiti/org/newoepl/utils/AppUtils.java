@@ -319,6 +319,7 @@ public class AppUtils {
         dbHandler.deleteAllDataFromDB(3);
         dbHandler.deleteAllDataFromDB(4);
         dbHandler.deleteAllDataFromDB(5);
+        dbHandler.deleteAllDataFromDB(6);
         new MySharedPref(context).deleteAllData();
         Intent intent = new Intent(context, MobileLoginActivity.class);
         context.startActivity(intent);

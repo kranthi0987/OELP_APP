@@ -101,6 +101,7 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
         CatalogueDetailsModel detailsModel = getIntent().getParcelableExtra("CatalogDetailsModel");
         parentId = detailsModel.getUuid();
         title = detailsModel.getName();
+        activitySectionBinding.tvTitle.setText(title);
         setFragment(Constants.Units);
     }
 

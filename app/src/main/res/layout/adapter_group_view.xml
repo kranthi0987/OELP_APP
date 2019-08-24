@@ -9,6 +9,7 @@
     </data>
 
     <LinearLayout
+        android:id="@+id/llRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -25,6 +26,7 @@
                 android:src="@drawable/group_select" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tvMessageCount"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
@@ -37,11 +39,10 @@
                 android:textSize="10dp" />
 
             <LinearLayout
+                android:layout_marginRight="25dp"
+                android:layout_marginLeft="45dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="25dp"
-                android:layout_toRightOf="@id/ivGroupIcon"
                 android:orientation="vertical">
 
                 <TextView
@@ -50,7 +51,6 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
                     android:maxLines="1"
-                    android:text="Group1"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -62,19 +62,18 @@
                         android:id="@+id/tvMember"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_regular"
-                        android:text="Member : "
+                        android:fontFamily="@font/montserrat_medium"
+                        android:text="Members : "
                         android:textColor="@color/red"
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/tvMemberNo"
+                        android:id="@+id/tvMemberCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_toRightOf="@+id/tvMember"
                         android:fontFamily="@font/montserrat_regular"
-                        android:text="4"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
                 </RelativeLayout>

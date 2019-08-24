@@ -8,18 +8,18 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Member {
 
-    @SerializedName("uuid")
+    @SerializedName("creation_key")
     @Expose
-    private String uuid;
+    private String groupMemberUUID;
 
-    public Member(String string) {
+    public Member() {
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getGroupMemberUUID() {
+        return groupMemberUUID;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setGroupMemberUUID(String groupMemberUUID) {
+        this.groupMemberUUID = groupMemberUUID;
     }
 }

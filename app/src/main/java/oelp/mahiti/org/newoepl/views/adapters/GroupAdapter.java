@@ -38,22 +38,27 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.LayoutView> 
         HomeViewModel viewModel = ViewModelProviders.of((FragmentActivity) layout.getContext()).get(HomeViewModel.class);
         layout.setViewModel(viewModel);
         GroupModel groupModel = modelList.get(i);
-        setValues(groupModel, layout);
+        setValues(groupModel, layout, i);
+        layout.binding.llRecyclerView.setOnClickListener(v -> listener.onItemClick(groupModel));
+
+
     }
 
 
     @Override
     public int getItemCount() {
-//        if (modelListelList != null)
         return modelList == null ? 0 : modelList.size();
     }
 
     public class LayoutView extends RecyclerView.ViewHolder {
         private Context mContext;
         private HomeViewModel homeViewModel;
+        private AdapterGroupViewBinding binding;
 
         public LayoutView(AdapterGroupViewBinding binding, Context context) {
             super(binding.getRoot());
+            mContext = context;
+            this.binding = binding;
             mContext = context;
         }
 
@@ -74,10 +79,11 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.LayoutView> 
         notifyDataSetChanged();
     }
 
-    private void setValues(GroupModel catalogueDetailsModel, LayoutView layout) {
-//        layout.binding.tvGroupName.setText(catalogueDetailsModel.getGroupName());
-//        layout.binding.tvMemberNo.setText(catalogueDetailsModel.getMembers().size());
-//        layout.binding.tvMessageCount.setText(4);
+    private void setValues(GroupModel catalogueDetailsModel, LayoutView layout, int position) {
+        layout.binding.tvGroupName.setText(catalogueDetailsModel.getGroupName());
+        layout.binding.tvMemberCount.setText(String.valueOf(catalogueDetailsModel.getMembers().size()));
+//        layout.binding.tvMemberCount.setText("3");
+//        layout.binding.tvMessageCount.setText(String.valueOf(4));
     }
 
 }

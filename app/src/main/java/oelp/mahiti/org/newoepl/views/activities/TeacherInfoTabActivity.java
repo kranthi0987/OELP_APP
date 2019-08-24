@@ -8,12 +8,16 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import oelp.mahiti.org.newoepl.R;
+import oelp.mahiti.org.newoepl.utils.AppUtils;
+import oelp.mahiti.org.newoepl.utils.Constants;
+import oelp.mahiti.org.newoepl.utils.MySharedPref;
 import oelp.mahiti.org.newoepl.views.fragments.ContributionsFragment;
 import oelp.mahiti.org.newoepl.views.fragments.NewTeacherFragment;
 import oelp.mahiti.org.newoepl.views.fragments.TeacherInfoFragment;
@@ -34,13 +38,57 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacherinfo_tab);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.black_toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("");
+        }
+        int userType = new MySharedPref(this).readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
+        if (userType==Constants.USER_TEACHER)
+            toolbar.inflateMenu(R.menu.teacher_menu);
+        else
+            toolbar.inflateMenu(R.menu.trainer_menu);
 
 
         initViews();
         viewPager.setOnPageChangeListener(this);
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onBackPressed() {
+        TeacherInfoTabActivity.this.finish();
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+    }
+    private void ShowAboutUsActivity() {
+        AppUtils.showAboutUsActivity(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.aboutus:
+                ShowAboutUsActivity();
+                return true;
+            case R.id.logout:
+                AppUtils.makeUserLogout(this);
+                return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     private void initViews() {
 
@@ -66,6 +114,8 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
 
         viewPager.setAdapter(adapter);
     }
+
+
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();

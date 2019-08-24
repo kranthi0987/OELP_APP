@@ -23,32 +23,6 @@
             android:background="@color/white"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/rlBanner"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/banner_height"
-                android:visibility="visible">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/redbanner" />
-
-                <TextView
-                    android:id="@+id/tvTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/paddling_length"
-                    android:layout_marginEnd="@dimen/paddling_length"
-                    android:layout_marginLeft="@dimen/paddling_length"
-                    android:layout_marginRight="@dimen/paddling_length"
-                    android:layout_marginStart="@dimen/paddling_length"
-                    android:layout_marginTop="@dimen/paddling_length"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_large" />
-            </RelativeLayout>
 
             <RelativeLayout
                 android:paddingRight="18dp"

@@ -49,6 +49,19 @@ public class MobileVerificationResponseModel {
     @Expose
     private List<GroupModel> groups;
 
+    @SerializedName("teachers")
+    @Expose
+    private List<TeacherModel> teachers;
+
+
+    public List<TeacherModel> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(List<TeacherModel> teachers) {
+        this.teachers = teachers;
+    }
+
     public MobileVerificationResponseModel() {
     }
 

@@ -44,7 +44,12 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(RetrofitConstant.GROUP_LIST_URL)
-    Call<MobileVerificationResponseModel> getGroupList(@Field("userId") String userId);
+    Call<MobileVerificationResponseModel> getGroupList(@Field("user_uuid") String userId);
+
+    @FormUrlEncoded
+    @POST(RetrofitConstant.TEACHER_LIST_URL)
+    Call<MobileVerificationResponseModel> getTeacherList(@Field("user_uuid") String userId);
+
 
     @FormUrlEncoded
     @POST(RetrofitConstant.QUESTION_LIST_URL)

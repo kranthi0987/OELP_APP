@@ -6,8 +6,6 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.google.gson.Gson;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +19,7 @@ import oelp.mahiti.org.newoepl.models.GroupModel;
 import oelp.mahiti.org.newoepl.models.MobileVerificationResponseModel;
 import oelp.mahiti.org.newoepl.models.QuestionChoicesModel;
 import oelp.mahiti.org.newoepl.models.QuestionModel;
+import oelp.mahiti.org.newoepl.models.TeacherModel;
 import oelp.mahiti.org.newoepl.services.ApiInterface;
 import oelp.mahiti.org.newoepl.services.RetrofitClass;
 import oelp.mahiti.org.newoepl.services.RetrofitConstant;
@@ -45,6 +44,7 @@ public class HomeViewModel extends AndroidViewModel {
     private final boolean questionApiCalled;
     private final boolean questionChoicesApiCalled;
     private final boolean groupApiCalled;
+    private final boolean teacherApiCalled;
     //    public MutableLiveData<Boolean> homeClick = new MutableLiveData<>();
     public MutableLiveData<Boolean> unitsClick = new MutableLiveData<>();
     public MutableLiveData<Boolean> groupsClick = new MutableLiveData<>();
@@ -355,7 +355,8 @@ public class HomeViewModel extends AndroidViewModel {
             "]\n" +
             "}";
     public MutableLiveData<String> parentId = new MutableLiveData<>();
-    public MutableLiveData<List<CatalogueDetailsModel>> modelForCatalog = new MutableLiveData<>();
+    public List<CatalogueDetailsModel> modelForCatalog = new ArrayList<>();
+    private MutableLiveData<Long> catalogDataInserted = new MutableLiveData<>();
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
@@ -369,6 +370,7 @@ public class HomeViewModel extends AndroidViewModel {
         questionApiCalled = sharedPref.readString(RetrofitConstant.QUESTION_LIST_URL, "").equalsIgnoreCase(AppUtils.getDate());
         questionChoicesApiCalled = sharedPref.readString(RetrofitConstant.QUESTION_CHOICES_LIST_URL, "").equalsIgnoreCase(AppUtils.getDate());
         groupApiCalled = sharedPref.readString(RetrofitConstant.GROUP_LIST_URL, "").equalsIgnoreCase(AppUtils.getDate());
+        teacherApiCalled = sharedPref.readString(RetrofitConstant.TEACHER_LIST_URL, "").equalsIgnoreCase(AppUtils.getDate());
         dataInserted.setValue(null);
         callAllAPI();
 
@@ -390,38 +392,67 @@ public class HomeViewModel extends AndroidViewModel {
             callApiQuestions(userId);
         if (!questionChoicesApiCalled)
             callApiForQuestionChoices(userId);
-        if (!groupApiCalled)
+//        if (!groupApiCalled)
             callApiForGroupList(userId);
+//            callApiForTeacherList(userId);
+    }
+
+    private void callApiForTeacherList(String userId) {
+        ApiInterface apiInterface = RetrofitClass.getAPIService();
+        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.TEACHER_LIST_URL + " Param : userId:" + userId);
+        apiInterface.getTeacherList(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
+            @Override
+            public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.TEACHER_LIST_URL + " Response :" + response.body());
+
+                MobileVerificationResponseModel model = response.body();
+                if (model != null) {
+                    insertDataIntoTeacherTable(model.getTeachers());
+                } else {
+                    apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.TEACHER_LIST_URL + " Response :" + t.getMessage());
+                apiErrorMessage.setValue(t.getMessage());
+            }
+        });
+    }
+
+    private void insertDataIntoTeacherTable(List<TeacherModel> teachers) {
+//        if (!teachers.isEmpty()) {
+//            groupDataInsert.setValue(databaseHandlerClass.insertDatatoTeacherTable(teachers));
+//            sharedPref.writeString(RetrofitConstant.GROUP_LIST_URL, AppUtils.getDate());
+//        }
     }
 
     private void callApiForGroupList(String userId) {
-//        ApiInterface apiInterface = RetrofitClass.getAPIService();
-//        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + "Param : userId:" + userId);
-//        apiInterface.getGroupList(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
-//            @Override
-//            public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
-//                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.CATALOGUE_URL + " Response :" + response.body());
-//
-//                MobileVerificationResponseModel model = response.body();
-//                if (model != null) {
-//                    insertDataIntoGroupTable(model.getGroups());
-//                } else {
-//                    apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
-//                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.CATALOGUE_URL + " Response :" + t.getMessage());
-//                apiErrorMessage.setValue(t.getMessage());
-//                getListOfImageFromDb();
-//            }
-//        });
+        ApiInterface apiInterface = RetrofitClass.getAPIService();
+        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Param : userId:" + userId);
+        apiInterface.getGroupList(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
+            @Override
+            public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Response :" + response.body());
 
-        Gson gson = new Gson();
-        MobileVerificationResponseModel model = gson.fromJson(groupJson, MobileVerificationResponseModel.class);
-        insertDataIntoGroupTable(model.getGroups());
+                MobileVerificationResponseModel model = response.body();
+                if (model != null) {
+                    insertDataIntoGroupTable(model.getGroups());
+                } else {
+                    apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Response :" + t.getMessage());
+                apiErrorMessage.setValue(t.getMessage());
+            }
+        });
+
     }
 
     private MutableLiveData<Long> groupDataInsert = new MutableLiveData<>();
@@ -445,13 +476,13 @@ public class HomeViewModel extends AndroidViewModel {
 //        String modifiedDate = databaseHandlerClass.getModifiedDate(DBConstants.QUESTION_TABLE);
         String modifiedDate = "";
         ApiInterface apiInterface = RetrofitClass.getAPIService();
-        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_CHOICES_LIST_URL + "Param : userId:" + userId + " modified_date:" + modifiedDate);
+        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_CHOICES_LIST_URL + " Param : userId:" + userId + " modified_date:" + modifiedDate);
         apiInterface.getQuestionChoicesList(userId, modifiedDate).enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                 if (response.body() != null) {
                     insertQuestionChoicesToTable(response.body().getQuestionChoicesModelList());
-                    Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_CHOICES_LIST_URL + "Response :" + response.body().toString());
+                    Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_CHOICES_LIST_URL + " Response :" + response.body().toString());
 
                 } else {
                     apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
@@ -518,13 +549,13 @@ public class HomeViewModel extends AndroidViewModel {
 //        String modifiedDate = databaseHandlerClass.getModifiedDate(DBConstants.QUESTION_TABLE);
         String modifiedDate = "";
         ApiInterface apiInterface = RetrofitClass.getAPIService();
-        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_LIST_URL + "Param : userId:" + userId + " modified_date:" + modifiedDate);
+        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_LIST_URL + " Param : userId:" + userId + " modified_date:" + modifiedDate);
         apiInterface.getQuestionList(userId, modifiedDate).enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                 if (response.body() != null) {
                     insertQuestionToTable(response.body().getQuestionModelList());
-                    Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_LIST_URL + "Response :" + response.body().toString());
+                    Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_LIST_URL + " Response :" + response.body().toString());
 
                 } else {
                     apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
@@ -552,7 +583,7 @@ public class HomeViewModel extends AndroidViewModel {
         showProgresBar.setValue(true);
         String modifiedDate = databaseHandlerClass.getModifiedDate(DBConstants.CAT_TABLE_NAME);
         ApiInterface apiInterface = RetrofitClass.getAPIService();
-        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.CATALOGUE_URL + "Param : userId:" + userId + " modified_date:" + modifiedDate);
+        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.CATALOGUE_URL + " Param : userId:" + userId + " modified_date:" + modifiedDate);
         apiInterface.catalogData(userId, "").enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
@@ -579,10 +610,16 @@ public class HomeViewModel extends AndroidViewModel {
 
     private void insertDataIntoCatalogTable(List<CatalogueDetailsModel> catalogueDetailsModel) {
         if (catalogueDetailsModel != null && !catalogueDetailsModel.isEmpty()) {
-            databaseHandlerClass.insertDataToCatalogueTable(catalogueDetailsModel);
+            catalogDataInserted.setValue(databaseHandlerClass.insertDataToCatalogueTable(catalogueDetailsModel));
             sharedPref.writeString(RetrofitConstant.CATALOGUE_URL, AppUtils.getDate());
         }
     }
+
+    public MutableLiveData<Long> getCatalogDataInserted(){
+        return catalogDataInserted;
+    }
+
+
 
 
     public MutableLiveData<String> getApiErrorMessage() {
@@ -623,12 +660,12 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
 
-    public MutableLiveData<List<CatalogueDetailsModel>> getCatalogData(String parentId) {
+    public List<CatalogueDetailsModel> getCatalogData(String parentId) {
         modelForCatalog = databaseHandlerClass.getCatalogData(parentId);
         return modelForCatalog;
     }
 
-    public MutableLiveData<List<GroupModel>> getGroupList(){
+    public List<GroupModel> getGroupList(){
         return databaseHandlerClass.getGroupList();
     }
 }

@@ -119,6 +119,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
                 fragment = new HomeFragment();
                 break;
             case Constants.Units:
+                activityHomeBinding.tvTitle.setText(getResources().getString(R.string.units));
                 homeViewModel.parentId.setValue("");
                 Bundle bundle = new Bundle();
                 bundle.putString("ParentId", "");
@@ -127,6 +128,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
                 fragment.setArguments(bundle);
                 break;
             case Constants.Groups:
+                activityHomeBinding.tvTitle.setText(getResources().getString(R.string.groups));
                 fragment = new GroupsFragment();
                 break;
         }
@@ -253,7 +255,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     @Override
     public void onItemClick(GroupModel item) {
         if (item!=null){
-            Intent intent = new Intent(HomeActivity.this, SectionActivity.class);
+            Intent intent = new Intent(HomeActivity.this, GroupTabsActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.anim_slide_in_left,
                     R.anim.anim_slide_out_left);

@@ -8,6 +8,7 @@ public class RetrofitConstant {
 
     public static final String QUESTION_CHOICES_LIST_URL = "/api/choice-list/";
     public static final String GROUP_LIST_URL = "/api/group-list/";
+    public static final String TEACHER_LIST_URL = "/api/trainer-teachers-list/";
 
     private RetrofitConstant() {
         throw new IllegalStateException("RetrofitConstant Class");
