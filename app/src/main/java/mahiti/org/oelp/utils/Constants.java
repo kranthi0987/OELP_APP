@@ -34,6 +34,8 @@ public class Constants {
     public static final int QUESTION_ANSWER_ASYNC = 0;
     public static final int ISVIDEOPDFPLAYED = 1;
 
+    public static final String TEACHER_UUID="teacheruuid";
+
 
 
     public enum TransitionType {

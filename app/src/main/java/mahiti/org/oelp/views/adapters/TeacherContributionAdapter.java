@@ -14,6 +14,7 @@ import java.util.List;
 
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.models.TeacherModel;
+import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.views.activities.TeacherInfoTabActivity;
 
 public class TeacherContributionAdapter extends RecyclerView.Adapter<TeacherContributionAdapter.ViewHolder> {
@@ -43,6 +44,7 @@ public class TeacherContributionAdapter extends RecyclerView.Adapter<TeacherCont
 
         viewHolder.linearLayoutTeacherAdapter.setOnClickListener(v -> {
             Intent intent = new Intent(context, TeacherInfoTabActivity.class);
+            intent.putExtra(Constants.TEACHER_UUID,teachersList.get(position).getUserUuid());
             context.startActivity(intent);
         });
 
