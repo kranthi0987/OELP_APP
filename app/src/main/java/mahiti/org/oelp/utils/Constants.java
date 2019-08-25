@@ -37,6 +37,9 @@ public class Constants {
     public static final Integer ADD = 2;
     public static final String GROUP_UUID = "groupUUID";
 
+    public static final String TEACHER_UUID="teacheruuid";
+
+
 
     public enum TransitionType {
         ExplodeJava, ExplodeXML, SlideJava, SlideXML, FadeJava, FadeXML

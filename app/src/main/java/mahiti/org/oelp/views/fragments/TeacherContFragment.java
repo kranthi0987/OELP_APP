@@ -20,11 +20,12 @@ public class TeacherContFragment extends Fragment {
         private RecyclerView recyclerView;
         private TeacherContributionAdapter teacherContributionAdapter;
         private View rootView;
-        String groupUUID = "60469fa5-d2a9-433c-a3de-fbfd364b1378";
+        String groupUUID = "";
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             // Inflate the layout for this fragment
+            groupUUID=getActivity().getIntent().getStringExtra("GroupUUID");
             rootView = inflater.inflate(R.layout.fragment_teacher_cont, container, false);
 
             initViews();

@@ -22,7 +22,7 @@ import mahiti.org.oelp.views.fragments.ContributionsFragment;
 import mahiti.org.oelp.views.fragments.NewTeacherFragment;
 import mahiti.org.oelp.views.fragments.TeacherInfoFragment;
 
-public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener{
+public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
 
     private Toolbar toolbar;
 
@@ -31,6 +31,7 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private ViewPagerAdapter adapter;
+    private String teacherUuid = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +47,20 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
             getSupportActionBar().setTitle("");
         }
         int userType = new MySharedPref(this).readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
-        if (userType==Constants.USER_TEACHER)
+        if (userType == Constants.USER_TEACHER)
             toolbar.inflateMenu(R.menu.teacher_menu);
         else
             toolbar.inflateMenu(R.menu.trainer_menu);
-
+        getIntentValues();
 
         initViews();
         viewPager.setOnPageChangeListener(this);
     }
+
+    private void getIntentValues() {
+        teacherUuid = getIntent().getStringExtra(Constants.TEACHER_UUID);
+    }
+
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -67,6 +73,7 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
         TeacherInfoTabActivity.this.finish();
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
     }
+
     private void ShowAboutUsActivity() {
         AppUtils.showAboutUsActivity(this);
     }
@@ -114,7 +121,6 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
 
         viewPager.setAdapter(adapter);
     }
-
 
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
