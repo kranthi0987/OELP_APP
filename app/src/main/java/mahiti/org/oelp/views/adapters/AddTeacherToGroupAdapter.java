@@ -13,6 +13,7 @@ import java.util.List;
 
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.models.UserDetailsModel;
+import mahiti.org.oelp.utils.Constants;
 
 
 /**
@@ -21,6 +22,7 @@ import mahiti.org.oelp.models.UserDetailsModel;
 public class AddTeacherToGroupAdapter extends RecyclerView.Adapter<AddTeacherToGroupAdapter.LayoutView> {
     private List<UserDetailsModel> modelList;
     private static List<UserDetailsModel> userDetailList = new ArrayList<>();
+    private Integer type;
 
     @NonNull
     @Override
@@ -33,6 +35,11 @@ public class AddTeacherToGroupAdapter extends RecyclerView.Adapter<AddTeacherToG
     public void onBindViewHolder(@NonNull AddTeacherToGroupAdapter.LayoutView layoutView, int i) {
         UserDetailsModel userDetails = modelList.get(i);
         CheckBox checkBox = layoutView.checkBox;
+        if (userDetails.isCheckBoxChecked()){
+            layoutView.checkBox.setChecked(true);
+        }else {
+            layoutView.checkBox.setChecked(false);
+        }
         layoutView.tvName.setText(userDetails.getName());
         layoutView.tvMobileNo.setText(userDetails.getMobile_number());
         checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -51,9 +58,10 @@ public class AddTeacherToGroupAdapter extends RecyclerView.Adapter<AddTeacherToG
         return userDetailList;
     }
 
-    public void setList(List<UserDetailsModel> list) {
+    public void setList(List<UserDetailsModel> list, Integer type) {
         this.modelList = list;
         notifyDataSetChanged();
+        this.type = type;
     }
     @Override
     public int getItemCount() {

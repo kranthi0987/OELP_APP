@@ -1,5 +1,6 @@
 package mahiti.org.oelp.database;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,8 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.DAOs.TeacherDao;
 import mahiti.org.oelp.models.GroupModel;
 import mahiti.org.oelp.models.MobileVerificationResponseModel;
+import mahiti.org.oelp.models.TeacherModel;
 import mahiti.org.oelp.models.UserDetailsModel;
 import mahiti.org.oelp.services.ApiInterface;
 import mahiti.org.oelp.services.RetrofitClass;
@@ -58,6 +61,8 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
     private AddTeacherToGroupAdapter adapter;
     private String userUUID;
     private AlertDialog dialog;
+    private String groupUUID;
+    private String groupTitle;
 
 
     @Override
@@ -74,11 +79,17 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
         recyclerView = findViewById(R.id.recyclerView);
         progressBar = findViewById(R.id.progressBar);
         setSupportActionBar(toolbar);
+
+        groupUUID = getIntent().getStringExtra("groupUUID");
+        groupTitle = getIntent().getStringExtra("groupName");
+        etGroupName.setText(groupTitle);
+
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
         }
+
 
         btnCreate.setOnClickListener(this);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -87,6 +98,17 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
         recyclerView.setFocusable(false);
         adapter = new AddTeacherToGroupAdapter();
         recyclerView.setAdapter(adapter);
+
+        if (!groupUUID.isEmpty()) {
+            TeacherDao dao = new TeacherDao(this);
+            List<TeacherModel> teacherList = dao.getTeachers(groupUUID, 1);
+            userDetailList = dao.getUserDetailsModels(teacherList);
+            if (userDetailList.size() > 0) {
+                llView.setVisibility(View.VISIBLE);
+            }
+            adapter.setList(userDetailList, Constants.EDIT);
+
+        }
 
         etMobileNo.addTextChangedListener(new TextWatcher() {
             @Override
@@ -134,7 +156,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
                         if (userDetail.getUserGroup().isEmpty()) {
                             userDetailList.add(response.body().getUserDetails());
                             etMobileNo.getText().clear();
-                            adapter.setList(userDetailList);
+                            adapter.setList(userDetailList, Constants.ADD);
                         } else {
                             showAlertDialog(userDetail);
                         }
@@ -162,7 +184,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
 
     private void showAlertDialog(UserDetailsModel userDetail) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
-        builder.setMessage(userDetail.getName()+" is already added to some other group");
+        builder.setMessage(userDetail.getName() + " is already added to some other group");
         builder.setNegativeButton(R.string.ok, (dialog, id) -> dialog.dismiss());
         dialog = builder.create();
         dialog.show();
@@ -195,12 +217,42 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         if (CheckNetwork.checkNet(this)) {
-            progressBar.setVisibility(View.VISIBLE);
-            phoneNo = etMobileNo.getText().toString().trim();
-            groupName = etGroupName.getText().toString().trim();
-            validateAndProceed();
+            createOrAddGroup();
         } else {
             Toast.makeText(this, getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void createOrAddGroup() {
+        if (groupUUID.isEmpty()) {
+            addTeacher();
+        } else {
+            editTeacher();
+        }
+    }
+
+    private void editTeacher() {
+        progressBar.setVisibility(View.VISIBLE);
+        phoneNo = etMobileNo.getText().toString().trim();
+        groupName = etGroupName.getText().toString().trim();
+        validateAndProceedEdit();
+    }
+
+    private void addTeacher() {
+        progressBar.setVisibility(View.VISIBLE);
+        groupName = etGroupName.getText().toString().trim();
+        validateAndProceed();
+    }
+
+    private void validateAndProceedEdit() {
+        if (groupName.isEmpty()) {
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(this, "Please enter group name", Toast.LENGTH_SHORT).show();
+        } else if (userDetailList.isEmpty()) {
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(this, "Please select teacher", Toast.LENGTH_SHORT).show();
+        } else {
+            craeteUUIDJSONandProceed(userDetailList);
         }
     }
 
@@ -221,7 +273,12 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
 
     private void craeteUUIDJSONandProceed(List<UserDetailsModel> lsitModel) {
         userUUID = sharedPref.readString(Constants.USER_ID, "");
-        String groupCreationKey = AppUtils.getUUID();
+        String groupCreationKey = "";
+        if (groupUUID.isEmpty())
+            groupCreationKey = AppUtils.getUUID();
+        else
+            groupCreationKey = groupUUID;
+
         String teacherJson = createJson(lsitModel);
         callApiForCreateGroup(userUUID, groupName, groupCreationKey, teacherJson);
     }
@@ -287,6 +344,9 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
     private void insertDataIntoGroupTable(List<GroupModel> groups) {
         if (!groups.isEmpty()) {
             new DatabaseHandlerClass(this).insertDatatoGroupsTable(groups);
+            Intent intent= new Intent();
+            intent.putExtra("result",true);
+            setResult(RESULT_OK,intent);
             onBackPressed();
         }
     }

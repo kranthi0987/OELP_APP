@@ -50,7 +50,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatView> {
     }
 
     private void setViewToLayout(ChatModelClass model, ChatView chatView) {
-        if (model.getChatType() == 0) {
+        if (model.getChatType() == 1) {
             chatView.llLeftView.setVisibility(View.VISIBLE);
             chatView.llRightView.setVisibility(View.GONE);
             chatView.llRightViewVideo.setVisibility(View.GONE);
@@ -60,7 +60,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatView> {
             chatView.tvNameInitials.setText(model.getNameInitials());
             chatView.textViewBack.setBackgroundColor(Color.parseColor(model.getColorcode()));
 
-        } else if (model.getChatType() == 1) {
+        } else if (model.getChatType() == 2) {
             chatView.llLeftView.setVisibility(View.GONE);
             chatView.llRightView.setVisibility(View.VISIBLE);
             chatView.llRightViewVideo.setVisibility(View.GONE);

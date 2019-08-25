@@ -33,7 +33,9 @@ public class Constants {
     public static final String IS_INTRO_DISPLAYED = "isIntroScreenDisplayed";
     public static final int QUESTION_ANSWER_ASYNC = 0;
     public static final int ISVIDEOPDFPLAYED = 1;
-
+    public static final Integer EDIT = 1;
+    public static final Integer ADD = 2;
+    public static final String GROUP_UUID = "groupUUID";
 
 
     public enum TransitionType {

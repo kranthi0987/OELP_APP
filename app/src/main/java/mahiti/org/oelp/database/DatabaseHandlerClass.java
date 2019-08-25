@@ -22,6 +22,7 @@ import mahiti.org.oelp.models.QuestionAnswerModel;
 import mahiti.org.oelp.models.QuestionChoicesModel;
 import mahiti.org.oelp.models.QuestionModel;
 import mahiti.org.oelp.models.TeacherModel;
+import mahiti.org.oelp.models.UserDetailsModel;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
 
@@ -828,4 +829,17 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         return fileSize;
     }
 
+    public List<UserDetailsModel> getUserDetailsModels(List<TeacherModel> teacherList) {
+        List<UserDetailsModel> modelLsit = new ArrayList<>();
+        UserDetailsModel userDetailsModel ;
+        for (TeacherModel model : teacherList){
+            userDetailsModel = new UserDetailsModel();
+            userDetailsModel.setName(model.getName());
+            userDetailsModel.setUserid(model.getUserUuid());
+            userDetailsModel.setMobile_number(model.getMobileNumber());
+            userDetailsModel.setCheckBoxChecked(true);
+            modelLsit.add(userDetailsModel);
+        }
+        return modelLsit;
+    }
 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -147,7 +148,9 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
 
     private void moveTONextActivity() {
         Intent intent = new Intent(HomeActivity.this, ChatAndContributionActivity.class);
-        startActivity(intent);
+        intent.putExtra("GroupUUID", sharedPref.readString(Constants.GROUP_UUID,""));
+        intent.putExtra("GroupName", "");
+        startActivityForResult(intent, 101);
         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
         clicked=0;
     }
@@ -304,8 +307,8 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
 
         if (item != null) {
             Intent intent = new Intent(HomeActivity.this, ChatAndContributionActivity.class);
-            intent.putExtra("GroupUUID", item.getGroupUUID());
-            intent.putExtra("GroupName", item.getGroupName());
+            intent.putExtra("groupUUID", item.getGroupUUID());
+            intent.putExtra("groupName", item.getGroupName());
             startActivity(intent);
             overridePendingTransition(R.anim.anim_slide_in_left,
                     R.anim.anim_slide_out_left);
@@ -332,4 +335,16 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==101 && resultCode==RESULT_OK){
+            if (userType==Constants.USER_TRAINER){
+                if (userType==Constants.USER_TEACHER && clicked ==0){
+                    homeViewModel.groupsClick.setValue(false);
+                }
+                checKConditionAndProceed();
+            }
+        }
+    }
 }

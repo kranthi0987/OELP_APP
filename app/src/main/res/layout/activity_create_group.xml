@@ -32,9 +32,9 @@
                 android:paddingRight="15dp">
 
                 <LinearLayout
-                    android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@color/white"
                     android:orientation="vertical">
 
                     <EditText
@@ -56,10 +56,10 @@
                         android:background="@drawable/grey_border_button">
 
                         <EditText
-                            android:layout_marginRight="40dp"
                             android:id="@+id/etMobileNo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="40dp"
                             android:backgroundTint="@color/white"
                             android:fontFamily="@font/montserrat_regular"
                             android:hint="@string/search_by_mobile_no"
@@ -71,11 +71,11 @@
                             android:textSize="@dimen/et_text_size" />
 
                         <ImageView
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_search"/>
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_search" />
 
                     </RelativeLayout>
 
@@ -126,24 +126,25 @@
                     android:visibility="gone" />
 
                 <RelativeLayout
-                    android:background="@color/white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/btnCreate"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/button_height"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/yellow_bkg_button"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:onClick="@{()->questionAnswerViewModel.onSubmitClick()}"
-                    android:text="@string/create"
-                    android:textAllCaps="false"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/button_text_size" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:background="@color/white">
+
+                    <Button
+                        android:id="@+id/btnCreate"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/button_height"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/yellow_bkg_button"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:onClick="@{()->questionAnswerViewModel.onSubmitClick()}"
+                        android:text="@string/create"
+                        android:textAllCaps="false"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/button_text_size" />
                 </RelativeLayout>
 
             </RelativeLayout>

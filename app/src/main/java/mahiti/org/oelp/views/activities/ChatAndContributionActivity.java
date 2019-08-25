@@ -1,6 +1,8 @@
 package mahiti.org.oelp.views.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,6 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -15,8 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.CreateGroupActivity;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.MySharedPref;
+import mahiti.org.oelp.views.adapters.ChatAdapter;
 import mahiti.org.oelp.views.fragments.ChatFragment;
 import mahiti.org.oelp.views.fragments.MyContFragment;
 import mahiti.org.oelp.views.fragments.TeacherContFragment;
@@ -35,6 +40,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     private int userType;
     private String groupUUID;
     private String groupName;
+    private String usertype;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,17 +53,18 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("");
-        }
+
         getIntentValues();
         initViews();
         viewPager.setOnPageChangeListener(this);
     }
 
     private void getIntentValues() {
-        groupUUID = getIntent().getStringExtra("GroupUUID");
-        groupName = getIntent().getStringExtra("GroupName");
+        groupUUID = getIntent().getStringExtra("groupUUID");
+        groupName = getIntent().getStringExtra("groupName");
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(groupName);
+        }
     }
 
     @Override
@@ -67,9 +74,29 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.groupInfo:
+                moveToGroupActivity();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void moveToGroupActivity() {
+        Intent intent = new Intent(ChatAndContributionActivity.this, CreateGroupActivity.class);
+        intent.putExtra("groupUUID", groupUUID);
+        intent.putExtra("groupName", groupName);
+        startActivityForResult(intent, 101);
+        overridePendingTransition(R.anim.anim_slide_in_left,
+                R.anim.anim_slide_out_left);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        if (userType == Constants.USER_TRAINER)
+            getMenuInflater().inflate(R.menu.group_menu, menu);
+        return true;
     }
 
     @Override
@@ -79,12 +106,24 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     }
 
     private void initViews() {
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==101 && resultCode==RESULT_OK){
+            Intent intent= new Intent();
+            intent.putExtra("result",true);
+            setResult(RESULT_OK,intent);
+            onBackPressed();
+
+        }
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -93,13 +132,13 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
         ChatFragment chatFragment;
         MyContFragment myContriFragment;
         TeacherContFragment teacherContFragment;
-        if (userType==Constants.USER_TEACHER){
+        if (userType == Constants.USER_TEACHER) {
             chatFragment = new ChatFragment();
             myContriFragment = new MyContFragment();
 
             adapter.addFragment(chatFragment, "Chats");
             adapter.addFragment(myContriFragment, "My Contributions");
-        }else {
+        } else {
             chatFragment = new ChatFragment();
             teacherContFragment = new TeacherContFragment();
             myContriFragment = new MyContFragment();

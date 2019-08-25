@@ -72,7 +72,9 @@ public class GroupsFragment extends Fragment {
 
         fab.setOnClickListener(view1 -> {
             Intent intent = new Intent(getActivity(), CreateGroupActivity.class);
-            startActivity(intent);
+            intent.putExtra("groupUUID","");
+            intent.putExtra("groupName", "Add Members");
+            startActivityForResult(intent, 101);
             if (getActivity()!=null)
                 getActivity().overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
         });
