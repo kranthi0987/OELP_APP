@@ -53,6 +53,18 @@ public class MobileVerificationResponseModel {
     @Expose
     private List<TeacherModel> teachers;
 
+    @SerializedName("chat")
+    @Expose
+    private List<ChatModelClass> chat;
+
+
+    public List<ChatModelClass> getChat() {
+        return chat;
+    }
+
+    public void setChat(List<ChatModelClass> chat) {
+        this.chat = chat;
+    }
 
     public List<TeacherModel> getTeachers() {
         return teachers;

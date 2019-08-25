@@ -23,7 +23,7 @@ public class AppIntroVideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_app_intro_video);
         VideoView video_view = findViewById(R.id.VideoView);
 
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + "raw/"+ "intro_vid");
+        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + "raw/"+ "intro_video");
 
 //        MediaController mediaControl = new MediaController(this);
         video_view.setMediaController(null);

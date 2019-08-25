@@ -76,7 +76,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     CheckNet checkNet;
     int videoId = 0;
     private VideoView videoView;
-    private KProgressHUD hud;
+//    private KProgressHUD hud;
     private String mediaApiUrl;
     private int playingId;
     TextView toolbarTitle;
@@ -140,11 +140,11 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         mediaController = new MediaController(this);
         videoView = (VideoView) findViewById(R.id.video_view);
         deviceId = getDeviceID();
-        hud = KProgressHUD.create(this)
-                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
-                .setAnimationSpeed(2)
-                .setDimAmount(0.5f)
-                .show();
+//        hud = KProgressHUD.create(this)
+//                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+//                .setAnimationSpeed(2)
+//                .setDimAmount(0.5f)
+//                .show();
 
         relativeBack.setOnClickListener(view -> onBackPressed());
 
@@ -303,7 +303,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
             editor = sharedPreferences.edit();
             editor.putInt("id", playingId);
             editor.apply();
-            hud.dismiss();
+//            hud.dismiss();
             mediaPlayer = mp;
             videoView.start();
 

@@ -382,7 +382,7 @@ public class HomeViewModel extends AndroidViewModel {
 
     // Teacher API call
     public void callApiForTeachersList(String userId) {
-        apiCountMutable.setValue(++apiCount);;
+        apiCountMutable.setValue(++apiCount);
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Param : userId:" + userId);
         apiInterface.getTeacherList(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
@@ -393,6 +393,7 @@ public class HomeViewModel extends AndroidViewModel {
                 MobileVerificationResponseModel model = response.body();
                 if (model != null) {
                     long insertedCount = new TeacherDao(context).insertTeacherDataToDB(model.getTeachers());
+                    apiCountMutable.setValue(--apiCount);;
                     Logger.logD(TAG, "teachers inserted count - "+insertedCount);
                 } else {
                     apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));

@@ -33,6 +33,8 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     private ViewPagerAdapter adapter;
     private MySharedPref sharedPref;
     private int userType;
+    private String groupUUID;
+    private String groupName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +50,14 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
         }
+        getIntentValues();
         initViews();
         viewPager.setOnPageChangeListener(this);
+    }
+
+    private void getIntentValues() {
+        groupUUID = getIntent().getStringExtra("GroupUUID");
+        groupName = getIntent().getStringExtra("GroupName");
     }
 
     @Override

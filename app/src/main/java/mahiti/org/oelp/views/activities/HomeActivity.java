@@ -304,6 +304,8 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
 
         if (item != null) {
             Intent intent = new Intent(HomeActivity.this, ChatAndContributionActivity.class);
+            intent.putExtra("GroupUUID", item.getGroupUUID());
+            intent.putExtra("GroupName", item.getGroupName());
             startActivity(intent);
             overridePendingTransition(R.anim.anim_slide_in_left,
                     R.anim.anim_slide_out_left);
