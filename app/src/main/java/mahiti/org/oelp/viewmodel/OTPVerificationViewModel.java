@@ -7,14 +7,17 @@ import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.CreateGroupActivity;
 import mahiti.org.oelp.models.MobileVerificationResponseModel;
 import mahiti.org.oelp.models.UserDetailsModel;
 import mahiti.org.oelp.services.ApiInterface;
 import mahiti.org.oelp.services.RetrofitClass;
 import mahiti.org.oelp.services.RetrofitConstant;
 import mahiti.org.oelp.utils.Action;
+import mahiti.org.oelp.utils.CheckNetwork;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
 import mahiti.org.oelp.utils.MySharedPref;
@@ -85,11 +88,17 @@ public class OTPVerificationViewModel extends AndroidViewModel {
     }
 
     public void onSubmitClick() {
-        completeOtp.setValue(otp1.getValue() + otp2.getValue() + otp3.getValue() + otp4.getValue());
-        if (validateOTP(completeOtp.getValue())) {
-            showProgresBar.setValue(true);
-            getOTPVerified(prepareUserDetail(), completeOtp.getValue());
+
+        if (CheckNetwork.checkNet(context)) {
+            completeOtp.setValue(otp1.getValue() + otp2.getValue() + otp3.getValue() + otp4.getValue());
+            if (validateOTP(completeOtp.getValue())) {
+                showProgresBar.setValue(true);
+                getOTPVerified(prepareUserDetail(), completeOtp.getValue());
+            }
+        } else {
+            Toast.makeText(context, context.getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
         }
+
     }
 
     public MutableLiveData<Boolean> clearOTPText(){

@@ -2,6 +2,7 @@ package mahiti.org.oelp.views.activities;
 
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.CreateGroupActivity;
 import mahiti.org.oelp.databinding.ActivityHomeBinding;
 import mahiti.org.oelp.fileandvideodownloader.DownloadClass;
 import mahiti.org.oelp.fileandvideodownloader.DownloadUtility;
@@ -46,7 +48,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     HomeViewModel homeViewModel;
     private int userType;
     private MySharedPref sharedPref;
-    private int clicked=0;
+    private int clicked = 0;
 
 
     @Override
@@ -76,7 +78,6 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
             homeViewModel.unitsClick.setValue(true);
 
 
-
 //        if (homeViewModel.apiCount==0){
 //            homeViewModel.unitsClick.setValue(true);
 //        }
@@ -87,13 +88,13 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
                 setImageAndTextColor(Constants.Units);
                 setFragment(Constants.Units);
                 homeViewModel.title.setValue(getResources().getString(R.string.units));
-                clicked=0;
+                clicked = 0;
             }
         });
 
         homeViewModel.groupsClick.observe(this, aBoolean -> {
             if (aBoolean != null && aBoolean) {
-                if (userType==Constants.USER_TEACHER && clicked ==0){
+                if (userType == Constants.USER_TEACHER && clicked == 0) {
                     homeViewModel.groupsClick.setValue(false);
                 }
                 checKConditionAndProceed();
@@ -107,39 +108,21 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
 
         homeViewModel.getDataInserted().observe(this, integer -> {
             if (integer != null) {
-                clicked=0;
+                clicked = 0;
                 setImageAndTextColor(Constants.Units);
                 setFragment(Constants.Units);
             }
 
         });
-
-
-//        GroupsFragment fragment = new GroupsFragment();
-//        fragment.moveToCreateGroup.observe(this, new Observer<Boolean>() {
-//            @Override
-//            public void onChanged(@Nullable Boolean aBoolean) {
-//                if (aBoolean!=null) {
-//                    Intent intent = new Intent(HomeActivity.this, CreateGroupActivity.class);
-//                    startActivity(intent);
-//                    overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
-//                }
-//            }
-//        });
-
-//        homeViewModel.getDataInserted().observe(this, aLong -> {
-//            if (aLong != null && !aLong)
-//
-//        });
-
         homeViewModel.getListOfImageToDownload().observe(this, fileModels ->
-                new DownloadClass(Constants.IMAGE, HomeActivity.this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.IMAGE).getAbsolutePath(), fileModels));
+//                new DownloadClass(Constants.IMAGE, HomeActivity.this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.IMAGE).getAbsolutePath(), fileModels));
+                new DownloadClass(Constants.IMAGE, HomeActivity.this, RetrofitConstant.BASE_URL, AppUtils.completeInternalStoragePath(this, Constants.IMAGE).getAbsolutePath(), fileModels));
     }
 
     private void checKConditionAndProceed() {
-        if (userType==Constants.USER_TEACHER){
+        if (userType == Constants.USER_TEACHER) {
             moveTONextActivity();
-        }else {
+        } else {
             setImageAndTextColor(Constants.Groups);
             setFragment(Constants.Groups);
         }
@@ -148,25 +131,34 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
 
     private void moveTONextActivity() {
         Intent intent = new Intent(HomeActivity.this, ChatAndContributionActivity.class);
-        intent.putExtra("GroupUUID", sharedPref.readString(Constants.GROUP_UUID,""));
-        intent.putExtra("GroupName", "");
-        startActivityForResult(intent, 101);
+        intent.putExtra("groupUUID", sharedPref.readString(Constants.GROUP_UUID, ""));
+        intent.putExtra("groupName", "Khel group");
+        startActivityForResult(intent, 102);
         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
-        clicked=0;
+        clicked = 0;
     }
 
     private void downloadIntroVideo() {
         FileModel fileModel = new FileModel("ओईएलपी किट", "static/media/2019/08/14/1900125913_U001_V001.mp4", "e7f5738a-4e37-4303-bee2-e0bd9820aab9");
         List<FileModel> fileModelList = new ArrayList<>();
         fileModelList.add(fileModel);
-        new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.VIDEO).getAbsolutePath(), fileModelList);
+//        new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.VIDEO).getAbsolutePath(), fileModelList);
+        new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL, AppUtils.completeInternalStoragePath(this, Constants.VIDEO).getAbsolutePath(), fileModelList);
     }
 
+    GroupsFragment groupsFragment = null;
+    UnitsFragment unitsFragment = null;
+    HomeFragment homeFragment = null;
+
     private void setFragment(String type) {
-        Fragment fragment = null;
+
         switch (type) {
             case Constants.Home:
-                fragment = new HomeFragment();
+                homeFragment = new HomeFragment();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragmentContainer, homeFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
                 break;
             case Constants.Units:
                 activityHomeBinding.tvTitle.setText(getResources().getString(R.string.units));
@@ -174,20 +166,32 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
                 Bundle bundle = new Bundle();
                 bundle.putString("ParentId", "");
                 bundle.putString("Title", getResources().getString(R.string.units));
-                fragment = new UnitsFragment();
-                fragment.setArguments(bundle);
+                unitsFragment = new UnitsFragment();
+                unitsFragment.setArguments(bundle);
+                FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
+                transaction1.replace(R.id.fragmentContainer, unitsFragment);
+                transaction1.addToBackStack(null);
+                transaction1.commit();
                 break;
             case Constants.Groups:
                 activityHomeBinding.tvTitle.setText(getResources().getString(R.string.groups));
-                fragment = new GroupsFragment();
+                groupsFragment = new GroupsFragment();
+                FragmentTransaction transaction2 = getSupportFragmentManager().beginTransaction();
+                transaction2.replace(R.id.fragmentContainer, groupsFragment);
+                transaction2.addToBackStack(null);
+                transaction2.commit();
                 break;
         }
-        if (fragment != null) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//            transaction.setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out);
-            transaction.replace(R.id.fragmentContainer, fragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(sharedPref.readBoolean(Constants.IS_UPDATED, false)){
+            if (groupsFragment!=null) {
+                groupsFragment.setValueToAdapte();
+                sharedPref.writeBoolean(Constants.IS_UPDATED, false);
+            }
         }
     }
 
@@ -323,28 +327,21 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
 //        }
     }
 
-    private void playVideo() {
-
-        try {
-            File f = AppUtils.completePathInSDCard(Constants.VIDEO);
-            DownloadUtility.playVideo((Activity) this, "static/media/2019/08/14/1900125913_U001_V001.mp4", "ओईएलपी किट",
-                    sharedPref.readString(Constants.USER_ID, ""), "e7f5738a-4e37-4303-bee2-e0bd9820aab9", "");
-        } catch (Exception ex) {
-            Logger.logE("", ex.getMessage(), ex);
-        }
-
+    public void onCallNextActivity(){
+        Intent intent = new Intent(this, CreateGroupActivity.class);
+        intent.putExtra("groupUUID","");
+        intent.putExtra("groupName", "");
+        startActivityForResult(intent, 101);
+        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==101 && resultCode==RESULT_OK){
-            if (userType==Constants.USER_TRAINER){
-                if (userType==Constants.USER_TEACHER && clicked ==0){
-                    homeViewModel.groupsClick.setValue(false);
-                }
-                checKConditionAndProceed();
-            }
+        if (requestCode == 101 && resultCode == RESULT_OK) {
+            groupsFragment.setValueToAdapte();
+        }else if (requestCode == 102 && resultCode == RESULT_OK) {
+            groupsFragment.setValueToAdapte();
         }
     }
 }

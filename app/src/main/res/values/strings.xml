@@ -105,7 +105,9 @@
     <string name="enter_group_name">समूह का नाम दर्ज करें</string>
     <string name="add_teacher">शिक्षक जोड़ें</string>
     <string name="data_not_found">डेटा नहीं मिला</string>
-    <string name="create">रचना</string>
+    <string name="create">क्रीएट</string>
     <string name="oops_no_message_found">No Message Found</string>
     <string name="load_more">load more</string>
+    <string name="update">अप्डेट</string>
+    <string name="type_message_here">Type message here</string>
 </resources>

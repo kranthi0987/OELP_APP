@@ -5,12 +5,14 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.CreateGroupActivity;
 import mahiti.org.oelp.database.DAOs.TeacherDao;
 import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
@@ -25,6 +27,7 @@ import mahiti.org.oelp.services.ApiInterface;
 import mahiti.org.oelp.services.RetrofitClass;
 import mahiti.org.oelp.services.RetrofitConstant;
 import mahiti.org.oelp.utils.AppUtils;
+import mahiti.org.oelp.utils.CheckNetwork;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
 import mahiti.org.oelp.utils.MySharedPref;
@@ -78,7 +81,10 @@ public class HomeViewModel extends AndroidViewModel {
         groupApiCalled = sharedPref.readString(RetrofitConstant.GROUP_LIST_URL, "").equalsIgnoreCase(AppUtils.getDate());
         teacherApiCalled = sharedPref.readString(RetrofitConstant.TEACHER_LIST_URL, "").equalsIgnoreCase(AppUtils.getDate());
         dataInserted.setValue(null);
-        callAllAPI();
+        if (CheckNetwork.checkNet(context)) {
+            callAllAPI();
+        }
+
         userType.setValue(sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER));
 
         if (userType.getValue().equals(Constants.USER_TEACHER)) {
@@ -142,7 +148,6 @@ public class HomeViewModel extends AndroidViewModel {
 
     public void callApiForGroupList(String userId) {
         apiCountMutable.setValue(++apiCount);
-        ;
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Param : userId:" + userId);
         apiInterface.getGroupList(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
@@ -176,6 +181,9 @@ public class HomeViewModel extends AndroidViewModel {
             sharedPref.writeString(RetrofitConstant.GROUP_LIST_URL, AppUtils.getDate());
         }
         apiCountMutable.setValue(--apiCount);
+        // Call for getting the teacher list belongs to specific trainer
+        if (CheckNetwork.checkNet(context))
+            callApiForTeachersList(userId);
     }
 
 
@@ -234,7 +242,8 @@ public class HomeViewModel extends AndroidViewModel {
         List<FileModel> imagePathToRemove = new ArrayList<>();
         for (FileModel iconPath : imageList) {
             try {
-                File file = new File(AppUtils.completePathInSDCard(Constants.IMAGE), AppUtils.getFileName(iconPath.getFileUrl()));
+//                File file = new File(AppUtils.completePathInSDCard(Constants.IMAGE), AppUtils.getFileName(iconPath.getFileUrl()));
+                File file = new File(AppUtils.completeInternalStoragePath(context, Constants.IMAGE), AppUtils.getFileName(iconPath.getFileUrl()));
                 if (file.exists()) {
                     imagePathToRemove.add(iconPath);
                 }
@@ -310,8 +319,7 @@ public class HomeViewModel extends AndroidViewModel {
                 MobileVerificationResponseModel model = response.body();
                 if (model != null) {
                     insertDataIntoCatalogTable(model.getCatalogueDetailsModel());
-                    // Call for getting the teacher list belongs to specific trainer
-                    callApiForTeachersList(userId);
+
                 } else {
                     apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
                     apiCountMutable.setValue(--apiCount);

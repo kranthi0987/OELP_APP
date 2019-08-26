@@ -192,7 +192,8 @@ public class DownloadUtility {
     public static void playVideo(Activity activity, String path, String vName, String userId, String mediaUUID, String sectionUUID) {
         try {
 
-            File f = new File(AppUtils.completePathInSDCard(Constants.VIDEO) + File.separator + AppUtils.getFileName(path));
+//            File f = new File(AppUtils.completePathInSDCard(Constants.VIDEO) + File.separator + AppUtils.getFileName(path));
+            File f = new File(AppUtils.completeInternalStoragePath(activity, Constants.VIDEO) + File.separator + AppUtils.getFileName(path));
             Logger.logD(TAG, " complete video path : " + f);
             if (f.exists()) {
                 Intent i = new Intent(activity, VideoViewActivity.class);
@@ -431,7 +432,8 @@ public class DownloadUtility {
 
         DatabaseHandlerClass databaseHandlerClass=new DatabaseHandlerClass(context);
         String fileSizeFromDatabase=databaseHandlerClass.getFileSize(fileModel.getUuid());
-        File f = new File(AppUtils.completePathInSDCard(Constants.VIDEO) + File.separator + AppUtils.getFileName(fileModel.getFileUrl()));
+//        File f = new File(AppUtils.completePathInSDCard(Constants.VIDEO) + File.separator + AppUtils.getFileName(fileModel.getFileUrl()));
+        File f = new File(AppUtils.completeInternalStoragePath(context,Constants.VIDEO) + File.separator + AppUtils.getFileName(fileModel.getFileUrl()));
         Logger.logD(TAG, " complete video path : " + f);
         String fileSize= String.valueOf(f.length());
         Logger.logD(TAG,"Video Size"+fileSize);

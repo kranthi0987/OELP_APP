@@ -23,9 +23,11 @@ import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.CreateGroupActivity;
 import mahiti.org.oelp.databinding.FragmentGroupsBinding;
 import mahiti.org.oelp.models.GroupModel;
+import mahiti.org.oelp.utils.CheckNetwork;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.MySharedPref;
 import mahiti.org.oelp.viewmodel.HomeViewModel;
+import mahiti.org.oelp.views.activities.HomeActivity;
 import mahiti.org.oelp.views.adapters.GroupAdapter;
 
 /**
@@ -49,7 +51,8 @@ public class GroupsFragment extends Fragment {
         homeViewModel = ViewModelProviders.of(getActivity()).get(HomeViewModel.class);
         sharedPref = new MySharedPref(getActivity());
         homeViewModel.insertLong.setValue(null);
-        homeViewModel.callApiForGroupList(sharedPref.readString(Constants.USER_ID, ""));
+        if (CheckNetwork.checkNet(getActivity()))
+            homeViewModel.callApiForGroupList(sharedPref.readString(Constants.USER_ID, ""));
         userType = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
     }
 
@@ -71,12 +74,7 @@ public class GroupsFragment extends Fragment {
         fab = binding.fab;
 
         fab.setOnClickListener(view1 -> {
-            Intent intent = new Intent(getActivity(), CreateGroupActivity.class);
-            intent.putExtra("groupUUID","");
-            intent.putExtra("groupName", "Add Members");
-            startActivityForResult(intent, 101);
-            if (getActivity()!=null)
-                getActivity().overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+            ((HomeActivity)getActivity()).onCallNextActivity();
         });
 
 
@@ -102,8 +100,7 @@ public class GroupsFragment extends Fragment {
             public void onChanged(@Nullable Long aLong) {
                 if (aLong != null) {
                     homeViewModel.apiCountMutable.setValue(0);
-                    groupModelList = homeViewModel.getGroupList();
-                    setValueToAdapte(groupModelList);
+                    setValueToAdapte();
                 }
             }
         });
@@ -112,7 +109,8 @@ public class GroupsFragment extends Fragment {
     }
 
 
-    private void setValueToAdapte(List<GroupModel> groupModelList) {
+    public void setValueToAdapte() {
+        groupModelList = homeViewModel.getGroupList();
         if (groupModelList != null && !groupModelList.isEmpty()) {
             adapter.setList(groupModelList, getActivity());
         }

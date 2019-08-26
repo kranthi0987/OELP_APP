@@ -1,11 +1,13 @@
 package mahiti.org.oelp.fileandvideodownloader;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -54,8 +56,8 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
     private String videoLastName;
     private String videoSavingBasePath;
     private String videoUrl;
-    private int videoId =0;
-    private String videoTitle ="";
+    private int videoId = 0;
+    private String videoTitle = "";
     private String uuid;
 
 
@@ -106,9 +108,10 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
 
 
     }
+
     public void createDirectory(String videoUrl) {
         Storage storage = new Storage(context);
-        File imageSavingPath = new File(videoSavingBasePath.concat(DownloadConstant.Slash+videoLastName));
+        File imageSavingPath = new File(videoSavingBasePath.concat(DownloadConstant.Slash + videoLastName));
         String path = imageSavingPath.getAbsolutePath();
         storage.createDirectory(path, true);
         checkFreeSpaceAndDownload(videoUrl);
@@ -198,7 +201,7 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
         String strRes;
         try {
             url = new URL(baseURl + DownloadConstant.Slash + videoUrl);
-            Logger.logV(TAG, "path of the video is : " + videoUrl );
+            Logger.logV(TAG, "path of the video is : " + videoUrl);
             Logger.logV(TAG, "the video path is " + "the url is......." + url);
             connection = (HttpURLConnection) url.openConnection();
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -253,8 +256,8 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
                     public void onDownloadComplete() {
                         dismissDialog();
                         dismissNotification(true);
-                        onMediaDownloadListener.onMediaDownload(type, downloadPath+"/"+ videoLastName, videoTitle,0, uuid);
-                        if(totalSize!=0) {
+                        onMediaDownloadListener.onMediaDownload(type, downloadPath + "/" + videoLastName, videoTitle, 0, uuid);
+                        if (totalSize != 0) {
                             updateFileSizeInDatabase(uuid, totalSize);
                         }
                     }
@@ -288,7 +291,7 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
     private void showNotification() {
         notificationManager = NotificationManagerCompat.from(context);
         builder = new NotificationCompat.Builder(context, DownloadConstant.CHANNEL_ID);
-        builder.setContentTitle("OELP"+ ": " + videoTitle)
+        builder.setContentTitle("OELP" + ": " + videoTitle)
                 .setContentText(context.getString(R.string.down_prog))
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setPriority(NotificationCompat.PRIORITY_LOW);
@@ -377,45 +380,42 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
     }
 
     private void dismissDialog() {
-        if (dialog != null && context != null)
+        if (dialog != null && context != null && !((Activity) context).isDestroyed())
             dialog.dismiss();
     }
 
     private Dialog dialog;
     ProgressBar progressBar;
-    Button btnCancel;
-    Button btnBackground;
-    TextView tvPercentage;
-    TextView tvContentName;
+    private Button btnCancel;
+    private Button btnBackground;
+    private TextView tvPercentage;
+    private TextView tvContentName;
 
 
     private void showProgressDialoG() {
-        dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.custom_progress_dialog_view);
-        progressBar = dialog.findViewById(R.id.progressBar);
-        btnCancel = dialog.findViewById(R.id.btnCancel);
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-        btnBackground = dialog.findViewById(R.id.btnBackground);
-        tvPercentage = dialog.findViewById(R.id.tvPercentage);
-        tvContentName = dialog.findViewById(R.id.tvContentName);
-        dialog.show();
+        if (context != null && !((Activity) context).isDestroyed()) {
+            dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.custom_progress_dialog_view);
+            progressBar = dialog.findViewById(R.id.progressBar);
+            btnCancel = dialog.findViewById(R.id.btnCancel);
+            btnBackground = dialog.findViewById(R.id.btnBackground);
+            tvPercentage = dialog.findViewById(R.id.tvPercentage);
+            tvContentName = dialog.findViewById(R.id.tvContentName);
+            dialog.show();
+        }
     }
 
 
     private void dismissDownloading() {
         PRDownloader.cancel(downloadId);
     }
-    public void updateFileSizeInDatabase(String uuid,long fileSize) {
+
+    public void updateFileSizeInDatabase(String uuid, long fileSize) {
         if (!uuid.isEmpty()) {
             DatabaseHandlerClass catalogDBHandler = new DatabaseHandlerClass(context);
-            boolean getupdatedStatus = catalogDBHandler.addFileSize(uuid,fileSize );
+            boolean getupdatedStatus = catalogDBHandler.addFileSize(uuid, fileSize);
             Log.i("getUpdatedPD", getupdatedStatus + "");
         }
     }

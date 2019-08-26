@@ -38,7 +38,7 @@ public class Constants {
     public static final String GROUP_UUID = "groupUUID";
 
     public static final String TEACHER_UUID="teacheruuid";
-
+    public static final String IS_UPDATED = "isGroupUpdated";
 
 
     public enum TransitionType {

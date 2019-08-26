@@ -2,9 +2,7 @@ package mahiti.org.oelp.models;
 
 import java.util.List;
 
-/**
- * Created by sandeep HR on 22/01/19.
- */
+
 public class QuestionAnswerModel {
 
     private QuestionModel questionModel;
@@ -17,27 +15,29 @@ public class QuestionAnswerModel {
     private String dateTime;
 
     private String quetsionText;
+    private String answerExplain;
     private int quetsionId;
     private String choiceText;
     private int choiceId;
     private int score;
     private int testAttempt;
     private int totalMarks;
-    private int scoredObtain;
+    private int marksObtain;
     private boolean isCorrect;
 
 
-    public QuestionAnswerModel(String quetsionText, int quetsionId, String choiceText, int choiceId, int score, boolean isCorrect) {
+    public QuestionAnswerModel(String quetsionText, int quetsionId, String choiceText, int choiceId, int score, boolean isCorrect, String answerExplain) {
         this.quetsionText = quetsionText;
         this.quetsionId = quetsionId;
         this.choiceText = choiceText;
         this.choiceId = choiceId;
         this.score = score;
         this.isCorrect = isCorrect;
+        this.answerExplain = answerExplain;
     }
 
-    public QuestionAnswerModel(int scoredObtain, int totalMarks, int testAttempt) {
-        this.scoredObtain = scoredObtain;
+    public QuestionAnswerModel(int marksObtain, int totalMarks, int testAttempt) {
+        this.marksObtain = marksObtain;
         this.totalMarks = totalMarks;
         this.testAttempt = testAttempt;
     }
@@ -103,12 +103,14 @@ public class QuestionAnswerModel {
         this.dateTime = dateTime;
     }
 
-    public QuestionAnswerModel(int id, String offlineData, int syncStatus, int videoId, String dateTime) {
+    public QuestionAnswerModel(int id, String offlineData, int syncStatus, int videoId, String dateTime, int marksObtain, int totalMarks) {
         this.id = id;
         this.offlineData = offlineData;
         this.syncStatus = syncStatus;
         this.videoId = videoId;
         this.dateTime = dateTime;
+        this.totalMarks = totalMarks;
+        this.marksObtain = marksObtain;
     }
 
     public int getId() {

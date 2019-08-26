@@ -86,7 +86,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
         Intent intent = new Intent(ChatAndContributionActivity.this, CreateGroupActivity.class);
         intent.putExtra("groupUUID", groupUUID);
         intent.putExtra("groupName", groupName);
-        startActivityForResult(intent, 101);
+        startActivityForResult(intent, 103);
         overridePendingTransition(R.anim.anim_slide_in_left,
                 R.anim.anim_slide_out_left);
     }
@@ -117,10 +117,11 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==101 && resultCode==RESULT_OK){
+        if (requestCode==103 && resultCode==RESULT_OK){
             Intent intent= new Intent();
             intent.putExtra("result",true);
             setResult(RESULT_OK,intent);
+            sharedPref.writeBoolean(Constants.IS_UPDATED, true);
             onBackPressed();
 
         }

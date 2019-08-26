@@ -38,6 +38,7 @@
                     android:orientation="vertical">
 
                     <EditText
+                        android:theme="@style/AppTheme.BLACKAccent"
                         android:id="@+id/etGroupName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -64,7 +65,9 @@
                             android:fontFamily="@font/montserrat_regular"
                             android:hint="@string/search_by_mobile_no"
                             android:inputType="phone"
+                            android:digits="0123456789"
                             android:maxLength="10"
+                            android:theme="@style/AppTheme.BLACKAccent"
                             android:maxLines="1"
                             android:textColor="@color/black"
                             android:textColorHint="@color/grey"
@@ -140,7 +143,6 @@
                         android:background="@drawable/yellow_bkg_button"
                         android:fontFamily="@font/montserrat_medium"
                         android:onClick="@{()->questionAnswerViewModel.onSubmitClick()}"
-                        android:text="@string/create"
                         android:textAllCaps="false"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                         android:textColor="@color/black"

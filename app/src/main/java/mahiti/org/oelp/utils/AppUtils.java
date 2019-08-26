@@ -285,23 +285,33 @@ public class AppUtils {
 
     }
 
+    public static File completeInternalStoragePath(Context context, int type) {
+        return new File(context.getFilesDir(), subPath(type));
+
+    }
+
     public static String subPath(int type) { // 0-Image, 1- Pdf, 2- Video
         String subPath = "";
         switch (type) {
             case Constants.IMAGE:
-                subPath = File.separator + Constants.OELPIMAGE;
+//                subPath = File.separator + Constants.OELPIMAGE;
+                subPath = Constants.OELPIMAGE;
                 break;
             case Constants.PDF:
-                subPath = File.separator + Constants.OELPPDF;
+//                subPath = File.separator + Constants.OELPPDF;
+                subPath = Constants.OELPPDF;
                 break;
             case Constants.VIDEO:
-                subPath = File.separator + Constants.OELPVIDEO;
+//                subPath = File.separator + Constants.OELPVIDEO;
+                subPath = Constants.OELPVIDEO;
                 break;
             case Constants.AUDIO:
-                subPath = File.separator + Constants.OELPAUDIO;
+//                subPath = File.separator + Constants.OELPAUDIO;
+                subPath = Constants.OELPAUDIO;
                 break;
             default:
-                subPath = File.separator + Constants.OELPIMAGE;
+//                subPath = File.separator + Constants.OELPIMAGE;
+                subPath = Constants.OELPIMAGE;
                 break;
         }
 
@@ -321,6 +331,7 @@ public class AppUtils {
         dbHandler.deleteAllDataFromDB(4);
         dbHandler.deleteAllDataFromDB(5);
         dbHandler.deleteAllDataFromDB(6);
+        dbHandler.deleteAllDataFromDB(7);
         new MySharedPref(context).deleteAllData();
         Intent intent = new Intent(context, MobileLoginActivity.class);
         context.startActivity(intent);

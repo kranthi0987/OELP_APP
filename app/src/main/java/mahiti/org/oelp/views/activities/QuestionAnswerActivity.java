@@ -9,13 +9,17 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRadioButton;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,8 +53,8 @@ public class QuestionAnswerActivity extends AppCompatActivity {
     private List<QuestionAnswerModel> answeredList = new ArrayList<>();
     private String mediaUUID;
     private String sectionUUID;
+    private ScrollView scrollView;
     private List<QuestionAnswerModel> questionAnswerModelLsit;
-    private int testAttemptCount=0;
 
 
     @Override
@@ -61,6 +65,8 @@ public class QuestionAnswerActivity extends AppCompatActivity {
         binding.setQuestionAnswerViewModel(viewModel);
         binding.setLifecycleOwner(this);
         toolbar = findViewById(R.id.white_toolbar);
+        toolbar = findViewById(R.id.white_toolbar);
+        scrollView = findViewById(R.id.scrollView);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -71,15 +77,18 @@ public class QuestionAnswerActivity extends AppCompatActivity {
         toolbar.inflateMenu(R.menu.teacher_menu);
         getIntentData();
         viewModel.getShowDialog().observe(this, aBoolean -> {
-            if (aBoolean != null)
+            if (aBoolean != null) {
                 showDialog();
+                scrollView.setVisibility(View.GONE);
+            }
+
         });
 
         viewModel.getSubmitClick().observe(this, aBoolean -> {
             if (aBoolean != null)
                 if (validationForRadioButton()) {
-                this.finish();
-//                prepareDataToSubmit();
+                    prepareDataToSubmit();
+                    Toast.makeText(this, "Submitted successfully", Toast.LENGTH_SHORT).show();
 //                    submitAnswerToTable(finalModelLsit);
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.select_all_question), Toast.LENGTH_SHORT).show();
@@ -89,6 +98,7 @@ public class QuestionAnswerActivity extends AppCompatActivity {
             if (questionAnswerModels != null && !questionAnswerModels.isEmpty()) {
                 questionAnswerModelLsit = questionAnswerModels;
                 setLayoutForQuestionAnswer(questionAnswerModels);
+                scrollView.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -97,13 +107,14 @@ public class QuestionAnswerActivity extends AppCompatActivity {
         List<QuestionAnswerModel> finalModelLsit = new ArrayList<>();
         String questionText;
         String choiceText;
+        String explainText;
         int choiceId;
         int questionId;
         int score;
         boolean isCorrect;
         RadioGroup radioGroup;
         QuestionAnswerModel questionAnswerModel;
-        for (int i =0; i<questionsStringList.size();i++){
+        for (int i = 0; i < questionsStringList.size(); i++) {
             radioGroup = radioGroupMap.get(questionsStringList.get(i));
             questionText = questionAnswerModelLsit.get(i).getQuestionModel().getText();
             questionId = questionAnswerModelLsit.get(i).getQuestionModel().getId();
@@ -112,17 +123,18 @@ public class QuestionAnswerActivity extends AppCompatActivity {
             choiceText = choicesModel.getText();
             score = choicesModel.getScore();
             isCorrect = choicesModel.getCorrect();
+            explainText = choicesModel.getAnswerExplaination();
 
-            questionAnswerModel= new QuestionAnswerModel(questionText,questionId,choiceText,choiceId,score,isCorrect);
+            questionAnswerModel = new QuestionAnswerModel(questionText, questionId, choiceText, choiceId, score, isCorrect, explainText);
             finalModelLsit.add(questionAnswerModel);
         }
         submitAnswerToTable(finalModelLsit);
     }
 
     private QuestionChoicesModel getChoiceModel(List<QuestionChoicesModel> choicesModelList, int checkedRadioButtonId) {
-        QuestionChoicesModel questionChoicesModel=null;
-        for (int i = 0;i<choicesModelList.size(); i++){
-            if (checkedRadioButtonId==choicesModelList.get(i).getRadioButtonId()){
+        QuestionChoicesModel questionChoicesModel = null;
+        for (int i = 0; i < choicesModelList.size(); i++) {
+            if (checkedRadioButtonId == choicesModelList.get(i).getRadioButtonId()) {
                 questionChoicesModel = choicesModelList.get(i);
             }
         }
@@ -130,6 +142,7 @@ public class QuestionAnswerActivity extends AppCompatActivity {
     }
 
     private void submitAnswerToTable(List<QuestionAnswerModel> finalModelLsit) {
+        List<String> scoreList = calculateScore(finalModelLsit);
         JSONArray array = new JSONArray();
         try {
             for (int i = 0; i < finalModelLsit.size(); i++) {
@@ -140,16 +153,44 @@ public class QuestionAnswerActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
                 array.put(jsonObject);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         Log.i(TAG, "onClick: " + array);
-        testAttemptCount = viewModel.getTestAttemptCount(mediaUUID);
-//        getTestFinalScore();
-        viewModel.saveValueToDb(array, mediaUUID);
+        /*Saving Answered Question To Question Answer Table*/
+        viewModel.saveValueToDb(array, mediaUUID, scoreList);
+
+        List<QuestionAnswerModel> scoreAnddAttemp = viewModel.getScoreAndAttempt(mediaUUID);
+        showPreviewForAnswer(finalModelLsit);
+    }
+
+    private List<String> calculateScore(List<QuestionAnswerModel> finalModelLsit) {
+        List<String> scoreList = new ArrayList<>();
+        int score = 0;
+        int totalScore = 0;
+        for (QuestionAnswerModel questionAnswerModel : finalModelLsit) {
+            if (questionAnswerModel.isCorrect()) {
+                score = totalScore + questionAnswerModel.getScore();
+            }
+            totalScore = totalScore + questionAnswerModel.getScore();
+
+        }
+        scoreList.add(String.valueOf(score));
+        scoreList.add(String.valueOf(scoreList));
+        return scoreList;
+    }
+
+    private void showPreviewForAnswer(List<QuestionAnswerModel> finalModelLsit) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.activity_answer_preview, null);
+        dialogBuilder.setView(dialogView);
+        TextView tvTitle = dialogView.findViewById(R.id.tvTitle);
+        RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerView);
+        Button btnSubmit = dialogView.findViewById(R.id.btnSubmit);
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
     }
 
 

@@ -162,15 +162,18 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
         if (CheckNetwork.checkNet(this)) {
             List<FileModel> fileModelList = new ArrayList<>();
             fileModelList.add(fileModel);
-            new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.VIDEO).getAbsolutePath(), fileModelList);
+//            new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.VIDEO).getAbsolutePath(), fileModelList);
+            new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL, AppUtils.completeInternalStoragePath(this, Constants.VIDEO).getAbsolutePath(), fileModelList);
         } else {
             Toast.makeText(this, getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
+
         }
     }
 
     private boolean videoAvailable(FileModel fileModel) {
         try {
-            File videoFile = new File(AppUtils.completePathInSDCard(Constants.VIDEO), AppUtils.getFileName(fileModel.getFileUrl()));
+//            File videoFile = new File(AppUtils.completePathInSDCard(Constants.VIDEO), AppUtils.getFileName(fileModel.getFileUrl()));
+            File videoFile = new File(AppUtils.completeInternalStoragePath(this,Constants.VIDEO), AppUtils.getFileName(fileModel.getFileUrl()));
             if (videoFile.exists())
                 return true;
         } catch (Exception ex) {

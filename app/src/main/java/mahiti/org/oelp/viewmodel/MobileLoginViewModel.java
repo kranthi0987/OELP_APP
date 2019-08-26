@@ -92,6 +92,8 @@ public class MobileLoginViewModel extends AndroidViewModel {
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL: "+RetrofitConstant.BASE_URL+RetrofitConstant.MOBILE_VALIDATION_URL +" Param :"+"mobile_number:"+mobileNo);
         apiInterface.mobileValidation(mobileNo).enqueue(new Callback<MobileVerificationResponseModel>() {
+            public String groupId="";
+
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                 Logger.logD(TAG, "URL "+ RetrofitConstant.BASE_URL+RetrofitConstant.MOBILE_VALIDATION_URL +" Response :"+response.body());
@@ -102,7 +104,9 @@ public class MobileLoginViewModel extends AndroidViewModel {
                     sharedPref.writeString(Constants.MOBILE_NO, mobileNo);
                     if (!model.getUserDetails().getUserid().equals(Constants.USER_INVALID)){
                         saveUserDataToPref(model.getUserDetails());
-                        saveUserIDAndUserType(model.getUserDetails().getUserid(), model.getUserDetails().getIsTrainer(), model.getUserDetails().getUserGroup().get(0));
+                        if (!model.getUserDetails().getUserGroup().isEmpty())
+                            groupId = model.getUserDetails().getUserGroup().get(model.getUserDetails().getUserGroup().size()-1);
+                        saveUserIDAndUserType(model.getUserDetails().getUserid(), model.getUserDetails().getIsTrainer(), groupId);
                     }
                     data.setValue(model);
                     showProgresBar.setValue(false);

@@ -99,9 +99,9 @@ public class QuestionAnswerViewModel extends AndroidViewModel {
     }
 
 
-    public void saveValueToDb(JSONArray array, String mediaUUID) {
+    public void saveValueToDb(JSONArray array, String mediaUUID, List<String> score) {
         List<QuestionAnswerModel> arrayList = new ArrayList<>();
-        handlerClass.saveAnsweredQuestion(array.toString(), Constants.QUESTION_ANSWER_ASYNC, mediaUUID, AppUtils.getDateTime());  //0 Sync, 1 Async
+        handlerClass.saveAnsweredQuestion(array.toString(), Constants.QUESTION_ANSWER_ASYNC, mediaUUID, AppUtils.getDateTime(), score);  //0 Sync, 1 Async
         Logger.logD(TAG, "Data"+array.toString());
         if (CheckNetwork.checkNet(context)) {
             arrayList = handlerClass.getAnsweredQuestion(mediaUUID);
@@ -163,5 +163,9 @@ public class QuestionAnswerViewModel extends AndroidViewModel {
     public int getTestAttemptCount(String mediaUUID) {
         handlerClass.getTestAttemptedCount(mediaUUID);
         return 0;
+    }
+
+    public List<QuestionAnswerModel> getScoreAndAttempt(String mediaUUID) {
+        return handlerClass.getAnsweredQuestion(mediaUUID);
     }
 }

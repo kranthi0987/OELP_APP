@@ -59,6 +59,12 @@
         <item name="colorAccent">@color/colorPrimary</item> <!-- Whatever color you want-->
     </style>
 
+    <style name="AppTheme.BLACKAccent">
+        <item name="colorAccent">@color/black</item> <!-- Whatever color you want-->
+    </style>
+
+
+
     <style name="AppTheme.GreenAccent">
         <item name="colorAccent">@color/green</item> <!-- Whatever color you want-->
     </style>
