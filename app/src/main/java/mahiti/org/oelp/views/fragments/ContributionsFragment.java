@@ -1,6 +1,9 @@
 package mahiti.org.oelp.views.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,48 +14,51 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.databinding.FragmentContributionsBinding;
 import mahiti.org.oelp.utils.GridSpacingItemDecoration;
 import mahiti.org.oelp.utils.Utils;
+import mahiti.org.oelp.viewmodel.ContributionsViewModel;
 import mahiti.org.oelp.views.adapters.ContributionAdapter;
 import mahiti.org.oelp.views.adapters.NewTeacherAdapter;
+import mahiti.org.oelp.views.adapters.UnitsVideoAdpater;
 
 public class ContributionsFragment extends Fragment {
 
     private View rootView;
     private RecyclerView recyclerView;
-    private Button buttonShareGlobally;
     private ContributionAdapter contributionAdapter;
+    private ContributionsViewModel viewModel;
+    private FragmentContributionsBinding binding;
+    private UnitsVideoAdpater adapter;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel = ViewModelProviders.of(getActivity()).get(ContributionsViewModel.class);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_contributions, container, false);
-        initViews();
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_contributions, container, false);
+        binding.setContributionsViewModel(viewModel);
+        binding.setLifecycleOwner(this);
+        initViews(binding);
+        rootView = binding.getRoot();
         setHasOptionsMenu(true);
 
         return rootView;
     }
 
-    private void initViews() {
+    private void initViews(FragmentContributionsBinding binding) {
 
-        buttonShareGlobally = (Button)rootView.findViewById(R.id.buttonShareGlobally);
-        buttonShareGlobally.setVisibility(View.VISIBLE);
-
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
-        /*LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new MyContAdapter(getActivity(), 7));*/
-
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        int spacing = (int) Utils.DpToPixel(getActivity(), 11); // 40px
-
-        GridSpacingItemDecoration itemDecoration = new GridSpacingItemDecoration(2, spacing, true);
-        recyclerView.addItemDecoration(itemDecoration);
-        recyclerView.setNestedScrollingEnabled(false);
-
-        recyclerView.setAdapter(new NewTeacherAdapter(getActivity(),4));
-
+        recyclerView = binding.recyclerView;
+        GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setHasFixedSize(true);
+        adapter = new UnitsVideoAdpater();
+        recyclerView.setAdapter(adapter);
+        recyclerView.setFocusable(false);
 
     }
 

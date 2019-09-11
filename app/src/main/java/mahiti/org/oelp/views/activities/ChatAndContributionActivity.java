@@ -1,6 +1,8 @@
 package mahiti.org.oelp.views.activities;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -19,8 +21,10 @@ import java.util.List;
 
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.CreateGroupActivity;
+import mahiti.org.oelp.databinding.ActivityChatAndContributionBinding;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.MySharedPref;
+import mahiti.org.oelp.viewmodel.ChatAndContributionViewModel;
 import mahiti.org.oelp.views.adapters.ChatAdapter;
 import mahiti.org.oelp.views.fragments.ChatFragment;
 import mahiti.org.oelp.views.fragments.MyContFragment;
@@ -41,12 +45,19 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     private String groupUUID;
     private String groupName;
     private String usertype;
+    ChatAndContributionViewModel viewModel;
+    ActivityChatAndContributionBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_and_contribution);
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_chat_and_contribution);
+        viewModel = ViewModelProviders.of(this).get(ChatAndContributionViewModel.class);
+        binding.setChatAndContributionViewModel(viewModel);
+        binding.setLifecycleOwner(this);
+
         sharedPref = new MySharedPref(this);
         userType = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
         toolbar = findViewById(R.id.black_toolbar);
@@ -137,16 +148,16 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
             chatFragment = new ChatFragment();
             myContriFragment = new MyContFragment();
 
-            adapter.addFragment(chatFragment, "Chats");
-            adapter.addFragment(myContriFragment, "My Contributions");
+            adapter.addFragment(chatFragment, getString(R.string.chats));
+            adapter.addFragment(myContriFragment, getString(R.string.my_contributions));
         } else {
             chatFragment = new ChatFragment();
             teacherContFragment = new TeacherContFragment();
             myContriFragment = new MyContFragment();
 
-            adapter.addFragment(chatFragment, "Chats");
+            adapter.addFragment(chatFragment, getString(R.string.chats));
             adapter.addFragment(teacherContFragment, "Teachers" + "\n" + "Contributions");
-            adapter.addFragment(myContriFragment, "My Contributions");
+            adapter.addFragment(myContriFragment, getString(R.string.my_contributions));
 
         }
         viewPager.setAdapter(adapter);

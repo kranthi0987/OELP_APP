@@ -39,6 +39,9 @@ public class Constants {
 
     public static final String TEACHER_UUID="teacheruuid";
     public static final String IS_UPDATED = "isGroupUpdated";
+    public static final Integer TestCompleted = 1;
+    public static final Integer AttemptLeft = 0;
+    public static final String VALUE_CHANGED = "valueChanged";
 
 
     public enum TransitionType {

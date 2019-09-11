@@ -64,17 +64,26 @@
                         android:id="@+id/ivPlayButton"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
+                        android:visibility="gone"
                         android:layout_centerInParent="true"
                         android:src="@drawable/play_button"/>
 
                     <ImageView
                         android:visibility="gone"
                         android:id="@+id/ivTickMark"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_alignParentRight="true"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentLeft="true"
                         android:layout_margin="10dp"
                         android:src="@drawable/completed_icon"/>
+
+                    <ImageView
+                        android:id="@+id/ivLock"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/ic_lock"/>
                         <!--android:visibility="@{adapterViewModel.moduleCompleted?View.VISIBLE:View.INVISIBLE}" />-->
 
 

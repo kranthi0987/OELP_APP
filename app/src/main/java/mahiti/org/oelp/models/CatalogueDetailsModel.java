@@ -79,6 +79,38 @@ public class CatalogueDetailsModel implements Parcelable{
     @Expose
     private String conUuid;
 
+    @SerializedName("dcfid")
+    @Expose
+    private String dcfid;
+
+    // 0 lock 1 unlock
+    private Integer lock;
+    // 0 incomplete 1 complete
+    private Integer watchStatus;
+
+    public Integer getLock() {
+        return lock;
+    }
+
+    public String getDcfid() {
+        return dcfid;
+    }
+
+    public void setDcfid(String dcfid) {
+        this.dcfid = dcfid;
+    }
+
+    public void setLock(Integer lock) {
+        this.lock = lock;
+    }
+
+    public Integer getWatchStatus() {
+        return watchStatus;
+    }
+
+    public void setWatchStatus(Integer watchStatus) {
+        this.watchStatus = watchStatus;
+    }
 
     public CatalogueDetailsModel() {
     }

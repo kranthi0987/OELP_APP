@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="mahiti.org.oelp.viewmodel.QuestionAnswerViewModel" />
+            type="mahiti.org.oelp.viewmodel.TestViewModel" />
     </data>
 
     <LinearLayout

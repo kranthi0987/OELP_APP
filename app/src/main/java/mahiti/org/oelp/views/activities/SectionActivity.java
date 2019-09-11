@@ -42,8 +42,11 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
     HomeViewModel homeViewModel;
     Toolbar toolbar;
     private String parentId;
+    private String unitUUID;
+
     private String title;
-    private Fragment fragment;
+//    private Fragment fragment;
+    private UnitsFragment fragment;
     private DatabaseHandlerClass handlerClass;
 
     @Override
@@ -70,6 +73,8 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
         }
     }
 
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -80,6 +85,8 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
     private void setFragment(String units) {
         Bundle bundle = new Bundle();
         bundle.putString("ParentId", parentId);
+        bundle.putString("level", unitUUID);
+        bundle.putString("unitUUID", unitUUID);
         bundle.putString("Title", title);
         fragment = new UnitsFragment();
         fragment.setArguments(bundle);
@@ -93,6 +100,7 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
     private void getIntentData() {
         CatalogueDetailsModel detailsModel = getIntent().getParcelableExtra("CatalogDetailsModel");
         parentId = detailsModel.getUuid();
+        unitUUID = detailsModel.getParent();
         title = detailsModel.getName();
         activitySectionBinding.tvTitle.setText(title);
         setFragment(Constants.Units);
@@ -122,10 +130,10 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
 
 
     @Override
-    public void onItemClick(CatalogueDetailsModel item) {
+    public void onItemClick(CatalogueDetailsModel item, int position) {
         if (item.getContType() != null) {
             if (item.getContType().equalsIgnoreCase("video")) {
-                checkVideoAndDownload(new FileModel(item.getName(), item.getPath(), item.getUuid()));
+                checkVideoAndDownload(new FileModel(item.getName(), item.getPath(), item.getUuid(), item.getDcfid()));
             } else {
                 moveToNext(item);
             }
@@ -140,6 +148,7 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
     }
 
     private void moveToNext(CatalogueDetailsModel item) {
+
         Intent intent = new Intent(this, SectionActivity.class);
         intent.putExtra("CatalogDetailsModel", item);
         startActivity(intent);
@@ -152,7 +161,7 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
 
         String userUUId = new MySharedPref(this).readString(Constants.USER_ID, "");
         if (videoAvailable(fileModel) && DownloadUtility.checkFileCorruptStatus(fileModel,SectionActivity.this)) {
-            DownloadUtility.playVideo(this, fileModel.getFileUrl(), fileModel.getFileName(), userUUId, fileModel.getUuid(), parentId);
+            DownloadUtility.playVideo(this, fileModel.getFileUrl(), fileModel.getFileName(), userUUId, fileModel.getUuid(), parentId, fileModel.getDcfId(), unitUUID);
         } else {
             downloadVideo(fileModel);
         }
@@ -163,7 +172,7 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
             List<FileModel> fileModelList = new ArrayList<>();
             fileModelList.add(fileModel);
 //            new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.VIDEO).getAbsolutePath(), fileModelList);
-            new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL, AppUtils.completeInternalStoragePath(this, Constants.VIDEO).getAbsolutePath(), fileModelList);
+            new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL, AppUtils.completeInternalStoragePath(this, Constants.VIDEO).getAbsolutePath(), fileModelList, unitUUID);
         } else {
             Toast.makeText(this, getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
 
@@ -191,11 +200,11 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
 
 
     @Override
-    public void onMediaDownload(int type, String savedPath, String name, int position, String uuid) {
+    public void onMediaDownload(int type, String savedPath, String name, int position, String uuid, String dcfId, String unitUUID) {
         if (savedPath != null && !savedPath.isEmpty()) {
 
             String userUUID = new MySharedPref(this).readString(Constants.USER_ID, "");
-            DownloadUtility.playVideo(this, savedPath, name, userUUID, uuid, parentId);
+            DownloadUtility.playVideo(this, savedPath, name, userUUID, uuid, parentId, dcfId, unitUUID);
         } else {
             Toast.makeText(this, getString(R.string.error_downloading), Toast.LENGTH_SHORT).show();
         }

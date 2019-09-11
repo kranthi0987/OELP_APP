@@ -291,7 +291,7 @@ public class VideoDecryptionDb extends SQLiteOpenHelper {
             values.put(VideoDbColumns.mediaEndTime, mediaTracker.getEndTime());
             values.put(VideoDbColumns.mediaCompleteStatus, mediaTracker.getComStatus());
             values.put(VideoDbColumns.mediaWatchMinutes, mediaTracker.getWatchMin());
-
+            Logger.logD(TAG, "Insert Tracker Data"+values.toString());
             insertedRecord = database.insertOrThrow(VideoDbColumns.mediaTableName, null, values);
             database.close();
         } catch (Exception e) {
@@ -313,7 +313,7 @@ public class VideoDecryptionDb extends SQLiteOpenHelper {
             values.put(VideoDbColumns.mediaEndTime, mediaTracker.getEndTime());
             values.put(VideoDbColumns.mediaWatchMinutes, mediaTracker.getWatchMin());
             values.put(VideoDbColumns.mediaCompleteStatus, mediaTracker.getComStatus());
-
+            Logger.logD(TAG, "Update Tracker Data"+mediaTracker.toString());
             database.update(VideoDbColumns.mediaTableName, values, VideoDbColumns.mediaUuid+" = ?", new String[] {mediaTracker.getMediaId()});
 
         } catch (Exception e) {
@@ -348,16 +348,16 @@ public class VideoDecryptionDb extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Logger.logD(TAG, "Fetch Tracker Data"+jsonMediaArray.toString());
         return jsonMediaArray;
     }
 
 
     public void delMediaTrackerRecords() {
         try {
-            Cursor cursor;
             SQLiteDatabase database = this.getWritableDatabase();
             String query = "DELETE FROM " + VideoDbColumns.mediaTableName + " WHERE " + VideoDbColumns.mediaEndTime + "!='0'";
-            cursor = database.rawQuery(query, null);
+            database.execSQL(query);
         } catch (Exception e) {
             Log.i("VDB ", " mediaTrackerInsert ");
             e.printStackTrace();

@@ -5,14 +5,16 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
+
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.database.CreateGroupActivity;
 import mahiti.org.oelp.database.DAOs.TeacherDao;
 import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
@@ -20,8 +22,10 @@ import mahiti.org.oelp.fileandvideodownloader.FileModel;
 import mahiti.org.oelp.models.CatalogueDetailsModel;
 import mahiti.org.oelp.models.GroupModel;
 import mahiti.org.oelp.models.MobileVerificationResponseModel;
+import mahiti.org.oelp.models.QuestionAnswerIdModel;
 import mahiti.org.oelp.models.QuestionChoicesModel;
 import mahiti.org.oelp.models.QuestionModel;
+import mahiti.org.oelp.models.SubmittedAnswerResponse;
 import mahiti.org.oelp.models.TeacherModel;
 import mahiti.org.oelp.services.ApiInterface;
 import mahiti.org.oelp.services.RetrofitClass;
@@ -45,6 +49,7 @@ public class HomeViewModel extends AndroidViewModel {
     private final String userId;
     public boolean teacherLogin;
     private final boolean catalogApiCalled;
+    private final boolean submittedAnswerResponseCalled;
     private final boolean questionApiCalled;
     private final boolean questionChoicesApiCalled;
     private final boolean groupApiCalled;
@@ -76,14 +81,16 @@ public class HomeViewModel extends AndroidViewModel {
         userId = sharedPref.readString(Constants.USER_ID, "");
         teacherLogin = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER;
         catalogApiCalled = sharedPref.readString(RetrofitConstant.CATALOGUE_URL, "").equalsIgnoreCase(AppUtils.getDate());
+        submittedAnswerResponseCalled = sharedPref.readBoolean(RetrofitConstant.SUBMITTED_ANSWER_RESPONSE_URL, false);
         questionApiCalled = sharedPref.readString(RetrofitConstant.QUESTION_LIST_URL, "").equalsIgnoreCase(AppUtils.getDate());
         questionChoicesApiCalled = sharedPref.readString(RetrofitConstant.QUESTION_CHOICES_LIST_URL, "").equalsIgnoreCase(AppUtils.getDate());
-        groupApiCalled = sharedPref.readString(RetrofitConstant.GROUP_LIST_URL, "").equalsIgnoreCase(AppUtils.getDate());
+        groupApiCalled = sharedPref.readString(RetrofitConstant.GROUP_LIST_URL, "").equalsIgnoreCase(AppUtils.getDate()) && !sharedPref.readBoolean(Constants.IS_UPDATED, true);
         teacherApiCalled = sharedPref.readString(RetrofitConstant.TEACHER_LIST_URL, "").equalsIgnoreCase(AppUtils.getDate());
         dataInserted.setValue(null);
         if (CheckNetwork.checkNet(context)) {
             callAllAPI();
         }
+        getListOfImageFromDb();
 
         userType.setValue(sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER));
 
@@ -104,10 +111,12 @@ public class HomeViewModel extends AndroidViewModel {
             callApiQuestions(userId);
         if (!questionChoicesApiCalled)
             callApiForQuestionChoices(userId);
-//        if (!groupApiCalled)
-        callApiForGroupList(userId);
+        if (!groupApiCalled)
+            callApiForGroupList(userId);
 //        if (!teacherApiCalled)
-//            callApiForTeacherList(userId);
+        callApiForTeacherList(userId);
+        if(!submittedAnswerResponseCalled)
+            callApiForSubmittedAnswerResponse(userId);
     }
 
     private void callApiForTeacherList(String userId) {
@@ -154,7 +163,7 @@ public class HomeViewModel extends AndroidViewModel {
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Response :" + response.body());
-
+                sharedPref.writeBoolean(Constants.IS_UPDATED, false);
                 MobileVerificationResponseModel model = response.body();
                 if (model != null) {
                     insertDataIntoGroupTable(model.getGroups());
@@ -229,13 +238,14 @@ public class HomeViewModel extends AndroidViewModel {
         apiCountMutable.setValue(--apiCount);
     }
 
-    private void getListOfImageFromDb() {
+    public void getListOfImageFromDb() {
         List<FileModel> imageList = databaseHandlerClass.getImageListFromTable();
         if (!imageList.isEmpty()) {
             checkOfflineAvailable(imageList);
         } else {
             dataInserted.setValue(2);
         }
+
     }
 
     private void checkOfflineAvailable(List<FileModel> imageList) {
@@ -338,13 +348,102 @@ public class HomeViewModel extends AndroidViewModel {
         });
     }
 
+    private void callApiForSubmittedAnswerResponse(String userId) {
+        getListOfImageFromDb();
+        apiCountMutable.setValue(++apiCount);
+        String modifiedDate = databaseHandlerClass.getModifiedDate(DBConstants.CAT_TABLE_NAME);
+        ApiInterface apiInterface = RetrofitClass.getAPIService();
+        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.CATALOGUE_URL + " Param : userId:" + userId + " modified_date:" + modifiedDate);
+        apiInterface.getSubmittedAnswerResponse(userId, "").enqueue(new Callback<MobileVerificationResponseModel>() {
+            @Override
+            public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.CATALOGUE_URL + " Response :" + response.body());
+
+                MobileVerificationResponseModel model = response.body();
+                if (model != null) {
+                    insertDataIntoQuestionAnswer(model.getResponsesData());
+
+                } else {
+                    apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
+                    apiCountMutable.setValue(--apiCount);
+                    getListOfImageFromDb();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.CATALOGUE_URL + " Response :" + t.getMessage());
+                apiErrorMessage.setValue(t.getMessage());
+                getListOfImageFromDb();
+                apiCountMutable.setValue(--apiCount);
+            }
+        });
+    }
+
     private void insertDataIntoCatalogTable(List<CatalogueDetailsModel> catalogueDetailsModel) {
         if (catalogueDetailsModel != null && !catalogueDetailsModel.isEmpty()) {
             databaseHandlerClass.insertDataToCatalogueTable(catalogueDetailsModel);
             sharedPref.writeString(RetrofitConstant.CATALOGUE_URL, AppUtils.getDate());
-            getListOfImageFromDb();
         }
         apiCountMutable.setValue(--apiCount);
+    }
+
+    /*public void insertAnsweredQuestion(String testUUID, String mediaUUID, String sectionUUID, String serverJSON, String previewJSON, String dateTime, List<Integer> score) {
+     */
+
+    private void insertDataIntoQuestionAnswer(List<SubmittedAnswerResponse> model1) {
+        String testUUID;
+        String mediaUUID;
+        String sectionUUID;
+        String unitUUID;
+        String serverJSON;
+        String dateTime;
+        Integer attempt;
+        List<String> score = new ArrayList<>();
+
+
+        if (model1 != null && !model1.isEmpty()) {
+            for (SubmittedAnswerResponse model : model1) {
+                testUUID = model.getCreationKey();
+                mediaUUID = model.getMediacontent();
+                sectionUUID = model.getSectionUUID();
+                unitUUID = model.getUnitUUID();
+                serverJSON = convertModelToString(model.getResponse());
+                dateTime = model.getSubmissionDate();
+                score.add(String.valueOf(model.getScore()));
+                score.add(String.valueOf(model.getResponse().size()));
+                attempt = model.getAttempts();
+                databaseHandlerClass.insertAnsweredQuestion(testUUID, mediaUUID, sectionUUID, unitUUID, serverJSON, dateTime, score, attempt, 1,"");
+
+            }
+
+            sharedPref.writeBoolean(RetrofitConstant.SUBMITTED_ANSWER_RESPONSE_URL, true);
+        }
+        apiCountMutable.setValue(--apiCount);
+
+//        updateCatalogTable();
+    }
+
+    private void updateCatalogTable() {
+        databaseHandlerClass.getAnsweredQuestion("", 2);
+    }
+
+    private String convertModelToString(List<QuestionAnswerIdModel> response) {
+        String responseDat = "";
+//        JSONArray idModel;
+        Gson gson = new Gson();
+//        if (response!=null && !response.isEmpty()) {
+//            for (QuestionAnswerIdModel model : response){
+        try {
+            responseDat = gson.toJson(response);
+        } catch (Exception ex) {
+            Logger.logE(TAG, "Exception in converting model to json :" + ex.getMessage(), ex);
+        }
+//            }
+
+//        }
+        return responseDat;
     }
 
     public MutableLiveData<String> getApiErrorMessage() {
@@ -401,8 +500,8 @@ public class HomeViewModel extends AndroidViewModel {
                 MobileVerificationResponseModel model = response.body();
                 if (model != null) {
                     long insertedCount = new TeacherDao(context).insertTeacherDataToDB(model.getTeachers());
-                    apiCountMutable.setValue(--apiCount);;
-                    Logger.logD(TAG, "teachers inserted count - "+insertedCount);
+                    apiCountMutable.setValue(--apiCount);
+                    Logger.logD(TAG, "teachers inserted count - " + insertedCount);
                 } else {
                     apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
                     apiCountMutable.setValue(--apiCount);

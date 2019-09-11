@@ -57,6 +57,17 @@ public class MobileVerificationResponseModel {
     @Expose
     private List<ChatModelClass> chat;
 
+    @SerializedName("ResponsesData")
+    @Expose
+    private List<SubmittedAnswerResponse> ResponsesData;
+
+    public List<SubmittedAnswerResponse> getResponsesData() {
+        return ResponsesData;
+    }
+
+    public void setResponsesData(List<SubmittedAnswerResponse> responsesData) {
+        ResponsesData = responsesData;
+    }
 
     public List<ChatModelClass> getChat() {
         return chat;

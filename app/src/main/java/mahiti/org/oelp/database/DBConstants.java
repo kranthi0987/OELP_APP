@@ -65,6 +65,13 @@ public class DBConstants {
     public static final String MEMBER_UUID = "memberUUID";
     public static final String GROUP_UUID = "groupUUID";
     public static final String TEACHER_TABLE = "teacherTable";
+    public static final String QA_PREVIEW_TEXT = "previewText";
+    public static final Integer ZERO = 0;
+    public static final String ATTEMPT = "attempt";
+    public static final String SECTION_UUID = "sectionUUID";
+    public static final String UNIT_UUID = "unitUUID";
+    public static final String GROUP_BY = " GROUP BY ";
+    public static final String ALL = " * ";
     public static String EQUAL_TO=" = ";
     public static String NOT_EQUAL_TO=" != ";
     public static String EMPTY="''";
@@ -111,7 +118,7 @@ public class DBConstants {
     public static final String LAST_LOGGEDIN = "last_logged_in";
     public static final String TEACHER_NAME = "teacher_name";
     public static final String SINGLE_QUOTES = "'";
-
+    public static final String ModuleWatchLockTable="moduleWatchLockTable";
 
 
     private DBConstants() {

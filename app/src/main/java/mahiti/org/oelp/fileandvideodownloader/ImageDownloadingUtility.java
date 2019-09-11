@@ -41,6 +41,7 @@ public class ImageDownloadingUtility {
     String ImagefileName;
     String fileNAme1 = "";
     int position;
+    private String dcfId;
 
 
     public ImageDownloadingUtility(Context context, String baseURl, String imageSavingBasePath, List<FileModel> fileModelList, int mType) {
@@ -223,7 +224,7 @@ public class ImageDownloadingUtility {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            playVideoInterfaceObj.onMediaDownload(mType, imageSavingBasePath + "/" + ImagefileName, fileNAme1, position,"");
+            playVideoInterfaceObj.onMediaDownload(mType, imageSavingBasePath + "/" + ImagefileName, fileNAme1, position,"", "", "");
         }
     }
 }

@@ -4,7 +4,7 @@ package mahiti.org.oelp.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class QuestionAndAnswerRequestModel {
+public class AnswerResponseModel {
 
     @SerializedName("q_id")
     @Expose

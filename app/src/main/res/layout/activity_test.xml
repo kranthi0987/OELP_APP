@@ -4,8 +4,8 @@
     <data>
 
         <variable
-            name="questionAnswerViewModel"
-            type="mahiti.org.oelp.viewmodel.QuestionAnswerViewModel" />
+            name="testViewModel"
+            type="mahiti.org.oelp.viewmodel.TestViewModel" />
     </data>
 
     <LinearLayout
@@ -89,7 +89,7 @@
                             android:layout_centerInParent="true"
                             android:background="@drawable/yellow_bkg_button"
                             android:fontFamily="@font/montserrat_medium"
-                            android:onClick="@{()->questionAnswerViewModel.onSubmitClick()}"
+                            android:onClick="@{()->testViewModel.onSubmitClick()}"
                             android:text="@string/submit"
                             android:textAllCaps="false"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"

@@ -1,14 +1,11 @@
 package mahiti.org.oelp.views.activities;
 
-import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +20,6 @@ import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.CreateGroupActivity;
 import mahiti.org.oelp.databinding.ActivityHomeBinding;
 import mahiti.org.oelp.fileandvideodownloader.DownloadClass;
-import mahiti.org.oelp.fileandvideodownloader.DownloadUtility;
 import mahiti.org.oelp.fileandvideodownloader.FileModel;
 import mahiti.org.oelp.fileandvideodownloader.OnMediaDownloadListener;
 import mahiti.org.oelp.interfaces.ItemClickListerner;
@@ -33,7 +28,6 @@ import mahiti.org.oelp.models.GroupModel;
 import mahiti.org.oelp.services.RetrofitConstant;
 import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.Constants;
-import mahiti.org.oelp.utils.Logger;
 import mahiti.org.oelp.utils.MySharedPref;
 import mahiti.org.oelp.utils.PermissionClass;
 import mahiti.org.oelp.viewmodel.HomeViewModel;
@@ -116,7 +110,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         });
         homeViewModel.getListOfImageToDownload().observe(this, fileModels ->
 //                new DownloadClass(Constants.IMAGE, HomeActivity.this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.IMAGE).getAbsolutePath(), fileModels));
-                new DownloadClass(Constants.IMAGE, HomeActivity.this, RetrofitConstant.BASE_URL, AppUtils.completeInternalStoragePath(this, Constants.IMAGE).getAbsolutePath(), fileModels));
+                new DownloadClass(Constants.IMAGE, HomeActivity.this, RetrofitConstant.BASE_URL, AppUtils.completeInternalStoragePath(this, Constants.IMAGE).getAbsolutePath(), fileModels, ""));
     }
 
     private void checKConditionAndProceed() {
@@ -138,13 +132,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         clicked = 0;
     }
 
-    private void downloadIntroVideo() {
-        FileModel fileModel = new FileModel("ओईएलपी किट", "static/media/2019/08/14/1900125913_U001_V001.mp4", "e7f5738a-4e37-4303-bee2-e0bd9820aab9");
-        List<FileModel> fileModelList = new ArrayList<>();
-        fileModelList.add(fileModel);
-//        new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.VIDEO).getAbsolutePath(), fileModelList);
-        new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL, AppUtils.completeInternalStoragePath(this, Constants.VIDEO).getAbsolutePath(), fileModelList);
-    }
+
 
     GroupsFragment groupsFragment = null;
     UnitsFragment unitsFragment = null;
@@ -189,7 +177,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         super.onResume();
         if(sharedPref.readBoolean(Constants.IS_UPDATED, false)){
             if (groupsFragment!=null) {
-                groupsFragment.setValueToAdapte();
+                groupsFragment.setValueToAdapter();
                 sharedPref.writeBoolean(Constants.IS_UPDATED, false);
             }
         }
@@ -252,7 +240,8 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
                 ShowAboutUsActivity();
                 return true;
             case R.id.logout:
-                makeUserLogout();
+                AppUtils.makeUserLogout(this);
+//                makeUserLogout();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -298,7 +287,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
 
 
     @Override
-    public void onItemClick(CatalogueDetailsModel item) {
+    public void onItemClick(CatalogueDetailsModel item, int position) {
         Intent intent = new Intent(HomeActivity.this, SectionActivity.class);
         intent.putExtra("CatalogDetailsModel", item);
         startActivity(intent);
@@ -320,7 +309,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     }
 
     @Override
-    public void onMediaDownload(int type, String savedPath, String name, int position, String uuid) {
+    public void onMediaDownload(int type, String savedPath, String name, int position, String uuid, String dcfId, String unitUUID) {
         homeViewModel.setDataInserted(1);
 //        if (uuid.equals("1111")) {
 //            playVideo();
@@ -339,9 +328,11 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 101 && resultCode == RESULT_OK) {
-            groupsFragment.setValueToAdapte();
+            homeViewModel.callApiForGroupList(sharedPref.readString(Constants.USER_ID,""));
+            groupsFragment.setValueToAdapter();
         }else if (requestCode == 102 && resultCode == RESULT_OK) {
-            groupsFragment.setValueToAdapte();
+            homeViewModel.callApiForGroupList(sharedPref.readString(Constants.USER_ID,""));
+            groupsFragment.setValueToAdapter();
         }
     }
 }

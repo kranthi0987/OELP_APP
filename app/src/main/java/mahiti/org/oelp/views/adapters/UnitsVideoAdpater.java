@@ -6,10 +6,12 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -17,6 +19,8 @@ import java.io.File;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.DAOs.ModuleWatchLockDao;
+import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.databinding.AdapterUnitsVideoBinding;
 import mahiti.org.oelp.interfaces.ItemClickListerner;
 import mahiti.org.oelp.models.CatalogueDetailsModel;
@@ -62,8 +66,7 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
         HomeViewModel vm = ViewModelProviders.of((FragmentActivity) layout.getContext()).get(HomeViewModel.class);
         layout.setViewModel(vm);
         CatalogueDetailsModel model = modelList.get(i);
-//        setImageFoCard(model, layout);
-        binding.ivPlayButton.setVisibility(View.GONE);
+//        setImageFoCard(modelList, layout);
         if (model.getContType() != null) {
             if (model.getContType().equalsIgnoreCase("video"))
                 binding.ivPlayButton.setVisibility(View.VISIBLE);
@@ -72,17 +75,54 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
 
         }
 
-        if (i == 0) {
-            modelList.get(i).setCompleted(RetrofitConstant.STATUS_TRUE);
-        } else if (i == 1) {
-            modelList.get(i).setCompleted(RetrofitConstant.STATUS_FALSE);
-        } else {
-            modelList.get(i).setCompleted(null);
-        }
         setValues(modelList.get(i), layout);
+        setTickMarkAndUnlock(layout, model, i);
 
         CatalogueDetailsModel finalModel1 = model;
-        layout.binding.llRecycler.setOnClickListener(v -> listener.onItemClick(finalModel1));
+        layout.binding.llRecycler.setOnClickListener(v -> {
+            if (layout.binding.ivLock.getVisibility()==View.VISIBLE) {
+                Toast.makeText(mContext, "First You need to unlock preceding module", Toast.LENGTH_SHORT).show();
+            } else {
+                listener.onItemClick(finalModel1, i);
+            }
+
+        });
+
+    }
+
+    CatalogueDetailsModel model1;
+
+    private void setTickMarkAndUnlock(Layout layout, CatalogueDetailsModel model, int position) {
+        if (position != 0)
+            model1 = modelList.get(position - 1);
+        else
+            model1 = model;
+
+        if (model.getWatchStatus() == 1) {
+            layout.binding.ivTickMark.setVisibility(View.VISIBLE);
+        } else {
+            layout.binding.ivTickMark.setVisibility(View.GONE);
+        }
+
+        if (model.getMediaLevelType().equalsIgnoreCase("2")) {
+
+            if (model.getOrder() == 1 || model.getOrder() == 2) {
+                layout.binding.ivLock.setVisibility(View.GONE);
+            } else if (model1.getWatchStatus() == 1) {
+                layout.binding.ivLock.setVisibility(View.GONE);
+            } else {
+                layout.binding.ivLock.setVisibility(View.VISIBLE);
+            }
+
+        } else {
+            if (model.getOrder() == 1) {
+                layout.binding.ivLock.setVisibility(View.GONE);
+            } else if (model1.getWatchStatus() == 1) {
+                layout.binding.ivLock.setVisibility(View.GONE);
+            } else {
+                layout.binding.ivLock.setVisibility(View.VISIBLE);
+            }
+        }
 
     }
 
@@ -94,19 +134,12 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
 
     private void setBackgroundForCardView(Layout layout, CatalogueDetailsModel catalogueDetailsModel) {
 
-        if (catalogueDetailsModel.getCompleted() == null) {
-            layout.binding.ivTickMark.setVisibility(View.GONE);
-            layout.binding.ivTickMark.setVisibility(View.GONE);
-//            layout.binding.rlEnableDisable.setBackgroundColor(layout.getContext().getResources().getColor(R.color.blackOpaque));
-        } else if (catalogueDetailsModel.getCompleted().equals(RetrofitConstant.STATUS_TRUE)) {
+//        if (catalogueDetailsModel.getCompleted() == 1) {
 //            layout.binding.ivTickMark.setVisibility(View.VISIBLE);
-//            layout.binding.ivTickMark.setVisibility(View.VISIBLE);
-//            layout.binding.rlEnableDisable.setBackgroundColor(layout.getContext().getResources().getColor(R.color.greenOpaque));
-        } else {
+////            layout.binding.rlEnableDisable.setBackgroundColor(layout.getContext().getResources().getColor(R.color.blackOpaque));
+//        } else if (catalogueDetailsModel.getCompleted()==0) {
 //            layout.binding.ivTickMark.setVisibility(View.GONE);
-//            layout.binding.ivTickMark.setVisibility(View.GONE);
-//            layout.binding.rlEnableDisable.setBackgroundColor(layout.getContext().getResources().getColor(R.color.yellowOpaque));
-        }
+//        }
 
 //        String iconCompletePath = AppUtils.completePathInSDCard(Constants.IMAGE).getAbsolutePath() + "/" + AppUtils.getFileName(catalogueDetailsModel.getIcon());
         String iconCompletePath = AppUtils.completeInternalStoragePath(mContext, Constants.IMAGE).getAbsolutePath() + "/" + AppUtils.getFileName(catalogueDetailsModel.getIcon());
@@ -132,6 +165,7 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
     public int getItemCount() {
         return modelList == null ? 0 : modelList.size();
     }
+
 
     public class Layout extends RecyclerView.ViewHolder {
         private Context mContext;

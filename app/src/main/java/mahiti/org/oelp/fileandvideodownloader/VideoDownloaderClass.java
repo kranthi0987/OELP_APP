@@ -59,12 +59,15 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
     private int videoId = 0;
     private String videoTitle = "";
     private String uuid;
+    private String dcfId;
+    private String unitUUID;
 
 
-    public VideoDownloaderClass(Context context, String baseURl, String videoSavingBasePath, List<FileModel> fileModelList, int type) {
+    public VideoDownloaderClass(Context context, String baseURl, String videoSavingBasePath, List<FileModel> fileModelList, int type, String unitUUID) {
         PRDownloader.initialize(context);
         this.context = context;
         this.baseURl = baseURl;
+        this.unitUUID = unitUUID;
         this.videoSavingBasePath = videoSavingBasePath;
         this.fileModelList = fileModelList;
         this.type = type;
@@ -83,6 +86,7 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
         for (int i = 0; i < fileModelList.size(); i++) {
             startDownloading(fileModelList.get(i));
             uuid = fileModelList.get(i).getUuid();
+            dcfId = fileModelList.get(i).getDcfId();
         }
         return null;
     }
@@ -256,7 +260,7 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
                     public void onDownloadComplete() {
                         dismissDialog();
                         dismissNotification(true);
-                        onMediaDownloadListener.onMediaDownload(type, downloadPath + "/" + videoLastName, videoTitle, 0, uuid);
+                        onMediaDownloadListener.onMediaDownload(type, downloadPath + "/" + videoLastName, videoTitle, 0, uuid, dcfId, unitUUID);
                         if (totalSize != 0) {
                             updateFileSizeInDatabase(uuid, totalSize);
                         }

@@ -2,6 +2,7 @@ package mahiti.org.oelp.views.activities;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
@@ -9,14 +10,11 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatRadioButton;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -32,19 +30,21 @@ import java.util.HashMap;
 import java.util.List;
 
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.databinding.ActivityQuestionAnswerBinding;
+import mahiti.org.oelp.databinding.ActivityTestBinding;
 import mahiti.org.oelp.models.QuestionAnswerModel;
 import mahiti.org.oelp.models.QuestionChoicesModel;
 import mahiti.org.oelp.utils.AppUtils;
-import mahiti.org.oelp.viewmodel.QuestionAnswerViewModel;
+import mahiti.org.oelp.utils.CheckNetwork;
+import mahiti.org.oelp.utils.Constants;
+import mahiti.org.oelp.utils.MySharedPref;
+import mahiti.org.oelp.viewmodel.TestViewModel;
 
 
-public class QuestionAnswerActivity extends AppCompatActivity {
+public class TestActivity extends AppCompatActivity {
 
-    private static final String TAG = QuestionAnswerActivity.class.getSimpleName();
-    private QuestionAnswerViewModel viewModel;
-    ActivityQuestionAnswerBinding binding;
-    private String videoTitle;
+    private static final String TAG = TestActivity.class.getSimpleName();
+    private TestViewModel testViewModel;
+    ActivityTestBinding binding;
     private Toolbar toolbar;
     private AlertDialog dialog;
     private LinearLayout questionsAnswersRadioLayout;
@@ -53,16 +53,23 @@ public class QuestionAnswerActivity extends AppCompatActivity {
     private List<QuestionAnswerModel> answeredList = new ArrayList<>();
     private String mediaUUID;
     private String sectionUUID;
+    private String unitUUID;
+    private String dcfId;
+    private String videoTitle;
+    private String uriPath;
+    private String userId;
+    private String mediaTrackerApi;
     private ScrollView scrollView;
     private List<QuestionAnswerModel> questionAnswerModelLsit;
+    private List<QuestionAnswerModel> scoreAndAttempt;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_question_answer);
-        viewModel = ViewModelProviders.of(this).get(QuestionAnswerViewModel.class);
-        binding.setQuestionAnswerViewModel(viewModel);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_test);
+        testViewModel = ViewModelProviders.of(this).get(TestViewModel.class);
+        binding.setTestViewModel(testViewModel);
         binding.setLifecycleOwner(this);
         toolbar = findViewById(R.id.white_toolbar);
         toolbar = findViewById(R.id.white_toolbar);
@@ -76,7 +83,7 @@ public class QuestionAnswerActivity extends AppCompatActivity {
         questionsAnswersRadioLayout = binding.questionsAnswersRadioLayout;
         toolbar.inflateMenu(R.menu.teacher_menu);
         getIntentData();
-        viewModel.getShowDialog().observe(this, aBoolean -> {
+        testViewModel.getShowDialog().observe(this, aBoolean -> {
             if (aBoolean != null) {
                 showDialog();
                 scrollView.setVisibility(View.GONE);
@@ -84,17 +91,16 @@ public class QuestionAnswerActivity extends AppCompatActivity {
 
         });
 
-        viewModel.getSubmitClick().observe(this, aBoolean -> {
+        testViewModel.getSubmitClick().observe(this, aBoolean -> {
             if (aBoolean != null)
                 if (validationForRadioButton()) {
                     prepareDataToSubmit();
                     Toast.makeText(this, "Submitted successfully", Toast.LENGTH_SHORT).show();
-//                    submitAnswerToTable(finalModelLsit);
                 } else {
                     Toast.makeText(this, getResources().getString(R.string.select_all_question), Toast.LENGTH_SHORT).show();
                 }
         });
-        viewModel.getQuestionAnswerModel().observe(this, questionAnswerModels -> {
+        testViewModel.getQuestionAnswerModel().observe(this, questionAnswerModels -> {
             if (questionAnswerModels != null && !questionAnswerModels.isEmpty()) {
                 questionAnswerModelLsit = questionAnswerModels;
                 setLayoutForQuestionAnswer(questionAnswerModels);
@@ -121,15 +127,21 @@ public class QuestionAnswerActivity extends AppCompatActivity {
             QuestionChoicesModel choicesModel = getChoiceModel(questionAnswerModelLsit.get(i).getChoicesModelList(), radioGroup.getCheckedRadioButtonId());
             choiceId = choicesModel.getId();
             choiceText = choicesModel.getText();
-            score = choicesModel.getScore();
+//            score  = choicesModel.getScore();
+            score  = 2;
             isCorrect = choicesModel.getCorrect();
-            explainText = choicesModel.getAnswerExplaination();
-
+            if (isCorrect) {
+                explainText = choicesModel.getAnswerExplaination();
+            } else {
+                explainText = "No";
+            }
             questionAnswerModel = new QuestionAnswerModel(questionText, questionId, choiceText, choiceId, score, isCorrect, explainText);
             finalModelLsit.add(questionAnswerModel);
         }
         submitAnswerToTable(finalModelLsit);
     }
+
+
 
     private QuestionChoicesModel getChoiceModel(List<QuestionChoicesModel> choicesModelList, int checkedRadioButtonId) {
         QuestionChoicesModel questionChoicesModel = null;
@@ -143,27 +155,65 @@ public class QuestionAnswerActivity extends AppCompatActivity {
 
     private void submitAnswerToTable(List<QuestionAnswerModel> finalModelLsit) {
         List<String> scoreList = calculateScore(finalModelLsit);
-        JSONArray array = new JSONArray();
+        JSONArray arrayPreview = new JSONArray();
+        JSONArray arrayServer = new JSONArray();
         try {
             for (int i = 0; i < finalModelLsit.size(); i++) {
-                JSONObject jsonObject = new JSONObject();
+                JSONObject jsonObjectPreviewText = new JSONObject();
+                JSONObject jsonObjectServerText = new JSONObject();
                 try {
-                    jsonObject.put("q_id", finalModelLsit.get(i).getQuetsionId());
-                    jsonObject.put("res_id", finalModelLsit.get(i).getChoiceId());
+                    /*
+                     * Preparing JSon for Preview to be shown first we are saving in Db with QuestionText, AnswerText and Explain Text
+                     * */
+
+                    jsonObjectPreviewText.put("q_text", finalModelLsit.get(i).getQuetsionText());
+                    jsonObjectPreviewText.put("a_text", finalModelLsit.get(i).getChoiceText());
+                    jsonObjectPreviewText.put("exp_text", finalModelLsit.get(i).getAnswerExplain());
+                    boolean isCorrect = finalModelLsit.get(0).isCorrect();
+                    jsonObjectPreviewText.put("correct", isCorrect);
+                    /*
+                     * Preparing Json for server side with question id and answer id
+                     * */
+
+                    jsonObjectServerText.put("q_id", finalModelLsit.get(i).getQuetsionId());
+                    jsonObjectServerText.put("res_id", finalModelLsit.get(i).getChoiceId());
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                array.put(jsonObject);
+                arrayServer.put(jsonObjectServerText);
+                arrayPreview.put(jsonObjectPreviewText);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.i(TAG, "onClick: " + array);
-        /*Saving Answered Question To Question Answer Table*/
-        viewModel.saveValueToDb(array, mediaUUID, scoreList);
+        Log.i(TAG, "server Json: " + arrayServer);
+        Log.i(TAG, "preview Json: " + arrayPreview);
 
-        List<QuestionAnswerModel> scoreAnddAttemp = viewModel.getScoreAndAttempt(mediaUUID);
-        showPreviewForAnswer(finalModelLsit);
+        /*Saving Answered Question To Question Answer Table*/
+//        if (CheckNetwork.checkNet(this)) {
+            String testUUId = AppUtils.getUUID();
+            testViewModel.saveValueToDb(arrayServer, arrayPreview, mediaUUID, scoreList, testUUId, sectionUUID, unitUUID);
+
+//        } else {
+//            Toast.makeText(this, getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
+//        }
+        moveToNextActivity();
+
+
+    }
+
+    private void moveToNextActivity() {
+        Intent intent = new Intent(this, PreviewActivity.class);
+        intent.putExtra("mediaUUID", mediaUUID);
+        intent.putExtra("sectionUUID", sectionUUID);
+        intent.putExtra("videoTitle", videoTitle);
+        intent.putExtra("userId", userId);
+        intent.putExtra("uriPath", uriPath);
+        intent.putExtra("mediaTrackerApi", mediaTrackerApi);
+        startActivity(intent);
+        this.finish();
+        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
     }
 
     private List<String> calculateScore(List<QuestionAnswerModel> finalModelLsit) {
@@ -172,25 +222,14 @@ public class QuestionAnswerActivity extends AppCompatActivity {
         int totalScore = 0;
         for (QuestionAnswerModel questionAnswerModel : finalModelLsit) {
             if (questionAnswerModel.isCorrect()) {
-                score = totalScore + questionAnswerModel.getScore();
+                score = score + questionAnswerModel.getScore();
             }
-            totalScore = totalScore + questionAnswerModel.getScore();
+            totalScore++;
 
         }
         scoreList.add(String.valueOf(score));
-        scoreList.add(String.valueOf(scoreList));
+        scoreList.add(String.valueOf(totalScore));
         return scoreList;
-    }
-
-    private void showPreviewForAnswer(List<QuestionAnswerModel> finalModelLsit) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        View dialogView = getLayoutInflater().inflate(R.layout.activity_answer_preview, null);
-        dialogBuilder.setView(dialogView);
-        TextView tvTitle = dialogView.findViewById(R.id.tvTitle);
-        RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerView);
-        Button btnSubmit = dialogView.findViewById(R.id.btnSubmit);
-        AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.show();
     }
 
 
@@ -267,10 +306,17 @@ public class QuestionAnswerActivity extends AppCompatActivity {
     }
 
     private void getIntentData() {
+
         mediaUUID = getIntent().getStringExtra("mediaUUID");
         sectionUUID = getIntent().getStringExtra("sectionUUID");
+        unitUUID = getIntent().getStringExtra("unitUUID");
+        dcfId = getIntent().getStringExtra("dcfId");
         videoTitle = getIntent().getStringExtra("videoTitle");
-        viewModel.setMediaUUID(sectionUUID);
+        uriPath = getIntent().getStringExtra("uriPath");
+        userId = getIntent().getStringExtra("userId");
+        mediaTrackerApi = getIntent().getStringExtra("mediaTrackerApi");
+        testViewModel.setDCFId(dcfId);
+        /*testViewModel.setDCFId(sectionUUID);*/
         String completeTilte = videoTitle.concat(getResources().getString(R.string.hiphen_question));
         binding.tvTitle.setText(completeTilte);
     }
@@ -305,7 +351,7 @@ public class QuestionAnswerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        QuestionAnswerActivity.this.finish();
+        TestActivity.this.finish();
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
     }
 }

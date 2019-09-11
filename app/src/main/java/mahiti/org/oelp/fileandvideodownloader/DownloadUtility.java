@@ -35,6 +35,7 @@ import java.util.Map;
 import mahiti.org.oelp.BuildConfig;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
+import mahiti.org.oelp.services.RetrofitConstant;
 import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
@@ -189,7 +190,7 @@ public class DownloadUtility {
         return convDonwBytesInLong;
     }
 
-    public static void playVideo(Activity activity, String path, String vName, String userId, String mediaUUID, String sectionUUID) {
+    public static void playVideo(Activity activity, String path, String vName, String userId, String mediaUUID, String sectionUUID, String dcfId, String unitUUID) {
         try {
 
 //            File f = new File(AppUtils.completePathInSDCard(Constants.VIDEO) + File.separator + AppUtils.getFileName(path));
@@ -201,8 +202,11 @@ public class DownloadUtility {
                 i.putExtra("userId", userId);
                 i.putExtra("videoTitle", vName);
                 i.putExtra("mediaUUID", mediaUUID);
-                i.putExtra("mediaTrackerApi", "");
+                i.putExtra("dcfId", dcfId);
+                i.putExtra("mediaTrackerApi", RetrofitConstant.BASE_URL+RetrofitConstant.MEDIA_TRACKER_API);
                 i.putExtra("sectionUUID", sectionUUID);
+                i.putExtra("unitUUID", unitUUID);
+                i.putExtra("takeRetest", false);
                 activity.startActivity(i);
                 activity.overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
 

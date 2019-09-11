@@ -9,16 +9,18 @@ public class FileModel {
     private  String fileUrl;
     private  String uuid;
     private int position;
+    private String dcfId;
 
     public FileModel(String fileName, String fileUrl) {
         this.fileName = fileName;
         this.fileUrl = fileUrl;
     }
 
-    public FileModel(String fileName, String fileUrl, String uuid) {
+    public FileModel(String fileName, String fileUrl, String uuid, String dcfId) {
         this.fileName = fileName;
         this.fileUrl = fileUrl;
         this.uuid = uuid;
+        this.dcfId = dcfId;
     }
 
     public int getPosition() {
@@ -30,6 +32,13 @@ public class FileModel {
     }
 
 
+    public String getDcfId() {
+        return dcfId;
+    }
+
+    public void setDcfId(String dcfId) {
+        this.dcfId = dcfId;
+    }
 
     public FileModel(String fileName, int fileId, String fileUrl, String uuid) {
         this.fileName = fileName;

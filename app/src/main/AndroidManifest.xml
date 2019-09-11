@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="false"
@@ -22,7 +23,7 @@
         <activity
             android:name=".views.activities.TeacherInfoTabActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".views.activities.AnswerPreviewActivity"
+        <activity android:name=".views.activities.PreviewActivity"
             android:screenOrientation="userPortrait"/>
         <activity
             android:name=".views.activities.SplashActivity"
@@ -73,7 +74,7 @@
             android:name=".videoplay.activity.VideoViewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.activities.QuestionAnswerActivity"
+            android:name=".views.activities.TestActivity"
             android:screenOrientation="userPortrait" />
         <activity
             android:name=".views.activities.AppIntroVideoActivity"
