@@ -16,7 +16,7 @@ public interface ApiInterface {
 //
 //    })
     @FormUrlEncoded
-    @POST(RetrofitConstant.BASE_URL+RetrofitConstant.MOBILE_VALIDATION_URL)
+    @POST(RetrofitConstant.MOBILE_VALIDATION_URL)
     Call<MobileVerificationResponseModel> mobileValidation(@Field("mobile_number") String mobileNumber);
 //
 //    @Headers({
@@ -24,47 +24,47 @@ public interface ApiInterface {
 //            "pw:@!(^$o$#e!l#@p"
 //    })
     @FormUrlEncoded
-    @POST(RetrofitConstant.BASE_URL+RetrofitConstant.USER_REGISTRATION_URL)
+    @POST(RetrofitConstant.USER_REGISTRATION_URL)
     Call<MobileVerificationResponseModel> userRegistration(@Field("userDetails") String userDetails);
 
     @FormUrlEncoded
-    @POST(RetrofitConstant.BASE_URL+RetrofitConstant.OTP_VALIDATION_URL)
+    @POST(RetrofitConstant.OTP_VALIDATION_URL)
     Call<MobileVerificationResponseModel> otpValidation(@Field("otp") String otp, @Field("mobile_number") String mobileNumber);
 
     @FormUrlEncoded
-    @POST(RetrofitConstant.BASE_URL+RetrofitConstant.CHANGE_MOBILE_NO_URL)
+    @POST(RetrofitConstant.CHANGE_MOBILE_NO_URL)
     Call<MobileVerificationResponseModel> changeMobileNumber(@Field("current_mobile_number") String currentMobileNo, @Field("new_mobile_number") String newMobileNo);
 
-    @GET(RetrofitConstant.BASE_URL+RetrofitConstant.LOCATION_LIST_URL)
+    @GET(RetrofitConstant.LOCATION_LIST_URL)
     Call<LocationModel> getLocationData();
 
     @FormUrlEncoded
-    @POST(RetrofitConstant.BASE_URL2+RetrofitConstant.CATALOGUE_URL)
+    @POST(RetrofitConstant.CATALOGUE_URL)
     Call<MobileVerificationResponseModel> catalogData(@Field("user_uuid") String userId, @Field("modified_date") String modifiedDate);
 
     @FormUrlEncoded
-    @POST(RetrofitConstant.BASE_URL+RetrofitConstant.GROUP_LIST_URL)
+    @POST(RetrofitConstant.GROUP_LIST_URL)
     Call<MobileVerificationResponseModel> getGroupList(@Field("user_uuid") String userId);
 
     @FormUrlEncoded
-    @POST(RetrofitConstant.BASE_URL+RetrofitConstant.TEACHER_LIST_URL)
+    @POST(RetrofitConstant.TEACHER_LIST_URL)
     Call<MobileVerificationResponseModel> getTeacherList(@Field("user_uuid") String userId);
 
 
     @FormUrlEncoded
-    @POST(RetrofitConstant.BASE_URL+RetrofitConstant.QUESTION_LIST_URL)
+    @POST(RetrofitConstant.QUESTION_LIST_URL)
     Call<MobileVerificationResponseModel> getQuestionList(@Field("userId") String userId, @Field("modified_date") String modifiedDate);
 
     @FormUrlEncoded
-    @POST(RetrofitConstant.BASE_URL2+RetrofitConstant.QUESTION_CHOICES_LIST_URL)
+    @POST(RetrofitConstant.QUESTION_CHOICES_LIST_URL)
     Call<MobileVerificationResponseModel> getQuestionChoicesList(@Field("userId") String userId, @Field("modified_date") String modifiedDate);
 
     @FormUrlEncoded
-    @POST(RetrofitConstant.BASE_URL+RetrofitConstant.CREATE_GROUP_URL)
+    @POST(RetrofitConstant.CREATE_GROUP_URL)
     Call<MobileVerificationResponseModel> createGroup(@Field("user_uuid") String userId, @Field("name") String groupName, @Field("creation_key") String groupCreationKey, @Field("members") String members);
 
     @FormUrlEncoded
-    @POST(RetrofitConstant.BASE_URL2+RetrofitConstant.SUBMIT_ANSWER)
+    @POST(RetrofitConstant.SUBMIT_ANSWER)
     Call<MobileVerificationResponseModel> submitAnswer(@Field("user_uuid") String userId,
                                                        @Field("creation_key") String creation_key,
                                                        @Field("section_uuid") String section_uuid,
@@ -78,7 +78,7 @@ public interface ApiInterface {
 
 
     @FormUrlEncoded
-    @POST(RetrofitConstant.BASE_URL2+RetrofitConstant.SUBMITTED_ANSWER_RESPONSE_URL)
+    @POST(RetrofitConstant.SUBMITTED_ANSWER_RESPONSE_URL)
     Call<MobileVerificationResponseModel> getSubmittedAnswerResponse(@Field("user_uuid") String userId, @Field("modified_date") String modifiedDate);
 
 

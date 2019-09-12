@@ -147,15 +147,17 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
         if (userType == Constants.USER_TEACHER) {
             chatFragment = new ChatFragment();
             myContriFragment = new MyContFragment();
+            teacherContFragment = new TeacherContFragment();
 
-            adapter.addFragment(chatFragment, getString(R.string.chats));
-            adapter.addFragment(myContriFragment, getString(R.string.my_contributions));
+            /*adapter.addFragment(chatFragment, getString(R.string.chats));*/
+            adapter.addFragment(teacherContFragment, "Group's" + "\n" + "Teacher");
+            adapter.addFragment(myContriFragment, "Contribution");
         } else {
             chatFragment = new ChatFragment();
             teacherContFragment = new TeacherContFragment();
             myContriFragment = new MyContFragment();
 
-            adapter.addFragment(chatFragment, getString(R.string.chats));
+            /*adapter.addFragment(chatFragment, getString(R.string.chats));*/
             adapter.addFragment(teacherContFragment, "Teachers" + "\n" + "Contributions");
             adapter.addFragment(myContriFragment, getString(R.string.my_contributions));
 

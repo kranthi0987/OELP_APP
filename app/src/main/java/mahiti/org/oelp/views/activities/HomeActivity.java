@@ -328,9 +328,11 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 101 && resultCode == RESULT_OK) {
+            homeViewModel.apiCountMutable.setValue(0);
             homeViewModel.callApiForGroupList(sharedPref.readString(Constants.USER_ID,""));
             groupsFragment.setValueToAdapter();
         }else if (requestCode == 102 && resultCode == RESULT_OK) {
+            homeViewModel.apiCountMutable.setValue(0);
             homeViewModel.callApiForGroupList(sharedPref.readString(Constants.USER_ID,""));
             groupsFragment.setValueToAdapter();
         }

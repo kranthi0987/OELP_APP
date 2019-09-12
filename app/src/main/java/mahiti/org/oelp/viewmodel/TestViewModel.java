@@ -150,7 +150,7 @@ public class TestViewModel extends AndroidViewModel {
         String userId = new MySharedPref(context).readString(Constants.USER_ID, "");
         Call<MobileVerificationResponseModel> call = apiService.submitAnswer(userId, model.getCreationKey(), model.getSectionUUID(), model.getUnitUUID(), model.getSubmissionDate(), model.getMediacontent(),
                 model.getScore(), model.getAttempts(), response);
-        Logger.logD(TAG, "QUESTION_AND_ANSWER_URL : " + RetrofitConstant.BASE_URL2 + RetrofitConstant.SUBMIT_ANSWER);
+        Logger.logD(TAG, "QUESTION_AND_ANSWER_URL : " + RetrofitConstant.BASE_URL + RetrofitConstant.SUBMIT_ANSWER);
         call.enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {

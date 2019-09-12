@@ -185,8 +185,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 DBConstants.Q_HELP_TEXT + DBConstants.TEXT_COMMA +
                 DBConstants.ACTIVE + DBConstants.INTEGER_COMMA +
                 DBConstants.MODIFIED + DBConstants.TEXT_COMMA +
-                DBConstants.DCF + DBConstants.INTEGER_COMMA +
-                DBConstants.MEDIA_CONTENT + DBConstants.TEXT +
+                DBConstants.DCF + DBConstants.INTEGER +
                 DBConstants.CLOSE_BRACKET;
         Logger.logD(TAG, "Database creation query :" + query);
         sqLiteDatabase.execSQL(query);
@@ -353,7 +352,6 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 contentValues.put(DBConstants.ACTIVE, questionModel.getActive());
                 contentValues.put(DBConstants.MODIFIED, questionModel.getModified());
                 contentValues.put(DBConstants.DCF, questionModel.getDcf());
-                contentValues.put(DBConstants.MEDIA_CONTENT, questionModel.getMediacontent());
                 Log.d(TAG, QUESTION_TABLE + contentValues.toString());
                 database.insertWithOnConflict(QUESTION_TABLE, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
                 Log.d(TAG, "Question values inserting into " + QUESTION_TABLE + contentValues.toString());
@@ -521,7 +519,6 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                     questionModel.setActive(cursor.getInt(cursor.getColumnIndex(DBConstants.ACTIVE)));
                     questionModel.setModified(cursor.getString(cursor.getColumnIndex(DBConstants.MODIFIED)));
                     questionModel.setDcf(cursor.getInt(cursor.getColumnIndex(DBConstants.DCF)));
-                    questionModel.setMediacontent(cursor.getString(cursor.getColumnIndex(DBConstants.MEDIA_CONTENT)));
                     Logger.logD(TAG, "Data fetched from " + DBConstants.QUESTION_TABLE + questionModel.toString());
                     questionModelsList.add(questionModel);
                 } while (cursor.moveToNext());

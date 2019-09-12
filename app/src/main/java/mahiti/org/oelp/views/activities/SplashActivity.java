@@ -13,6 +13,7 @@ import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.MySharedPref;
 import mahiti.org.oelp.utils.PermissionClass;
@@ -32,6 +33,7 @@ public class SplashActivity extends AppCompatActivity {
         rlMain = findViewById(R.id.rlMain);
 //        setLocale(1);
         sharedPref = new MySharedPref(this);
+
         checkPermissionAndProceed();
     }
 
@@ -44,7 +46,15 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
+
+
     private void checkUserIsRegisteredAndProceed() {
+        if(!sharedPref.readBoolean("ClearCheck",false)){
+            AppUtils.deleteCache(this);
+            sharedPref.deleteAllData();
+            sharedPref.writeBoolean("ClearCheck",true);
+        }
+
         if (sharedPref.readBoolean(Constants.USER_LOGIN, false)){
             moveToHomeActivity();
         }else {

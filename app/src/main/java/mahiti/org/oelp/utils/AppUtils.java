@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
@@ -36,6 +37,8 @@ import mahiti.org.oelp.views.activities.MobileLoginActivity;
  */
 public class AppUtils {
 
+
+    private static final String TAG = AppUtils.class.getSimpleName();
 
     private AppUtils() {
         /*
@@ -323,6 +326,42 @@ public class AppUtils {
         return data[data.length - 1];
     }
 
+    public static void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            File dir2;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dir2 = context.getCodeCacheDir();
+                if (dir2 != null && dir2.isDirectory()) {
+                    deleteDir(dir2);
+                }
+            }
+            if (dir != null && dir.isDirectory()) {
+                deleteDir(dir);
+                Logger.logD(TAG,"Cache cleared: "+dir.delete());
+            }
+
+        } catch (Exception e) {
+            Logger.logE(TAG,"deleteCache",e);
+        }
+    }
+
+    private static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (String aChildren : children) {
+                boolean success = deleteDir(new File(dir, aChildren));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+
+        // The directory is now empty so delete it
+        return dir.delete();
+    }
+
+
     public static void makeUserLogout(Context context) {
         DatabaseHandlerClass dbHandler = new DatabaseHandlerClass(context);
         dbHandler.deleteAllDataFromDB(1);
@@ -333,7 +372,9 @@ public class AppUtils {
         dbHandler.deleteAllDataFromDB(6);
         dbHandler.deleteAllDataFromDB(7);
         dbHandler.deleteAllDataFromDB(8);
-        new MySharedPref(context).deleteAllData();
+        MySharedPref sharedPref = new MySharedPref(context);
+        sharedPref.deleteAllData();
+        sharedPref.writeBoolean("ClearCheck",true);
         Intent intent = new Intent(context, MobileLoginActivity.class);
         context.startActivity(intent);
         ((AppCompatActivity) context).finish();

@@ -89,8 +89,10 @@ public class HomeViewModel extends AndroidViewModel {
         dataInserted.setValue(null);
         if (CheckNetwork.checkNet(context)) {
             callAllAPI();
+            apiCountMutable.setValue(0);
+            Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
         }
-        getListOfImageFromDb();
+//        getListOfImageFromDb();
 
         userType.setValue(sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER));
 
@@ -108,7 +110,7 @@ public class HomeViewModel extends AndroidViewModel {
         if (!catalogApiCalled)
             callApiForCatalogData(userId);
         if (!questionApiCalled)
-            callApiQuestions(userId);
+//            callApiQuestions(userId);
         if (!questionChoicesApiCalled)
             callApiForQuestionChoices(userId);
         if (!groupApiCalled)
@@ -120,7 +122,9 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     private void callApiForTeacherList(String userId) {
-        apiCountMutable.setValue(++apiCount);
+//        apiCountMutable.setValue(1);
+        apiCountMutable.setValue(1);
+        Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.TEACHER_LIST_URL + " Param : userId:" + userId);
         apiInterface.getTeacherList(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
@@ -133,7 +137,9 @@ public class HomeViewModel extends AndroidViewModel {
                     insertDataIntoTeacherTable(model.getTeachers());
                 } else {
                     apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
-                    apiCountMutable.setValue(--apiCount);
+//                    apiCountMutable.setValue(0);
+                    apiCountMutable.setValue(0);
+                    Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
                 }
 
             }
@@ -142,7 +148,9 @@ public class HomeViewModel extends AndroidViewModel {
             public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.TEACHER_LIST_URL + " Response :" + t.getMessage());
                 apiErrorMessage.setValue(t.getMessage());
-                apiCountMutable.setValue(--apiCount);
+//                apiCountMutable.setValue(0);
+                apiCountMutable.setValue(0);
+                Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
             }
         });
     }
@@ -151,12 +159,16 @@ public class HomeViewModel extends AndroidViewModel {
         if (!teachers.isEmpty()) {
             databaseHandlerClass.insertDatatoTeacherTable(teachers);
             sharedPref.writeString(RetrofitConstant.GROUP_LIST_URL, AppUtils.getDate());
-            apiCountMutable.setValue(--apiCount);
+//            apiCountMutable.setValue(0);
+            apiCountMutable.setValue(0);
+            Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
         }
     }
 
     public void callApiForGroupList(String userId) {
-        apiCountMutable.setValue(++apiCount);
+//        apiCountMutable.setValue(1);
+        apiCountMutable.setValue(0);
+        Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Param : userId:" + userId);
         apiInterface.getGroupList(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
@@ -169,7 +181,9 @@ public class HomeViewModel extends AndroidViewModel {
                     insertDataIntoGroupTable(model.getGroups());
                 } else {
                     apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
-                    apiCountMutable.setValue(--apiCount);
+//                    apiCountMutable.setValue(0);
+                    apiCountMutable.setValue(0);
+                    Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
                 }
 
             }
@@ -178,7 +192,9 @@ public class HomeViewModel extends AndroidViewModel {
             public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Response :" + t.getMessage());
                 apiErrorMessage.setValue(t.getMessage());
-                apiCountMutable.setValue(--apiCount);
+//                apiCountMutable.setValue(0);
+                apiCountMutable.setValue(0);
+                Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
             }
         });
 
@@ -189,7 +205,8 @@ public class HomeViewModel extends AndroidViewModel {
             insertLong.setValue(databaseHandlerClass.insertDatatoGroupsTable(groups));
             sharedPref.writeString(RetrofitConstant.GROUP_LIST_URL, AppUtils.getDate());
         }
-        apiCountMutable.setValue(--apiCount);
+        apiCountMutable.setValue(0);
+        Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
         // Call for getting the teacher list belongs to specific trainer
         if (CheckNetwork.checkNet(context))
             callApiForTeachersList(userId);
@@ -201,7 +218,8 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     private void callApiForQuestionChoices(String userId) {
-        apiCountMutable.setValue(++apiCount);
+        apiCountMutable.setValue(1);
+        Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
         ;
 //        String modifiedDate = databaseHandlerClass.getModifiedDate(DBConstants.QUESTION_TABLE);
         String modifiedDate = "";
@@ -216,7 +234,8 @@ public class HomeViewModel extends AndroidViewModel {
 
                 } else {
                     apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
-                    apiCountMutable.setValue(--apiCount);
+                    apiCountMutable.setValue(0);
+                    Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
                 }
 
             }
@@ -225,7 +244,8 @@ public class HomeViewModel extends AndroidViewModel {
             public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
                 apiErrorMessage.setValue(t.getMessage());
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_CHOICES_LIST_URL + " Response :" + t.getMessage());
-                apiCountMutable.setValue(--apiCount);
+                apiCountMutable.setValue(0);
+                Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
             }
         });
     }
@@ -235,7 +255,8 @@ public class HomeViewModel extends AndroidViewModel {
             databaseHandlerClass.insertDatatoQuestionChoicesTable(questionChoicesModelList);
             sharedPref.writeString(RetrofitConstant.QUESTION_CHOICES_LIST_URL, AppUtils.getDate());
         }
-        apiCountMutable.setValue(--apiCount);
+        apiCountMutable.setValue(0);
+        Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
     }
 
     public void getListOfImageFromDb() {
@@ -245,7 +266,6 @@ public class HomeViewModel extends AndroidViewModel {
         } else {
             dataInserted.setValue(2);
         }
-
     }
 
     private void checkOfflineAvailable(List<FileModel> imageList) {
@@ -279,7 +299,8 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     private void callApiQuestions(String userId) {
-        apiCountMutable.setValue(++apiCount);
+        apiCountMutable.setValue(1);
+        Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
 //        String modifiedDate = databaseHandlerClass.getModifiedDate(DBConstants.QUESTION_TABLE);
         String modifiedDate = "";
         ApiInterface apiInterface = RetrofitClass.getAPIService();
@@ -292,7 +313,8 @@ public class HomeViewModel extends AndroidViewModel {
                     Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_LIST_URL + " Response :" + response.body().toString());
 
                 } else {
-                    apiCountMutable.setValue(--apiCount);
+                    apiCountMutable.setValue(0);
+                    Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
                     apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
                 }
 
@@ -300,7 +322,8 @@ public class HomeViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
-                apiCountMutable.setValue(--apiCount);
+                apiCountMutable.setValue(0);
+                Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
                 apiErrorMessage.setValue(t.getMessage());
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.QUESTION_LIST_URL + " Response :" + t.getMessage());
             }
@@ -312,12 +335,15 @@ public class HomeViewModel extends AndroidViewModel {
             databaseHandlerClass.insertDatatoQuestionTable(questionModelList);
             sharedPref.writeString(RetrofitConstant.QUESTION_LIST_URL, AppUtils.getDate());
         }
-        apiCountMutable.setValue(--apiCount);
+        apiCountMutable.setValue(0);
+        Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
 
     }
 
     private void callApiForCatalogData(String userId) {
-        apiCountMutable.setValue(++apiCount);
+//        apiCountMutable.setValue(1);
+        apiCountMutable.setValue(1);
+        Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
         String modifiedDate = databaseHandlerClass.getModifiedDate(DBConstants.CAT_TABLE_NAME);
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.CATALOGUE_URL + " Param : userId:" + userId + " modified_date:" + modifiedDate);
@@ -332,7 +358,8 @@ public class HomeViewModel extends AndroidViewModel {
 
                 } else {
                     apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
-                    apiCountMutable.setValue(--apiCount);
+                    apiCountMutable.setValue(0);
+                    Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
                     getListOfImageFromDb();
                 }
 
@@ -343,14 +370,16 @@ public class HomeViewModel extends AndroidViewModel {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.CATALOGUE_URL + " Response :" + t.getMessage());
                 apiErrorMessage.setValue(t.getMessage());
                 getListOfImageFromDb();
-                apiCountMutable.setValue(--apiCount);
+                apiCountMutable.setValue(0);
+                Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
             }
         });
     }
 
     private void callApiForSubmittedAnswerResponse(String userId) {
-        getListOfImageFromDb();
-        apiCountMutable.setValue(++apiCount);
+//        getListOfImageFromDb();
+        apiCountMutable.setValue(1);
+        Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
         String modifiedDate = databaseHandlerClass.getModifiedDate(DBConstants.CAT_TABLE_NAME);
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.CATALOGUE_URL + " Param : userId:" + userId + " modified_date:" + modifiedDate);
@@ -365,8 +394,9 @@ public class HomeViewModel extends AndroidViewModel {
 
                 } else {
                     apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
-                    apiCountMutable.setValue(--apiCount);
-                    getListOfImageFromDb();
+                    apiCountMutable.setValue(0);
+                    Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
+//                    getListOfImageFromDb();
                 }
 
             }
@@ -375,8 +405,9 @@ public class HomeViewModel extends AndroidViewModel {
             public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.CATALOGUE_URL + " Response :" + t.getMessage());
                 apiErrorMessage.setValue(t.getMessage());
-                getListOfImageFromDb();
-                apiCountMutable.setValue(--apiCount);
+//                getListOfImageFromDb();
+                apiCountMutable.setValue(0);
+                Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
             }
         });
     }
@@ -385,8 +416,10 @@ public class HomeViewModel extends AndroidViewModel {
         if (catalogueDetailsModel != null && !catalogueDetailsModel.isEmpty()) {
             databaseHandlerClass.insertDataToCatalogueTable(catalogueDetailsModel);
             sharedPref.writeString(RetrofitConstant.CATALOGUE_URL, AppUtils.getDate());
+            getListOfImageFromDb();
         }
-        apiCountMutable.setValue(--apiCount);
+        apiCountMutable.setValue(0);
+        Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
     }
 
     /*public void insertAnsweredQuestion(String testUUID, String mediaUUID, String sectionUUID, String serverJSON, String previewJSON, String dateTime, List<Integer> score) {
@@ -420,7 +453,8 @@ public class HomeViewModel extends AndroidViewModel {
 
             sharedPref.writeBoolean(RetrofitConstant.SUBMITTED_ANSWER_RESPONSE_URL, true);
         }
-        apiCountMutable.setValue(--apiCount);
+        apiCountMutable.setValue(0);
+        Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
 
 //        updateCatalogTable();
     }
@@ -489,7 +523,8 @@ public class HomeViewModel extends AndroidViewModel {
 
     // Teacher API call
     public void callApiForTeachersList(String userId) {
-        apiCountMutable.setValue(++apiCount);
+        apiCountMutable.setValue(1);
+        Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Param : userId:" + userId);
         apiInterface.getTeacherList(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
@@ -500,11 +535,13 @@ public class HomeViewModel extends AndroidViewModel {
                 MobileVerificationResponseModel model = response.body();
                 if (model != null) {
                     long insertedCount = new TeacherDao(context).insertTeacherDataToDB(model.getTeachers());
-                    apiCountMutable.setValue(--apiCount);
+                    apiCountMutable.setValue(0);
+                    Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
                     Logger.logD(TAG, "teachers inserted count - " + insertedCount);
                 } else {
                     apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
-                    apiCountMutable.setValue(--apiCount);
+                    apiCountMutable.setValue(0);
+                    Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
                 }
 
             }
@@ -513,7 +550,8 @@ public class HomeViewModel extends AndroidViewModel {
             public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Response :" + t.getMessage());
                 apiErrorMessage.setValue(t.getMessage());
-                apiCountMutable.setValue(--apiCount);
+                apiCountMutable.setValue(0);
+                Logger.logD("TAG", "API COUNT :"+apiCountMutable.getValue());
             }
         });
 

@@ -31,10 +31,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -42,11 +45,16 @@ import java.util.concurrent.TimeUnit;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
+import mahiti.org.oelp.models.MobileVerificationResponseModel;
 import mahiti.org.oelp.models.QuestionAnswerModel;
 import mahiti.org.oelp.models.SubmittedAnswerResponse;
+import mahiti.org.oelp.services.ApiInterface;
+import mahiti.org.oelp.services.RetrofitClass;
 import mahiti.org.oelp.services.RetrofitConstant;
+import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.CheckNetwork;
 import mahiti.org.oelp.utils.Constants;
+import mahiti.org.oelp.utils.Logger;
 import mahiti.org.oelp.utils.MySharedPref;
 import mahiti.org.oelp.videoplay.UpdateDbInterface;
 import mahiti.org.oelp.videoplay.api.MediaTrackerApi;
@@ -60,6 +68,9 @@ import mahiti.org.oelp.videoplay.utils.VideoDbColumns;
 import mahiti.org.oelp.videoplay.utils.VideoDecryptionDb;
 import mahiti.org.oelp.views.activities.PreviewActivity;
 import mahiti.org.oelp.views.activities.TestActivity;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class VideoViewActivity extends AppCompatActivity implements SevendaysVariables,
@@ -518,7 +529,8 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
                     if (!dcfId.equalsIgnoreCase("0")) {
                         moveToQuestionAnswerActivity();
                     } else {
-                        catalogDbHandler.updateWatchStatusForCatalog(mediaUUID);
+                        updateDBandCAllApi();
+//                        catalogDbHandler.updateWatchStatusForCatalog(mediaUUID);
                         new MySharedPref(VideoViewActivity.this).writeBoolean(Constants.VALUE_CHANGED, true);
                         onBackPressed();
                     }
@@ -537,6 +549,62 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
 //            moveToQuestionAnswerActivity();
 //        else
 //            onBackPressed();
+    }
+
+    private void updateDBandCAllApi() {
+        String testUUId = AppUtils.getUUID();
+        List<String> list = new ArrayList<>();
+        list.add("0");
+        list.add("0");
+        catalogDbHandler.insertAnsweredQuestion(testUUId, mediaUUID, sectionUUID, unitUUID, "", AppUtils.getDateTime(), list, 0, 0, "");  //0 Sync, 1 Async
+        if (CheckNetwork.checkNet(this)) {
+            List<SubmittedAnswerResponse> arrayList = catalogDbHandler.getAnsweredQuestion("", 1);
+            if (arrayList.size() != 0) {
+                for (SubmittedAnswerResponse model : arrayList) {
+                    checkInternetAndCall(model);
+                }
+            } else {
+                Toast.makeText(this, getString(R.string.you_are_offline), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
+
+    }
+
+    private void checkInternetAndCall(SubmittedAnswerResponse model) {
+        if (CheckNetwork.checkNet(this))
+            postQA(model);
+        else
+            Toast.makeText(this, this.getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
+    }
+
+    public void postQA(SubmittedAnswerResponse model) {
+        String response = "";
+        Gson gson = new Gson();
+        try {
+            response = gson.toJson(model.getResponse());
+        } catch (Exception ex) {
+            Logger.logE(TAG, "Exception in model to json :" + ex.getMessage(), ex);
+        }
+        ApiInterface apiService = RetrofitClass.getAPIService();
+        String userId = new MySharedPref(this).readString(Constants.USER_ID, "");
+        Call<MobileVerificationResponseModel> call = apiService.submitAnswer(userId, model.getCreationKey(), model.getSectionUUID(), model.getUnitUUID(), model.getSubmissionDate(), model.getMediacontent(),
+                model.getScore(), model.getAttempts(), response);
+        Logger.logD(TAG, "QUESTION_AND_ANSWER_URL : " + RetrofitConstant.BASE_URL + RetrofitConstant.SUBMIT_ANSWER);
+        call.enqueue(new Callback<MobileVerificationResponseModel>() {
+            @Override
+            public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
+                Toast.makeText(VideoViewActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                catalogDbHandler.updateSyncStatus();
+            }
+
+            @Override
+            public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
+
+
+            }
+        });
     }
 
     private void moveToAnswerPreview() {

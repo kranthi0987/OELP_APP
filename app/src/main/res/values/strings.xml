@@ -112,4 +112,8 @@
     <string name="type_message_here">Type message here</string>
     <string name="chats">Chats</string>
     <string name="my_contributions">My Contributions</string>
+    <array name="contribution_array">
+        <item>All Contribution</item>
+        <item>Others Contribution</item>
+    </array>
 </resources>
