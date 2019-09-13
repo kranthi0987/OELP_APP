@@ -9,6 +9,9 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.CreateGroupActivity;
 import mahiti.org.oelp.models.MobileVerificationResponseModel;
@@ -17,6 +20,7 @@ import mahiti.org.oelp.services.ApiInterface;
 import mahiti.org.oelp.services.RetrofitClass;
 import mahiti.org.oelp.services.RetrofitConstant;
 import mahiti.org.oelp.utils.Action;
+import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.CheckNetwork;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
@@ -62,7 +66,7 @@ public class OTPVerificationViewModel extends AndroidViewModel {
         otp3.setValue("");
         otp4.setValue("");
         sharedPref = new MySharedPref(context);
-        mobileNo = sharedPref.readString(Constants.MOBILE_NO, "");
+        mobileNo = sharedPref.readString(Constants.MOBILE_NO_New, "");
         clearButtonVisible.setValue(false);
         String messageText = application.getString(R.string.otpmessage1).concat(mobileNo.substring(6, 10)).concat("  ").concat(application.getString(R.string.otpmessage2));
         otpMobileText.setValue(messageText);
@@ -101,10 +105,10 @@ public class OTPVerificationViewModel extends AndroidViewModel {
 
     }
 
-    public MutableLiveData<Boolean> clearOTPText(){
-         clearOTP.setValue(true);
-         clearButtonVisible.setValue(false);
-         return clearOTP;
+    public MutableLiveData<Boolean> clearOTPText() {
+        clearOTP.setValue(true);
+        clearButtonVisible.setValue(false);
+        return clearOTP;
     }
 
     private boolean validateOTP(String value) {
@@ -120,19 +124,19 @@ public class OTPVerificationViewModel extends AndroidViewModel {
     }
 
     private String prepareUserDetail() {
-        return sharedPref.readString(Constants.MOBILE_NO, "");
-//        JSONObject object = new JSONObject();
-//
-//        userData.setValue();
-//        try {
-//            object.put("name", userData.getValue().getName());
-//            object.put("school", userData.getValue().getSchool());
-//            object.put("mobile_number", userData.getValue().getMobile_number());
-//            object.put("blockIds", userData.getValue().getBlockIds());
-//            userString = object.toString();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
+        return sharedPref.readString(Constants.MOBILE_NO_New, "");
+       /* JSONObject object = new JSONObject();
+
+        userData.setValue();
+        try {
+            object.put("name", userData.getValue().getName());
+            object.put("school", userData.getValue().getSchool());
+            object.put("mobile_number", userData.getValue().getMobile_number());
+            object.put("blockIds", userData.getValue().getBlockIds());
+            userString = object.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }*/
     }
 
     public void changeMobileNumber() {
@@ -153,22 +157,19 @@ public class OTPVerificationViewModel extends AndroidViewModel {
         return mAction;
     }
 
-    private void getOTPVerified(String userString, String otpDigit) {
+    private void getOTPVerified(String mobileNo, String otpDigit) {
 
         ApiInterface apiInterface = RetrofitClass.getAPIService();
-        Logger.logD(TAG, "URL: "+RetrofitConstant.BASE_URL+RetrofitConstant.OTP_VALIDATION_URL +" Param :"+"otp:"+otpDigit+"userDetails:"+userData);
-        apiInterface.otpValidation(otpDigit, userString).enqueue(new Callback<MobileVerificationResponseModel>() {
+        Logger.logD(TAG, "URL: " + RetrofitConstant.BASE_URL + RetrofitConstant.OTP_VALIDATION_URL + " Param :" + "otp:" + otpDigit + "userDetails:" + userData);
+        apiInterface.otpValidation(otpDigit, mobileNo).enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
-                Logger.logD(TAG, "URL "+ RetrofitConstant.BASE_URL+RetrofitConstant.OTP_VALIDATION_URL +" Response :"+response.body());
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.OTP_VALIDATION_URL + " Response :" + response.body());
                 if (response.body() != null) {
                     MobileVerificationResponseModel model = response.body();
-                    if(model.getStatus().equals(RetrofitConstant.STATUS_TRUE)) {
-                        model.setmAction(new Action(Action.VERIFY_OTP));
-                        data.setValue(model);
-                        sharedPref.writeString(Constants.USER_DETAILS, userString);
-                        sharedPref.writeBoolean(Constants.USER_LOGIN, true);
-                    }else {
+                    if (model.getStatus().equals(RetrofitConstant.STATUS_TRUE)) {
+                        checkUserAndProceed(model, mobileNo);
+                    } else {
                         model.setmAction(new Action(Action.STATUS_FALSE));
                         data.setValue(model);
                     }
@@ -183,7 +184,7 @@ public class OTPVerificationViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
-                Logger.logD(TAG, "URL "+ RetrofitConstant.BASE_URL+RetrofitConstant.OTP_VALIDATION_URL +" Response :"+t.getMessage());
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.OTP_VALIDATION_URL + " Response :" + t.getMessage());
                 MobileVerificationResponseModel model = new MobileVerificationResponseModel(2, t.getMessage());
                 model.setmAction(new Action(Action.STATUS_FALSE));
                 data.setValue(model);
@@ -194,15 +195,26 @@ public class OTPVerificationViewModel extends AndroidViewModel {
 
     }
 
+    private void checkUserAndProceed(MobileVerificationResponseModel model, String mobileNo) {
+        String preMobileNo = sharedPref.readString(Constants.MOBILE_NO, "");
+        if (!preMobileNo.equalsIgnoreCase(mobileNo)) {
+            AppUtils.clearPreviousUserData(context);
+        }
+        model.setmAction(new Action(Action.VERIFY_OTP));
+        data.setValue(model);
+        sharedPref.writeString(Constants.MOBILE_NO, mobileNo);
+        sharedPref.writeBoolean(Constants.USER_LOGIN, true);
+    }
+
     private void getResendOTP(String mobileNo) {
 
 
         ApiInterface apiInterface = RetrofitClass.getAPIService();
-        Logger.logD(TAG, "URL: "+RetrofitConstant.BASE_URL+RetrofitConstant.MOBILE_VALIDATION_URL +" Param :"+"mobile_number:"+mobileNo);
+        Logger.logD(TAG, "URL: " + RetrofitConstant.BASE_URL + RetrofitConstant.MOBILE_VALIDATION_URL + " Param :" + "mobile_number:" + mobileNo);
         apiInterface.mobileValidation(mobileNo).enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
-                Logger.logD(TAG, "URL "+ RetrofitConstant.BASE_URL+RetrofitConstant.MOBILE_VALIDATION_URL +" Response :"+response.body());
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.MOBILE_VALIDATION_URL + " Response :" + response.body());
 
                 if (response.body() != null) {
                     MobileVerificationResponseModel model = response.body();
@@ -220,7 +232,7 @@ public class OTPVerificationViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
-                Logger.logD(TAG, "URL "+ RetrofitConstant.BASE_URL+RetrofitConstant.MOBILE_VALIDATION_URL +" Response :"+t.getMessage());
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.MOBILE_VALIDATION_URL + " Response :" + t.getMessage());
                 MobileVerificationResponseModel model = new MobileVerificationResponseModel(2, t.getMessage());
                 model.setmAction(new Action(Action.RESEND_OTP));
                 data.setValue(model);

@@ -101,7 +101,7 @@ public class MobileLoginViewModel extends AndroidViewModel {
                 if (response.body() != null) {
                     MobileVerificationResponseModel model = response.body();
                     model.setmAction(new Action(Action.STATUS_TRUE));
-                    sharedPref.writeString(Constants.MOBILE_NO, mobileNo);
+                    sharedPref.writeString(Constants.MOBILE_NO_New, mobileNo);
                     if (!model.getUserDetails().getUserid().equals(Constants.USER_INVALID)){
                         saveUserDataToPref(model.getUserDetails());
                         if (!model.getUserDetails().getUserGroup().isEmpty())

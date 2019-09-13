@@ -248,7 +248,7 @@ public class OTPVerificationActivity extends AppCompatActivity {
     private void moveToAppIntroNextActivity(boolean isIntroDisplayed) {
         Intent intent;
         if (isIntroDisplayed)
-            intent = new Intent(OTPVerificationActivity.this, AppIntroActivity.class);
+            intent = new Intent(OTPVerificationActivity.this, HomeActivity.class);
         else
             intent = new Intent(OTPVerificationActivity.this, AppIntroActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

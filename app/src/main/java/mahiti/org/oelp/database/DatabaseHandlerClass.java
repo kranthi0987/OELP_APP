@@ -3,6 +3,7 @@ package mahiti.org.oelp.database;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.ContentValues;
 import android.content.Context;
+import android.hardware.camera2.DngCreator;
 import android.util.Log;
 
 import net.sqlcipher.Cursor;
@@ -71,8 +72,19 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         createGroupTable(sqLiteDatabase);
         createGroupMemberTable(sqLiteDatabase);
         createTeacherTable(sqLiteDatabase);
+        createMediaStateTable(sqLiteDatabase);
 //        createModuleWatchLockTable(sqLiteDatabase);
 
+    }
+
+    private void createMediaStateTable(SQLiteDatabase sqLiteDatabase) {
+        String query = DBConstants.CREATE_TABLE_IF_NOT_EXIST + DBConstants.MEDIA_STATUS_TABLE + DBConstants.OPEN_BRACKET +
+                DBConstants.UUID + DBConstants.TEXT_PRIMARY_KEY + DBConstants.COMMA +
+                DBConstants.PARENT + DBConstants.TEXT_COMMA +
+                DBConstants.WATCH_STATUS + DBConstants.INTEGER + DBConstants.NOT_NULL_DEFAULT_ZERO +  // double not null default 0
+                DBConstants.CLOSE_BRACKET;
+        Logger.logD(TAG, "Database creation query :" + query);
+        sqLiteDatabase.execSQL(query);
     }
 
     /*private void createModuleWatchLockTable(SQLiteDatabase sqLiteDatabase) {
@@ -205,13 +217,12 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 DBConstants.ICON_PATH + DBConstants.TEXT_COMMA +
                 DBConstants.MEDIA_TYPE + DBConstants.TEXT_COMMA +
                 DBConstants.MEDIA_PATH + DBConstants.TEXT_COMMA +
-                DBConstants.MEDIA_LEVEL_TYPE + DBConstants.TEXT_COMMA +
-                DBConstants.DCF + DBConstants.TEXT_COMMA +
+                DBConstants.MEDIA_LEVEL_TYPE + DBConstants.INTEGER_COMMA +
+                DBConstants.DCF + DBConstants.INTEGER_COMMA +
                 DBConstants.DESC + DBConstants.TEXT_COMMA +
                 DBConstants.TYPE_CONTENT + DBConstants.TEXT_COMMA +
                 DBConstants.CONTENT_UUID + DBConstants.TEXT_COMMA +
-                DBConstants.FILE_SIZE + DBConstants.TEXT_COMMA +
-                DBConstants.WATCH_STATUS + DBConstants.INTEGER + DBConstants.NOT_NULL_DEFAULT_ZERO +  // double not null default 0
+                DBConstants.FILE_SIZE + DBConstants.TEXT +
                 DBConstants.CLOSE_BRACKET;
         Logger.logD(TAG, "Database creation query :" + query);
         sqLiteDatabase.execSQL(query);
@@ -406,16 +417,17 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         try {
             ContentValues values = new ContentValues();
             for (CatalogueDetailsModel detailsModel : catalogueDetailsModel) {
-                values.put(DBConstants.UUID, detailsModel.getUuid());
+                String uuid = detailsModel.getUuid();
+                String parent_uuis = "";
+                values.put(DBConstants.UUID, uuid);
                 values.put(DBConstants.ACTIVE, detailsModel.getActive());
                 values.put(DBConstants.NAME, detailsModel.getName());
                 values.put(DBConstants.CODE, detailsModel.getCode());
                 values.put(DBConstants.ORDER, detailsModel.getOrder());
                 values.put(DBConstants.COLOR, detailsModel.getUdf1().getColorCode());
-                if (detailsModel.getParent() == null)
-                    values.put(DBConstants.PARENT, "");
-                else
-                    values.put(DBConstants.PARENT, detailsModel.getParent());
+                if (detailsModel.getParent() != null)
+                    parent_uuis = detailsModel.getParent();
+                values.put(DBConstants.PARENT, parent_uuis);
                 values.put(DBConstants.MODIFIED, detailsModel.getModified());
                 values.put(DBConstants.ICON_PATH, detailsModel.getIcon());
                 values.put(DBConstants.ICON_TYPE, detailsModel.getIconType());
@@ -427,7 +439,9 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 values.put(DBConstants.DCF, detailsModel.getDcfid());
                 values.put(DBConstants.CONTENT_UUID, detailsModel.getConUuid());
                 Log.d(TAG, CAT_TABLE_NAME + values.toString());
+                insertWatchStatusForCatalog(parent_uuis, uuid);
                 insertLong = database.insertWithOnConflict(CAT_TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+
                 Log.d(TAG, "Content values inserting into catalogue table " + CAT_TABLE_NAME + values.toString());
             }
             database.setTransactionSuccessful();
@@ -469,19 +483,19 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                     catalogueDetailsModel.setName(cursor.getString(cursor.getColumnIndex(DBConstants.NAME)));
                     catalogueDetailsModel.setCode(cursor.getString(cursor.getColumnIndex(DBConstants.CODE)));
                     catalogueDetailsModel.setOrder(cursor.getInt(cursor.getColumnIndex(DBConstants.ORDER)));
-                    catalogueDetailsModel.setWatchStatus(cursor.getInt(cursor.getColumnIndex(DBConstants.WATCH_STATUS)));
+                    catalogueDetailsModel.setWatchStatus(getWatchStatusFromMediaStatusTable(catalogueDetailsModel.getUuid()));
 
                     CatalogueDetailsModel.UDF1 udf1 = new CatalogueDetailsModel().new UDF1();
                     catalogueDetailsModel.setUdf1(udf1, cursor.getString(cursor.getColumnIndex(DBConstants.COLOR)));
 
                     catalogueDetailsModel.setParent(cursor.getString(cursor.getColumnIndex(DBConstants.PARENT)));
-                    catalogueDetailsModel.setDcfid(cursor.getString(cursor.getColumnIndex(DBConstants.DCF)));
+                    catalogueDetailsModel.setDcfid(cursor.getInt(cursor.getColumnIndex(DBConstants.DCF)));
                     catalogueDetailsModel.setModified(cursor.getString(cursor.getColumnIndex(DBConstants.MODIFIED)));
                     catalogueDetailsModel.setIcon(cursor.getString(cursor.getColumnIndex(DBConstants.ICON_PATH)));
                     catalogueDetailsModel.setIconType(cursor.getString(cursor.getColumnIndex(DBConstants.ICON_TYPE)));
                     catalogueDetailsModel.setContType(cursor.getString(cursor.getColumnIndex(DBConstants.MEDIA_TYPE)));
                     catalogueDetailsModel.setPath(cursor.getString(cursor.getColumnIndex(DBConstants.MEDIA_PATH)));
-                    catalogueDetailsModel.setMediaLevelType(cursor.getString(cursor.getColumnIndex(DBConstants.MEDIA_LEVEL_TYPE)));
+                    catalogueDetailsModel.setMediaLevelType(cursor.getInt(cursor.getColumnIndex(DBConstants.MEDIA_LEVEL_TYPE)));
                     catalogueDetailsModel.setDesc(cursor.getString(cursor.getColumnIndex(DBConstants.DESC)));
                     catalogueDetailsModel.setTypeContent(cursor.getString(cursor.getColumnIndex(DBConstants.TYPE_CONTENT)));
                     catalogueDetailsModel.setConUuid(cursor.getString(cursor.getColumnIndex(DBConstants.CONTENT_UUID)));
@@ -498,13 +512,28 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         return catalogList1;
     }
 
-    public List<QuestionModel> getQuestion(String mediaUUID, String sectionId, int qa, String dcfId) {
+    private Integer getWatchStatusFromMediaStatusTable(String uuid) {
+        int watchStatus = 0;
+        initDatabase();
+        String query = DBConstants.SELECT + DBConstants.WATCH_STATUS + DBConstants.FROM + DBConstants.MEDIA_STATUS_TABLE + DBConstants.WHERE + DBConstants.UUID +
+                DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES + uuid + DBConstants.SINGLE_QUOTES;
+        try {
+            Cursor cursor = database.rawQuery(query, null);
+            cursor.moveToFirst();
+            watchStatus = cursor.getInt(cursor.getColumnIndex(DBConstants.WATCH_STATUS));
+        } catch (Exception xe) {
+            Logger.logE(TAG, "fetching watch status error :" + xe.getMessage(), xe);
+        }
+        return watchStatus;
+    }
+
+    public List<QuestionModel> getQuestion(String mediaUUID, String sectionId, int qa, int dcfId) {
         MutableLiveData<List<QuestionModel>> questionModelList = new MutableLiveData<>();
         List<QuestionModel> questionModelsList = new ArrayList<>();
         QuestionModel questionModel;
         String query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.QUESTION_TABLE +
 //                DBConstants.WHERE + DBConstants.MEDIA_CONTENT + DBConstants.EQUAL_TO + "'" + mediaUUID + "'";
-                DBConstants.WHERE + DBConstants.DCF + DBConstants.EQUAL_TO + "'" + dcfId + "'";
+                DBConstants.WHERE + DBConstants.DCF + DBConstants.EQUAL_TO +  + dcfId ;
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase(DBConstants.DATABASESECRETKEY);
         try {
             Logger.logD(TAG, "Getting Question Item : " + query);
@@ -569,7 +598,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     public List<FileModel> getImageListFromTable() {
         FileModel fileModel;
         List<FileModel> imageList = new ArrayList<>();
-        String query = DBConstants.SELECT + DBConstants.ICON_PATH + DBConstants.COMMA + DBConstants.NAME + DBConstants.COMMA+DBConstants.DCF+DBConstants.COMMA + DBConstants.UUID + DBConstants.FROM + DBConstants.CAT_TABLE_NAME +
+        String query = DBConstants.SELECT + DBConstants.ICON_PATH + DBConstants.COMMA + DBConstants.NAME + DBConstants.COMMA + DBConstants.DCF + DBConstants.COMMA + DBConstants.UUID + DBConstants.FROM + DBConstants.CAT_TABLE_NAME +
                 DBConstants.WHERE + ICON_PATH + DBConstants.NOT_EQUAL_TO + DBConstants.EMPTY +
                 DBConstants.AND + DBConstants.ICON_PATH + DBConstants.IS_NOT_NULL;
         initDatabase();
@@ -582,7 +611,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                     fileModel.setFileName(cursor.getString(cursor.getColumnIndex(DBConstants.NAME)));
                     fileModel.setUuid(cursor.getString(cursor.getColumnIndex(DBConstants.UUID)));
                     fileModel.setFileUrl(cursor.getString(cursor.getColumnIndex(DBConstants.ICON_PATH)));
-                    fileModel.setDcfId(cursor.getString(cursor.getColumnIndex(DBConstants.DCF)));
+                    fileModel.setDcfId(cursor.getInt(cursor.getColumnIndex(DBConstants.DCF)));
                     imageList.add(fileModel);
 
                 } while (cursor.moveToNext());
@@ -617,12 +646,30 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
 
     }
 
+    public void insertWatchStatusForCatalog(String parentUUID, String mediaUUID) {
+        initDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(DBConstants.PARENT, parentUUID); //These Fields should be your String values of actual column names
+        cv.put(DBConstants.UUID, mediaUUID); //These Fields should be your String values of actual column names
+        database.insertWithOnConflict(DBConstants.MEDIA_STATUS_TABLE, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
+        Log.d(TAG, "Watch values inserting into  " + DBConstants.MEDIA_STATUS_TABLE + cv.toString());
+    }
+
+
+    public void updateWatchStatusForMediaAll() {
+        initDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(DBConstants.WATCH_STATUS, 0);
+        database.update(DBConstants.MEDIA_STATUS_TABLE, cv, null, null);
+    }
+
     public void updateWatchStatusForCatalog(String mediaUUID) {
         initDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(DBConstants.WATCH_STATUS,1); //These Fields should be your String values of actual column names
-        database.update(DBConstants.CAT_TABLE_NAME, cv, "uuid = ?", new String[]{mediaUUID});
+        cv.put(DBConstants.WATCH_STATUS, 1); //These Fields should be your String values of actual column names
+        database.update(DBConstants.MEDIA_STATUS_TABLE, cv, "uuid = ?", new String[]{mediaUUID});
     }
+
 
     /* public void insertAnsweredQuestion(String testUUID, String mediaUUID, String sectionUUID,String unitUUID, String serverJSON, String dateTime, List<String> score, Integer attempt) {
      */
@@ -630,15 +677,15 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     public List<SubmittedAnswerResponse> getAnsweredQuestion(String videoId, Integer typeSync) {
         List<SubmittedAnswerResponse> asyncQuestionAnswer = new ArrayList<>();
         String dataFetchQuery;
-        if (typeSync==0) {
-            dataFetchQuery = DBConstants.SELECT + DBConstants.ALL + DBConstants.COMMA+DBConstants.MAX+DBConstants.OPEN_BRACKET+DBConstants.MODIFIED+DBConstants.CLOSE_BRACKET+DBConstants.FROM+DBConstants.QA_TABLENAME +
+        if (typeSync == 0) {
+            dataFetchQuery = DBConstants.SELECT + DBConstants.ALL + DBConstants.COMMA + DBConstants.MAX + DBConstants.OPEN_BRACKET + DBConstants.MODIFIED + DBConstants.CLOSE_BRACKET + DBConstants.FROM + DBConstants.QA_TABLENAME +
                     DBConstants.WHERE + DBConstants.QA_VIDEOID +
                     DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES + videoId + DBConstants.SINGLE_QUOTES;
-        } else if (typeSync ==1){
+        } else if (typeSync == 1) {
             dataFetchQuery = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.QA_TABLENAME +
                     DBConstants.WHERE + DBConstants.QA_SYNC_STATUS + DBConstants.EQUAL_TO +
                     Constants.QUESTION_ANSWER_ASYNC;
-        }else {
+        } else {
             dataFetchQuery = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.QA_TABLENAME +
                     DBConstants.WHERE + DBConstants.GROUP_BY + DBConstants.QA_VIDEOID;
         }
@@ -662,7 +709,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 String scorre;
                 scorre = cursor.getString(cursor.getColumnIndex(DBConstants.QA_SCORE));
 
-                if (scorre!=null && !scorre.isEmpty() && scorre.equalsIgnoreCase("null"))
+                if (scorre != null && !scorre.isEmpty() && scorre.equalsIgnoreCase("null"))
                     model.setScore(Float.parseFloat(scorre));
                 else
                     model.setScore(0.0f);
@@ -682,7 +729,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     public boolean getContentIsOpen(String uuid) {
         boolean isOpen = false;
         initDatabase();
-        String query = DBConstants.SELECT + DBConstants.WATCH_STATUS + DBConstants.FROM + DBConstants.CAT_TABLE_NAME + DBConstants.WHERE + DBConstants.PARENT + " = '" + uuid + "'" + DBConstants.AND + DBConstants.WATCH_STATUS + " = 0";
+        String query = DBConstants.SELECT + DBConstants.WATCH_STATUS + DBConstants.FROM + DBConstants.MEDIA_STATUS_TABLE + DBConstants.WHERE + DBConstants.PARENT + " = '" + uuid + "'" + DBConstants.AND + DBConstants.WATCH_STATUS + " = 0";
         Logger.logD(TAG, "Content View Status Query : " + query);
         android.database.Cursor cursor = database.rawQuery(query, null);
         // If count is greater than 0, then module is not fully completed
@@ -696,15 +743,6 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         return isOpen;
     }
 
-    public int insertViewStatusToDatabase(String uuid) {
-        if (uuid.isEmpty())
-            return 0;
-        initDatabase();
-        ContentValues values = new ContentValues();
-        values.put(DBConstants.WATCH_STATUS, 1);
-        Log.d("CatalogDBHandler", "updating the view status to database" + uuid);
-        return database.update(DBConstants.CAT_TABLE_NAME, values, DBConstants.UUID + " = ?", new String[]{uuid});
-    }
 
     public void deleteAllDataFromDB(int type) {
         initDatabase();
@@ -732,9 +770,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 case 7:
                     query = DBConstants.DELETE + DBConstants.FROM + DBConstants.MEMBER_TABLE;
                     break;
-                case 8:
-                    query = DBConstants.DELETE + DBConstants.FROM + DBConstants.QA_TABLENAME;
-                    break;
+
             }
             Logger.logD(TAG, "Table Delete Query : " + query);
             database.execSQL(query);
@@ -939,28 +975,28 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     public void updateSyncStatus() {
         initDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(DBConstants.QA_SYNC_STATUS,1); //These Fields should be your String values of actual column names
+        cv.put(DBConstants.QA_SYNC_STATUS, 1); //These Fields should be your String values of actual column names
 
         database.update(DBConstants.QA_TABLENAME, cv, null, null);
     }
 
     public SubmittedAnswerResponse getCount(String mediaUUID) {
-        SubmittedAnswerResponse response=null;
-        String query= DBConstants.SELECT+DBConstants.SCORE+DBConstants.COMMA+DBConstants.QA_TOTAL+DBConstants.COMMA
-                +DBConstants.ATTEMPT+DBConstants.COMMA+DBConstants.MAX+DBConstants.OPEN_BRACKET+DBConstants.MODIFIED+DBConstants.CLOSE_BRACKET+
-                DBConstants.FROM+DBConstants.QA_TABLENAME+DBConstants.WHERE+DBConstants.QA_VIDEOID+DBConstants.EQUAL_TO+DBConstants.SINGLE_QUOTES+
-                mediaUUID+DBConstants.SINGLE_QUOTES;
+        SubmittedAnswerResponse response = null;
+        String query = DBConstants.SELECT + DBConstants.SCORE + DBConstants.COMMA + DBConstants.QA_TOTAL + DBConstants.COMMA
+                + DBConstants.ATTEMPT + DBConstants.COMMA + DBConstants.MAX + DBConstants.OPEN_BRACKET + DBConstants.MODIFIED + DBConstants.CLOSE_BRACKET +
+                DBConstants.FROM + DBConstants.QA_TABLENAME + DBConstants.WHERE + DBConstants.QA_VIDEOID + DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES +
+                mediaUUID + DBConstants.SINGLE_QUOTES;
         initDatabase();
         try {
             database.beginTransaction();
-            Logger.logD(TAG, DBConstants.QA_TABLENAME+" Get Attempt query :"+query);
+            Logger.logD(TAG, DBConstants.QA_TABLENAME + " Get Attempt query :" + query);
             Cursor cursor = database.rawQuery(query, null);
             if (cursor.moveToFirst()) {
                 response = new SubmittedAnswerResponse();
                 response.setTotal(cursor.getString(cursor.getColumnIndex(DBConstants.QA_TOTAL)));
                 String score = "0.0";
                 score = cursor.getString(cursor.getColumnIndex(DBConstants.SCORE));
-                if (score!=null && !score.isEmpty() && score!="null")
+                if (score != null && !score.isEmpty() && score != "null")
                     response.setScore(Float.valueOf(score));
                 else
                     response.setScore((float) 0.0);
@@ -970,11 +1006,19 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
             cursor.close();
             database.setTransactionSuccessful();
         } catch (Exception ex) {
-            Logger.logE(TAG, DBConstants.QA_TABLENAME+" Get Attempt query Exception:"+ex.getMessage(), ex);
+            Logger.logE(TAG, DBConstants.QA_TABLENAME + " Get Attempt query Exception:" + ex.getMessage(), ex);
         } finally {
             database.endTransaction();
         }
 
         return response;
+    }
+
+    public void updateCompletedStatusFromCatalogTable() {
+        initDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(DBConstants.QA_SYNC_STATUS, 1); //These Fields should be your String values of actual column names
+
+        database.update(DBConstants.QA_TABLENAME, cv, null, null);
     }
 }

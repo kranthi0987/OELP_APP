@@ -54,7 +54,7 @@ public class TestActivity extends AppCompatActivity {
     private String mediaUUID;
     private String sectionUUID;
     private String unitUUID;
-    private String dcfId;
+    private int dcfId=0;
     private String videoTitle;
     private String uriPath;
     private String userId;
@@ -310,7 +310,7 @@ public class TestActivity extends AppCompatActivity {
         mediaUUID = getIntent().getStringExtra("mediaUUID");
         sectionUUID = getIntent().getStringExtra("sectionUUID");
         unitUUID = getIntent().getStringExtra("unitUUID");
-        dcfId = getIntent().getStringExtra("dcfId");
+        dcfId = getIntent().getIntExtra("dcfId",0);
         videoTitle = getIntent().getStringExtra("videoTitle");
         uriPath = getIntent().getStringExtra("uriPath");
         userId = getIntent().getStringExtra("userId");

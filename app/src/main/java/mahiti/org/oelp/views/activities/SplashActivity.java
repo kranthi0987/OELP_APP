@@ -49,11 +49,11 @@ public class SplashActivity extends AppCompatActivity {
 
 
     private void checkUserIsRegisteredAndProceed() {
-        if(!sharedPref.readBoolean("ClearCheck",false)){
+        /*if(!sharedPref.readBoolean("ClearCheck",false)){
             AppUtils.deleteCache(this);
             sharedPref.deleteAllData();
             sharedPref.writeBoolean("ClearCheck",true);
-        }
+        }*/
 
         if (sharedPref.readBoolean(Constants.USER_LOGIN, false)){
             moveToHomeActivity();
@@ -78,21 +78,6 @@ public class SplashActivity extends AppCompatActivity {
                 R.anim.anim_slide_out_left);
     }
 
-//    public void setLocale(Integer languageCode) {
-//        String localeName = "kn";
-//        if (languageCode == 2) {
-//            localeName = "kn";
-//        } else {
-//            localeName = "en";
-//        }
-//
-//        Locale myLocale = new Locale(localeName);
-//        Resources res = getResources();
-//        DisplayMetrics dm = res.getDisplayMetrics();
-//        Configuration conf = res.getConfiguration();
-//        conf.locale = myLocale;
-//        res.updateConfiguration(conf, dm);
-//    }
 
 
 

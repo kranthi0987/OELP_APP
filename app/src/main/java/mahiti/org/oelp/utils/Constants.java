@@ -6,7 +6,8 @@ package mahiti.org.oelp.utils;
 public class Constants {
     public static final String KEY_ANIM_TYPE = "anim_type";
     public static final String KEY_TITLE    = "anim_title";
-    public static final String MOBILE_NO = "mobileNo";
+    public static final String MOBILE_NO= "mobileNo";
+    public static final String MOBILE_NO_New= "mobileNoNew";
     public static final String STATUS_TRUE = "true";
     public static final Integer USER_INVALID = 0;
     public static final Integer USER_TEACHER = 3;

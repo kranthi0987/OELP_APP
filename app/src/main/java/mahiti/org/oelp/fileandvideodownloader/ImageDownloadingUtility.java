@@ -224,7 +224,7 @@ public class ImageDownloadingUtility {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            playVideoInterfaceObj.onMediaDownload(mType, imageSavingBasePath + "/" + ImagefileName, fileNAme1, position,"", "", "");
+            playVideoInterfaceObj.onMediaDownload(mType, imageSavingBasePath + "/" + ImagefileName, fileNAme1, position,"", 0, "");
         }
     }
 }

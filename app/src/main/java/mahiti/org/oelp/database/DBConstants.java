@@ -72,6 +72,7 @@ public class DBConstants {
     public static final String UNIT_UUID = "unitUUID";
     public static final String GROUP_BY = " GROUP BY ";
     public static final String ALL = " * ";
+    public static final String MEDIA_STATUS_TABLE = "mediaStatus";
     public static String EQUAL_TO=" = ";
     public static String NOT_EQUAL_TO=" != ";
     public static String EMPTY="''";

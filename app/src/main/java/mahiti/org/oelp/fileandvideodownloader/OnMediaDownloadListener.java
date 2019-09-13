@@ -6,6 +6,6 @@ package mahiti.org.oelp.fileandvideodownloader;
 public interface OnMediaDownloadListener {
 
 //    void  onMediaDownload(int type, String savedPath, String name);
-    void onMediaDownload(int type, String savedPath, String name, int position, String uuid, String dcfId, String unitUUID);
+    void onMediaDownload(int type, String savedPath, String name, int position, String uuid, int dcfId, String unitUUID);
 
 }

@@ -42,7 +42,7 @@ import retrofit2.Response;
  */
 public class TestViewModel extends AndroidViewModel {
     private static final String TAG = TestViewModel.class.getSimpleName();
-    private String dcfId;
+    private int dcfId;
     DatabaseHandlerClass handlerClass;
     private List<QuestionModel> questionModelList;
     private MutableLiveData<Boolean> showDialog = new MutableLiveData<>();
@@ -64,12 +64,12 @@ public class TestViewModel extends AndroidViewModel {
     }
 
 
-    public void setDCFId(String dcfId) {
+    public void setDCFId(int dcfId) {
         this.dcfId = dcfId;
         parseListOfQuestion(dcfId);
     }
 
-    private void parseListOfQuestion(String dcfId) {
+    private void parseListOfQuestion(int dcfId) {
 //        questionModelList = handlerClass.getQuestion(dcfId, "", Constants.QA);
         questionModelList = handlerClass.getQuestion("", "", Constants.QA, dcfId);
         Log.i("QuestionList", String.valueOf(questionModelList.size()));

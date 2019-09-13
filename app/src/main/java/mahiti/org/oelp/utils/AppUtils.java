@@ -361,20 +361,29 @@ public class AppUtils {
         return dir.delete();
     }
 
+    public static void clearPreviousUserData(Context context){
+        DatabaseHandlerClass dbHandler = new DatabaseHandlerClass(context);
+        dbHandler.updateWatchStatusForMediaAll();
+        MySharedPref sharedPref = new MySharedPref(context);
+        /*sharedPref.deleteAllData();*/
+        sharedPref.writeBoolean("ClearCheck",true);
+    }
+
 
     public static void makeUserLogout(Context context) {
         DatabaseHandlerClass dbHandler = new DatabaseHandlerClass(context);
-        dbHandler.deleteAllDataFromDB(1);
+        /*dbHandler.deleteAllDataFromDB(1);
         dbHandler.deleteAllDataFromDB(2);
         dbHandler.deleteAllDataFromDB(3);
         dbHandler.deleteAllDataFromDB(4);
         dbHandler.deleteAllDataFromDB(5);
         dbHandler.deleteAllDataFromDB(6);
         dbHandler.deleteAllDataFromDB(7);
-        dbHandler.deleteAllDataFromDB(8);
+        dbHandler.deleteAllDataFromDB(8);*/
         MySharedPref sharedPref = new MySharedPref(context);
-        sharedPref.deleteAllData();
+//        sharedPref.deleteAllData();
         sharedPref.writeBoolean("ClearCheck",true);
+        sharedPref.writeBoolean(Constants.USER_LOGIN, false);
         Intent intent = new Intent(context, MobileLoginActivity.class);
         context.startActivity(intent);
         ((AppCompatActivity) context).finish();

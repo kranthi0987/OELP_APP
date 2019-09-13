@@ -309,7 +309,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     }
 
     @Override
-    public void onMediaDownload(int type, String savedPath, String name, int position, String uuid, String dcfId, String unitUUID) {
+    public void onMediaDownload(int type, String savedPath, String name, int position, String uuid, int dcfId, String unitUUID) {
         homeViewModel.setDataInserted(1);
 //        if (uuid.equals("1111")) {
 //            playVideo();

@@ -106,7 +106,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     String unitUUID;
     String parentUUID;
     String mediaUUID = "";
-    String dcfId = "";
+    int dcfId = 0;
     String deviceId = "";
     private DatabaseHandlerClass catalogDbHandler;
     private String errorMessage;
@@ -183,15 +183,8 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         sharedPreferences = getApplicationContext().getSharedPreferences("MyPrefs", MODE_PRIVATE);
         checkNet = new CheckNet(this);
         getIntentData();
-
-
-//        putCompletedStatusForVideo(mediaUUID);
-
     }
 
-    private void putCompletedStatusForVideo(String mediaUUID) {
-        catalogDbHandler.insertViewStatusToDatabase(mediaUUID);
-    }
 
     @Override
     protected void onPause() {
@@ -211,8 +204,8 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
             }
 
             if (!TextUtils.isEmpty(getIntent().getStringExtra("dcfId"))) {
-                dcfId = getIntent().getStringExtra("dcfId");
-                Log.i("dcfId", dcfId);
+                dcfId = getIntent().getIntExtra("dcfId", 0);
+                Log.i("dcfId", "" + dcfId);
             }
 
             if (!TextUtils.isEmpty(getIntent().getStringExtra("unitUUID"))) {
@@ -526,7 +519,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
                     onBackPressed();
 
                 } else {
-                    if (!dcfId.equalsIgnoreCase("0")) {
+                    if (dcfId != 0) {
                         moveToQuestionAnswerActivity();
                     } else {
                         updateDBandCAllApi();
@@ -569,7 +562,6 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         }
 
 
-
     }
 
     private void checkInternetAndCall(SubmittedAnswerResponse model) {
@@ -582,19 +574,25 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     public void postQA(SubmittedAnswerResponse model) {
         String response = "";
         Gson gson = new Gson();
-        try {
-            response = gson.toJson(model.getResponse());
-        } catch (Exception ex) {
-            Logger.logE(TAG, "Exception in model to json :" + ex.getMessage(), ex);
+        if (model.getResponse() != null) {
+            try {
+                response = gson.toJson(model.getResponse());
+            } catch (Exception ex) {
+                Logger.logE(TAG, "Exception in model to json :" + ex.getMessage(), ex);
+            }
         }
+
         ApiInterface apiService = RetrofitClass.getAPIService();
         String userId = new MySharedPref(this).readString(Constants.USER_ID, "");
         Call<MobileVerificationResponseModel> call = apiService.submitAnswer(userId, model.getCreationKey(), model.getSectionUUID(), model.getUnitUUID(), model.getSubmissionDate(), model.getMediacontent(),
                 model.getScore(), model.getAttempts(), response);
         Logger.logD(TAG, "QUESTION_AND_ANSWER_URL : " + RetrofitConstant.BASE_URL + RetrofitConstant.SUBMIT_ANSWER);
-        call.enqueue(new Callback<MobileVerificationResponseModel>() {
+        call.enqueue(new Callback<MobileVerificationResponseModel>()
+
+        {
             @Override
-            public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
+            public void onResponse
+                    (Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                 Toast.makeText(VideoViewActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 catalogDbHandler.updateSyncStatus();
             }

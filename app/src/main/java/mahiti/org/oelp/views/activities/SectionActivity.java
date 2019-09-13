@@ -200,7 +200,7 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
 
 
     @Override
-    public void onMediaDownload(int type, String savedPath, String name, int position, String uuid, String dcfId, String unitUUID) {
+    public void onMediaDownload(int type, String savedPath, String name, int position, String uuid, int dcfId, String unitUUID) {
         if (savedPath != null && !savedPath.isEmpty()) {
 
             String userUUID = new MySharedPref(this).readString(Constants.USER_ID, "");

@@ -13,8 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.databinding.FragmentMyContBinding;
+import mahiti.org.oelp.models.CatalogueDetailsModel;
 import mahiti.org.oelp.utils.GridSpacingItemDecoration;
 import mahiti.org.oelp.utils.Utils;
 import mahiti.org.oelp.viewmodel.MyContViewModel;
@@ -56,7 +60,14 @@ public class MyContFragment extends Fragment {
         adapter = new UnitsVideoAdpater();
         recyclerView.setAdapter(adapter);
         recyclerView.setFocusable(false);
+        prepareData();
 
+
+    }
+
+    private void prepareData() {
+        CatalogueDetailsModel model;
+        List<CatalogueDetailsModel> modelList = new ArrayList<>();
 
     }
 

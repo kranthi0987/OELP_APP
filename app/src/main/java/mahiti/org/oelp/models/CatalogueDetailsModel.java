@@ -57,7 +57,7 @@ public class CatalogueDetailsModel implements Parcelable{
 
     @SerializedName("media_level_type")
     @Expose
-    private String mediaLevelType;
+    private int mediaLevelType;
 
     @SerializedName("desc")
     @Expose
@@ -81,7 +81,7 @@ public class CatalogueDetailsModel implements Parcelable{
 
     @SerializedName("dcfid")
     @Expose
-    private String dcfid;
+    private int dcfid;
 
     // 0 lock 1 unlock
     private Integer lock;
@@ -92,11 +92,11 @@ public class CatalogueDetailsModel implements Parcelable{
         return lock;
     }
 
-    public String getDcfid() {
+    public int getDcfid() {
         return dcfid;
     }
 
-    public void setDcfid(String dcfid) {
+    public void setDcfid(int dcfid) {
         this.dcfid = dcfid;
     }
 
@@ -138,7 +138,7 @@ public class CatalogueDetailsModel implements Parcelable{
         modified = in.readString();
         icon = in.readString();
         path = in.readString();
-        mediaLevelType = in.readString();
+        mediaLevelType = in.readInt();
         desc = in.readString();
         iconType = in.readString();
         contType = in.readString();
@@ -248,11 +248,11 @@ public class CatalogueDetailsModel implements Parcelable{
         this.path = path;
     }
 
-    public String getMediaLevelType() {
+    public int getMediaLevelType() {
         return mediaLevelType;
     }
 
-    public void setMediaLevelType(String mediaLevelType) {
+    public void setMediaLevelType(int mediaLevelType) {
         this.mediaLevelType = mediaLevelType;
     }
 
@@ -328,7 +328,7 @@ public class CatalogueDetailsModel implements Parcelable{
         parcel.writeString(modified);
         parcel.writeString(icon);
         parcel.writeString(path);
-        parcel.writeString(mediaLevelType);
+        parcel.writeInt(mediaLevelType);
         parcel.writeString(desc);
         parcel.writeString(iconType);
         parcel.writeString(contType);

@@ -5,9 +5,9 @@
 
         <import type="android.view.View" />
 
-        <variable
+       <!-- <variable
             name="adapterViewModel"
-            type="mahiti.org.oelp.viewmodel.HomeViewModel" />
+            type="mahiti.org.oelp.viewmodel.HomeViewModel" />-->
 
 
     </data>
@@ -85,7 +85,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_margin="2dp"
                         android:src="@drawable/ic_lock"/>
-                        <!--android:visibility="@{adapterViewModel.moduleCompleted?View.VISIBLE:View.INVISIBLE}" />-->
+                    <!--android:visibility="@{adapterViewModel.moduleCompleted?View.VISIBLE:View.INVISIBLE}" />-->
 
 
                 </RelativeLayout>

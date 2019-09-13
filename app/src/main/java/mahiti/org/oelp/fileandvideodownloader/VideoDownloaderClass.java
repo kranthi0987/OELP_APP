@@ -59,7 +59,7 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
     private int videoId = 0;
     private String videoTitle = "";
     private String uuid;
-    private String dcfId;
+    private int dcfId=0;
     private String unitUUID;
 
 

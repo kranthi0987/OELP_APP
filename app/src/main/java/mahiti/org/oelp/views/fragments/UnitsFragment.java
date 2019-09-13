@@ -35,8 +35,9 @@ public class UnitsFragment extends Fragment {
     private HomeActivity mContext;
     private String title;
     private String parentId;
+    private int mediaLevel;
     private List<CatalogueDetailsModel> catalogueDetailsModels = new ArrayList<>();
-//    FragmentUnitsBinding binding;
+    //    FragmentUnitsBinding binding;
     private DatabaseHandlerClass handlerClass;
     private List<CatalogueDetailsModel> list1;
 
@@ -51,7 +52,7 @@ public class UnitsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-/*//        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_units, container, false);*/
+        /*//        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_units, container, false);*/
         View view = inflater.inflate(R.layout.fragment_units, container, false);
        /* View view = binding.getRoot();
         binding.setHomeViewModel(homeViewModel);
@@ -69,10 +70,11 @@ public class UnitsFragment extends Fragment {
         calculateLockAndWatchStatus(parentId);
 
         catalogueDetailsModels = handlerClass.getCatalogData(parentId);
-        if (!catalogueDetailsModels.isEmpty()){
-           adapter.setList(catalogueDetailsModels, getActivity());
-           progressBar.setVisibility(View.GONE);
-        }else{
+        if (!catalogueDetailsModels.isEmpty()) {
+            mediaLevel = catalogueDetailsModels.get(0).getMediaLevelType();
+            adapter.setList(catalogueDetailsModels, getActivity());
+            progressBar.setVisibility(View.GONE);
+        } else {
             progressBar.setVisibility(View.GONE);
         }
         return view;
@@ -92,7 +94,7 @@ public class UnitsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         MySharedPref sharedPref = new MySharedPref(getActivity());
-        if (sharedPref.readBoolean(Constants.VALUE_CHANGED, false)){
+        if (sharedPref.readBoolean(Constants.VALUE_CHANGED, false) || mediaLevel<3) {
             calculateLockAndWatchStatus(parentId);
             catalogueDetailsModels = handlerClass.getCatalogData(parentId);
             adapter.setList(catalogueDetailsModels, getActivity());
