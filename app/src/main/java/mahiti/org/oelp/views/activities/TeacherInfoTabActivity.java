@@ -10,19 +10,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.interfaces.SharedMediaClickListener;
+import mahiti.org.oelp.models.SharedMediaModel;
 import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.MySharedPref;
 import mahiti.org.oelp.views.fragments.ContributionsFragment;
+import mahiti.org.oelp.views.fragments.MyContFragment;
 import mahiti.org.oelp.views.fragments.NewTeacherFragment;
 import mahiti.org.oelp.views.fragments.TeacherInfoFragment;
 
-public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, SharedMediaClickListener {
 
     private Toolbar toolbar;
 
@@ -32,6 +36,8 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
     private TabLayout tabLayout;
     private ViewPagerAdapter adapter;
     private String teacherUuid = "";
+    private String teacherName = "";
+    private TextView tvTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +45,8 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacherinfo_tab);
 
-        toolbar = findViewById(R.id.black_toolbar);
+        toolbar = findViewById(R.id.white_toolbar);
+        tvTitle = findViewById(R.id.tvTitle);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -59,6 +66,8 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
 
     private void getIntentValues() {
         teacherUuid = getIntent().getStringExtra(Constants.TEACHER_UUID);
+        teacherName = getIntent().getStringExtra("teacherName");
+        tvTitle.setText(teacherName);
     }
 
 
@@ -111,8 +120,8 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
 
         //TeacherInfo1Fragment teacherInfoFragment = new TeacherInfo1Fragment();
         TeacherInfoFragment teacherInfoFragment = new TeacherInfoFragment();
-        ContributionsFragment contributionsFragment = new ContributionsFragment();
-        NewTeacherFragment newTeacherFragment = new NewTeacherFragment();
+        MyContFragment contributionsFragment = new MyContFragment();
+        MyContFragment newTeacherFragment = new MyContFragment();
 
 
         adapter.addFragment(teacherInfoFragment, "Teacher Info");
@@ -120,6 +129,12 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
         adapter.addFragment(newTeacherFragment, "New");
 
         viewPager.setAdapter(adapter);
+    }
+
+
+    @Override
+    public void onSharedMediaClick(SharedMediaModel mediaModel, boolean shareGlobally) {
+
     }
 
 
@@ -160,7 +175,7 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
 
     @Override
     public void onPageSelected(int i) {
-
+        new MySharedPref(this).writeInt(Constants.SELECTED_POSITION, i);
     }
 
     @Override

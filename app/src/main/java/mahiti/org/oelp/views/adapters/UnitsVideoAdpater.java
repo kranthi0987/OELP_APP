@@ -80,8 +80,8 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
            /* if (layout.binding.ivLock.getVisibility()==View.VISIBLE) {
                 Toast.makeText(mContext, "First You need to unlock preceding module", Toast.LENGTH_SHORT).show();
             } else {*/
-                listener.onItemClick(finalModel1, i);
-           /* }*/
+            listener.onItemClick(finalModel1, i);
+            /* }*/
 
         });
 
@@ -103,14 +103,14 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
         boolean loginType = new MySharedPref(mContext).readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER;
         boolean lockFlag = false;
 
-        if(lockFlag && loginType) {
+        if (lockFlag && loginType) {
             setLockMark(layout, model, position);
         }
 
     }
 
     private void setLockMark(Layout layout, CatalogueDetailsModel model, int position) {
-        if (model.getMediaLevelType()==2) {
+        if (model.getMediaLevelType() == 2) {
 
             if (model.getOrder() == 1 || model.getOrder() == 2) {
                 layout.binding.ivLock.setVisibility(View.GONE);

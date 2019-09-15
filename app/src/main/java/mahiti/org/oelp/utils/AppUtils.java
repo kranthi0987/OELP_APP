@@ -21,8 +21,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -364,6 +369,8 @@ public class AppUtils {
     public static void clearPreviousUserData(Context context){
         DatabaseHandlerClass dbHandler = new DatabaseHandlerClass(context);
         dbHandler.updateWatchStatusForMediaAll();
+        dbHandler.deleteAllDataFromDB(6);
+        dbHandler.deleteAllDataFromDB(7);
         MySharedPref sharedPref = new MySharedPref(context);
         /*sharedPref.deleteAllData();*/
         sharedPref.writeBoolean("ClearCheck",true);
@@ -412,6 +419,67 @@ public class AppUtils {
         if (imm != null)
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
+    public static int getFileType(String fileName ){
+        int fileType =Constants.IMAGE;
+        if (fileName.contains(".mp4") || fileName.contains(".3GP") || fileName.contains(".OGG")
+                || fileName.contains(".WMV")||fileName.contains(".WEBM")||fileName.contains(".FLV")
+                || fileName.contains(".AVI")||fileName.contains(".HDV")||fileName.contains(".MPEG4")){
+            fileType = Constants.VIDEO;
+        }else {
+            fileType = Constants.IMAGE;
+        }
+        return fileType;
+    }
+
+    public static void checkImageFileLocation(Context context, List<File> imagesFiles) {
+        for (File file : imagesFiles) {
+            String fileName = AppUtils.getFileName(file.getAbsolutePath());
+            File folderName = null;
+            if (getFileType(fileName)==Constants.VIDEO){
+                folderName = AppUtils.completeInternalStoragePath(context, Constants.VIDEO);
+            }else {
+                folderName = AppUtils.completeInternalStoragePath(context, Constants.IMAGE);
+            }
+            File fileKHPT = new File(folderName, fileName);
+            if (!fileKHPT.exists()) {
+                try {
+                    AppUtils.copyFilesToInternalFolder(file, fileKHPT);
+                } catch (IOException ex) {
+                    Logger.logE(TAG, ex.getMessage(), ex);
+                }
+            }
+        }
+    }
+
+    public static void copyFilesToInternalFolder(File sourceFile, File destFile) throws IOException {
+        if (!sourceFile.exists()) {
+            return;
+        }
+
+        FileChannel source=null;
+        FileChannel destination=null;
+        try {
+
+
+            source = new FileInputStream(sourceFile).getChannel();
+            destination = new FileOutputStream(destFile).getChannel();
+            if (destination != null && source != null) {
+                destination.transferFrom(source, 0, source.size());
+            }
+
+        } catch (Exception ex) {
+            Logger.logE(TAG, ex.getMessage(), ex);
+        } finally {
+            if (source != null) {
+                source.close();
+            }
+            if (destination != null) {
+                destination.close();
+            }
+        }
+    }
+
 }
 
 

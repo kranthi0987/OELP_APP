@@ -43,6 +43,12 @@ public class Constants {
     public static final Integer TestCompleted = 1;
     public static final Integer AttemptLeft = 0;
     public static final String VALUE_CHANGED = "valueChanged";
+    public static final int CAPTURE_IMAGE = 0;
+    public static final int CHOOSE_GALLERY = 1;
+    public static final String SELECTED_POSITION = "selected_position";
+    public static String Group_Switch="groupswitchclicked";
+    public static Integer No_Internet= 101;
+    public static Integer Api_FAilure = 102;
 
 
     public enum TransitionType {

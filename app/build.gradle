@@ -64,6 +64,10 @@ dependencies {
     implementation 'com.snatik:storage:2.1.0'
     implementation 'com.kaopiz:kprogresshud:1.2.0'
     implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.github.jkwiecien:EasyImage:2.1.0'
+    implementation 'com.loopj.android:android-async-http:1.4.9'
+
+
 
     debugImplementation 'com.amitshekhar.android:debug-db-encrypt:1.0.6'
     implementation('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {

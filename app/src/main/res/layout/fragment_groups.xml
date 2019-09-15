@@ -21,9 +21,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/paddling_length"
-            android:paddingRight="@dimen/paddling_length">
+            android:orientation="vertical">
 
             <!--<TextView-->
                 <!--android:id="@+id/tvTitle"-->

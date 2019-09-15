@@ -61,6 +61,30 @@ public class MobileVerificationResponseModel {
     @Expose
     private List<SubmittedAnswerResponse> ResponsesData;
 
+    @SerializedName("globally")
+    @Expose
+    private List<SharedMediaModel> globally;
+
+    @SerializedName("data")
+    @Expose
+    private List<SharedMediaModel> data;
+
+    public List<SharedMediaModel> getGlobally() {
+        return globally;
+    }
+
+    public void setGlobally(List<SharedMediaModel> globally) {
+        this.globally = globally;
+    }
+
+    public List<SharedMediaModel> getData() {
+        return data;
+    }
+
+    public void setData(List<SharedMediaModel> data) {
+        this.data = data;
+    }
+
     public List<SubmittedAnswerResponse> getResponsesData() {
         return ResponsesData;
     }

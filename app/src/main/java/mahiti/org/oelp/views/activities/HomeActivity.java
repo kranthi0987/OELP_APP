@@ -43,6 +43,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     private int userType;
     private MySharedPref sharedPref;
     private int clicked = 0;
+    private List<GroupModel> groupModelList;
 
 
     @Override
@@ -86,12 +87,14 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
             }
         });
 
+
         homeViewModel.groupsClick.observe(this, aBoolean -> {
             if (aBoolean != null && aBoolean) {
                 if (userType == Constants.USER_TEACHER && clicked == 0) {
                     homeViewModel.groupsClick.setValue(false);
                 }
-                checKConditionAndProceed();
+                groupModelList = homeViewModel.getGroupList();
+                checKConditionAndProceed(groupModelList);
             }
         });
 
@@ -99,6 +102,8 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
             if (s != null)
                 Toast.makeText(HomeActivity.this, s, Toast.LENGTH_SHORT).show();
         });
+
+
 
         homeViewModel.getDataInserted().observe(this, integer -> {
             if (integer != null) {
@@ -113,20 +118,25 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
                 new DownloadClass(Constants.IMAGE, HomeActivity.this, RetrofitConstant.BASE_URL, AppUtils.completeInternalStoragePath(this, Constants.IMAGE).getAbsolutePath(), fileModels, ""));
     }
 
-    private void checKConditionAndProceed() {
-        if (userType == Constants.USER_TEACHER) {
-            moveTONextActivity();
-        } else {
-            setImageAndTextColor(Constants.Groups);
-            setFragment(Constants.Groups);
+    private void checKConditionAndProceed(List<GroupModel> groupModelList) {
+        if (groupModelList!=null && !groupModelList.isEmpty()){
+            if (userType == Constants.USER_TEACHER) {
+                moveTONextActivity(groupModelList.get(0).getGroupName(), groupModelList.get(0).getGroupUUID());
+            } else {
+                setImageAndTextColor(Constants.Groups);
+                setFragment(Constants.Groups);
+            }
+        }else {
+            Toast.makeText(this, "Not in any group", Toast.LENGTH_SHORT).show();
         }
+
 
     }
 
-    private void moveTONextActivity() {
+    private void moveTONextActivity(String groupName, String groupUUID) {
         Intent intent = new Intent(HomeActivity.this, ChatAndContributionActivity.class);
-        intent.putExtra("groupUUID", sharedPref.readString(Constants.GROUP_UUID, ""));
-        intent.putExtra("groupName", "Khel group");
+        intent.putExtra("groupUUID", groupUUID);
+        intent.putExtra("groupName", groupName);
         startActivityForResult(intent, 102);
         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
         clicked = 0;
@@ -330,10 +340,12 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         if (requestCode == 101 && resultCode == RESULT_OK) {
             homeViewModel.apiCountMutable.setValue(0);
             homeViewModel.callApiForGroupList(sharedPref.readString(Constants.USER_ID,""));
+            homeViewModel.callApiForTeachersList(sharedPref.readString(Constants.USER_ID,""));
             groupsFragment.setValueToAdapter();
         }else if (requestCode == 102 && resultCode == RESULT_OK) {
             homeViewModel.apiCountMutable.setValue(0);
             homeViewModel.callApiForGroupList(sharedPref.readString(Constants.USER_ID,""));
+            homeViewModel.callApiForTeachersList(sharedPref.readString(Constants.USER_ID,""));
             groupsFragment.setValueToAdapter();
         }
     }

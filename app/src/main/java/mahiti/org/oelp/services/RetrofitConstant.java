@@ -12,6 +12,9 @@ public class RetrofitConstant {
     public static final String CREATE_GROUP_URL = "/api/group-create-update/";
     public static final String MEDIA_TRACKER_API = "/api/media-tracker/";
     public static final String SUBMIT_ANSWER = "/api/question-answer/";
+    public static final String FETCH_MEDIA_SHARED = "/api/share/media/list/";
+    public static final String SHARED_MEDIA_GLOBALLY = "/api/share/media/globally/";
+    public static final String UPLAOD_MEDIA_SHARED = "/api/share/media/upload/";
 
     private RetrofitConstant() {
         throw new IllegalStateException("RetrofitConstant Class");

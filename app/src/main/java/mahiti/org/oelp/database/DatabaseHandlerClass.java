@@ -22,6 +22,7 @@ import mahiti.org.oelp.models.Member;
 import mahiti.org.oelp.models.QuestionAnswerModel;
 import mahiti.org.oelp.models.QuestionChoicesModel;
 import mahiti.org.oelp.models.QuestionModel;
+import mahiti.org.oelp.models.SharedMediaModel;
 import mahiti.org.oelp.models.SubmittedAnswerResponse;
 import mahiti.org.oelp.models.TeacherModel;
 import mahiti.org.oelp.models.UserDetailsModel;
@@ -73,8 +74,24 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         createGroupMemberTable(sqLiteDatabase);
         createTeacherTable(sqLiteDatabase);
         createMediaStateTable(sqLiteDatabase);
-//        createModuleWatchLockTable(sqLiteDatabase);
+        createMediaContentTable(sqLiteDatabase);
 
+    }
+
+    private void createMediaContentTable(SQLiteDatabase sqLiteDatabase) {
+        String query = DBConstants.CREATE_TABLE_IF_NOT_EXIST + DBConstants.MEDIA_CONTENT_TABLE + DBConstants.OPEN_BRACKET +
+                DBConstants.UUID + DBConstants.TEXT_PRIMARY_KEY + DBConstants.COMMA +
+                DBConstants.MEDIA_NAME + DBConstants.TEXT_COMMA +
+                DBConstants.USER_NAME + DBConstants.TEXT_COMMA +
+                DBConstants.USER_UUID + DBConstants.TEXT_COMMA +
+                DBConstants.GROUP_UUID + DBConstants.TEXT_COMMA +
+                DBConstants.MEDIA_TYPE + DBConstants.TEXT_COMMA +
+                DBConstants.MEDIA_PATH + DBConstants.TEXT_COMMA +
+                DBConstants.MODIFIED + DBConstants.TEXT_COMMA +
+                DBConstants.SHARED_GLOBALLY + DBConstants.INTEGER + DBConstants.NOT_NULL_DEFAULT_ZERO +  // double not null default 0
+                DBConstants.CLOSE_BRACKET;
+        Logger.logD(TAG, "Database creation query :" + query);
+        sqLiteDatabase.execSQL(query);
     }
 
     private void createMediaStateTable(SQLiteDatabase sqLiteDatabase) {
@@ -1021,4 +1038,6 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
 
         database.update(DBConstants.QA_TABLENAME, cv, null, null);
     }
+
+
 }

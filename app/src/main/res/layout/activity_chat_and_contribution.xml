@@ -22,10 +22,37 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include
-                layout="@layout/black_toolabr"
+            <RelativeLayout
+                android:id="@+id/rlBanner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="@dimen/banner_height"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/redbanner" />
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginRight="40dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:maxLines="2"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_large" />
+
+                <include
+                    layout="@layout/white_toolabr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -50,6 +77,19 @@
                     android:layout_height="match_parent"
                     android:layout_below="@+id/tabs"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+                <ProgressBar
+                    android:visibility="gone"
+                    android:theme="@style/AppTheme.WhiteAccent"
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"/>
+
+
             </RelativeLayout>
 
         </LinearLayout>

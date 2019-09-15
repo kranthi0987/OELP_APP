@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.database.DAOs.ModuleWatchLockDao;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.models.CatalogueDetailsModel;
 import mahiti.org.oelp.utils.Constants;
