@@ -1,13 +1,17 @@
 package mahiti.org.oelp.utils;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.OpenableColumns;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -26,8 +30,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -90,7 +96,7 @@ public class AppUtils {
 
     public static String getDateTime() {
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.000000");
         Date date = new Date();
         return simpleDateFormat.format(date);
 
@@ -369,8 +375,10 @@ public class AppUtils {
     public static void clearPreviousUserData(Context context){
         DatabaseHandlerClass dbHandler = new DatabaseHandlerClass(context);
         dbHandler.updateWatchStatusForMediaAll();
+        dbHandler.deleteAllDataFromDB(5);
         dbHandler.deleteAllDataFromDB(6);
         dbHandler.deleteAllDataFromDB(7);
+        dbHandler.deleteAllDataFromDB(8);
         MySharedPref sharedPref = new MySharedPref(context);
         /*sharedPref.deleteAllData();*/
         sharedPref.writeBoolean("ClearCheck",true);
@@ -421,10 +429,11 @@ public class AppUtils {
     }
 
     public static int getFileType(String fileName ){
-        int fileType =Constants.IMAGE;
-        if (fileName.contains(".mp4") || fileName.contains(".3GP") || fileName.contains(".OGG")
-                || fileName.contains(".WMV")||fileName.contains(".WEBM")||fileName.contains(".FLV")
-                || fileName.contains(".AVI")||fileName.contains(".HDV")||fileName.contains(".MPEG4")){
+        int fileType = Constants.IMAGE;
+        String lastFileExtension = fileName.substring(fileName.lastIndexOf("."));
+        if (lastFileExtension.contains(".mp4") || lastFileExtension.contains(".3GP") || lastFileExtension.contains(".OGG")
+                || lastFileExtension.contains(".WMV")||lastFileExtension.contains(".WEBM")||lastFileExtension.contains(".FLV")
+                || lastFileExtension.contains(".AVI")||lastFileExtension.contains(".HDV")||lastFileExtension.contains(".MPEG4")){
             fileType = Constants.VIDEO;
         }else {
             fileType = Constants.IMAGE;
@@ -479,6 +488,54 @@ public class AppUtils {
             }
         }
     }
+
+    public void showDocumentsView(Activity context) {
+
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        String[] mimeTypes =
+                {"image/*","application/pdf","video/mp4"};
+
+        // Filter to only show results that can be "opened", such as a
+        // file (as opposed to a list of contacts or timezones)
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+
+        // Filter to show only images, using the image MIME data type.
+        // If one wanted to search for ogg vorbis files, the type would be "audio/ogg".
+        // To search for all documents available via installed storage providers,
+        // it would be "*/*"
+
+        context.startActivityForResult(intent, Constants.READ_REQUEST_CODE);
+
+    }
+
+    public void renderFileView( Intent data) {
+        Uri result = data.getData();
+        ClipData resultMulti = data.getClipData();
+        List<Uri> fileList = getFileList(result,resultMulti);
+//        uiHelper.showFileView(fileList);
+    }
+
+    public static List<Uri> getFileList(Uri result, ClipData resultMulti) {
+        List<Uri> list = new ArrayList<>();
+        if (resultMulti == null) {
+            Uri filePath = result;
+            list.add(filePath);
+
+        } else {
+            for (int i = 0; i < resultMulti.getItemCount(); i++) {
+                ClipData.Item path = resultMulti.getItemAt(i);
+                Uri fileUti = path.getUri();
+                list.add(fileUti);
+            }
+        }
+        return list;
+    }
+
+
+
 
 }
 

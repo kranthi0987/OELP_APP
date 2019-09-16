@@ -787,6 +787,9 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 case 7:
                     query = DBConstants.DELETE + DBConstants.FROM + DBConstants.MEMBER_TABLE;
                     break;
+                case 8:
+                    query = DBConstants.DELETE + DBConstants.FROM + DBConstants.MEDIA_CONTENT_TABLE;
+                    break;
 
             }
             Logger.logD(TAG, "Table Delete Query : " + query);
@@ -940,8 +943,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
 
     }
 
-    public void insertDatatoTeacherTable(List<TeacherModel> teachers) {
-    }
+
 
     public boolean addFileSize(String fileUuid, long filesize) {
 

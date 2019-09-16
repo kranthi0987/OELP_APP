@@ -148,6 +148,7 @@ public class MobileLoginViewModel extends AndroidViewModel {
                 obj.put("mobile_number", userDetails.getMobile_number());
                 obj.put("blockIds", userDetails.getBlockIds());
                 sharedPref.writeString(Constants.USER_DETAILS,obj.toString());
+                sharedPref.writeString(Constants.USER_NAME,userDetails.getName());
             }catch (Exception ex){
                 Logger.logE(TAG, ex.getMessage(), ex);
             }

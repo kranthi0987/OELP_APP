@@ -46,9 +46,11 @@ public class Constants {
     public static final int CAPTURE_IMAGE = 0;
     public static final int CHOOSE_GALLERY = 1;
     public static final String SELECTED_POSITION = "selected_position";
-    public static String Group_Switch="groupswitchclicked";
+    public static final String USER_NAME = "username";
     public static Integer No_Internet= 101;
     public static Integer Api_FAilure = 102;
+    public static final int READ_REQUEST_CODE = 332;
+
 
 
     public enum TransitionType {

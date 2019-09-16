@@ -29,14 +29,14 @@ public class CallAPIServicesData {
         listener = (FetchDataFromApiListener) context;
     }
 
-    public void getTeacherList(String userUUID) {
+    public void getSharedMediaList(String userUUID) {
         final MobileVerificationResponseModel[] model = {null};
         ApiInterface apiInterface = RetrofitClass.getAPIService();
-        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL2 + RetrofitConstant.FETCH_MEDIA_SHARED + " Param : user_uuid:" + userUUID);
+        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.FETCH_MEDIA_SHARED + " Param : user_uuid:" + userUUID);
         apiInterface.getMediaShared(userUUID).enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
-                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL2 + RetrofitConstant.FETCH_MEDIA_SHARED + " Response :" + response.body());
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.FETCH_MEDIA_SHARED + " Response :" + response.body());
                 listener.onFetchDataFromApi(response.body(), "media");
 
 
@@ -44,7 +44,7 @@ public class CallAPIServicesData {
 
             @Override
             public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
-                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL2 + RetrofitConstant.FETCH_MEDIA_SHARED + " Response :" + t.getMessage());
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.FETCH_MEDIA_SHARED + " Response :" + t.getMessage());
                 MobileVerificationResponseModel model1 = new MobileVerificationResponseModel();
                 model1.setMessage(t.getMessage());
                 model1.setStatus(Constants.Api_FAilure);
@@ -57,11 +57,11 @@ public class CallAPIServicesData {
         List<String> responseList = new ArrayList<>();
         final MobileVerificationResponseModel[] model = {null};
         ApiInterface apiInterface = RetrofitClass.getAPIService();
-        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL2 + RetrofitConstant.SHARED_MEDIA_GLOBALLY + " Param : user_uuid:" + userUUID);
+        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.SHARED_MEDIA_GLOBALLY + " Param : user_uuid:" + userUUID);
         apiInterface.shareMediaGlobally(userUUID, data).enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
-                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL2 + RetrofitConstant.SHARED_MEDIA_GLOBALLY + " Response :" + response.body());
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.SHARED_MEDIA_GLOBALLY + " Response :" + response.body());
                listener.onFetchDataFromApi(response.body(), "global");
 
 
@@ -69,7 +69,7 @@ public class CallAPIServicesData {
 
             @Override
             public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
-                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL2 + RetrofitConstant.SHARED_MEDIA_GLOBALLY + " Response :" + t.getMessage());
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.SHARED_MEDIA_GLOBALLY + " Response :" + t.getMessage());
                 MobileVerificationResponseModel model1 = new MobileVerificationResponseModel();
                 model1.setMessage(t.getMessage());
                 model1.setStatus(0);

@@ -205,8 +205,6 @@ public class SectionActivity extends AppCompatActivity implements ItemClickListe
 
             String userUUID = new MySharedPref(this).readString(Constants.USER_ID, "");
             DownloadUtility.playVideo(this, savedPath, name, userUUID, uuid, parentId, dcfId, unitUUID);
-        } else {
-            Toast.makeText(this, getString(R.string.error_downloading), Toast.LENGTH_SHORT).show();
         }
     }
 }

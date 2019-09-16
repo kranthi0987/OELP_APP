@@ -76,6 +76,9 @@ public class TeacherDao extends DatabaseHandlerClass {
         database.execSQL(query);
     }
 
+    /*
+    * teachGroup =2 -> fetchList of user according to user*/
+
     public List<TeacherModel> getTeachers(String groupUUID, int teachGroup){
         String mainQuery = "";
         if(teachGroup==1)

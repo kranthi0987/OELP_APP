@@ -12,11 +12,14 @@ import java.util.List;
 
 import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
+import mahiti.org.oelp.fileandvideodownloader.FileModel;
 import mahiti.org.oelp.models.CatalogueDetailsModel;
 import mahiti.org.oelp.models.QuestionModel;
 import mahiti.org.oelp.models.SharedMediaModel;
 import mahiti.org.oelp.utils.Logger;
 
+import static mahiti.org.oelp.database.DBConstants.DESCENDING;
+import static mahiti.org.oelp.database.DBConstants.ICON_PATH;
 import static mahiti.org.oelp.database.DBConstants.QUESTION_TABLE;
 
 /**
@@ -65,15 +68,15 @@ public class MediaContentDao extends DatabaseHandlerClass {
     }
 
 
-    public List<SharedMediaModel> getSharedMedia(String groupUUI, boolean forGroup, String userUUId) {
+    public List<SharedMediaModel> getSharedMedia(String uuid, boolean forGroup) {
         List<SharedMediaModel> sharedMediaList = new ArrayList<>();
         String query="";
         if (forGroup) {
             query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.MEDIA_CONTENT_TABLE +
-                    DBConstants.WHERE + DBConstants.GROUP_UUID + DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES + groupUUI + DBConstants.SINGLE_QUOTES;
+                    DBConstants.WHERE + DBConstants.GROUP_UUID + DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES + uuid + DBConstants.SINGLE_QUOTES+DBConstants.ORDER_BY+DBConstants.MODIFIED+DBConstants.DESCENDING;
         }else {
             query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.MEDIA_CONTENT_TABLE +
-                    DBConstants.WHERE + DBConstants.USER_UUID + DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES + userUUId + DBConstants.SINGLE_QUOTES;
+                    DBConstants.WHERE + DBConstants.USER_UUID + DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES + uuid + DBConstants.SINGLE_QUOTES+DBConstants.ORDER_BY+DBConstants.MODIFIED+DBConstants.DESCENDING;;
         }
         Logger.logD(TAG, DBConstants.MEDIA_CONTENT_TABLE + " Fetch Attempt Query :" + query);
         Cursor cursor;
@@ -141,5 +144,33 @@ public class MediaContentDao extends DatabaseHandlerClass {
             updateLong = database.update(DBConstants.MEDIA_STATUS_TABLE, cv, "uuid = ?", new String[]{model.getMediaUuid()});
         }
             return updateLong;
+    }
+
+    public List<FileModel> getImageListFromMediaTable() {
+        FileModel fileModel;
+        List<FileModel> imageList = new ArrayList<>();
+        String query = DBConstants.SELECT + DBConstants.MEDIA_PATH + DBConstants.COMMA + DBConstants.MEDIA_NAME +
+                DBConstants.COMMA + DBConstants.UUID + DBConstants.FROM + DBConstants.MEDIA_CONTENT_TABLE +
+                DBConstants.WHERE + DBConstants.MEDIA_PATH + DBConstants.NOT_EQUAL_TO + DBConstants.EMPTY +
+                DBConstants.AND + DBConstants.MEDIA_PATH + DBConstants.IS_NOT_NULL+DBConstants.AND+DBConstants.MEDIA_TYPE+DBConstants.EQUAL_TO+1;
+        initDatabase();
+        try {
+            Logger.logD(TAG, "Getting Image List Query : " + query);
+            Cursor cursor = database.rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    fileModel = new FileModel();
+                    fileModel.setFileName(cursor.getString(cursor.getColumnIndex(DBConstants.MEDIA_NAME)));
+                    fileModel.setUuid(cursor.getString(cursor.getColumnIndex(DBConstants.UUID)));
+                    fileModel.setFileUrl(cursor.getString(cursor.getColumnIndex(DBConstants.MEDIA_PATH)));
+                    imageList.add(fileModel);
+
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+        } catch (Exception e) {
+            Logger.logE(TAG, "get ICON", e);
+        }
+        return imageList;
     }
 }

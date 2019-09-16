@@ -11,8 +11,9 @@
     <color name="transparentFull">#00f3f4f5</color>
     <color name="greenOpaque">#B32D9289</color>
     <color name="green">#2d9289</color>
+    <color name="green1">#ea2d9289</color>
     <color name="yellowOpaque">#B3FF9800</color>
-    <color name="blackOpaque">#80000000</color>
+    <color name="blackOpaque">#4d000000</color>
     <color name="red">#dc4939</color>
     <color name="transparent">#25232323</color>
 </resources>

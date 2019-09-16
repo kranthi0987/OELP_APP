@@ -121,12 +121,12 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
         //TeacherInfo1Fragment teacherInfoFragment = new TeacherInfo1Fragment();
         TeacherInfoFragment teacherInfoFragment = new TeacherInfoFragment();
         MyContFragment contributionsFragment = new MyContFragment();
-        MyContFragment newTeacherFragment = new MyContFragment();
+//        MyContFragment newTeacherFragment = new MyContFragment();
 
 
         adapter.addFragment(teacherInfoFragment, "Teacher Info");
         adapter.addFragment(contributionsFragment, "Contributions");
-        adapter.addFragment(newTeacherFragment, "New");
+//        adapter.addFragment(newTeacherFragment, "New");
 
         viewPager.setAdapter(adapter);
     }

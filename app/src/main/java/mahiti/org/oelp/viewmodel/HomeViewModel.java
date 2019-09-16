@@ -162,9 +162,8 @@ public class HomeViewModel extends AndroidViewModel {
 
     private void insertDataIntoTeacherTable(List<TeacherModel> teachers) {
         if (!teachers.isEmpty()) {
-            databaseHandlerClass.insertDatatoTeacherTable(teachers);
+            new TeacherDao(context).insertTeacherDataToDB(teachers);
             sharedPref.writeString(RetrofitConstant.GROUP_LIST_URL, AppUtils.getDate());
-//            apiCountMutable.setValue(0);
             apiCountMutable.setValue(0);
             Logger.logD("TAG", "API COUNT :" + apiCountMutable.getValue());
         }
@@ -212,9 +211,6 @@ public class HomeViewModel extends AndroidViewModel {
         }
         apiCountMutable.setValue(0);
         Logger.logD("TAG", "API COUNT :" + apiCountMutable.getValue());
-        // Call for getting the teacher list belongs to specific trainer
-        if (CheckNetwork.checkNet(context))
-            callApiForTeachersList(userId);
     }
 
 
@@ -526,39 +522,4 @@ public class HomeViewModel extends AndroidViewModel {
         return databaseHandlerClass.getGroupList();
     }
 
-    // Teacher API call
-    public void callApiForTeachersList(String userId) {
-        apiCountMutable.setValue(1);
-        Logger.logD("TAG", "API COUNT :" + apiCountMutable.getValue());
-        ApiInterface apiInterface = RetrofitClass.getAPIService();
-        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Param : userId:" + userId);
-        apiInterface.getTeacherList(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
-            @Override
-            public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
-                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Response :" + response.body());
-
-                MobileVerificationResponseModel model = response.body();
-                if (model != null) {
-                    long insertedCount = new TeacherDao(context).insertTeacherDataToDB(model.getTeachers());
-                    apiCountMutable.setValue(0);
-                    Logger.logD("TAG", "API COUNT :" + apiCountMutable.getValue());
-                    Logger.logD(TAG, "teachers inserted count - " + insertedCount);
-                } else {
-                    apiErrorMessage.setValue(context.getResources().getString(R.string.SOMETHING_WRONG));
-                    apiCountMutable.setValue(0);
-                    Logger.logD("TAG", "API COUNT :" + apiCountMutable.getValue());
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
-                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Response :" + t.getMessage());
-                apiErrorMessage.setValue(t.getMessage());
-                apiCountMutable.setValue(0);
-                Logger.logD("TAG", "API COUNT :" + apiCountMutable.getValue());
-            }
-        });
-
-    }
 }

@@ -158,7 +158,8 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
                         .load("file://" + imageFile.getPath())
                         .fit()
                         .into(layout.binding.roundedImageView);
-            } else {
+            }
+            else {
                 binding.roundedImageView.setBackgroundResource(R.drawable.image3);
             }
         } catch (Exception ex) {

@@ -2,6 +2,7 @@ package mahiti.org.oelp.views.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,16 +16,18 @@ import java.util.List;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.models.TeacherModel;
 import mahiti.org.oelp.utils.Constants;
+import mahiti.org.oelp.utils.MySharedPref;
 import mahiti.org.oelp.views.activities.TeacherInfoTabActivity;
 
 public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.ViewHolder> {
 
     private Activity context;
     List<TeacherModel> teachersList;
+    private int userType;
 
-    public MembersAdapter(Activity context, List<TeacherModel> teachers) {
+
+    public MembersAdapter(Activity context) {
         this.context = context;
-        this.teachersList = teachers;
     }
 
 
@@ -40,23 +43,31 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.ViewHold
         viewHolder.tvBlock.setText(teachersList.get(position).getBlockName());
         viewHolder.tvMemberName.setText(teachersList.get(position).getName());
         viewHolder.tvSchoolName.setText(teachersList.get(position).getSchool());
-        viewHolder.tvMediaCount.setText(""+position);
+        viewHolder.tvMediaCount.setText("" + position);
+        MySharedPref sharedPref = new MySharedPref(context);
+        userType = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
 
         viewHolder.cvMembers.setOnClickListener(v -> {
-            Intent intent = new Intent(context, TeacherInfoTabActivity.class);
-            intent.putExtra(Constants.TEACHER_UUID,teachersList.get(position).getUserUuid());
-            intent.putExtra("teacherName",teachersList.get(position).getName());
-            context.startActivity(intent);
-            context.overridePendingTransition(R.anim.anim_slide_in_left,
-                    R.anim.anim_slide_out_left);
+            if (userType == Constants.USER_TRAINER) {
+                Intent intent = new Intent(context, TeacherInfoTabActivity.class);
+                intent.putExtra(Constants.TEACHER_UUID, teachersList.get(position).getUserUuid());
+                intent.putExtra("teacherName", teachersList.get(position).getName());
+                context.startActivity(intent);
+                context.overridePendingTransition(R.anim.anim_slide_in_left,
+                        R.anim.anim_slide_out_left);
+            }
         });
-
-
     }
+
 
     @Override
     public int getItemCount() {
-        return teachersList.size();
+        return teachersList==null ?0: teachersList.size();
+    }
+
+    public void setList(List<TeacherModel> teacherList) {
+        this.teachersList = teacherList;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -70,10 +81,10 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.ViewHold
         public ViewHolder(View itemView) {
             super(itemView);
 
-            tvMemberName = (TextView)itemView.findViewById(R.id.tvMemberName);
-            tvSchoolName = (TextView)itemView.findViewById(R.id.tvSchoolName);
-            tvBlock = (TextView)itemView.findViewById(R.id.tvBlock);
-            tvMediaCount = (TextView)itemView.findViewById(R.id.tvMediaCount);
+            tvMemberName = (TextView) itemView.findViewById(R.id.tvMemberName);
+            tvSchoolName = (TextView) itemView.findViewById(R.id.tvSchoolName);
+            tvBlock = (TextView) itemView.findViewById(R.id.tvBlock);
+            tvMediaCount = (TextView) itemView.findViewById(R.id.tvMediaCount);
             cvMembers = itemView.findViewById(R.id.cvMembers);
 
         }

@@ -83,11 +83,11 @@ public interface ApiInterface {
 
 
     @FormUrlEncoded
-    @POST(RetrofitConstant.BASE_URL2+RetrofitConstant.FETCH_MEDIA_SHARED)
+    @POST(RetrofitConstant.FETCH_MEDIA_SHARED)
     Call<MobileVerificationResponseModel> getMediaShared(@Field("user_uuid") String userId);
 
     @FormUrlEncoded
-    @POST(RetrofitConstant.BASE_URL2+RetrofitConstant.FETCH_MEDIA_SHARED)
+    @POST(RetrofitConstant.FETCH_MEDIA_SHARED)
     Call<MobileVerificationResponseModel> shareMediaGlobally(@Field("user_uuid") String userUUID, @Field("data") String data);
 
 

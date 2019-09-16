@@ -2,7 +2,6 @@ package mahiti.org.oelp.views.activities;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -15,13 +14,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -82,7 +78,6 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         super.onCreate(savedInstanceState);
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_chat_and_contribution);
         viewModel = ViewModelProviders.of(this).get(ChatAndContributionViewModel.class);
         binding.setChatAndContributionViewModel(viewModel);
@@ -105,12 +100,14 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
         getIntentValues();
         initViews();
-        viewPager.setOnPageChangeListener(this);
 
 
-        if (CheckNetwork.checkNet(this)) {
-            servicesData.getTeacherList(sharedPref.readString(Constants.USER_ID, ""));
-        }
+        viewModel.getListOfImageToDownload().observe(this, imageListToDownload -> {
+            if (imageListToDownload != null && !imageListToDownload.isEmpty()) {
+                new DownloadClass(Constants.IMAGE, this, RetrofitConstant.BASE_URL, AppUtils.completeInternalStoragePath(this, Constants.IMAGE).getAbsolutePath(), imageListToDownload, "");
+            }
+        });
+
 
     }
 
@@ -128,30 +125,17 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
             case android.R.id.home:
                 onBackPressed();
                 return true;
-            case R.id.groupInfo:
+            /*case R.id.groupInfo:
                 moveToGroupActivity();
-                return true;
+                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void moveToGroupActivity() {
-        Intent intent = new Intent(ChatAndContributionActivity.this, CreateGroupActivity.class);
-        intent.putExtra("groupUUID", groupUUID);
-        intent.putExtra("groupName", groupName);
-        startActivityForResult(intent, 103);
-        overridePendingTransition(R.anim.anim_slide_in_left,
-                R.anim.anim_slide_out_left);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        if (userType == Constants.USER_TRAINER)
-            getMenuInflater().inflate(R.menu.group_menu, menu);
-        return true;
-    }
+
+
 
     @Override
     public void onBackPressed() {
@@ -166,15 +150,17 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
         tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        if (sharedPref.readBoolean(RetrofitConstant.FETCH_MEDIA_SHARED, false)) {
+        /*if (sharedPref.readBoolean(RetrofitConstant.FETCH_MEDIA_SHARED, false)) {
             progressBar.setVisibility(View.VISIBLE);
-        }
+        }*/
 
-        viewModel.insertLong.observe(this, aLong -> {
+        viewPager.setOnPageChangeListener(this);
+
+        /*viewModel.insertLong.observe(this, aLong -> {
             if (aLong != null) {
                 progressBar.setVisibility(View.GONE);
             }
-        });
+        });*/
 
     }
 
@@ -268,7 +254,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     private void checkVideoAndDownload(FileModel fileModel) {
 
         String userUUId = new MySharedPref(this).readString(Constants.USER_ID, "");
-        if (videoAvailable(fileModel) && DownloadUtility.checkFileCorruptStatus(fileModel, this)) {
+        if (videoAvailable(fileModel)) {
             DownloadUtility.playVideo(this, fileModel.getFileUrl(), fileModel.getFileName(), userUUId, fileModel.getUuid(), "", fileModel.getDcfId(), "");
         } else {
             downloadVideo(fileModel);
@@ -299,12 +285,13 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
     @Override
     public void onMediaDownload(int type, String savedPath, String name, int position, String uuid, int dcfId, String unitUUID) {
-        if (savedPath != null && !savedPath.isEmpty()) {
-            String userUUID = new MySharedPref(this).readString(Constants.USER_ID, "");
-            DownloadUtility.playVideo(this, savedPath, name, userUUID, uuid, "", dcfId, unitUUID);
-        } else {
-            Toast.makeText(this, getString(R.string.error_downloading), Toast.LENGTH_SHORT).show();
+        if (type==Constants.VIDEO) {
+            if (savedPath != null && !savedPath.isEmpty()) {
+                String userUUID = new MySharedPref(this).readString(Constants.USER_ID, "");
+                DownloadUtility.playVideo(this, savedPath, name, userUUID, uuid, "", dcfId, unitUUID);
+            }
         }
+
     }
 
     @Override

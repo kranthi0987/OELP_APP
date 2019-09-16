@@ -53,6 +53,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         activityHomeBinding.setHomeViewModel(homeViewModel);
         activityHomeBinding.setLifecycleOwner(this);
+
         sharedPref = new MySharedPref(this);
         userType = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
 
@@ -340,12 +341,10 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         if (requestCode == 101 && resultCode == RESULT_OK) {
             homeViewModel.apiCountMutable.setValue(0);
             homeViewModel.callApiForGroupList(sharedPref.readString(Constants.USER_ID,""));
-            homeViewModel.callApiForTeachersList(sharedPref.readString(Constants.USER_ID,""));
             groupsFragment.setValueToAdapter();
         }else if (requestCode == 102 && resultCode == RESULT_OK) {
             homeViewModel.apiCountMutable.setValue(0);
             homeViewModel.callApiForGroupList(sharedPref.readString(Constants.USER_ID,""));
-            homeViewModel.callApiForTeachersList(sharedPref.readString(Constants.USER_ID,""));
             groupsFragment.setValueToAdapter();
         }
     }
