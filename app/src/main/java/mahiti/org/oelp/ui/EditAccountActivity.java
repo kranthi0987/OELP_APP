@@ -279,6 +279,7 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
                     removeErrorsOnAllBut(binding.accountJidLayout);
                     binding.accountJid.requestFocus();
                     xmppConnectionService.updateAccount(mAccount);
+                    mAccount.isEnabled();
                     updateSaveButton();
                     updateAccountInformation(true);
                 }
@@ -292,9 +293,7 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
             }
             binding.hostnameLayout.setError(null);
             binding.portLayout.setError(null);
-            if (mAccount.isEnabled()
-                    && !registerNewAccount
-                    && !mInitMode) {
+            if (mAccount.isEnabled() && !registerNewAccount && !mInitMode) {
                 finish();
             } else {
                 updateSaveButton();
@@ -675,7 +674,7 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
 
     private void onEditYourNameClicked(View view) {
         quickEdit(mAccount.getDisplayName(), R.string.your_name, value -> {
-            final String displayName = value.trim();
+            final String displayName = pref.readString("username","");
             updateDisplayName(displayName);
             mAccount.setDisplayName(displayName);
             xmppConnectionService.publishDisplayName(mAccount);

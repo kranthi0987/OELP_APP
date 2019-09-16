@@ -6,7 +6,8 @@ package mahiti.org.oelp.utils;
 public class Constants {
     public static final String KEY_ANIM_TYPE = "anim_type";
     public static final String KEY_TITLE    = "anim_title";
-    public static final String MOBILE_NO = "mobileNo";
+    public static final String MOBILE_NO= "mobileNo";
+    public static final String MOBILE_NO_New= "mobileNoNew";
     public static final String STATUS_TRUE = "true";
     public static final Integer USER_INVALID = 0;
     public static final Integer USER_TEACHER = 3;
@@ -33,6 +34,22 @@ public class Constants {
     public static final String IS_INTRO_DISPLAYED = "isIntroScreenDisplayed";
     public static final int QUESTION_ANSWER_ASYNC = 0;
     public static final int ISVIDEOPDFPLAYED = 1;
+    public static final Integer EDIT = 1;
+    public static final Integer ADD = 2;
+    public static final String GROUP_UUID = "groupUUID";
+
+    public static final String TEACHER_UUID="teacheruuid";
+    public static final String IS_UPDATED = "isGroupUpdated";
+    public static final Integer TestCompleted = 1;
+    public static final Integer AttemptLeft = 0;
+    public static final String VALUE_CHANGED = "valueChanged";
+    public static final int CAPTURE_IMAGE = 0;
+    public static final int CHOOSE_GALLERY = 1;
+    public static final String SELECTED_POSITION = "selected_position";
+    public static final String USER_NAME = "username";
+    public static Integer No_Internet= 101;
+    public static Integer Api_FAilure = 102;
+    public static final int READ_REQUEST_CODE = 332;
 
 
 

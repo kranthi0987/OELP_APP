@@ -539,7 +539,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             ft.remove(prev);
         }
         ft.addToBackStack(null);
-        JoinConferenceDialog joinConferenceFragment = JoinConferenceDialog.newInstance("g1@conference.206.189.136.186", mActivatedAccounts, xmppConnectionService.multipleAccounts());
+        JoinConferenceDialog joinConferenceFragment = JoinConferenceDialog.newInstance("oelp-teachers@conference.206.189.136.186", mActivatedAccounts, xmppConnectionService.multipleAccounts());
         joinConferenceFragment.show(ft, FRAGMENT_TAG_DIALOG);
     }
 
