@@ -1,11 +1,15 @@
 package mahiti.org.oelp.utils;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.SpannableString;
@@ -20,8 +24,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,6 +47,8 @@ import mahiti.org.oelp.views.activities.MobileLoginActivity;
  */
 public class AppUtils {
 
+
+    private static final String TAG = AppUtils.class.getSimpleName();
 
     private AppUtils() {
         /*
@@ -82,7 +95,7 @@ public class AppUtils {
 
     public static String getDateTime() {
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.000000");
         Date date = new Date();
         return simpleDateFormat.format(date);
 
@@ -285,23 +298,33 @@ public class AppUtils {
 
     }
 
+    public static File completeInternalStoragePath(Context context, int type) {
+        return new File(context.getFilesDir(), subPath(type));
+
+    }
+
     public static String subPath(int type) { // 0-Image, 1- Pdf, 2- Video
         String subPath = "";
         switch (type) {
             case Constants.IMAGE:
-                subPath = File.separator + Constants.OELPIMAGE;
+//                subPath = File.separator + Constants.OELPIMAGE;
+                subPath = Constants.OELPIMAGE;
                 break;
             case Constants.PDF:
-                subPath = File.separator + Constants.OELPPDF;
+//                subPath = File.separator + Constants.OELPPDF;
+                subPath = Constants.OELPPDF;
                 break;
             case Constants.VIDEO:
-                subPath = File.separator + Constants.OELPVIDEO;
+//                subPath = File.separator + Constants.OELPVIDEO;
+                subPath = Constants.OELPVIDEO;
                 break;
             case Constants.AUDIO:
-                subPath = File.separator + Constants.OELPAUDIO;
+//                subPath = File.separator + Constants.OELPAUDIO;
+                subPath = Constants.OELPAUDIO;
                 break;
             default:
-                subPath = File.separator + Constants.OELPIMAGE;
+//                subPath = File.separator + Constants.OELPIMAGE;
+                subPath = Constants.OELPIMAGE;
                 break;
         }
 
@@ -313,15 +336,68 @@ public class AppUtils {
         return data[data.length - 1];
     }
 
+    public static void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            File dir2;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                dir2 = context.getCodeCacheDir();
+                if (dir2 != null && dir2.isDirectory()) {
+                    deleteDir(dir2);
+                }
+            }
+            if (dir != null && dir.isDirectory()) {
+                deleteDir(dir);
+                Logger.logD(TAG,"Cache cleared: "+dir.delete());
+            }
+
+        } catch (Exception e) {
+            Logger.logE(TAG,"deleteCache",e);
+        }
+    }
+
+    private static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (String aChildren : children) {
+                boolean success = deleteDir(new File(dir, aChildren));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+
+        // The directory is now empty so delete it
+        return dir.delete();
+    }
+
+    public static void clearPreviousUserData(Context context){
+        DatabaseHandlerClass dbHandler = new DatabaseHandlerClass(context);
+        dbHandler.updateWatchStatusForMediaAll();
+        dbHandler.deleteAllDataFromDB(5);
+        dbHandler.deleteAllDataFromDB(6);
+        dbHandler.deleteAllDataFromDB(7);
+        dbHandler.deleteAllDataFromDB(8);
+        MySharedPref sharedPref = new MySharedPref(context);
+        /*sharedPref.deleteAllData();*/
+        sharedPref.writeBoolean("ClearCheck",true);
+    }
+
+
     public static void makeUserLogout(Context context) {
         DatabaseHandlerClass dbHandler = new DatabaseHandlerClass(context);
-        dbHandler.deleteAllDataFromDB(1);
+        /*dbHandler.deleteAllDataFromDB(1);
         dbHandler.deleteAllDataFromDB(2);
         dbHandler.deleteAllDataFromDB(3);
         dbHandler.deleteAllDataFromDB(4);
         dbHandler.deleteAllDataFromDB(5);
         dbHandler.deleteAllDataFromDB(6);
-        new MySharedPref(context).deleteAllData();
+        dbHandler.deleteAllDataFromDB(7);
+        dbHandler.deleteAllDataFromDB(8);*/
+        MySharedPref sharedPref = new MySharedPref(context);
+//        sharedPref.deleteAllData();
+        sharedPref.writeBoolean("ClearCheck",true);
+        sharedPref.writeBoolean(Constants.USER_LOGIN, false);
         Intent intent = new Intent(context, MobileLoginActivity.class);
         context.startActivity(intent);
         ((AppCompatActivity) context).finish();
@@ -350,6 +426,116 @@ public class AppUtils {
         if (imm != null)
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
+    public static int getFileType(String fileName ){
+        int fileType = Constants.IMAGE;
+        String lastFileExtension = fileName.substring(fileName.lastIndexOf("."));
+        if (lastFileExtension.contains(".mp4") || lastFileExtension.contains(".3GP") || lastFileExtension.contains(".OGG")
+                || lastFileExtension.contains(".WMV")||lastFileExtension.contains(".WEBM")||lastFileExtension.contains(".FLV")
+                || lastFileExtension.contains(".AVI")||lastFileExtension.contains(".HDV")||lastFileExtension.contains(".MPEG4")){
+            fileType = Constants.VIDEO;
+        }else {
+            fileType = Constants.IMAGE;
+        }
+        return fileType;
+    }
+
+    public static void checkImageFileLocation(Context context, List<File> imagesFiles) {
+        for (File file : imagesFiles) {
+            String fileName = AppUtils.getFileName(file.getAbsolutePath());
+            File folderName = null;
+            if (getFileType(fileName)==Constants.VIDEO){
+                folderName = AppUtils.completeInternalStoragePath(context, Constants.VIDEO);
+            }else {
+                folderName = AppUtils.completeInternalStoragePath(context, Constants.IMAGE);
+            }
+            File fileKHPT = new File(folderName, fileName);
+            if (!fileKHPT.exists()) {
+                try {
+                    AppUtils.copyFilesToInternalFolder(file, fileKHPT);
+                } catch (IOException ex) {
+                    Logger.logE(TAG, ex.getMessage(), ex);
+                }
+            }
+        }
+    }
+
+    public static void copyFilesToInternalFolder(File sourceFile, File destFile) throws IOException {
+        if (!sourceFile.exists()) {
+            return;
+        }
+
+        FileChannel source=null;
+        FileChannel destination=null;
+        try {
+
+
+            source = new FileInputStream(sourceFile).getChannel();
+            destination = new FileOutputStream(destFile).getChannel();
+            if (destination != null && source != null) {
+                destination.transferFrom(source, 0, source.size());
+            }
+
+        } catch (Exception ex) {
+            Logger.logE(TAG, ex.getMessage(), ex);
+        } finally {
+            if (source != null) {
+                source.close();
+            }
+            if (destination != null) {
+                destination.close();
+            }
+        }
+    }
+
+    public void showDocumentsView(Activity context) {
+
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        String[] mimeTypes =
+                {"image/*","application/pdf","video/mp4"};
+
+        // Filter to only show results that can be "opened", such as a
+        // file (as opposed to a list of contacts or timezones)
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+
+        // Filter to show only images, using the image MIME data type.
+        // If one wanted to search for ogg vorbis files, the type would be "audio/ogg".
+        // To search for all documents available via installed storage providers,
+        // it would be "*/*"
+
+        context.startActivityForResult(intent, Constants.READ_REQUEST_CODE);
+
+    }
+
+    public void renderFileView( Intent data) {
+        Uri result = data.getData();
+        ClipData resultMulti = data.getClipData();
+        List<Uri> fileList = getFileList(result,resultMulti);
+//        uiHelper.showFileView(fileList);
+    }
+
+    public static List<Uri> getFileList(Uri result, ClipData resultMulti) {
+        List<Uri> list = new ArrayList<>();
+        if (resultMulti == null) {
+            Uri filePath = result;
+            list.add(filePath);
+
+        } else {
+            for (int i = 0; i < resultMulti.getItemCount(); i++) {
+                ClipData.Item path = resultMulti.getItemAt(i);
+                Uri fileUti = path.getUri();
+                list.add(fileUti);
+            }
+        }
+        return list;
+    }
+
+
+
+
 }
 
 

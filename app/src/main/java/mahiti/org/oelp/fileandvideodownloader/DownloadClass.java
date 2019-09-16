@@ -15,14 +15,16 @@ public class DownloadClass {
     private int mType;
     private Context mContext;
     private String mBaseUrl;
+    private String unitUUID;
     private String mFileSavingPath;
 
     List<FileModel> imageListModel = new ArrayList<>();
 
-    public DownloadClass(int mType, Context mContext, String mBaseUrl, String mFileSavingBasePath, List<FileModel> imageListModel) {
+    public DownloadClass(int mType, Context mContext, String mBaseUrl, String mFileSavingBasePath, List<FileModel> imageListModel, String unitUUID) {
         this.mType = mType;
         this.mContext = mContext;
         this.mBaseUrl = mBaseUrl;
+        this.unitUUID = unitUUID;
         this.imageListModel=imageListModel;
         this.mFileSavingPath = mFileSavingBasePath;
         checkFileType(mType);
@@ -48,7 +50,7 @@ public class DownloadClass {
     }
 
     private void callVideoDownloader(int mType) {
-        new VideoDownloaderClass(mContext, mBaseUrl, mFileSavingPath, imageListModel, mType).execute();
+        new VideoDownloaderClass(mContext, mBaseUrl, mFileSavingPath, imageListModel, mType, unitUUID).execute();
     }
 
     private void callAudioDownloader(int mType) {

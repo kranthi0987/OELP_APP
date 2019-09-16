@@ -45,7 +45,7 @@ public class DBConstants {
     public static final String Q_TEXT = "questionText";
     public static final String Q_HELP_TEXT = "helpText";
     public static final String DCF = "DCF";
-    public static final String MEDIA_CONTENT = "mediaContent";
+    public static final String MEDIA_CONTENT_TABLE = "mediaContent";
     public static final String QUESTION_CHOICES_TABLE = "questionChoices";
     public static final String IS_CORRECT = "isCorrectAns";
     public static final String CHOICE_TEXT = "choiceText";
@@ -65,6 +65,17 @@ public class DBConstants {
     public static final String MEMBER_UUID = "memberUUID";
     public static final String GROUP_UUID = "groupUUID";
     public static final String TEACHER_TABLE = "teacherTable";
+    public static final String QA_PREVIEW_TEXT = "previewText";
+    public static final Integer ZERO = 0;
+    public static final String ATTEMPT = "attempt";
+    public static final String SECTION_UUID = "sectionUUID";
+    public static final String UNIT_UUID = "unitUUID";
+    public static final String GROUP_BY = " GROUP BY ";
+    public static final String ALL = " * ";
+    public static final String MEDIA_STATUS_TABLE = "mediaStatus";
+    public static final String USER_NAME = "username";
+    public static final String USER_UUID = "userUUID";
+    public static final String SHARED_GLOBALLY = "sharedGlobally";
     public static String EQUAL_TO=" = ";
     public static String NOT_EQUAL_TO=" != ";
     public static String EMPTY="''";
@@ -111,7 +122,7 @@ public class DBConstants {
     public static final String LAST_LOGGEDIN = "last_logged_in";
     public static final String TEACHER_NAME = "teacher_name";
     public static final String SINGLE_QUOTES = "'";
-
+    public static String MEDIA_NAME="mediaName";
 
 
     private DBConstants() {

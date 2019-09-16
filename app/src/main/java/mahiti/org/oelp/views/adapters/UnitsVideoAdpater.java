@@ -20,10 +20,10 @@ import mahiti.org.oelp.R;
 import mahiti.org.oelp.databinding.AdapterUnitsVideoBinding;
 import mahiti.org.oelp.interfaces.ItemClickListerner;
 import mahiti.org.oelp.models.CatalogueDetailsModel;
-import mahiti.org.oelp.services.RetrofitConstant;
 import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
+import mahiti.org.oelp.utils.MySharedPref;
 import mahiti.org.oelp.viewmodel.HomeViewModel;
 
 /**
@@ -62,8 +62,7 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
         HomeViewModel vm = ViewModelProviders.of((FragmentActivity) layout.getContext()).get(HomeViewModel.class);
         layout.setViewModel(vm);
         CatalogueDetailsModel model = modelList.get(i);
-//        setImageFoCard(model, layout);
-        binding.ivPlayButton.setVisibility(View.GONE);
+//        setImageFoCard(modelList, layout);
         if (model.getContType() != null) {
             if (model.getContType().equalsIgnoreCase("video"))
                 binding.ivPlayButton.setVisibility(View.VISIBLE);
@@ -72,18 +71,63 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
 
         }
 
-        if (i == 0) {
-            modelList.get(i).setCompleted(RetrofitConstant.STATUS_TRUE);
-        } else if (i == 1) {
-            modelList.get(i).setCompleted(RetrofitConstant.STATUS_FALSE);
-        } else {
-            modelList.get(i).setCompleted(null);
-        }
         setValues(modelList.get(i), layout);
+        setTickMark(layout, model, i);
 
         CatalogueDetailsModel finalModel1 = model;
-        layout.binding.llRecycler.setOnClickListener(v -> listener.onItemClick(finalModel1));
+        layout.binding.llRecycler.setOnClickListener(v -> {
+           /* if (layout.binding.ivLock.getVisibility()==View.VISIBLE) {
+                Toast.makeText(mContext, "First You need to unlock preceding module", Toast.LENGTH_SHORT).show();
+            } else {*/
+            listener.onItemClick(finalModel1, i);
+            /* }*/
 
+        });
+
+    }
+
+    CatalogueDetailsModel model1;
+
+    private void setTickMark(Layout layout, CatalogueDetailsModel model, int position) {
+        if (position != 0)
+            model1 = modelList.get(position - 1);
+        else
+            model1 = model;
+
+        if (model.getWatchStatus() == 1) {
+            layout.binding.ivTickMark.setVisibility(View.VISIBLE);
+        } else {
+            layout.binding.ivTickMark.setVisibility(View.GONE);
+        }
+        boolean loginType = new MySharedPref(mContext).readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER;
+        boolean lockFlag = false;
+
+        if (lockFlag && loginType) {
+            setLockMark(layout, model, position);
+        }
+
+    }
+
+    private void setLockMark(Layout layout, CatalogueDetailsModel model, int position) {
+        if (model.getMediaLevelType() == 2) {
+
+            if (model.getOrder() == 1 || model.getOrder() == 2) {
+                layout.binding.ivLock.setVisibility(View.GONE);
+            } else if (model1.getWatchStatus() == 1) {
+                layout.binding.ivLock.setVisibility(View.GONE);
+            } else {
+                layout.binding.ivLock.setVisibility(View.VISIBLE);
+            }
+
+        } else {
+            if (model.getOrder() == 1) {
+                layout.binding.ivLock.setVisibility(View.GONE);
+            } else if (model1.getWatchStatus() == 1) {
+                layout.binding.ivLock.setVisibility(View.GONE);
+            } else {
+                layout.binding.ivLock.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
 
@@ -94,21 +138,15 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
 
     private void setBackgroundForCardView(Layout layout, CatalogueDetailsModel catalogueDetailsModel) {
 
-        if (catalogueDetailsModel.getCompleted() == null) {
-            layout.binding.ivTickMark.setVisibility(View.GONE);
-            layout.binding.ivTickMark.setVisibility(View.GONE);
-//            layout.binding.rlEnableDisable.setBackgroundColor(layout.getContext().getResources().getColor(R.color.blackOpaque));
-        } else if (catalogueDetailsModel.getCompleted().equals(RetrofitConstant.STATUS_TRUE)) {
+//        if (catalogueDetailsModel.getCompleted() == 1) {
 //            layout.binding.ivTickMark.setVisibility(View.VISIBLE);
-//            layout.binding.ivTickMark.setVisibility(View.VISIBLE);
-//            layout.binding.rlEnableDisable.setBackgroundColor(layout.getContext().getResources().getColor(R.color.greenOpaque));
-        } else {
+////            layout.binding.rlEnableDisable.setBackgroundColor(layout.getContext().getResources().getColor(R.color.blackOpaque));
+//        } else if (catalogueDetailsModel.getCompleted()==0) {
 //            layout.binding.ivTickMark.setVisibility(View.GONE);
-//            layout.binding.ivTickMark.setVisibility(View.GONE);
-//            layout.binding.rlEnableDisable.setBackgroundColor(layout.getContext().getResources().getColor(R.color.yellowOpaque));
-        }
+//        }
 
-        String iconCompletePath = AppUtils.completePathInSDCard(Constants.IMAGE).getAbsolutePath() + "/" + AppUtils.getFileName(catalogueDetailsModel.getIcon());
+//        String iconCompletePath = AppUtils.completePathInSDCard(Constants.IMAGE).getAbsolutePath() + "/" + AppUtils.getFileName(catalogueDetailsModel.getIcon());
+        String iconCompletePath = AppUtils.completeInternalStoragePath(mContext, Constants.IMAGE).getAbsolutePath() + "/" + AppUtils.getFileName(catalogueDetailsModel.getIcon());
         Logger.logD("ADAPTER", "HomeScreen Image : " + iconCompletePath);
 
         try {
@@ -119,7 +157,8 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
                         .load("file://" + imageFile.getPath())
                         .fit()
                         .into(layout.binding.roundedImageView);
-            } else {
+            }
+            else {
                 binding.roundedImageView.setBackgroundResource(R.drawable.image3);
             }
         } catch (Exception ex) {
@@ -131,6 +170,7 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
     public int getItemCount() {
         return modelList == null ? 0 : modelList.size();
     }
+
 
     public class Layout extends RecyclerView.ViewHolder {
         private Context mContext;

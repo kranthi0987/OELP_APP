@@ -11,11 +11,11 @@
             <!--type="mahiti.org.oelp.viewmodel.HomeViewModel" />-->
     </data>
 
-    <ScrollView
-        android:background="@color/greybkg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none">
+    <!--<ScrollView-->
+        <!--android:background="@color/greybkg"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:scrollbars="none">-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,6 +57,6 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    <!--</ScrollView>-->
 
 </layout>

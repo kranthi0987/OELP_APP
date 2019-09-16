@@ -64,13 +64,6 @@ public class QuestionModel {
         this.dcf = dcf;
     }
 
-    public String getMediacontent() {
-        return mediacontent;
-    }
-
-    public void setMediacontent(String mediacontent) {
-        this.mediacontent = mediacontent;
-    }
 
     public String getQtype() {
         return qtype;

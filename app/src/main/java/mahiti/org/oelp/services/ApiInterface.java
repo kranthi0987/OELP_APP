@@ -63,6 +63,32 @@ public interface ApiInterface {
     @POST(RetrofitConstant.CREATE_GROUP_URL)
     Call<MobileVerificationResponseModel> createGroup(@Field("user_uuid") String userId, @Field("name") String groupName, @Field("creation_key") String groupCreationKey, @Field("members") String members);
 
+    @FormUrlEncoded
+    @POST(RetrofitConstant.SUBMIT_ANSWER)
+    Call<MobileVerificationResponseModel> submitAnswer(@Field("user_uuid") String userId,
+                                                       @Field("creation_key") String creation_key,
+                                                       @Field("section_uuid") String section_uuid,
+                                                       @Field("unit_uuid") String unit_uuid,
+                                                       @Field("submission_date") String submission_date,
+                                                       @Field("mediacontent") String mediacontent,
+                                                       @Field("score") float score,
+                                                       @Field("attempts") int attempts,
+                                                       @Field("response") String response
+                                                       );
+
+
+    @FormUrlEncoded
+    @POST(RetrofitConstant.SUBMITTED_ANSWER_RESPONSE_URL)
+    Call<MobileVerificationResponseModel> getSubmittedAnswerResponse(@Field("user_uuid") String userId, @Field("modified_date") String modifiedDate);
+
+
+    @FormUrlEncoded
+    @POST(RetrofitConstant.FETCH_MEDIA_SHARED)
+    Call<MobileVerificationResponseModel> getMediaShared(@Field("user_uuid") String userId);
+
+    @FormUrlEncoded
+    @POST(RetrofitConstant.FETCH_MEDIA_SHARED)
+    Call<MobileVerificationResponseModel> shareMediaGlobally(@Field("user_uuid") String userUUID, @Field("data") String data);
 
 
 

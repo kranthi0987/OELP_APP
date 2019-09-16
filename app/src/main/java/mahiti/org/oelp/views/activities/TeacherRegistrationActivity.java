@@ -134,7 +134,7 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
 
 
     private void getIntentData() {
-        mobileNo = new MySharedPref(this).readString(Constants.MOBILE_NO, "");
+        mobileNo = new MySharedPref(this).readString(Constants.MOBILE_NO_New, "");
         teacherRegistrationViewModel.phoneNo.setValue(mobileNo);
     }
 

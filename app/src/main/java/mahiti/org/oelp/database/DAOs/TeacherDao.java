@@ -76,12 +76,15 @@ public class TeacherDao extends DatabaseHandlerClass {
         database.execSQL(query);
     }
 
+    /*
+    * teachGroup =2 -> fetchList of user according to user*/
+
     public List<TeacherModel> getTeachers(String groupUUID, int teachGroup){
         String mainQuery = "";
         if(teachGroup==1)
-            mainQuery = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.TEACHER_TABLENAME /*+ DBConstants.WHERE + DBConstants.GROUP_UUID_COL + DBConstants.IN+DBConstants.OPEN_BRACKET+DBConstants.SINGLE_QUOTES+ groupUUID +DBConstants.SINGLE_QUOTES+DBConstants.CLOSE_BRACKET*/;
+            mainQuery = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.TEACHER_TABLENAME + DBConstants.WHERE + DBConstants.GROUP_UUID_COL + DBConstants.IN+DBConstants.OPEN_BRACKET+DBConstants.SINGLE_QUOTES+ groupUUID +DBConstants.SINGLE_QUOTES+DBConstants.CLOSE_BRACKET;
         else
-            mainQuery = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.TEACHER_TABLENAME /*+ DBConstants.WHERE + DBConstants.USER_UID + DBConstants.EQUAL_TO+DBConstants.SINGLE_QUOTES+ groupUUID +DBConstants.SINGLE_QUOTES*/;
+            mainQuery = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.TEACHER_TABLENAME + DBConstants.WHERE + DBConstants.USER_UID + DBConstants.EQUAL_TO+DBConstants.SINGLE_QUOTES+ groupUUID +DBConstants.SINGLE_QUOTES;
         initDatabase();
         List<TeacherModel> teachersList = new ArrayList<>();
         try {
@@ -102,6 +105,7 @@ public class TeacherDao extends DatabaseHandlerClass {
                     model.setGroupUuid(cursor.getString(cursor.getColumnIndex(DBConstants.GROUP_UUID_COL)));
                     model.setIsTrainer(cursor.getInt(cursor.getColumnIndex(DBConstants.IS_TRAINER)));
                     model.setLastActive(cursor.getString(cursor.getColumnIndex(DBConstants.LAST_ACTIVE)));
+                    model.setUserUuid(cursor.getString(cursor.getColumnIndex(DBConstants.USER_UID)));
                     model.setLastLoggedIn(cursor.getString(cursor.getColumnIndex(DBConstants.LAST_LOGGEDIN)));
                     model.setMobileNumber(cursor.getString(cursor.getColumnIndex(DBConstants.MOBILE_NUMBER)));
                     model.setName(cursor.getString(cursor.getColumnIndex(DBConstants.TEACHER_NAME)));

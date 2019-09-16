@@ -180,6 +180,9 @@ public class UserDetailsModel implements Parcelable{
         }
     };
 
+    public UserDetailsModel() {
+    }
+
     public UserDetailsModel(Parcel in){
         this.school = in.readString();
         this.name = in.readString();

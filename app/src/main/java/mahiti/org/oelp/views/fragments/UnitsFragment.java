@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.List;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.models.CatalogueDetailsModel;
+import mahiti.org.oelp.utils.Constants;
+import mahiti.org.oelp.utils.MySharedPref;
 import mahiti.org.oelp.views.activities.HomeActivity;
 import mahiti.org.oelp.views.adapters.UnitsVideoAdpater;
 
@@ -31,9 +34,11 @@ public class UnitsFragment extends Fragment {
     private HomeActivity mContext;
     private String title;
     private String parentId;
+    private int mediaLevel;
     private List<CatalogueDetailsModel> catalogueDetailsModels = new ArrayList<>();
-//    FragmentUnitsBinding binding;
+    //    FragmentUnitsBinding binding;
     private DatabaseHandlerClass handlerClass;
+    private List<CatalogueDetailsModel> list1;
 
 
     @Override
@@ -46,7 +51,7 @@ public class UnitsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-/*//        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_units, container, false);*/
+        /*//        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_units, container, false);*/
         View view = inflater.inflate(R.layout.fragment_units, container, false);
        /* View view = binding.getRoot();
         binding.setHomeViewModel(homeViewModel);
@@ -61,26 +66,21 @@ public class UnitsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setFocusable(false);
         getArgumentsData();
+        calculateLockAndWatchStatus(parentId);
 
-/*        homeViewModel.getCatalogDataInserted().observe(this, aLong -> {
-            if (aLong != null) {
-                catalogueDetailsModels = homeViewModel.getCatalogData(parentId);
-                if (catalogueDetailsModels != null && !catalogueDetailsModels.isEmpty()) {
-                    adapter.setList(catalogueDetailsModels, getActivity());
-                }
-            }
-        });
-        catalogueDetailsModels = homeViewModel.getCatalogData(parentId);
-        if (!catalogueDetailsModels.isEmpty()) {
-            adapter.setList(catalogueDetailsModels, getActivity());
-        }*/
         catalogueDetailsModels = handlerClass.getCatalogData(parentId);
-        if (!catalogueDetailsModels.isEmpty()){
-           adapter.setList(catalogueDetailsModels, getActivity());
-           progressBar.setVisibility(View.GONE);
+        if (!catalogueDetailsModels.isEmpty()) {
+            mediaLevel = catalogueDetailsModels.get(0).getMediaLevelType();
+            adapter.setList(catalogueDetailsModels, getActivity());
+            progressBar.setVisibility(View.GONE);
+        } else {
+            progressBar.setVisibility(View.GONE);
         }
-//            Toast.makeText(mContext, getActivity().getResources().getString(R.string.data_not_found), Toast.LENGTH_SHORT).show();
         return view;
+    }
+
+    private void calculateLockAndWatchStatus(String parentId) {
+        handlerClass.getContentIsOpen(parentId);
     }
 
     private void getArgumentsData() {
@@ -92,5 +92,16 @@ public class UnitsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        MySharedPref sharedPref = new MySharedPref(getActivity());
+        if (sharedPref.readBoolean(Constants.VALUE_CHANGED, false) || mediaLevel<3) {
+            calculateLockAndWatchStatus(parentId);
+            catalogueDetailsModels = handlerClass.getCatalogData(parentId);
+            adapter.setList(catalogueDetailsModels, getActivity());
+            sharedPref.writeBoolean(Constants.VALUE_CHANGED, false);
+
+        }
+
     }
+
+
 }

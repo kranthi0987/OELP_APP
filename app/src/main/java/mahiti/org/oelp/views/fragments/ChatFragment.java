@@ -25,7 +25,7 @@ public class ChatFragment extends Fragment  {
             "  \"message\":\"Hi All Hi are you\",\n" +
             "  \"date\":\"Sun 3:02 PM\",\n" +
             "  \"nameInitials\":\"V\",\n" +
-            "  \"colorcode\":\"#762B23\"\n" +
+            "  \"colorcode\":\"#9B3C32\"\n" +
             "  \n" +
             "},\n" +
             "{\n" +
@@ -33,7 +33,7 @@ public class ChatFragment extends Fragment  {
             "  \"message\":\"I am Good Sir\",\n" +
             "  \"date\":\"Sun 3:04 PM\",\n" +
             "  \"nameInitials\":\"A\",\n" +
-            "  \"colorcode\":\"#764B27\"\n" +
+            "  \"colorcode\":\"#2A9C49\"\n" +
             "  \n" +
             "},\n" +
             "{\n" +
@@ -41,7 +41,7 @@ public class ChatFragment extends Fragment  {
             "  \"message\":\"I am Good Sir\",\n" +
             "  \"date\":\"Sun 3:05 PM\",\n" +
             "  \"nameInitials\":\"K\",\n" +
-            "  \"colorcode\":\"#764D2\"\n" +
+            "  \"colorcode\":\"#253678\"\n" +
             "  \n" +
             "},\n" +
             "{\n" +
@@ -49,7 +49,7 @@ public class ChatFragment extends Fragment  {
             "  \"message\":\"How is work going\",\n" +
             "  \"date\":\"Sun 3:06 PM\",\n" +
             "  \"nameInitials\":\"V\",\n" +
-            "  \"colorcode\":\"#762B23\"\n" +
+            "  \"colorcode\":\"#9B3C32\"\n" +
             "  \n" +
             "},\n" +
             "{\n" +
@@ -57,7 +57,7 @@ public class ChatFragment extends Fragment  {
             "  \"message\":\"Sir we are working .. hope so we will deliver\",\n" +
             "  \"date\":\"Sun 3:07 PM\",\n" +
             "  \"nameInitials\":\"A\",\n" +
-            "  \"colorcode\":\"#764B27\"\n" +
+            "  \"colorcode\":\"#2A9C49\"\n" +
             "  \n" +
             "},\n" +
             "{\n" +
@@ -65,7 +65,7 @@ public class ChatFragment extends Fragment  {
             "  \"message\":\"Yeah Sir Working\",\n" +
             "  \"date\":\"Sun 3:07 PM\",\n" +
             "  \"nameInitials\":\"K\",\n" +
-            "  \"colorcode\":\"#764D2\"\n" +
+            "  \"colorcode\":\"#253678\"\n" +
             "  \n" +
             "},\n" +
             "{\n" +
@@ -73,7 +73,7 @@ public class ChatFragment extends Fragment  {
             "  \"message\":\"Don;t worry .. I am also working\",\n" +
             "  \"date\":\"Sun 3:10 PM\",\n" +
             "  \"nameInitials\":\"V\",\n" +
-            "  \"colorcode\":\"#762B23\"\n" +
+            "  \"colorcode\":\"#9B3C32\"\n" +
             "  \n" +
             "},\n" +
             "{\n" +
@@ -81,7 +81,7 @@ public class ChatFragment extends Fragment  {
             "  \"message\":\"Good Sir ..\",\n" +
             "  \"date\":\"Sun 3:11 PM\",\n" +
             "  \"nameInitials\":\"A\",\n" +
-            "  \"colorcode\":\"#764B27\"\n" +
+            "  \"colorcode\":\"#2A9C49\"\n" +
             "  \n" +
             "},\n" +
             "{\n" +
@@ -89,7 +89,7 @@ public class ChatFragment extends Fragment  {
             "  \"message\":\"Great..Sir\",\n" +
             "  \"date\":\"Sun 3:12 PM\",\n" +
             "  \"nameInitials\":\"K\",\n" +
-            "  \"colorcode\":\"#764D2\"\n" +
+            "  \"colorcode\":\"#253678\"\n" +
             "  \n" +
             "},\n" +
             "{\n" +
@@ -97,7 +97,7 @@ public class ChatFragment extends Fragment  {
             "  \"message\":\"This is good\",\n" +
             "  \"date\":\"Sun 3:12 PM\",\n" +
             "  \"nameInitials\":\"K\",\n" +
-            "  \"colorcode\":\"#764D2\"\n" +
+            "  \"colorcode\":\"#253678\"\n" +
             "  \n" +
             "}\n" +
             "]\n" +

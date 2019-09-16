@@ -217,7 +217,7 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
                     MobileVerificationResponseModel model = response.body();
                     model.setmAction(new Action(Action.STATUS_TRUE));
                     data.setValue(model);
-                    sharedPref.writeString(Constants.USER_DETAILS, userDetails);
+                    sharedPref.writeString(Constants.MOBILE_NO, userDetails);
                     saveUserIDAndUserTypeAndUserName(model.getUserid(), Constants.USER_TEACHER);
                     showProgresBar.setValue(false);
 

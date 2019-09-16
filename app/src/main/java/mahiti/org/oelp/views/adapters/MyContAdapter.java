@@ -6,18 +6,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.util.List;
+
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.interfaces.SharedMediaClickListener;
+import mahiti.org.oelp.models.SharedMediaModel;
+import mahiti.org.oelp.utils.AppUtils;
+import mahiti.org.oelp.utils.Constants;
+import mahiti.org.oelp.utils.Logger;
 
 public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder> {
 
     private Activity context;
-    private int size;
+    private List<SharedMediaModel> sharedMediaList;
+    private SharedMediaClickListener clickListener;
 
-    public MyContAdapter(Activity context, int size) {
+    public MyContAdapter(Activity context) {
         this.context = context;
-        this.size = size;
+        clickListener = (SharedMediaClickListener) context;
 
     }
 
@@ -25,56 +37,79 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
     @Override
     public MyContAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.adapter_my_cont, viewGroup, false);
-        MyContAdapter.ViewHolder viewHolder = new MyContAdapter.ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(MyContAdapter.ViewHolder viewHolder, final int position) {
+        SharedMediaModel model = sharedMediaList.get(position);
 
-      /*  viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        viewHolder.tvMediaName.setText(model.getMediaTitle());
+        viewHolder.tvUploadedBy.setText(model.getUserName());
+        if (model.getMediaType().equals("3")) {
+            viewHolder.ivPlayButton.setVisibility(View.VISIBLE);
+            viewHolder.roundedImageView.setBackgroundColor(context.getResources().getColor(R.color.blackOpaque));
+        } else {
+            showUIForImage(model.getMediaFile(), viewHolder);
+        }
 
-                Intent intent = new Intent(context, TeacherInfoTabActivity.class);
-                context.startActivity(intent);
-            }
-        });*/
+        viewHolder.llRecycler.setOnClickListener(view -> {
+            if ((model.getMediaType()).equals("3"))
+                clickListener.onSharedMediaClick(model, false);
+        });
 
+        viewHolder.llRecycler.setOnLongClickListener(view -> {
+            clickListener.onSharedMediaClick(model, true);
+            return false;
+        });
 
-      if(position == 1 && position == 4)
-      {
-          viewHolder.imageViewPlayButton.setVisibility(View.GONE);
-      }
-      if(position == 0 && position == 2 && position == 3 && position == 5 && position == 6)
-      {
-          viewHolder.imageViewPlayButton.setVisibility(View.VISIBLE);
-      }
+    }
 
-
-
+    public void showUIForImage(String path, ViewHolder viewHolder) {
+        if (path==null)
+            return;
+        String fileName = AppUtils.getFileName(path);
+        File file = null;
+        try{
+            file = new File(AppUtils.completeInternalStoragePath(context, Constants.IMAGE), fileName);
+        }catch (Exception ex){
+            Logger.logE("Exce", ex.getMessage(), ex);
+        }
+        if (file.exists()) {
+            Picasso.get()
+                    .load("file://" + file)
+                    .fit()
+                    .into(viewHolder.roundedImageView);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return size;
+        return sharedMediaList.isEmpty() ? 0 : sharedMediaList.size();
+    }
+
+    public void setList(List<SharedMediaModel> sharedMediaList) {
+        this.sharedMediaList = sharedMediaList;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        private TextView textViewDate;
-        private ImageView imageViewRound;
-        private ImageView imageViewPlayButton;
-      //  private CardView cardView;
+        private TextView tvMediaName;
+        private TextView tvUploadedBy;
+        private LinearLayout llRecycler;
+        private ImageView ivPlayButton;
+        private ImageView roundedImageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            textViewDate = (TextView)itemView.findViewById(R.id.textViewDate);
-            imageViewRound = (ImageView)itemView.findViewById(R.id.imageViewRound);
-            imageViewPlayButton = (ImageView)itemView.findViewById(R.id.imageViewPlayButton);
-         //   cardView = (CardView)itemView.findViewById(R.id.cardView);
+            tvMediaName = itemView.findViewById(R.id.tvMediaName);
+            tvUploadedBy = itemView.findViewById(R.id.tvUploadedBy);
+            llRecycler = itemView.findViewById(R.id.llRecycler);
+            ivPlayButton = itemView.findViewById(R.id.ivPlayButton);
+            roundedImageView = itemView.findViewById(R.id.roundedImageView);
 
         }
     }

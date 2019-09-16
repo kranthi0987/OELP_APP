@@ -71,7 +71,6 @@ public class MobileLoginViewModel extends AndroidViewModel {
         }else {
             status.setValue(context.getResources().getString(R.string.please_enter_mobile_number));
         }
-
     }
 
 
@@ -93,6 +92,8 @@ public class MobileLoginViewModel extends AndroidViewModel {
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL: "+RetrofitConstant.BASE_URL+RetrofitConstant.MOBILE_VALIDATION_URL +" Param :"+"mobile_number:"+mobileNo);
         apiInterface.mobileValidation(mobileNo).enqueue(new Callback<MobileVerificationResponseModel>() {
+            public String groupId="";
+
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                 Logger.logD(TAG, "URL "+ RetrofitConstant.BASE_URL+RetrofitConstant.MOBILE_VALIDATION_URL +" Response :"+response.body());
@@ -100,10 +101,12 @@ public class MobileLoginViewModel extends AndroidViewModel {
                 if (response.body() != null) {
                     MobileVerificationResponseModel model = response.body();
                     model.setmAction(new Action(Action.STATUS_TRUE));
-                    sharedPref.writeString(Constants.MOBILE_NO, mobileNo);
+                    sharedPref.writeString(Constants.MOBILE_NO_New, mobileNo);
                     if (!model.getUserDetails().getUserid().equals(Constants.USER_INVALID)){
                         saveUserDataToPref(model.getUserDetails());
-                        saveUserIDAndUserType(model.getUserDetails().getUserid(), model.getUserDetails().getIsTrainer());
+                        if (!model.getUserDetails().getUserGroup().isEmpty())
+                            groupId = model.getUserDetails().getUserGroup().get(model.getUserDetails().getUserGroup().size()-1);
+                        saveUserIDAndUserType(model.getUserDetails().getUserid(), model.getUserDetails().getIsTrainer(), groupId);
                     }
                     data.setValue(model);
                     showProgresBar.setValue(false);
@@ -130,9 +133,10 @@ public class MobileLoginViewModel extends AndroidViewModel {
 
     }
 
-    private void saveUserIDAndUserType(String userid, Integer isTrainer) {
+    private void saveUserIDAndUserType(String userid, Integer isTrainer, String groupUUID) {
        sharedPref.writeString(Constants.USER_ID, userid);
        sharedPref.writeInt(Constants.USER_TYPE, isTrainer);
+       sharedPref.writeString(Constants.GROUP_UUID, groupUUID);
     }
 
     private void saveUserDataToPref(UserDetailsModel userDetails) {
@@ -144,6 +148,7 @@ public class MobileLoginViewModel extends AndroidViewModel {
                 obj.put("mobile_number", userDetails.getMobile_number());
                 obj.put("blockIds", userDetails.getBlockIds());
                 sharedPref.writeString(Constants.USER_DETAILS,obj.toString());
+                sharedPref.writeString(Constants.USER_NAME,userDetails.getName());
             }catch (Exception ex){
                 Logger.logE(TAG, ex.getMessage(), ex);
             }

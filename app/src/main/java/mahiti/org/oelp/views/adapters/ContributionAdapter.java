@@ -60,9 +60,9 @@ public class ContributionAdapter extends RecyclerView.Adapter<ContributionAdapte
         public ViewHolder(View itemView) {
             super(itemView);
 
-            textViewDate = (TextView)itemView.findViewById(R.id.textViewDate);
-            imageViewRound = (ImageView)itemView.findViewById(R.id.imageViewRound);
-            imageViewPlayButton = (ImageView)itemView.findViewById(R.id.imageViewPlayButton);
+            /*textViewDate = (TextView)itemView.findViewById(R.id.textViewDate);
+            imageViewRound = (ImageView)itemView.findViewById(R.id.imageViewRound);*/
+            /*imageViewPlayButton = (ImageView)itemView.findViewById(R.id.imageViewPlayButton);*/
            // cardView = (CardView)itemView.findViewById(R.id.cardView);
 
         }

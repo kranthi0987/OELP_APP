@@ -13,6 +13,7 @@ import java.util.List;
 
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.models.UserDetailsModel;
+import mahiti.org.oelp.utils.Constants;
 
 
 /**
@@ -20,7 +21,7 @@ import mahiti.org.oelp.models.UserDetailsModel;
  */
 public class AddTeacherToGroupAdapter extends RecyclerView.Adapter<AddTeacherToGroupAdapter.LayoutView> {
     private List<UserDetailsModel> modelList;
-    private static List<UserDetailsModel> userDetailList = new ArrayList<>();
+    private Integer type;
 
     @NonNull
     @Override
@@ -33,27 +34,39 @@ public class AddTeacherToGroupAdapter extends RecyclerView.Adapter<AddTeacherToG
     public void onBindViewHolder(@NonNull AddTeacherToGroupAdapter.LayoutView layoutView, int i) {
         UserDetailsModel userDetails = modelList.get(i);
         CheckBox checkBox = layoutView.checkBox;
+        if (userDetails.isCheckBoxChecked()){
+            layoutView.checkBox.setChecked(true);
+        }else {
+            layoutView.checkBox.setChecked(false);
+        }
         layoutView.tvName.setText(userDetails.getName());
         layoutView.tvMobileNo.setText(userDetails.getMobile_number());
         checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (!userDetails.isCheckBoxChecked()){
+
+            if(compoundButton.isChecked()){
+                modelList.get(i).setCheckBoxChecked(true);
+            }
+            else{
+                modelList.get(i).setCheckBoxChecked(false);
+            }
+            /*if (!userDetails.isCheckBoxChecked()){
                userDetails.setCheckBoxChecked(true);
-               userDetailList.add(userDetails);
+               modelList.add(userDetails);
             }else {
                 userDetails.setCheckBoxChecked(false);
-                userDetailList.remove(userDetails);
-            }
+                modelList.remove(userDetails);
+            }*/
         });
-
     }
 
-    public  static List<UserDetailsModel> getUserDetailsList(){
-        return userDetailList;
+    public List<UserDetailsModel> getUserDetailsList(){
+        return modelList;
     }
 
-    public void setList(List<UserDetailsModel> list) {
+    public void setList(List<UserDetailsModel> list, Integer type) {
         this.modelList = list;
         notifyDataSetChanged();
+        this.type = type;
     }
     @Override
     public int getItemCount() {

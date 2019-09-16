@@ -52,7 +52,6 @@
                 android:ellipsize="end"
                 android:textColor="@color/black"
                 android:maxLines="1"
-                android:text="File"
                 android:textSize="16dp" />
 
             <TextView
@@ -61,7 +60,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:gravity="center_horizontal"
-                android:text="110%"
                 android:textSize="10dp" />
         </RelativeLayout>
 

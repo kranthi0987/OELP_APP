@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,12 +9,14 @@
             type="mahiti.org.oelp.viewmodel.HomeViewModel" />
     </data>
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
+        android:layout_margin="5dp"
         android:id="@+id/llRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="5dp">
+        app:cardElevation="5dp"
+        app:contentPadding="10dp"
+        app:cardCornerRadius="2dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -23,7 +26,7 @@
                 android:id="@+id/ivGroupIcon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/group_select" />
+                android:src="@drawable/group_listing_icon" />
 
             <!--<TextView-->
                 <!--android:id="@+id/tvMessageCount"-->
@@ -79,14 +82,17 @@
                 </RelativeLayout>
             </LinearLayout>
 
+            <ImageView
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_menu_green"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
 
         </RelativeLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/grey" />
 
-    </LinearLayout>
+
+    </android.support.v7.widget.CardView>
 </layout>

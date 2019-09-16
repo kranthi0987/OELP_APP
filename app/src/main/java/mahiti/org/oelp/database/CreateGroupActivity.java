@@ -1,5 +1,6 @@
 package mahiti.org.oelp.database;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,8 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.models.GroupModel;
+import mahiti.org.oelp.database.DAOs.TeacherDao;
 import mahiti.org.oelp.models.MobileVerificationResponseModel;
+import mahiti.org.oelp.models.TeacherModel;
 import mahiti.org.oelp.models.UserDetailsModel;
 import mahiti.org.oelp.services.ApiInterface;
 import mahiti.org.oelp.services.RetrofitClass;
@@ -34,6 +36,7 @@ import mahiti.org.oelp.utils.CheckNetwork;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
 import mahiti.org.oelp.utils.MySharedPref;
+import mahiti.org.oelp.videoplay.utils.CheckNet;
 import mahiti.org.oelp.views.adapters.AddTeacherToGroupAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,6 +61,8 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
     private AddTeacherToGroupAdapter adapter;
     private String userUUID;
     private AlertDialog dialog;
+    private String groupUUID;
+    private String groupTitle;
 
 
     @Override
@@ -74,11 +79,19 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
         recyclerView = findViewById(R.id.recyclerView);
         progressBar = findViewById(R.id.progressBar);
         setSupportActionBar(toolbar);
+
+        groupUUID = getIntent().getStringExtra("groupUUID");
+        groupTitle = getIntent().getStringExtra("groupName");
+        if (!groupTitle.isEmpty()) {
+            etGroupName.setText(groupTitle);
+        }
+
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
         }
+
 
         btnCreate.setOnClickListener(this);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -87,6 +100,20 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
         recyclerView.setFocusable(false);
         adapter = new AddTeacherToGroupAdapter();
         recyclerView.setAdapter(adapter);
+
+        if (!groupUUID.isEmpty()) {
+            TeacherDao dao = new TeacherDao(this);
+            List<TeacherModel> teacherList = dao.getTeachers(groupUUID, 1);
+            userDetailList = dao.getUserDetailsModels(teacherList);
+            if (userDetailList.size() > 0) {
+                llView.setVisibility(View.VISIBLE);
+            }
+            adapter.setList(userDetailList, Constants.EDIT);
+            btnCreate.setText(R.string.update);
+
+        }else {
+            btnCreate.setText(R.string.create);
+        }
 
         etMobileNo.addTextChangedListener(new TextWatcher() {
             @Override
@@ -134,7 +161,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
                         if (userDetail.getUserGroup().isEmpty()) {
                             userDetailList.add(response.body().getUserDetails());
                             etMobileNo.getText().clear();
-                            adapter.setList(userDetailList);
+                            adapter.setList(userDetailList, Constants.ADD);
                         } else {
                             showAlertDialog(userDetail);
                         }
@@ -162,7 +189,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
 
     private void showAlertDialog(UserDetailsModel userDetail) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
-        builder.setMessage(userDetail.getName()+" is already added to some other group");
+        builder.setMessage(userDetail.getName() + " is already added to some other group");
         builder.setNegativeButton(R.string.ok, (dialog, id) -> dialog.dismiss());
         dialog = builder.create();
         dialog.show();
@@ -195,19 +222,49 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         if (CheckNetwork.checkNet(this)) {
-            progressBar.setVisibility(View.VISIBLE);
-            phoneNo = etMobileNo.getText().toString().trim();
-            groupName = etGroupName.getText().toString().trim();
-            validateAndProceed();
+            createOrAddGroup();
         } else {
             Toast.makeText(this, getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void validateAndProceed() {
+    private void createOrAddGroup() {
+        if (groupUUID.isEmpty()) {
+            addTeacher();
+        } else {
+            editTeacher();
+        }
+    }
+
+    private void editTeacher() {
+        progressBar.setVisibility(View.VISIBLE);
+        phoneNo = etMobileNo.getText().toString().trim();
+        groupName = etGroupName.getText().toString().trim();
+        validateAndProceedAdd();
+    }
+
+    private void addTeacher() {
+        progressBar.setVisibility(View.VISIBLE);
+        groupName = etGroupName.getText().toString().trim();
+        validateAndProceedEdit();
+    }
+
+    private void validateAndProceedEdit() {
+        if (groupName.isEmpty()) {
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(this, "Please enter group name", Toast.LENGTH_SHORT).show();
+        } else if (userDetailList.isEmpty()) {
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(this, "Please select teacher", Toast.LENGTH_SHORT).show();
+        } else {
+            craeteUUIDJSONandProceed(userDetailList);
+        }
+    }
+
+    private void validateAndProceedAdd() {
         List<UserDetailsModel> lsitModel = new ArrayList<>();
         lsitModel.clear();
-        lsitModel = AddTeacherToGroupAdapter.getUserDetailsList();
+        lsitModel = adapter.getUserDetailsList();
         if (groupName.isEmpty()) {
             progressBar.setVisibility(View.GONE);
             Toast.makeText(this, "Please enter group name", Toast.LENGTH_SHORT).show();
@@ -221,9 +278,14 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
 
     private void craeteUUIDJSONandProceed(List<UserDetailsModel> lsitModel) {
         userUUID = sharedPref.readString(Constants.USER_ID, "");
-        String groupCreationKey = AppUtils.getUUID();
-        String teacherJson = createJson(lsitModel);
-        callApiForCreateGroup(userUUID, groupName, groupCreationKey, teacherJson);
+        String groupCreationKey = "";
+        if (groupUUID.isEmpty())
+            groupCreationKey = AppUtils.getUUID();
+        else
+            groupCreationKey = groupUUID;
+
+        createJson(lsitModel, userUUID,groupCreationKey);
+
     }
 
     private void callApiForCreateGroup(String userUUID, String groupName, String groupCreationKey, String teacherJson) {
@@ -234,7 +296,8 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.MOBILE_VALIDATION_URL + " Response :" + response.body());
                 if (response.body() != null) {
-                    checkAndFinish(response.body());
+                    if (CheckNetwork.checkNet(CreateGroupActivity.this))
+                        checkAndFinish(response.body());
                 } else {
                     Toast.makeText(CreateGroupActivity.this, getResources().getString(R.string.SOMETHING_WRONG), Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
@@ -250,10 +313,39 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
+    // Teacher API call
+    public void callApiForTeachersList(String userId) {
+        ApiInterface apiInterface = RetrofitClass.getAPIService();
+        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Param : userId:" + userId);
+        apiInterface.getTeacherList(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
+            @Override
+            public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Response :" + response.body());
+
+                MobileVerificationResponseModel model = response.body();
+                if (model != null) {
+                    long insertedCount = new TeacherDao(CreateGroupActivity.this).insertTeacherDataToDB(model.getTeachers());
+                    Logger.logD(TAG, "teachers inserted count - "+insertedCount);
+                } else {
+                    Logger.logD(TAG, "teachers inserted count - "+model.getMessage());
+                }
+                progressBar.setVisibility(View.GONE);
+                insertDataIntoGroupTable();
+
+            }
+
+            @Override
+            public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Response :" + t.getMessage());
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+
+    }
+
     private void checkAndFinish(MobileVerificationResponseModel body) {
         if (body.getStatus() == 2) {
             callApiForGroupList(userUUID);
-
         } else {
             Toast.makeText(this, body.getMessage(), Toast.LENGTH_SHORT).show();
             onBackPressed();
@@ -269,9 +361,14 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Response :" + response.body());
                 MobileVerificationResponseModel model = response.body();
                 if (model != null) {
-                    insertDataIntoGroupTable(model.getGroups());
+                    if (!model.getGroups().isEmpty()) {
+                        new DatabaseHandlerClass(CreateGroupActivity.this).insertDatatoGroupsTable(model.getGroups());
+                    }
+                    if (CheckNetwork.checkNet(CreateGroupActivity.this))
+                        callApiForTeachersList(userId);
+
                 }
-                progressBar.setVisibility(View.GONE);
+//                progressBar.setVisibility(View.GONE);
 
             }
 
@@ -284,27 +381,36 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    private void insertDataIntoGroupTable(List<GroupModel> groups) {
-        if (!groups.isEmpty()) {
-            new DatabaseHandlerClass(this).insertDatatoGroupsTable(groups);
+    private void insertDataIntoGroupTable() {
+            Intent intent = new Intent();
+            intent.putExtra("result", true);
+            setResult(RESULT_OK, intent);
             onBackPressed();
-        }
+
     }
 
-    private String createJson(List<UserDetailsModel> lsitModel) {
+    private void createJson(List<UserDetailsModel> lsitModel, String userUUID, String groupCreationKey) {
         JSONArray array = new JSONArray();
+        boolean valide = false;
         try {
-
-            JSONObject object = new JSONObject();
+            JSONObject object;
             for (UserDetailsModel model : lsitModel) {
-                object = new JSONObject();
-                object.put("creation_key", model.getUserid());
-                array.put(object);
+                if(model.isCheckBoxChecked()) {
+                    object = new JSONObject();
+                    object.put("creation_key", model.getUserid());
+                    array.put(object);
+                    valide =true;
+                }
             }
         } catch (Exception ex) {
             Logger.logE(TAG, ex.getMessage(), ex);
         }
-        return array.toString();
+        if (valide){
+            callApiForCreateGroup(userUUID, groupName, groupCreationKey, array.toString());
+        }else {
+            Toast.makeText(this, "Please select teacher", Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
     @Override

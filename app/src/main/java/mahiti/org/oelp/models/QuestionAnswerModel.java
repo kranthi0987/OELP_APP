@@ -2,9 +2,7 @@ package mahiti.org.oelp.models;
 
 import java.util.List;
 
-/**
- * Created by sandeep HR on 22/01/19.
- */
+
 public class QuestionAnswerModel {
 
     private QuestionModel questionModel;
@@ -13,31 +11,71 @@ public class QuestionAnswerModel {
     private int id;
     private String offlineData;
     private int syncStatus;
-    private int videoId;
+    private String videoId;
+    private String previewText;
     private String dateTime;
 
     private String quetsionText;
+    private String answerExplain;
     private int quetsionId;
     private String choiceText;
     private int choiceId;
     private int score;
     private int testAttempt;
     private int totalMarks;
-    private int scoredObtain;
+    private int marksObtain;
+    private String modifiedDate;
     private boolean isCorrect;
 
 
-    public QuestionAnswerModel(String quetsionText, int quetsionId, String choiceText, int choiceId, int score, boolean isCorrect) {
+    private String sectionUUID;
+    private String unitUUID;
+    private Integer attempt;
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public String getSectionUUID() {
+        return sectionUUID;
+    }
+
+    public void setSectionUUID(String sectionUUID) {
+        this.sectionUUID = sectionUUID;
+    }
+
+    public String getUnitUUID() {
+        return unitUUID;
+    }
+
+    public void setUnitUUID(String unitUUID) {
+        this.unitUUID = unitUUID;
+    }
+
+    public Integer getAttempt() {
+        return attempt;
+    }
+
+    public void setAttempt(Integer attempt) {
+        this.attempt = attempt;
+    }
+
+    public QuestionAnswerModel(String quetsionText, int quetsionId, String choiceText, int choiceId, int score, boolean isCorrect, String answerExplain) {
         this.quetsionText = quetsionText;
         this.quetsionId = quetsionId;
         this.choiceText = choiceText;
         this.choiceId = choiceId;
         this.score = score;
         this.isCorrect = isCorrect;
+        this.answerExplain = answerExplain;
     }
 
-    public QuestionAnswerModel(int scoredObtain, int totalMarks, int testAttempt) {
-        this.scoredObtain = scoredObtain;
+    public String getAnswerExplain() {
+        return answerExplain;
+    }
+
+    public QuestionAnswerModel(int marksObtain, int totalMarks, int testAttempt) {
+        this.marksObtain = marksObtain;
         this.totalMarks = totalMarks;
         this.testAttempt = testAttempt;
     }
@@ -103,12 +141,73 @@ public class QuestionAnswerModel {
         this.dateTime = dateTime;
     }
 
-    public QuestionAnswerModel(int id, String offlineData, int syncStatus, int videoId, String dateTime) {
+    public QuestionAnswerModel(int id, String offlineData, int syncStatus, String videoId, String previewText,String dateTime, int marksObtain, int totalMarks, String modifiedDate) {
         this.id = id;
         this.offlineData = offlineData;
         this.syncStatus = syncStatus;
         this.videoId = videoId;
+        this.previewText = previewText;
         this.dateTime = dateTime;
+        this.totalMarks = totalMarks;
+        this.marksObtain = marksObtain;
+        this.modifiedDate = modifiedDate;
+    }
+
+    public void setQuetsionText(String quetsionText) {
+        this.quetsionText = quetsionText;
+    }
+
+    public void setAnswerExplain(String answerExplain) {
+        this.answerExplain = answerExplain;
+    }
+
+    public void setQuetsionId(int quetsionId) {
+        this.quetsionId = quetsionId;
+    }
+
+    public void setChoiceText(String choiceText) {
+        this.choiceText = choiceText;
+    }
+
+    public void setChoiceId(int choiceId) {
+        this.choiceId = choiceId;
+    }
+
+
+    public void setTestAttempt(int testAttempt) {
+        this.testAttempt = testAttempt;
+    }
+
+    public void setTotalMarks(int totalMarks) {
+        this.totalMarks = totalMarks;
+    }
+
+    public int getMarksObtain() {
+        return marksObtain;
+    }
+
+    public void setMarksObtain(int marksObtain) {
+        this.marksObtain = marksObtain;
+    }
+
+    public String getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(String modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public void setCorrect(boolean correct) {
+        isCorrect = correct;
+    }
+
+    public String getPreviewText() {
+        return previewText;
+    }
+
+    public void setPreviewText(String previewText) {
+        this.previewText = previewText;
     }
 
     public int getId() {
@@ -135,11 +234,11 @@ public class QuestionAnswerModel {
         this.syncStatus = syncStatus;
     }
 
-    public int getVideoId() {
+    public String getVideoId() {
         return videoId;
     }
 
-    public void setVideoId(int videoId) {
+    public void setVideoId(String videoId) {
         this.videoId = videoId;
     }
 }

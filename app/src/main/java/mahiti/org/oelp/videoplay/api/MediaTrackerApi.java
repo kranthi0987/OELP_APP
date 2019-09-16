@@ -29,12 +29,11 @@ public class MediaTrackerApi {
 
     public MediaTrackerApi(Context context) {
         this.context = context;
-        this.mContext = (CatalogResponseListener) context;
+//        this.mContext = (CatalogResponseListener) context;
     }
 
     public void mediaTracking(String url, final String userId, final JSONArray media, final UpdateDbInterface updateDbInterface, String deviceId, boolean hasToFinish) {
         this.hasToFinish = hasToFinish;
-
 
         //JSONObject object
         StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
@@ -46,19 +45,19 @@ public class MediaTrackerApi {
                 Log.i(TAG, " Media tracker updated status: " + validation.getStatus());
                 validation.setStatus(object.getInt("status"));
                 validation.setMessage(object.getString("message"));
-                if (hasToFinish)
-                    mContext.onCatalogResponse(true);
-                else
-                    mContext.onCatalogResponse(false);
+//                if (hasToFinish)
+//                    mContext.onCatalogResponse(true);
+//                else
+//                    mContext.onCatalogResponse(false);
                 updateDbInterface.trackerUpdate(validation);
 
             } catch (JSONException e) {
-                mContext.onCatalogResponse(false);
+//                mContext.onCatalogResponse(false);
                 Log.d("VideoAPI", "VideoAPI" + e);
             }
         }, error -> {
             error.printStackTrace();
-            mContext.onCatalogResponse(false);
+//            mContext.onCatalogResponse(false);
         }) {
             @Override
             protected Map<String, String> getParams() {

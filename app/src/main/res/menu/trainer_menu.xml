@@ -3,6 +3,6 @@
     tools:context="example.javatpoint.com.optionmenu.MainActivity">
 
     <item  android:id="@+id/logout"
-        android:title="Logout"/>
+        android:title="@string/logout"/>
 
 </menu>

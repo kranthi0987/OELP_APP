@@ -60,9 +60,9 @@ public class NewTeacherAdapter extends RecyclerView.Adapter<NewTeacherAdapter.Vi
         public ViewHolder(View itemView) {
             super(itemView);
 
-            textViewDate = (TextView)itemView.findViewById(R.id.textViewDate);
+         /*   textViewDate = (TextView)itemView.findViewById(R.id.textViewDate);
             imageViewRound = (ImageView)itemView.findViewById(R.id.imageViewRound);
-            imageViewPlayButton = (ImageView)itemView.findViewById(R.id.imageViewPlayButton);
+            imageViewPlayButton = (ImageView)itemView.findViewById(R.id.imageViewPlayButton);*/
            // cardView = (CardView)itemView.findViewById(R.id.cardView);
 
         }

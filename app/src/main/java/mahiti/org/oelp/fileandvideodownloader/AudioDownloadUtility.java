@@ -231,7 +231,7 @@ public class AudioDownloadUtility extends AsyncTask<Void, String, String> {
                     public void onDownloadComplete() {
                         dismissDialog();
                         dismissNotification(true);
-                        playVideoInterfaceObj.onMediaDownload(type, downloadPath+"/"+ audioLastName, audioTitle,position,"");
+                        playVideoInterfaceObj.onMediaDownload(type, downloadPath+"/"+ audioLastName, audioTitle,position,"",0, "");
                     }
 
 
