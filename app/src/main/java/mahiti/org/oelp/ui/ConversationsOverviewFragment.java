@@ -210,12 +210,12 @@ public class ConversationsOverviewFragment extends XmppFragment {
         if (MenuDoubleTabUtil.shouldIgnoreTap()) {
             return false;
         }
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                startActivity(new Intent(getActivity(), SearchActivity.class));
-                activity.overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
-                return true;
-        }
+//        switch (item.getItemId()) {
+//            case R.id.action_search:
+//                startActivity(new Intent(getActivity(), SearchActivity.class));
+//                activity.overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+//                return true;
+//        }
         return super.onOptionsItemSelected(item);
     }
 

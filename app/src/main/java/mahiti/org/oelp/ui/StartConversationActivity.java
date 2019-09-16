@@ -299,6 +299,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             mInitialSearchValue.push("");
         }
         mRequestedContactsPermission.set(savedInstanceState != null && savedInstanceState.getBoolean("requested_contacts_permission", false));
+
         binding.speedDial.setOnActionSelectedListener(actionItem -> {
             final String searchString = mSearchEditText != null ? mSearchEditText.getText().toString() : null;
             final String prefilled;
@@ -538,7 +539,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             ft.remove(prev);
         }
         ft.addToBackStack(null);
-        JoinConferenceDialog joinConferenceFragment = JoinConferenceDialog.newInstance(prefilledJid, mActivatedAccounts, xmppConnectionService.multipleAccounts());
+        JoinConferenceDialog joinConferenceFragment = JoinConferenceDialog.newInstance("g1@conference.206.189.136.186", mActivatedAccounts, xmppConnectionService.multipleAccounts());
         joinConferenceFragment.show(ft, FRAGMENT_TAG_DIALOG);
     }
 
@@ -652,24 +653,24 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (MenuDoubleTabUtil.shouldIgnoreTap()) {
-            return false;
-        }
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                navigateBack();
-                return true;
-            case R.id.action_scan_qr_code:
-                UriHandlerActivity.scan(this);
-                return true;
-            case R.id.action_hide_offline:
-                mHideOfflineContacts = !item.isChecked();
-                getPreferences().edit().putBoolean("hide_offline", mHideOfflineContacts).commit();
-                if (mSearchEditText != null) {
-                    filter(mSearchEditText.getText().toString());
-                }
-                invalidateOptionsMenu();
-        }
+//        if (MenuDoubleTabUtil.shouldIgnoreTap()) {
+//            return false;
+//        }
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                navigateBack();
+//                return true;
+//            case R.id.action_scan_qr_code:
+//                UriHandlerActivity.scan(this);
+//                return true;
+//            case R.id.action_hide_offline:
+//                mHideOfflineContacts = !item.isChecked();
+//                getPreferences().edit().putBoolean("hide_offline", mHideOfflineContacts).commit();
+//                if (mSearchEditText != null) {
+//                    filter(mSearchEditText.getText().toString());
+//                }
+//                invalidateOptionsMenu();
+//        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -1120,29 +1121,29 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
         @Override
         public boolean onContextItemSelected(final MenuItem item) {
-            StartConversationActivity activity = (StartConversationActivity) getActivity();
-            if (activity == null) {
-                return true;
-            }
-            switch (item.getItemId()) {
-                case R.id.context_contact_details:
-                    activity.openDetailsForContact();
-                    break;
-                case R.id.context_show_qr:
-                    activity.showQrForContact();
-                    break;
-                case R.id.context_contact_block_unblock:
-                    activity.toggleContactBlock();
-                    break;
-                case R.id.context_delete_contact:
-                    activity.deleteContact();
-                    break;
-                case R.id.context_share_uri:
-                    activity.shareBookmarkUri();
-                    break;
-                case R.id.context_delete_conference:
-                    activity.deleteConference();
-            }
+//            StartConversationActivity activity = (StartConversationActivity) getActivity();
+//            if (activity == null) {
+//                return true;
+//            }
+//            switch (item.getItemId()) {
+//                case R.id.context_contact_details:
+//                    activity.openDetailsForContact();
+//                    break;
+//                case R.id.context_show_qr:
+//                    activity.showQrForContact();
+//                    break;
+//                case R.id.context_contact_block_unblock:
+//                    activity.toggleContactBlock();
+//                    break;
+//                case R.id.context_delete_contact:
+//                    activity.deleteContact();
+//                    break;
+//                case R.id.context_share_uri:
+//                    activity.shareBookmarkUri();
+//                    break;
+//                case R.id.context_delete_conference:
+//                    activity.deleteConference();
+//            }
             return true;
         }
     }

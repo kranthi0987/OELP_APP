@@ -205,3 +205,5 @@
 -keepclassmembers,allowobfuscation class * extends androidx.lifecycle.AndroidViewModel {
     <init>(android.app.Application);
 }
+
+-keep class org.apache.** { *; }

@@ -999,7 +999,8 @@ public abstract class XmppActivity extends ActionBarActivity {
             builder.setPositiveButton(R.string.ok,
                     (dialog, id) -> {
                         String selection = spinner.getSelectedItem().toString();
-                        Account mAccount = xmppConnectionService.findAccountByJid(Jid.of(selection).asBareJid());
+                        Account mAccount = xmppConnectionService.
+                                findAccountByJid(Jid.of(selection).asBareJid());
                         String user = Jid.of(mAccount.getJid()).getLocal();
                         String domain = Jid.of(mAccount.getJid()).getDomain();
                         String inviteURL = AdHocInviteUri(mAccount);

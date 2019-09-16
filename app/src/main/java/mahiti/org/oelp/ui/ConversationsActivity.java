@@ -63,6 +63,7 @@ import net.java.otr4j.session.SessionStatus;
 
 import org.openintents.openpgp.util.OpenPgpApi;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -953,4 +954,26 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         final boolean groupChat = conversation != null && conversation.isPrivateAndNonAnonymous();
         displayToast(getString(groupChat ? R.string.destroy_room_failed : R.string.destroy_channel_failed));
     }
+
+//    public boolean createJoinGroup(String message) throws InterruptedException, IOException, SmackException, XMPPException {
+//        MultiUserChatManager manager = MultiUserChatManager.getInstanceFor(XMPP.getInstance().getConnection());
+//
+//        // Create the XMPP address (JID) of the MUC.
+//        EntityBareJid mucJid = (EntityBareJid) JidCreate.bareFrom("g1@conference.206.189.136.186");
+//
+//        // Create the nickname.
+//        Resourcepart nickname = Resourcepart.from("anusha");
+//
+//// Create a MultiUserChat using an XMPPConnection for a room
+//        MultiUserChat muc2 = manager.getMultiUserChat(mucJid);
+//        try {
+//            muc2.join(nickname);
+//            muc2.sendMessage(message);
+//        } catch (SmackException.NotConnectedException e1) {
+//            e1.printStackTrace();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
 }

@@ -37,7 +37,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.openintents.openpgp.util.OpenPgpUtils;
+import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -80,6 +82,7 @@ import mahiti.org.oelp.xmpp.forms.Data;
 import mahiti.org.oelp.xmpp.pep.Avatar;
 import rocks.xmpp.addr.Jid;
 
+
 public class EditAccountActivity extends OmemoActivity implements XmppConnectionService.OnAccountUpdate, OnUpdateBlocklist,
         OnKeyStatusUpdated, XmppConnectionService.OnCaptchaRequested, KeyChainAliasCallback, XmppConnectionService.OnShowErrorToast, XmppConnectionService.OnMamPreferencesFetched {
 
@@ -106,11 +109,26 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
     private final PendingItem<PresenceTemplate> mPendingPresenceTemplate = new PendingItem<>();
 
     private boolean mFetchingAvatar = false;
+    MySharedPref pref;
 
     private final OnClickListener mSaveButtonClickListener = new OnClickListener() {
 
         @Override
         public void onClick(final View v) {
+
+            String uuid = pref.readString(Constants.USER_ID,"");
+            CheckUser();
+            if(!uuid.isEmpty()){
+                uuid=uuid.replace("-","");
+                binding.accountJid.setText(uuid+"@206.189.136.186");
+                binding.accountJid.setEnabled(false);
+                binding.accountJid.setKeyListener(null);
+                binding.accountPassword.setText("123456");
+
+                binding.accountPassword.setEnabled(false);
+                binding.accountPassword.setKeyListener(null);
+
+            }
             final String password = binding.accountPassword.getText().toString();
             final boolean wasDisabled = mAccount != null && mAccount.getStatus() == Account.State.DISABLED;
             final boolean accountInfoEdited = accountInfoEdited();
@@ -254,14 +272,15 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
                 mAccount.setOption(Account.OPTION_REGISTER, registerNewAccount);
                 if (!xmppConnectionService.updateAccount(mAccount)) {
                     Toast.makeText(EditAccountActivity.this, R.string.unable_to_update_account, Toast.LENGTH_SHORT).show();
-                    return;
                 }
             } else {
                 if (xmppConnectionService.findAccountByJid(jid) != null) {
                     binding.accountJidLayout.setError(getString(R.string.account_already_exists));
                     removeErrorsOnAllBut(binding.accountJidLayout);
                     binding.accountJid.requestFocus();
-                    return;
+                    xmppConnectionService.updateAccount(mAccount);
+                    updateSaveButton();
+                    updateAccountInformation(true);
                 }
                 mAccount = new Account(jid.asBareJid(), password);
                 mAccount.setPort(numericPort);
@@ -281,6 +300,7 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
                 updateSaveButton();
                 updateAccountInformation(true);
             }
+
 
         }
     };
@@ -606,6 +626,7 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_account);
 //        setSupportActionBar((Toolbar) binding.toolbar);
 //        configureActionBar(getSupportActionBar());
+        pref = new MySharedPref(EditAccountActivity.this);
         this.binding.accountJid.addTextChangedListener(this.mTextWatcher);
         this.binding.accountJid.setOnFocusChangeListener(this.mEditTextFocusListener);
         this.binding.accountPassword.addTextChangedListener(this.mTextWatcher);
@@ -640,20 +661,15 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(browserIntent);
         });
-        MySharedPref pref = new MySharedPref(this);
-        String uuid = pref.readString(Constants.USER_ID,"");
+        binding.accountPasswordLayout.setVisibility(View.GONE);
+        binding.accountRegisterNew.setChecked(true);
+      //  binding.saveButton.performClick();
 
-        if(!uuid.isEmpty()){
-            uuid=uuid.replace("-","");
-            this.binding.accountJid.setText("anusha"+"@206.189.136.186");
-            this.binding.accountJid.setEnabled(false);
-            this.binding.accountJid.setKeyListener(null);
-            this.binding.accountPassword.setText("123456");
-            this.binding.accountPasswordLayout.setVisibility(View.GONE);
-            this.binding.accountPassword.setEnabled(false);
-            this.binding.accountPassword.setKeyListener(null);
 
-        }
+    }
+    public boolean CheckUser() {
+
+        return true;
 
     }
 

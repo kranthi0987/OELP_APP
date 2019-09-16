@@ -28,6 +28,7 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.os.StrictMode;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
@@ -55,6 +56,7 @@ import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.security.Security;
@@ -166,6 +168,7 @@ import mahiti.org.oelp.xmpp.stanzas.PresencePacket;
 import me.leolin.shortcutbadger.ShortcutBadger;
 import rocks.xmpp.addr.Jid;
 
+import static android.content.ContentValues.TAG;
 import static mahiti.org.oelp.ui.SettingsActivity.CHAT_STATES;
 import static mahiti.org.oelp.ui.SettingsActivity.CONFIRM_MESSAGES;
 import static mahiti.org.oelp.ui.SettingsActivity.ENABLE_MULTI_ACCOUNTS;

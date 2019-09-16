@@ -167,6 +167,8 @@ dependencies {
     implementation project(':fullscreenvideoview')
     implementation project(':xmpp-addr')
 
+
+
 }
 configurations {
     standardPushImplementation
