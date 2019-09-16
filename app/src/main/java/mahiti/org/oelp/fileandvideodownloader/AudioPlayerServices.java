@@ -3,7 +3,7 @@ package mahiti.org.oelp.fileandvideodownloader;
 import android.app.IntentService;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * Created by RAJ ARYAN on 04/06/19.

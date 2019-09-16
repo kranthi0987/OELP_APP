@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <mahiti.org.oelp.ui.widget.CopyTextView
+        android:id="@+id/message_body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:longClickable="true"
+        android:textAppearance="@style/TextAppearance.Conversations.Body1" />
+
+    <mahiti.org.oelp.ui.widget.RichLinkView
+        android:id="@+id/richLinkView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxHeight="80dp" />
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/message_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="4dp"
+        android:adjustViewBounds="true"
+        android:longClickable="true"
+        android:maxWidth="500dp"
+        android:maxHeight="500dp"
+        android:scaleType="centerCrop"
+        app:riv_corner_radius="@dimen/rounded_image_border" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/message_image_gif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="4dp"
+        android:adjustViewBounds="true"
+        android:longClickable="true"
+        android:maxWidth="500dp"
+        android:maxHeight="500dp"
+        android:scaleType="centerCrop"
+        app:riv_corner_radius="@dimen/rounded_image_border" />
+
+    <Button
+        android:id="@+id/download_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:longClickable="true"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/audio_player"
+        android:layout_width="@dimen/audio_player_width"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <ImageButton
+            android:id="@+id/play_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:alpha="?attr/icon_alpha"
+            android:background="?android:selectableItemBackground" />
+
+        <TextView
+            android:id="@+id/runtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:paddingEnd="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp"
+            android:textAppearance="@style/TextAppearance.Conversations.Caption" />
+
+        <SeekBar
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/runtime"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/play_pause"
+            android:layout_toRightOf="@+id/play_pause"
+            android:progress="100" />
+    </RelativeLayout>
+</merge> 

@@ -1,6 +1,6 @@
 package mahiti.org.oelp.services;
 
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
 
 import mahiti.org.oelp.models.MobileVerificationResponseModel;

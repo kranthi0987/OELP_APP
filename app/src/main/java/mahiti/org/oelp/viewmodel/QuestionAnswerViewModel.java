@@ -1,10 +1,10 @@
 package mahiti.org.oelp.viewmodel;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -34,7 +34,7 @@ public class QuestionAnswerViewModel extends AndroidViewModel {
     DatabaseHandlerClass handlerClass;
     private List<QuestionModel> questionModelList;
     private MutableLiveData<Boolean> showDialog = new MutableLiveData<>();
-    private MutableLiveData<Boolean> onSubmitClick = new MutableLiveData<>();
+    private MutableLiveData<Boolean> onSaveClickData = new MutableLiveData<>();
     private List<QuestionChoicesModel> choicesModelList = new ArrayList<>();
     HashMap<String, ArrayList<String>> answerhashmap = new HashMap<String, ArrayList<String>>();
     private MutableLiveData<List<QuestionAnswerModel>> quesAnsModelList = new MutableLiveData<>();
@@ -47,8 +47,8 @@ public class QuestionAnswerViewModel extends AndroidViewModel {
         handlerClass = new DatabaseHandlerClass(application);
     }
 
-    public void onSubmitClick() {
-       onSubmitClick.setValue(true);
+    public void onSaveClick() {
+        onSaveClickData.setValue(true);
     }
 
 
@@ -86,7 +86,7 @@ public class QuestionAnswerViewModel extends AndroidViewModel {
     }
 
     public MutableLiveData<Boolean> getSubmitClick() {
-        return onSubmitClick;
+        return onSaveClickData;
     }
 
 

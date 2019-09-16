@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ConversationsTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="popupOverlayStyle">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="colorControlNormal">@color/accent</item>
+        <item name="colorControlActivated">@color/accent</item>
+        <item name="text_Color_Main">@color/realblack</item>
+
+        <item name="color_background_primary">@color/grey50</item>
+        <item name="color_background_secondary">@color/grey200</item>
+        <item name="color_background_tertiary">@color/grey300</item>
+        <item name="color_background_overlay">@color/grey300_40</item>
+        <item name="color_warning">@color/red700</item>
+        <item name="TextColorOnline">@color/green500</item>
+        <item name="TextColorError">@color/red800</item>
+        <item name="edit_text_color">@color/black87</item>
+
+        <item name="activity_background_search">@drawable/search_background_light</item>
+        <item name="activity_background_no_results">@drawable/no_results_background_light</item>
+        <item name="list_item_background">@drawable/list_item_background_light</item>
+
+        <item name="EmojiColor">@color/realblack</item>
+
+        <item name="color_bubble_light">@color/lightwhite</item>
+        <item name="color_bubble_blue">@color/lightblue</item>
+        <item name="color_bubble_date">@color/lightgreen</item>
+        <item name="color_bubble_warning">@color/lightred</item>
+
+        <item name="color_border">@color/grey500</item>
+
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:actionModeBackground">@color/accent</item>
+
+        <item name="android:homeAsUpIndicator" type="reference">@drawable/ic_arrow_back_white_24dp
+        </item>
+
+        <item name="TextSizeCaption">12sp</item>
+        <item name="TextSizeBody1">14sp</item>
+        <item name="TextSizeBody2">14sp</item>
+        <item name="TextSizeSubhead">16sp</item>
+        <item name="TextSizeTitle">20sp</item>
+        <item name="TextSizeInput">16sp</item>
+        <item name="TextSeparation">5sp</item>
+        <item name="IconSize">18sp</item>
+        <item name="TextSizeInfo">12sp</item>
+        <item name="TextSizeBody">14sp</item>
+        <item name="TextSizeHeadline">18sp</item>
+
+        <!--<item type="reference" name="infocard_border">@drawable/infocard_border</item>-->
+        <item name="divider">@color/black12</item>
+
+        <item name="ic_send_cancel_offline" type="reference">@drawable/ic_send_cancel_offline</item>
+        <item name="ic_send_location_offline" type="reference">@drawable/ic_send_location_offline
+        </item>
+        <item name="ic_send_photo_offline" type="reference">@drawable/ic_send_photo_offline</item>
+        <item name="ic_send_picture_offline" type="reference">@drawable/ic_send_picture_offline
+        </item>
+        <item name="ic_send_text_offline" type="reference">@drawable/ic_send_text_offline</item>
+        <item name="ic_send_attachment_offline" type="reference">
+            @drawable/ic_send_attachment_offline
+        </item>
+        <item name="ic_send_videocam_offline" type="reference">@drawable/ic_send_videocam_offline
+        </item>
+        <item name="ic_send_voice_offline" type="reference">@drawable/ic_send_voice_offline</item>
+
+        <item name="media_preview_document" type="reference">@drawable/ic_description_black_48dp
+        </item>
+        <item name="media_preview_recording" type="reference">@drawable/ic_mic_black_48dp</item>
+        <item name="media_preview_audio" type="reference">@drawable/ic_headset_black_48dp</item>
+        <item name="media_preview_location" type="reference">@drawable/ic_room_black_48dp</item>
+        <item name="media_preview_contact" type="reference">@drawable/ic_person_black_48dp</item>
+        <item name="media_preview_app" type="reference">@drawable/ic_android_black_48dp</item>
+        <item name="media_preview_calendar" type="reference">@drawable/ic_event_black_48dp</item>
+        <item name="media_preview_archive" type="reference">@drawable/ic_archive_black_48dp</item>
+        <item name="media_preview_ebook" type="reference">@drawable/ic_book_black_48dp</item>
+        <item name="media_preview_unknown" type="reference">@drawable/ic_help_black_48dp</item>
+        <item name="media_preview_backup" type="reference">@drawable/ic_backup_black_48dp</item>
+
+        <item name="icon_add_group" type="reference">@drawable/ic_group_add_white_24dp</item>
+        <item name="icon_add_person" type="reference">@drawable/ic_person_add_white_24dp</item>
+        <item name="icon_cancel" type="reference">@drawable/ic_cancel_black_24dp</item>
+        <item name="icon_chat" type="reference">@drawable/ic_action_chat</item>
+        <item name="icon_copy" type="reference">@drawable/ic_content_copy_grey600_24dp</item>
+        <item name="icon_show_qr_code" type="reference">@drawable/ic_qrcode_grey600_24dp</item>
+        <item name="icon_discard" type="reference">@drawable/ic_delete_white_24dp</item>
+        <item name="icon_download" type="reference">@drawable/ic_file_download_white_24dp</item>
+        <item name="icon_edit" type="reference">@drawable/ic_edit_white_24dp</item>
+        <item name="icon_edit_body" type="reference">@drawable/ic_edit_black_24dp</item>
+        <item name="icon_save" type="reference">@drawable/ic_save_black_24dp</item>
+        <item name="icon_done" type="reference">@drawable/ic_done_black_24dp</item>
+        <item name="icon_group" type="reference">@drawable/ic_group_white_24dp</item>
+        <item name="icon_new" type="reference">@drawable/ic_contacts_white_24dp</item>
+        <item name="icon_new_attachment" type="reference">@drawable/ic_attach_file_white_24dp</item>
+        <item name="icon_not_secure" type="reference">@drawable/ic_lock_open_white_24dp</item>
+        <item name="icon_quote" type="reference">@drawable/ic_reply_white_24dp</item>
+        <item name="icon_refresh" type="reference">@drawable/ic_refresh_grey600_24dp</item>
+        <item name="icon_remove" type="reference">@drawable/ic_delete_grey600_24dp</item>
+        <item name="icon_search" type="reference">@drawable/ic_search_white_24dp</item>
+        <item name="icon_secure" type="reference">@drawable/ic_lock_open_white_24dp</item>
+        <item name="icon_settings" type="reference">@drawable/ic_settings_black_24dp</item>
+        <item name="icon_delete" type="reference">@drawable/ic_delete_black_24dp</item>
+        <item name="icon_share" type="reference">@drawable/ic_share_black_24dp</item>
+        <item name="ic_cloud_download" type="reference">@drawable/ic_cloud_download_white_24dp
+        </item>
+        <item name="icon_scan_qr_code" type="reference">@drawable/ic_qrcode_scan_white_24dp</item>
+        <item name="icon_scroll_down" type="reference">@drawable/ic_scroll_to_end_black</item>
+
+        <!-- settings-->
+        <item name="ic_settings_ui" type="reference">@drawable/ic_image_black_24dp</item>
+        <item name="ic_settings_notifications" type="reference">
+            @drawable/ic_notifications_black_24dp
+        </item>
+        <item name="ic_settings_attachments" type="reference">@drawable/ic_attachment_black_24dp
+        </item>
+        <item name="ic_settings_status" type="reference">@drawable/ic_new_releases_black_24dp</item>
+        <item name="ic_settings_security" type="reference">@drawable/ic_security_black_24dp</item>
+        <item name="ic_settings_expert" type="reference">@drawable/ic_settings_black_24dp</item>
+
+        <item name="dialog_horizontal_padding">16dp</item>
+        <item name="dialog_vertical_padding">16dp</item>
+        <item name="icon_alpha" type="float">0.54</item>
+        <item name="delete_icon_alpha" type="float">0.70</item>
+
+        <item name="ic_attach_camera" type="reference">@drawable/ic_attach_camera</item>
+        <item name="ic_attach_videocam" type="reference">@drawable/ic_attach_videocam</item>
+        <item name="ic_attach_document" type="reference">@drawable/ic_attach_document</item>
+        <item name="ic_attach_location" type="reference">@drawable/ic_attach_location</item>
+        <item name="ic_attach_photo" type="reference">@drawable/ic_attach_photo</item>
+        <item name="ic_attach_video" type="reference">@drawable/ic_attach_video</item>
+        <item name="ic_attach_record" type="reference">@drawable/ic_attach_record</item>
+
+        <item name="conversations_overview_background">@color/primary</item>
+
+        <item name="ic_file_apk" type="reference">@drawable/ic_file_grey600_48dp</item>
+        <item name="ic_file_pdf" type="reference">@drawable/ic_file_pdf_grey600_48dp</item>
+        <item name="ic_file_vcard" type="reference">@drawable/ic_account_card_details_grey600_48dp
+        </item>
+        <item name="ic_file_calendar" type="reference">@drawable/ic_calendar_grey600_48dp</item>
+
+        <item name="icon_notifications" type="reference">@drawable/ic_notifications_black_24dp
+        </item>
+        <item name="icon_notifications_off" type="reference">
+            @drawable/ic_notifications_off_black_24dp
+        </item>
+        <item name="icon_notifications_paused" type="reference">
+            @drawable/ic_notifications_paused_black_24dp
+        </item>
+        <item name="icon_notifications_none" type="reference">
+            @drawable/ic_notifications_none_black_24dp
+        </item>
+        <item name="icon_enable_undecided_device" type="reference">
+            @drawable/ic_new_releases_black_24dp
+        </item>
+        <item name="ic_settings_about" type="reference">@drawable/ic_help_black_24dp</item>
+    </style>
+
+    <style name="ConversationsTheme.Dark" parent="ConversationsTheme.Dark.Base" />
+
+    <style name="ConversationsTheme.Dark.Base" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="popupOverlayStyle">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="colorControlNormal">@color/accent</item>
+        <item name="colorControlActivated">@color/accent</item>
+        <item name="text_Color_Main">@color/realwhite</item>
+
+        <item name="color_background_primary">@color/grey700</item>
+        <item name="color_background_secondary">@color/grey800</item>
+        <item name="color_background_tertiary">@color/grey900</item>
+        <item name="color_background_overlay">@color/grey900_40</item>
+        <item name="color_warning">@color/red700</item>
+        <item name="TextColorOnline">@color/green500</item>
+        <item name="TextColorError">@color/red500</item>
+        <item name="edit_text_color">@color/white</item>
+
+        <item name="activity_background_search">@drawable/search_background_dark</item>
+        <item name="activity_background_no_results">@drawable/no_results_background_dark</item>
+        <item name="list_item_background">@drawable/list_item_background_dark</item>
+
+        <item name="EmojiColor">@color/realwhite</item>
+
+        <item name="color_bubble_light">@color/darkwhite</item>
+        <item name="color_bubble_blue">@color/darkblue</item>
+        <item name="color_bubble_date">@color/darkgreen</item>
+        <item name="color_bubble_warning">@color/darkred</item>
+
+        <item name="color_border">@color/grey700</item>
+
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:actionModeBackground">@color/accent</item>
+
+        <item name="TextSizeCaption">12sp</item>
+        <item name="TextSizeBody1">14sp</item>
+        <item name="TextSizeBody2">14sp</item>
+        <item name="TextSizeSubhead">16sp</item>
+        <item name="TextSizeTitle">20sp</item>
+        <item name="TextSizeInput">16sp</item>
+        <item name="TextSeparation">5sp</item>
+        <item name="IconSize">18sp</item>
+        <item name="TextSizeInfo">12sp</item>
+        <item name="TextSizeBody">14sp</item>
+        <item name="TextSizeHeadline">18sp</item>
+
+        <item name="divider">@color/white12</item>
+
+        <item name="ic_send_cancel_offline" type="reference">
+            @drawable/ic_send_cancel_offline_white
+        </item>
+        <item name="ic_send_location_offline" type="reference">
+            @drawable/ic_send_location_offline_white
+        </item>
+        <item name="ic_send_photo_offline" type="reference">@drawable/ic_send_photo_offline_white
+        </item>
+        <item name="ic_send_picture_offline" type="reference">
+            @drawable/ic_send_picture_offline_white
+        </item>
+        <item name="ic_send_text_offline" type="reference">@drawable/ic_send_text_offline_white
+        </item>
+        <item name="ic_send_attachment_offline" type="reference">
+            @drawable/ic_send_attachment_offline_white
+        </item>
+        <item name="ic_send_videocam_offline" type="reference">
+            @drawable/ic_send_videocam_offline_white
+        </item>
+        <item name="ic_send_voice_offline" type="reference">@drawable/ic_send_voice_offline_white
+        </item>
+
+        <item name="ic_attach_camera" type="reference">@drawable/ic_attach_camera_white</item>
+        <item name="ic_attach_videocam" type="reference">@drawable/ic_attach_videocam_white</item>
+        <item name="ic_attach_video" type="reference">@drawable/ic_attach_videocam_white</item>
+        <item name="ic_attach_document" type="reference">@drawable/ic_attach_document_white</item>
+        <item name="ic_attach_location" type="reference">@drawable/ic_attach_location_white</item>
+        <item name="ic_attach_photo" type="reference">@drawable/ic_attach_photo_white</item>
+        <item name="ic_attach_record" type="reference">@drawable/ic_attach_record_white</item>
+
+        <item name="conversations_overview_background">@color/primary_dark</item>
+
+        <item name="icon_alpha" type="float">0.7</item>
+        <item name="delete_icon_alpha" type="float">0.7</item>
+
+        <item name="dialog_horizontal_padding">24dp</item>
+        <item name="dialog_vertical_padding">16dp</item>
+
+        <item name="media_preview_document" type="reference">@drawable/ic_description_white_48dp
+        </item>
+        <item name="media_preview_recording" type="reference">@drawable/ic_mic_white_48dp</item>
+        <item name="media_preview_audio" type="reference">@drawable/ic_headset_white_48dp</item>
+        <item name="media_preview_location" type="reference">@drawable/ic_room_white_48dp</item>
+        <item name="media_preview_contact" type="reference">@drawable/ic_person_white_48dp</item>
+        <item name="media_preview_app" type="reference">@drawable/ic_android_white_48dp</item>
+        <item name="media_preview_calendar" type="reference">@drawable/ic_event_white_48dp</item>
+        <item name="media_preview_archive" type="reference">@drawable/ic_archive_white_48dp</item>
+        <item name="media_preview_ebook" type="reference">@drawable/ic_book_white_48dp</item>
+        <item name="media_preview_unknown" type="reference">@drawable/ic_help_white_48dp</item>
+        <item name="media_preview_backup" type="reference">@drawable/ic_backup_white_48dp</item>
+
+        <item name="icon_add_group" type="reference">@drawable/ic_group_add_white_24dp</item>
+        <item name="icon_add_person" type="reference">@drawable/ic_person_add_white_24dp</item>
+        <item name="icon_cancel" type="reference">@drawable/ic_cancel_white_24dp</item>
+        <item name="icon_copy" type="reference">@drawable/ic_content_copy_white_24dp</item>
+        <item name="icon_show_qr_code" type="reference">@drawable/ic_qrcode_white_24dp</item>
+        <item name="icon_discard" type="reference">@drawable/ic_delete_white_24dp</item>
+        <item name="icon_download" type="reference">@drawable/ic_file_download_white_24dp</item>
+        <item name="icon_edit" type="reference">@drawable/ic_edit_white_24dp</item>
+        <item name="icon_edit_body" type="reference">@drawable/ic_edit_white_24dp</item>
+        <item name="icon_save" type="reference">@drawable/ic_save_white_24dp</item>
+        <item name="icon_done" type="reference">@drawable/ic_done_black_24dp</item>
+        <item name="icon_group" type="reference">@drawable/ic_group_white_24dp</item>
+        <item name="icon_new" type="reference">@drawable/ic_contacts_white_24dp</item>
+        <item name="icon_quote" type="reference">@drawable/ic_reply_white_24dp</item>
+        <item name="icon_refresh" type="reference">@drawable/ic_refresh_white_24dp</item>
+        <item name="icon_new_attachment" type="reference">@drawable/ic_attach_file_white_24dp</item>
+        <item name="icon_not_secure" type="reference">@drawable/ic_lock_open_white_24dp</item>
+        <item name="icon_remove" type="reference">@drawable/ic_delete_white_24dp</item>
+        <item name="icon_search" type="reference">@drawable/ic_search_white_24dp</item>
+        <item name="icon_secure" type="reference">@drawable/ic_lock_open_white_24dp</item>
+        <item name="icon_settings" type="reference">@drawable/ic_settings_white_24dp</item>
+        <item name="icon_delete" type="reference">@drawable/ic_delete_white_24dp</item>
+        <item name="icon_share" type="reference">@drawable/ic_share_white_24dp</item>
+        <item name="ic_cloud_download" type="reference">@drawable/ic_cloud_download_white_24dp
+        </item>
+        <item name="icon_scan_qr_code" type="reference">@drawable/ic_qrcode_scan_white_24dp</item>
+        <item name="icon_scroll_down" type="reference">@drawable/ic_scroll_to_end_white</item>
+
+        <item name="icon_notifications" type="reference">@drawable/ic_notifications_white_24dp
+        </item>
+        <item name="icon_notifications_off" type="reference">
+            @drawable/ic_notifications_off_white_24dp
+        </item>
+        <item name="icon_notifications_paused" type="reference">
+            @drawable/ic_notifications_paused_white_24dp
+        </item>
+        <item name="icon_notifications_none" type="reference">
+            @drawable/ic_notifications_none_white_24dp
+        </item>
+        <item name="icon_enable_undecided_device" type="reference">
+            @drawable/ic_new_releases_white_24dp
+        </item>
+
+        <!-- settings-->
+        <item name="ic_settings_ui" type="reference">@drawable/ic_image_white_24dp</item>
+        <item name="ic_settings_notifications" type="reference">
+            @drawable/ic_notifications_white_24dp
+        </item>
+        <item name="ic_settings_attachments" type="reference">@drawable/ic_attachment_white_24dp
+        </item>
+        <item name="ic_settings_status" type="reference">@drawable/ic_new_releases_white_24dp</item>
+        <item name="ic_settings_security" type="reference">@drawable/ic_security_white_24dp</item>
+        <item name="ic_settings_expert" type="reference">@drawable/ic_settings_white_24dp</item>
+        <item name="ic_settings_about" type="reference">@drawable/ic_help_circle_white_24dp</item>
+    </style>
+
+
+    <style name="ConversationsTheme.Dialog" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="color_background_primary">@color/grey50</item>
+        <item name="divider">@color/black12</item>
+        <item name="TextSizeTitle">18sp</item>
+        <item name="TextSizeBody2">14sp</item>
+        <item name="TextSizeDisplay2">45sp</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="ConversationsTheme.Dark.Dialog" parent="@style/Theme.AppCompat.Dialog">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="color_background_primary">@color/grey700</item>
+        <item name="divider">@color/white12</item>
+        <item name="TextSizeBody2">14sp</item>
+        <item name="TextSizeDisplay2">45sp</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="ConversationsTheme.Dialog.Medium" parent="ConversationsTheme.Dialog">
+        <item name="TextSizeBody2">16sp</item>
+        <item name="TextSizeDisplay2">51sp</item>
+    </style>
+
+    <style name="ConversationsTheme.Dark.Dialog.Medium" parent="ConversationsTheme.Dark.Dialog">
+        <item name="TextSizeBody2">16sp</item>
+        <item name="TextSizeDisplay2">51sp</item>
+    </style>
+
+    <style name="ConversationsTheme.Dialog.Large" parent="ConversationsTheme.Dialog">
+        <item name="TextSizeBody2">18sp</item>
+        <item name="TextSizeDisplay2">56sp</item>
+    </style>
+
+    <style name="ConversationsTheme.Dark.Dialog.Large" parent="ConversationsTheme.Dark.Dialog">
+        <item name="TextSizeBody2">18sp</item>
+        <item name="TextSizeTitle">56sp</item>
+    </style>
+
+    <style name="ConversationsTheme.FullScreen" parent="@style/Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimaryDark">@android:color/transparent</item>
+        <item name="android:windowBackground">@drawable/background</item>
+    </style>
+
+    <style name="ConversationsTheme.Medium" parent="ConversationsTheme">
+        <item name="TextSizeCaption">14sp</item>
+        <item name="TextSizeBody1">16sp</item>
+        <item name="TextSizeBody2">16sp</item>
+        <item name="TextSizeSubhead">18sp</item>
+        <item name="TextSizeTitle">22sp</item>
+        <item name="TextSizeInput">18sp</item>
+        <item name="TextSeparation">6sp</item>
+        <item name="IconSize">20sp</item>
+        <item name="TextSizeInfo">14sp</item>
+        <item name="TextSizeBody">16sp</item>
+        <item name="TextSizeHeadline">20sp</item>
+    </style>
+
+    <style name="ConversationsTheme.Dark.Medium" parent="ConversationsTheme.Dark">
+        <item name="TextSizeCaption">14sp</item>
+        <item name="TextSizeBody1">16sp</item>
+        <item name="TextSizeBody2">16sp</item>
+        <item name="TextSizeSubhead">18sp</item>
+        <item name="TextSizeTitle">22sp</item>
+        <item name="TextSizeInput">18sp</item>
+        <item name="TextSeparation">6sp</item>
+        <item name="IconSize">20sp</item>
+        <item name="TextSizeInfo">14sp</item>
+        <item name="TextSizeBody">16sp</item>
+        <item name="TextSizeHeadline">20sp</item>
+    </style>
+
+    <style name="ConversationsTheme.Dark.Large" parent="ConversationsTheme.Dark">
+        <item name="TextSizeCaption">16sp</item>
+        <item name="TextSizeBody1">18sp</item>
+        <item name="TextSizeBody2">18sp</item>
+        <item name="TextSizeSubhead">20sp</item>
+        <item name="TextSizeTitle">24sp</item>
+        <item name="TextSizeInput">20sp</item>
+        <item name="TextSeparation">7sp</item>
+        <item name="IconSize">22sp</item>
+        <item name="TextSizeInfo">16sp</item>
+        <item name="TextSizeBody">18sp</item>
+        <item name="TextSizeHeadline">22sp</item>
+    </style>
+
+    <style name="ConversationsTheme.Large" parent="ConversationsTheme">
+        <item name="TextSizeCaption">16sp</item>
+        <item name="TextSizeBody1">18sp</item>
+        <item name="TextSizeBody2">18sp</item>
+        <item name="TextSizeSubhead">20sp</item>
+        <item name="TextSizeTitle">24sp</item>
+        <item name="TextSizeInput">20sp</item>
+        <item name="TextSeparation">7sp</item>
+        <item name="IconSize">22sp</item>
+        <item name="TextSizeInfo">16sp</item>
+        <item name="TextSizeBody">18sp</item>
+        <item name="TextSizeHeadline">22sp</item>
+    </style>
+</resources>

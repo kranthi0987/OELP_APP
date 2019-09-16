@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: org.sufficientlysecure:openpgp-api:10.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5e99feb8d2ee203b279d0c57f2575576/openpgp-api-10.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5e99feb8d2ee203b279d0c57f2575576/openpgp-api-10.0/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.sufficientlysecure/openpgp-api/10.0/1ff3202ecd1fed6bea0bc9304146abfd91b93140/openpgp-api-10.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.sufficientlysecure/openpgp-api/10.0/504325307a7f1e7da0c838c834d9bcc74b931a2a/openpgp-api-10.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: com.amitshekhar.android:debug-db-encrypt:1.0.6@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/677093596a4a47a8f7d30058b5abd7a3/debug-db-encrypt-1.0.6/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/677093596a4a47a8f7d30058b5abd7a3/debug-db-encrypt-1.0.6/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amitshekhar.android/debug-db-encrypt/1.0.6/cfbc9a28b906db3094fea7e436c1716d2750fc45/debug-db-encrypt-1.0.6-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amitshekhar.android/debug-db-encrypt/1.0.6/f17a9344e0012205bd23fbddf204fd22a56163e7/debug-db-encrypt-1.0.6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

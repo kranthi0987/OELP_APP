@@ -1,6 +1,6 @@
 package mahiti.org.oelp.database;
 
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
