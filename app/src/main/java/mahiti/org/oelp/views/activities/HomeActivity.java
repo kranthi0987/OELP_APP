@@ -124,15 +124,18 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     }
 
     private void checKConditionAndProceed(List<GroupModel> groupModelList) {
-        if (groupModelList!=null && !groupModelList.isEmpty()){
-            if (userType == Constants.USER_TEACHER) {
+        if(userType == Constants.USER_TEACHER){
+            if(groupModelList!=null && !groupModelList.isEmpty()) {
                 moveTONextActivity(groupModelList.get(0).getGroupName(), groupModelList.get(0).getGroupUUID());
-            } else {
-                setImageAndTextColor(Constants.Groups);
-                setFragment(Constants.Groups);
             }
-        }else {
-            Toast.makeText(this, "Not in any group", Toast.LENGTH_SHORT).show();
+            else {
+                Toast.makeText(this, "Not in any group", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else
+        {
+            setImageAndTextColor(Constants.Groups);
+            setFragment(Constants.Groups);
         }
 
 
