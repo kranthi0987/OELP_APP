@@ -1,6 +1,8 @@
 package mahiti.org.oelp.views.activities;
 
 import android.app.Activity;
+
+import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import androidx.databinding.DataBindingUtil;
@@ -256,9 +258,16 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
                 AppUtils.makeUserLogout(this);
 //                makeUserLogout();
                 return true;
+            case R.id.chats:
+                showChatUI();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showChatUI() {
+        AppUtils.showChatUI(this);
     }
 
     private void makeUserLogout() {

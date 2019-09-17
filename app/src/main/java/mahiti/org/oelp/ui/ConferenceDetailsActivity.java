@@ -452,7 +452,8 @@ public class ConferenceDetailsActivity extends XmppActivity implements XmppConne
         if (this.binding.mucEditor.getVisibility() == View.VISIBLE) {
             hideEditor();
         } else {
-            super.onBackPressed();
+//            super.onBackPressed();
+            this.finish();
         }
     }
 

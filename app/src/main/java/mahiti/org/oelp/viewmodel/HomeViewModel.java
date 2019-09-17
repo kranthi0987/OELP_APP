@@ -161,7 +161,7 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     private void insertDataIntoTeacherTable(List<TeacherModel> teachers) {
-        if (!teachers.isEmpty()) {
+        if (teachers!=null && !teachers.isEmpty()) {
             new TeacherDao(context).insertTeacherDataToDB(teachers);
             sharedPref.writeString(RetrofitConstant.GROUP_LIST_URL, AppUtils.getDate());
             apiCountMutable.setValue(0);
@@ -205,7 +205,7 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     private void insertDataIntoGroupTable(List<GroupModel> groups) {
-        if (!groups.isEmpty()) {
+        if (groups!=null && !groups.isEmpty()) {
             insertLong.setValue(databaseHandlerClass.insertDatatoGroupsTable(groups));
             sharedPref.writeString(RetrofitConstant.GROUP_LIST_URL, AppUtils.getDate());
         }

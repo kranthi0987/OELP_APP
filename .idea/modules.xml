@@ -3,7 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/OELP_APP.iml" filepath="$PROJECT_DIR$/OELP_APP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android-transcoder/android-transcoder.iml" filepath="$PROJECT_DIR$/android-transcoder/android-transcoder.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fullscreenvideoview/fullscreenvideoview.iml" filepath="$PROJECT_DIR$/fullscreenvideoview/fullscreenvideoview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gson-1.1/gson-1.1.iml" filepath="$PROJECT_DIR$/gson-1.1/gson-1.1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xmpp-addr/xmpp-addr.iml" filepath="$PROJECT_DIR$/xmpp-addr/xmpp-addr.iml" />
     </modules>
   </component>
 </project>

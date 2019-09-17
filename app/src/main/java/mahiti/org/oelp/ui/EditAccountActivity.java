@@ -272,6 +272,9 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
                 mAccount.setOption(Account.OPTION_REGISTER, registerNewAccount);
                 if (!xmppConnectionService.updateAccount(mAccount)) {
                     Toast.makeText(EditAccountActivity.this, R.string.unable_to_update_account, Toast.LENGTH_SHORT).show();
+                    mAccount.isEnabled();
+                    updateSaveButton();
+                    updateAccountInformation(true);
                 }
             } else {
                 if (xmppConnectionService.findAccountByJid(jid) != null) {
@@ -282,6 +285,7 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
                     mAccount.isEnabled();
                     updateSaveButton();
                     updateAccountInformation(true);
+
                 }
                 mAccount = new Account(jid.asBareJid(), password);
                 mAccount.setPort(numericPort);
@@ -299,8 +303,8 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
                 updateSaveButton();
                 updateAccountInformation(true);
             }
-
-
+binding.accountJidLayout.setError(null);
+            refreshUiReal();
         }
     };
     private final OnClickListener mCancelButtonClickListener = new OnClickListener() {
@@ -661,7 +665,7 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
             startActivity(browserIntent);
         });
         binding.accountPasswordLayout.setVisibility(View.GONE);
-        binding.accountRegisterNew.setChecked(true);
+//        binding.accountRegisterNew.setChecked(true);
       //  binding.saveButton.performClick();
 
 
@@ -674,7 +678,7 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
 
     private void onEditYourNameClicked(View view) {
         quickEdit(mAccount.getDisplayName(), R.string.your_name, value -> {
-            final String displayName = pref.readString("username","");
+            final String displayName = pref.readString(Constants.USER_NAME,"");
             updateDisplayName(displayName);
             mAccount.setDisplayName(displayName);
             xmppConnectionService.publishDisplayName(mAccount);

@@ -9,7 +9,7 @@
             type="mahiti.org.oelp.viewmodel.HomeViewModel" />
     </data>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_margin="5dp"
         android:id="@+id/llRecyclerView"
         android:layout_width="match_parent"
@@ -94,5 +94,5 @@
 
 
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </layout>

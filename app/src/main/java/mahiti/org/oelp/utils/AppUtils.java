@@ -39,6 +39,7 @@ import java.util.regex.Pattern;
 
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
+import mahiti.org.oelp.ui.StartUI;
 import mahiti.org.oelp.views.activities.AboutUsActivity;
 import mahiti.org.oelp.views.activities.MobileLoginActivity;
 
@@ -410,6 +411,14 @@ public class AppUtils {
         ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_left,
                 R.anim.anim_slide_out_left);
     }
+
+    public static void showChatUI(Context context) {
+        Intent intent = new Intent(context, StartUI.class);
+        context.startActivity(intent);
+        ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_left,
+                R.anim.anim_slide_out_left);
+    }
+
 
     public static String getUUID() {
         return UUID.randomUUID().toString();

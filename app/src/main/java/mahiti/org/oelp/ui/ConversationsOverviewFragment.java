@@ -59,6 +59,8 @@ import mahiti.org.oelp.ui.util.PendingItem;
 import mahiti.org.oelp.ui.util.ScrollState;
 import mahiti.org.oelp.utils.MenuDoubleTabUtil;
 
+import static android.view.View.GONE;
+
 public class ConversationsOverviewFragment extends XmppFragment {
 
     private static final String STATE_SCROLL_POSITION = ConversationsOverviewFragment.class.getName() + ".scroll_state";
@@ -143,6 +145,7 @@ public class ConversationsOverviewFragment extends XmppFragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.binding = DataBindingUtil.inflate(inflater, R.layout.fragment_conversations_overview, container, false);
         this.binding.fab.setOnClickListener((view) -> StartConversationActivity.launch(getActivity()));
+        this.binding.fab.setVisibility(GONE);
         this.conversationsAdapter = new ConversationAdapter(this.activity, this.conversations);
         this.conversationsAdapter.setConversationClickListener((view, conversation) -> {
             if (activity instanceof OnConversationSelected) {

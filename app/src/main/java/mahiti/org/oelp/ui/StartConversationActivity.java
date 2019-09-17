@@ -327,6 +327,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             }
             return false;
         });
+        showJoinConferenceDialog("");
     }
 
     public static boolean isValidJid(String input) {
@@ -539,8 +540,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             ft.remove(prev);
         }
         ft.addToBackStack(null);
-        JoinConferenceDialog joinConferenceFragment = JoinConferenceDialog.newInstance("oelp-teachers@conference.206.189.136.186", mActivatedAccounts, xmppConnectionService.multipleAccounts());
+        JoinConferenceDialog joinConferenceFragment = JoinConferenceDialog.newInstance("oelp-teachers@conference.206.189.136.186", mActivatedAccounts, false);
         joinConferenceFragment.show(ft, FRAGMENT_TAG_DIALOG);
+
     }
 
     private void showCreatePrivateGroupChatDialog() {
@@ -981,6 +983,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     }
 
     @Override
+//    public void onJoinDialogPositiveClick(Dialog dialog, Spinner spinner, AutoCompleteTextView jid, boolean isBookmarkChecked) {
     public void onJoinDialogPositiveClick(Dialog dialog, Spinner spinner, AutoCompleteTextView jid, boolean isBookmarkChecked) {
         if (!xmppConnectionServiceBound) {
             return;

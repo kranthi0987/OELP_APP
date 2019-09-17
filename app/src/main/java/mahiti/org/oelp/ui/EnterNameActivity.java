@@ -12,7 +12,9 @@ import mahiti.org.oelp.R;
 import mahiti.org.oelp.databinding.ActivityEnterNameBinding;
 import mahiti.org.oelp.entities.Account;
 import mahiti.org.oelp.services.XmppConnectionService;
+import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.FirstStartManager;
+import mahiti.org.oelp.utils.MySharedPref;
 
 public class EnterNameActivity extends XmppActivity implements XmppConnectionService.OnAccountUpdate {
 
@@ -24,6 +26,8 @@ public class EnterNameActivity extends XmppActivity implements XmppConnectionSer
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.binding = DataBindingUtil.setContentView(this, R.layout.activity_enter_name);
+        String userName = new MySharedPref(this).readString(Constants.USER_NAME,"");
+        this.binding.name.setText(userName);
         setSupportActionBar((Toolbar) this.binding.toolbar);
         this.binding.next.setOnClickListener(this::next);
         updateNextButton();
