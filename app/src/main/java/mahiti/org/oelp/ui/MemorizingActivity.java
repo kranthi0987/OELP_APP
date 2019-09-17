@@ -72,6 +72,7 @@ public class MemorizingActivity extends AppCompatActivity implements OnClickList
                 .setOnCancelListener(this)
                 .create();
         dialog.show();
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
     }
 
     @Override

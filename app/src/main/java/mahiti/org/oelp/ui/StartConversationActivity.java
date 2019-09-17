@@ -309,25 +309,25 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
                 prefilled = null;
             }
             switch (actionItem.getId()) {
-                case R.id.discover_public_channels:
-                    startActivity(new Intent(this, ChannelDiscoveryActivity.class));
-                    break;
+//                case R.id.discover_public_channels:
+//                    startActivity(new Intent(this, ChannelDiscoveryActivity.class));
+//                    break;
                 case R.id.join_public_channel:
                     showJoinConferenceDialog(prefilled);
                     break;
-                case R.id.create_private_group_chat:
-                    showCreatePrivateGroupChatDialog();
-                    break;
-                case R.id.create_public_channel:
-                    showPublicChannelDialog();
-                    break;
-                case R.id.create_contact:
-                    showCreateContactDialog(prefilled, null);
-                    break;
+//                case R.id.create_private_group_chat:
+//                    showCreatePrivateGroupChatDialog();
+//                    break;
+//                case R.id.create_public_channel:
+//                    showPublicChannelDialog();
+//                    break;
+//                case R.id.create_contact:
+//                    showCreateContactDialog(prefilled, null);
+//                    break;
             }
             return false;
         });
-        showJoinConferenceDialog("");
+//        showJoinConferenceDialog("");
     }
 
     public static boolean isValidJid(String input) {
@@ -540,7 +540,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             ft.remove(prev);
         }
         ft.addToBackStack(null);
-        JoinConferenceDialog joinConferenceFragment = JoinConferenceDialog.newInstance("oelp-teachers@conference.206.189.136.186", mActivatedAccounts, false);
+         JoinConferenceDialog joinConferenceFragment = JoinConferenceDialog.newInstance("oelp-teachers@conference.206.189.136.186", mActivatedAccounts, false);
         joinConferenceFragment.show(ft, FRAGMENT_TAG_DIALOG);
 
     }
@@ -951,7 +951,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             binding.speedDial.close();
             return;
         }
-        navigateBack();
+//        navigateBack();
+        Intent i=new Intent(this,ConversationsActivity.class);
+        startActivity(i);
     }
 
     private void navigateBack() {

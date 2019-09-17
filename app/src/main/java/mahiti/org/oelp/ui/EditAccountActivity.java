@@ -116,19 +116,7 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
         @Override
         public void onClick(final View v) {
 
-            String uuid = pref.readString(Constants.USER_ID,"");
-            CheckUser();
-            if(!uuid.isEmpty()){
-                uuid=uuid.replace("-","");
-                binding.accountJid.setText(uuid+"@206.189.136.186");
-                binding.accountJid.setEnabled(false);
-                binding.accountJid.setKeyListener(null);
-                binding.accountPassword.setText("123456");
 
-                binding.accountPassword.setEnabled(false);
-                binding.accountPassword.setKeyListener(null);
-
-            }
             final String password = binding.accountPassword.getText().toString();
             final boolean wasDisabled = mAccount != null && mAccount.getStatus() == Account.State.DISABLED;
             final boolean accountInfoEdited = accountInfoEdited();
@@ -343,7 +331,7 @@ binding.accountJidLayout.setError(null);
 
     private void next() {
         if (redirectInProgress.compareAndSet(false, true)) {
-            Intent intent = new Intent(this, EnterNameActivity.class);
+            Intent intent = new Intent(this, ConversationsActivity.class);
             intent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().asBareJid().toString());
             startActivity(intent);
             overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
@@ -667,7 +655,19 @@ binding.accountJidLayout.setError(null);
         binding.accountPasswordLayout.setVisibility(View.GONE);
 //        binding.accountRegisterNew.setChecked(true);
       //  binding.saveButton.performClick();
+        String uuid = pref.readString(Constants.USER_ID,"");
+        CheckUser();
+        if(!uuid.isEmpty()){
+            uuid=uuid.replace("-","");
+            binding.accountJid.setText(uuid+"@206.189.136.186");
+            binding.accountJid.setEnabled(false);
+            binding.accountJid.setKeyListener(null);
+            binding.accountPassword.setText("123456");
 
+            binding.accountPassword.setEnabled(false);
+            binding.accountPassword.setKeyListener(null);
+
+        }
 
     }
     public boolean CheckUser() {

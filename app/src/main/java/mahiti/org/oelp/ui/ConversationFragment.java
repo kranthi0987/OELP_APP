@@ -186,11 +186,11 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(getActivity(), ConferenceDetailsActivity.class);
-            intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
-            intent.putExtra("uuid", conversation.getUuid());
-            startActivity(intent);
-            activity.overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+//            Intent intent = new Intent(getActivity(), ConferenceDetailsActivity.class);
+//            intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
+//            intent.putExtra("uuid", conversation.getUuid());
+//            startActivity(intent);
+//            activity.overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
         }
     };
 
@@ -1440,10 +1440,10 @@ public class ConversationFragment extends XmppFragment implements EditMessage.Ke
                 clearHistoryDialog(conversation);
                 break;
             case R.id.action_group_details:
-                Intent intent = new Intent(activity, ConferenceDetailsActivity.class);
-                intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
-                intent.putExtra("uuid", conversation.getUuid());
-                startActivity(intent);
+//                Intent intent = new Intent(activity, ConferenceDetailsActivity.class);
+//                intent.setAction(ConferenceDetailsActivity.ACTION_VIEW_MUC);
+//                intent.putExtra("uuid", conversation.getUuid());
+//                startActivity(intent);
                 break;
             case R.id.action_contact_details:
                 activity.switchToContactDetails(conversation.getContact());

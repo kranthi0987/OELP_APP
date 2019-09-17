@@ -1028,22 +1028,22 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
         resetClickListener(viewHolder.message_box, viewHolder.messageBody);
 
         viewHolder.contact_picture.setOnClickListener(v -> {
-            if (MessageAdapter.this.mOnContactPictureClickedListener != null) {
-                MessageAdapter.this.mOnContactPictureClickedListener
-                        .onContactPictureClicked(message);
-            }
+//            if (MessageAdapter.this.mOnContactPictureClickedListener != null) {
+//                MessageAdapter.this.mOnContactPictureClickedListener
+//                        .onContactPictureClicked(message);
+//            }
 
         });
-        viewHolder.contact_picture
-                .setOnLongClickListener(v -> {
-                    if (MessageAdapter.this.mOnContactPictureLongClickedListener != null) {
-                        MessageAdapter.this.mOnContactPictureLongClickedListener
-                                .onContactPictureLongClicked(v, message);
-                        return true;
-                    } else {
-                        return false;
-                    }
-                });
+//        viewHolder.contact_picture
+//                .setOnLongClickListener(v -> {
+//                    if (MessageAdapter.this.mOnContactPictureLongClickedListener != null) {
+//                        MessageAdapter.this.mOnContactPictureLongClickedListener
+//                                .onContactPictureLongClicked(v, message);
+//                        return true;
+//                    } else {
+//                        return false;
+//                    }
+//                });
 
         final Transferable transferable = message.getTransferable();
         if (message.isFileDeleted() || (transferable != null && transferable.getStatus() != Transferable.STATUS_UPLOADING)) {

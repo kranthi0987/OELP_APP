@@ -62,7 +62,7 @@ android {
 
     lintOptions {
         disable 'ExtraTranslation', 'MissingTranslation', 'InvalidPackage', 'MissingQuantity', 'AppCompatResource', 'RestrictedApi'
-        //abortOnError false
+        abortOnError false
     }
 
     subprojects {
