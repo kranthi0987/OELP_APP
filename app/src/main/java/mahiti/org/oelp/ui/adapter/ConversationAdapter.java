@@ -1,11 +1,12 @@
 package mahiti.org.oelp.ui.adapter;
 
 import android.content.SharedPreferences;
-import android.databinding.DataBindingUtil;
+
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Pair;
 import android.view.LayoutInflater;

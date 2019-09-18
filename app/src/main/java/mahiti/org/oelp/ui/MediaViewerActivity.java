@@ -7,7 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
-import android.databinding.DataBindingUtil;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
@@ -35,9 +35,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import androidx.databinding.DataBindingUtil;
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.databinding.ActivityMediaViewerBinding;
 import mahiti.org.oelp.Config;
+import mahiti.org.oelp.databinding.ActivityMediaViewerBinding;
 import mahiti.org.oelp.persistance.FileBackend;
 import mahiti.org.oelp.utils.ExifHelper;
 import mahiti.org.oelp.utils.MimeUtils;

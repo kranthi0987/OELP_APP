@@ -1,7 +1,8 @@
 package mahiti.org.oelp.ui.adapter;
 
-import android.databinding.DataBindingUtil;
+
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.ContextMenu;

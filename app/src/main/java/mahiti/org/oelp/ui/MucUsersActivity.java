@@ -2,7 +2,7 @@ package mahiti.org.oelp.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
+import androidx.databinding.DataBindingUtil;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.databinding.ActivityMucUsersBinding;
 import mahiti.org.oelp.entities.Contact;

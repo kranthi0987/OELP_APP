@@ -1,12 +1,13 @@
 package mahiti.org.oelp.views.adapters;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.databinding.DataBindingUtil;
+
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 

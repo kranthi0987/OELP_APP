@@ -8,7 +8,8 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import androidx.appcompat.app.AlertDialog;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -78,7 +79,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     private String usertype;
     private TextView tvTitle;
     ChatAndContributionViewModel viewModel;
-    ActivityChatAndContributionBinding binding;
+    ViewDataBinding binding;
     private ProgressBar progressBar;
     private String TAG = ChatAndContributionActivity.class.getSimpleName();
     private CallAPIServicesData servicesData;
@@ -90,13 +91,12 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_chat_and_contribution);
         viewModel = ViewModelProviders.of(this).get(ChatAndContributionViewModel.class);
-        binding.setChatAndContributionViewModel(viewModel);
         binding.setLifecycleOwner(this);
 
         servicesData = new CallAPIServicesData(this);
 
-        tvTitle = binding.tvTitle;
-        progressBar = binding.progressBar;
+        tvTitle = findViewById(R.id.tvTitle);
+        progressBar = findViewById(R.id.progressBar);
 
         sharedPref = new MySharedPref(this);
         userType = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER);

@@ -2,7 +2,7 @@ package mahiti.org.oelp.ui;
 
 
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+
 import androidx.appcompat.app.AlertDialog;
 import android.view.ContextMenu;
 import android.view.MenuItem;
@@ -11,11 +11,12 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.databinding.DataBindingUtil;
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.databinding.ContactKeyBinding;
 import mahiti.org.oelp.Config;
 import mahiti.org.oelp.crypto.axolotl.FingerprintStatus;
 import mahiti.org.oelp.crypto.axolotl.XmppAxolotlSession;
+import mahiti.org.oelp.databinding.ContactKeyBinding;
 import mahiti.org.oelp.entities.Account;
 import mahiti.org.oelp.utils.CryptoHelper;
 import mahiti.org.oelp.utils.XmppUri;

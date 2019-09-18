@@ -3,7 +3,7 @@ package mahiti.org.oelp.ui;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
@@ -22,9 +22,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import androidx.databinding.DataBindingUtil;
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.databinding.ActivityMucDetailsBinding;
 import mahiti.org.oelp.Config;
+import mahiti.org.oelp.databinding.ActivityMucDetailsBinding;
 import mahiti.org.oelp.entities.Account;
 import mahiti.org.oelp.entities.Bookmark;
 import mahiti.org.oelp.entities.Conversation;

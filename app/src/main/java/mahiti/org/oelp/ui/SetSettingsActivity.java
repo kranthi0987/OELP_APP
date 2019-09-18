@@ -2,7 +2,7 @@ package mahiti.org.oelp.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.databinding.DataBindingUtil;
+
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import androidx.appcompat.app.AlertDialog;
@@ -10,9 +10,10 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import androidx.databinding.DataBindingUtil;
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.databinding.ActivitySetSettingsBinding;
 import mahiti.org.oelp.Config;
+import mahiti.org.oelp.databinding.ActivitySetSettingsBinding;
 import mahiti.org.oelp.entities.Account;
 import mahiti.org.oelp.services.XmppConnectionService;
 import mahiti.org.oelp.utils.AccountUtils;

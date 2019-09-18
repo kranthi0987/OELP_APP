@@ -7,7 +7,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.databinding.DataBindingUtil;
+
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,12 +47,13 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import androidx.databinding.DataBindingUtil;
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.databinding.ActivityEditAccountBinding;
-import mahiti.org.oelp.databinding.DialogPresenceBinding;
 import mahiti.org.oelp.Config;
 import mahiti.org.oelp.crypto.axolotl.AxolotlService;
 import mahiti.org.oelp.crypto.axolotl.XmppAxolotlSession;
+import mahiti.org.oelp.databinding.ActivityEditAccountBinding;
+import mahiti.org.oelp.databinding.DialogPresenceBinding;
 import mahiti.org.oelp.entities.Account;
 import mahiti.org.oelp.entities.Presence;
 import mahiti.org.oelp.entities.PresenceTemplate;

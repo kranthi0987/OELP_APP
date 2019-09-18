@@ -1,7 +1,7 @@
 package mahiti.org.oelp.ui;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
+
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
@@ -19,6 +19,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.databinding.DataBindingUtil;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.databinding.ActivityChooseContactBinding;
 import mahiti.org.oelp.entities.ListItem;

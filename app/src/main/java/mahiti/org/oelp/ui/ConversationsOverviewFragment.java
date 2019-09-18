@@ -34,8 +34,10 @@ import android.animation.AnimatorInflater;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+
 import android.os.Bundle;
+
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,8 +51,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.databinding.FragmentConversationsOverviewBinding;
 import mahiti.org.oelp.Config;
+import mahiti.org.oelp.databinding.FragmentConversationsOverviewBinding;
 import mahiti.org.oelp.entities.Conversation;
 import mahiti.org.oelp.ui.adapter.ConversationAdapter;
 import mahiti.org.oelp.ui.interfaces.OnConversationSelected;
