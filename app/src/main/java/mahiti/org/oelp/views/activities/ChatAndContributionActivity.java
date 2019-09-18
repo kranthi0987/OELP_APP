@@ -8,7 +8,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.databinding.DataBindingUtil;
+import android.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -322,7 +322,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     private void checkVideoAndDownload(FileModel fileModel) {
 
         String userUUId = new MySharedPref(this).readString(Constants.USER_ID, "");
-        if (videoAvailable(fileModel)) {
+        if (videoAvailable(fileModel) && DownloadUtility.checkFileCorruptStatus(fileModel,ChatAndContributionActivity.this)) {
             DownloadUtility.playVideo(this, fileModel.getFileUrl(), fileModel.getFileName(), userUUId, fileModel.getUuid(), "", fileModel.getDcfId(), "");
         } else {
             downloadVideo(fileModel);

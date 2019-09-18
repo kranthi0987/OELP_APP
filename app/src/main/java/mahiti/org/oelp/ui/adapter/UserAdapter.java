@@ -2,7 +2,7 @@ package mahiti.org.oelp.ui.adapter;
 
 import android.app.PendingIntent;
 import android.content.IntentSender;
-import androidx.databinding.DataBindingUtil;
+import android.databinding.DataBindingUtil;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.DiffUtil;

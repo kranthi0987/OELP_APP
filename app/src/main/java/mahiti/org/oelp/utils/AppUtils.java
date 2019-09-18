@@ -437,7 +437,7 @@ public class AppUtils {
     }
 
     public static int getFileType(String fileName ){
-        int fileType = Constants.IMAGE;
+        int fileType ;
         String lastFileExtension = fileName.substring(fileName.lastIndexOf("."));
         if (lastFileExtension.contains(".mp4") || lastFileExtension.contains(".3GP") || lastFileExtension.contains(".OGG")
                 || lastFileExtension.contains(".WMV")||lastFileExtension.contains(".WEBM")||lastFileExtension.contains(".FLV")

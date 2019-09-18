@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import androidx.databinding.DataBindingUtil;
+import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;

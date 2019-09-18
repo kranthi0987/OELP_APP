@@ -2,7 +2,7 @@ package mahiti.org.oelp.ui;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;

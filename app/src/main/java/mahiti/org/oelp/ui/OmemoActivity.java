@@ -2,7 +2,7 @@ package mahiti.org.oelp.ui;
 
 
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
+import android.databinding.DataBindingUtil;
 import androidx.appcompat.app.AlertDialog;
 import android.view.ContextMenu;
 import android.view.MenuItem;

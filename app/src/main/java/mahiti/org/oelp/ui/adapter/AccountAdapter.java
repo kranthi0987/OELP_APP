@@ -1,6 +1,6 @@
 package mahiti.org.oelp.ui.adapter;
 
-import androidx.databinding.DataBindingUtil;
+import android.databinding.DataBindingUtil;
 import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -3,7 +3,7 @@ package mahiti.org.oelp.ui;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
+import android.databinding.DataBindingUtil;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;

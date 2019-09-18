@@ -34,7 +34,7 @@ import android.animation.AnimatorInflater;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import android.util.Log;

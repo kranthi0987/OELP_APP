@@ -1,6 +1,6 @@
 package mahiti.org.oelp.ui;
 
-import androidx.databinding.DataBindingUtil;
+import android.databinding.DataBindingUtil;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import android.view.View;

@@ -1,7 +1,7 @@
 package mahiti.org.oelp.ui.adapter;
 
 import android.content.SharedPreferences;
-import androidx.databinding.DataBindingUtil;
+import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;

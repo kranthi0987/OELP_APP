@@ -1,7 +1,7 @@
 package mahiti.org.oelp.ui;
 
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;

@@ -1,7 +1,8 @@
 package mahiti.org.oelp.views.activities;
 
 import androidx.lifecycle.ViewModelProviders;
-import androidx.databinding.DataBindingUtil;
+
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
