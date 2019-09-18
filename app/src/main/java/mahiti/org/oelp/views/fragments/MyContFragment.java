@@ -81,7 +81,7 @@ public class MyContFragment extends Fragment {
 
     private void fetchDataFromDb(boolean forGroup, int i) {
         MediaContentDao mediaContentDao = new MediaContentDao(getActivity());
-        sharedMediaList = mediaContentDao.getSharedMedia(teacherUUID, false);
+        sharedMediaList = mediaContentDao.getSharedMedia(teacherUUID, groupUUID,false);
         progressBar.setVisibility(View.GONE);
         if (sharedMediaList != null && !sharedMediaList.isEmpty()) {
             adapter.setList(sharedMediaList);

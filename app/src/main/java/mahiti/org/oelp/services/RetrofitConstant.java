@@ -21,8 +21,8 @@ public class RetrofitConstant {
     }
 
 
-//    public static final String BASE_URL = "https://oelpbackend.mahiti.org";
-    public static final String BASE_URL = "http://oelpbackenddemo.mahiti.org";
+    public static final String BASE_URL = "https://oelpbackend.mahiti.org";
+//    public static final String BASE_URL = "http://oelpbackenddemo.mahiti.org";
     public static final String BASE_URL_VIDEO = "https://oelp.mahiti.org/";
     public static final String OTP_VALIDATION_URL = "/api/otp-validation/";
     public static final String MOBILE_VALIDATION_URL = "/api/mobile-validation/";

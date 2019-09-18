@@ -2,7 +2,10 @@ package mahiti.org.oelp.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import com.google.android.material.tabs.TabLayout;
+import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
@@ -13,9 +16,15 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,6 +82,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     private ProgressBar progressBar;
     private String TAG = ChatAndContributionActivity.class.getSimpleName();
     private CallAPIServicesData servicesData;
+    private AlertDialog alertDialogPop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,9 +142,6 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
-
 
 
     @Override
@@ -211,10 +218,71 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
     @Override
     public void onSharedMediaClick(SharedMediaModel mediaModel, boolean shareGlobally) {
-        if (!shareGlobally)
-            checkVideoAndDownload(new FileModel(mediaModel.getMediaTitle(), mediaModel.getMediaFile(), mediaModel.getMediaUuid(), 0));
-        else
+        if (!shareGlobally) {
+            if (mediaModel.getMediaType() .equalsIgnoreCase(String.valueOf(Constants.VIDEO))) {
+                checkVideoAndDownload(new FileModel(mediaModel.getMediaTitle(), mediaModel.getMediaFile(), mediaModel.getMediaUuid(), 0));
+            } else if (mediaModel.getMediaType().equalsIgnoreCase(String.valueOf(Constants.IMAGE))) {
+                shoWImagePopUp(mediaModel);
+            }
+        } else {
             showPopup(mediaModel);
+        }
+    }
+
+    private void shoWImagePopUp(SharedMediaModel mediaModel) {
+        if (mediaModel == null)
+            return;
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.imageview_popup, null);
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setCancelable(true);
+        String fileName = "";
+
+        TextView tvMediaName = dialogView.findViewById(R.id.tvMediaName);
+        TextView tvSharedBy = dialogView.findViewById(R.id.tvSharedBy);
+        TextView tvSharedOn = dialogView.findViewById(R.id.tvSharedOn);
+        LinearLayout rlSharedBy = dialogView.findViewById(R.id.rlSharedBy);
+        LinearLayout rlSharedOn = dialogView.findViewById(R.id.rlSharedOn);
+        Button btnClose = dialogView.findViewById(R.id.btnClose);
+        RoundedImageView ivSharedContent = dialogView.findViewById(R.id.ivSharedContent);
+
+        if (!mediaModel.getMediaTitle().isEmpty()) {
+            tvMediaName.setVisibility(View.VISIBLE);
+            tvMediaName.setText(mediaModel.getMediaTitle());
+        }
+
+        if (!mediaModel.getUserName().isEmpty()) {
+            rlSharedBy.setVisibility(View.VISIBLE);
+            tvSharedBy.setText(mediaModel.getUserName());
+        }
+
+        if (!mediaModel.getSubmissionTime().isEmpty()) {
+            rlSharedOn.setVisibility(View.VISIBLE);
+            tvSharedOn.setText(mediaModel.getSubmissionTime());
+        }
+
+        btnClose.setOnClickListener(view -> {
+            alertDialogPop.dismiss();
+        });
+
+        if (mediaModel.getMediaFile() != null && !mediaModel.getMediaFile().isEmpty()) {
+            String fileName1 = AppUtils.getFileName(mediaModel.getMediaFile());
+            File file = null;
+            try {
+                file = new File(AppUtils.completeInternalStoragePath(ChatAndContributionActivity.this, Constants.IMAGE), fileName1);
+            } catch (Exception ex) {
+                Logger.logE("Exce", ex.getMessage(), ex);
+            }
+            if (file.exists()) {
+                Picasso.get()
+                        .load("file://" + file)
+                        .into(ivSharedContent);
+            }
+        }
+
+
+        alertDialogPop = dialogBuilder.create();
+        alertDialogPop.show();
     }
 
     private void showPopup(SharedMediaModel mediaModel) {
@@ -285,7 +353,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
     @Override
     public void onMediaDownload(int type, String savedPath, String name, int position, String uuid, int dcfId, String unitUUID) {
-        if (type==Constants.VIDEO) {
+        if (type == Constants.VIDEO) {
             if (savedPath != null && !savedPath.isEmpty()) {
                 String userUUID = new MySharedPref(this).readString(Constants.USER_ID, "");
                 DownloadUtility.playVideo(this, savedPath, name, userUUID, uuid, "", dcfId, unitUUID);

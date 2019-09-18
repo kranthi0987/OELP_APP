@@ -1,7 +1,9 @@
 package mahiti.org.oelp.views.adapters;
 
 import android.app.Activity;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,8 +56,7 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
         }
 
         viewHolder.llRecycler.setOnClickListener(view -> {
-            if ((model.getMediaType()).equals("3"))
-                clickListener.onSharedMediaClick(model, false);
+            clickListener.onSharedMediaClick(model, false);
         });
 
         viewHolder.llRecycler.setOnLongClickListener(view -> {
@@ -66,13 +67,13 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
     }
 
     public void showUIForImage(String path, ViewHolder viewHolder) {
-        if (path==null)
+        if (path == null)
             return;
         String fileName = AppUtils.getFileName(path);
         File file = null;
-        try{
+        try {
             file = new File(AppUtils.completeInternalStoragePath(context, Constants.IMAGE), fileName);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             Logger.logE("Exce", ex.getMessage(), ex);
         }
         if (file.exists()) {

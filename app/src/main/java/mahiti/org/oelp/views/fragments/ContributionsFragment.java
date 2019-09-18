@@ -200,7 +200,7 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
             ivTeacherContribution.setVisibility(View.VISIBLE);
             uuid = userUUId;
         }
-        sharedMediaList = mediaContentDao.getSharedMedia(uuid, switchContribution.isChecked());
+        sharedMediaList = mediaContentDao.getSharedMedia(uuid, groupUUID, switchContribution.isChecked());
         setAdapters(sharedMediaList);
     }
 
@@ -243,12 +243,17 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
 
     private void insertDatatoTable(MobileVerificationResponseModel body) {
         if (body.getData() != null && !body.getData().isEmpty()) {
+
             MediaContentDao mediaContentDao = new MediaContentDao(getActivity());
             mediaContentDao.insertSharedMedia(body.getData());
             if (body.getGlobally() != null && !body.getGlobally().isEmpty()) {
                 mediaContentDao.updateGloabllyShareMediaUUID(body.getGlobally());
             }
             fetchDataFromDb(switchContribution.isChecked());
+        }else {
+            progressBar.setVisibility(View.GONE);
+            tvError.setVisibility(View.VISIBLE);
+            llMain.setVisibility(View.GONE);
         }
     }
 
