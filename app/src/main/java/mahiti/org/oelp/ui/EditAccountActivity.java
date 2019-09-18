@@ -668,6 +668,13 @@ binding.accountJidLayout.setError(null);
             binding.accountPassword.setKeyListener(null);
 
         }
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                binding.saveButton.performClick();
+            }
+        }, 2000);
 
     }
     public boolean CheckUser() {

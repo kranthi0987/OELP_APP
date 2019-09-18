@@ -947,13 +947,13 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 
     @Override
     public void onBackPressed() {
-        if (binding.speedDial.isOpen()) {
-            binding.speedDial.close();
-            return;
-        }
+//        if (binding.speedDial.isOpen()) {
+//            binding.speedDial.close();
+//            return;
+//        }
 //        navigateBack();
-        Intent i=new Intent(this,ConversationsActivity.class);
-        startActivity(i);
+//        Intent i=new Intent(this,ConversationsActivity.class);
+//        startActivity(i);
     }
 
     private void navigateBack() {
@@ -1205,9 +1205,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return getResources().getString(R.string.contacts);
-                case 1:
                     return getResources().getString(R.string.bookmarks);
+//                case 1:
+//                    return getResources().getString(R.string.bookmarks);
                 default:
                     return super.getPageTitle(position);
             }
@@ -1216,16 +1216,16 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         Fragment getItem(int position) {
             if (fragments[position] == null) {
                 final MyListFragment listFragment = new MyListFragment();
-                if (position == 1) {
+//                if (position == 1) {
                     listFragment.setListAdapter(mConferenceAdapter);
                     listFragment.setContextMenu(R.menu.conference_context);
                     listFragment.setOnListItemClickListener((arg0, arg1, p, arg3) -> openConversationForBookmark(p));
-                } else {
-
-                    listFragment.setListAdapter(mContactsAdapter);
-                    listFragment.setContextMenu(R.menu.contact_context);
-                    listFragment.setOnListItemClickListener((arg0, arg1, p, arg3) -> openConversationForContact(p));
-                }
+//                } else {
+//
+//                    listFragment.setListAdapter(mContactsAdapter);
+//                    listFragment.setContextMenu(R.menu.contact_context);
+//                    listFragment.setOnListItemClickListener((arg0, arg1, p, arg3) -> openConversationForContact(p));
+//                }
                 fragments[position] = listFragment;
             }
             return fragments[position];

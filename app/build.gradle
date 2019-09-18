@@ -17,6 +17,14 @@ repositories {
 
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('/Volumes/work/progaurd_minify_fixed/OELP_APP/app/JKS/oelp.jks')
+            keyAlias = 'OELP'
+            storePassword 'oelp@1234'
+            keyPassword 'oelp@1234'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "mahiti.org.oelp"
