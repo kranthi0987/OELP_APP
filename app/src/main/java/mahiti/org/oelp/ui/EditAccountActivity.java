@@ -3,6 +3,7 @@ package mahiti.org.oelp.ui;
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -269,10 +270,7 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
                     binding.accountJidLayout.setError(getString(R.string.account_already_exists));
                     removeErrorsOnAllBut(binding.accountJidLayout);
                     binding.accountJid.requestFocus();
-                    xmppConnectionService.updateAccount(mAccount);
-                    mAccount.isEnabled();
-                    updateSaveButton();
-                    updateAccountInformation(true);
+
 
                 }
                 mAccount = new Account(jid.asBareJid(), password);
@@ -606,6 +604,7 @@ binding.accountJidLayout.setError(null);
             return null;
         }
     }
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -618,6 +617,9 @@ binding.accountJidLayout.setError(null);
 //        setSupportActionBar((Toolbar) binding.toolbar);
 //        configureActionBar(getSupportActionBar());
         pref = new MySharedPref(EditAccountActivity.this);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("please wait while account is loading");
+        progressDialog.show();
         this.binding.accountJid.addTextChangedListener(this.mTextWatcher);
         this.binding.accountJid.setOnFocusChangeListener(this.mEditTextFocusListener);
         this.binding.accountPassword.addTextChangedListener(this.mTextWatcher);
@@ -653,7 +655,7 @@ binding.accountJidLayout.setError(null);
             startActivity(browserIntent);
         });
         binding.accountPasswordLayout.setVisibility(View.GONE);
-//        binding.accountRegisterNew.setChecked(true);
+        binding.accountRegisterNew.setChecked(true);
       //  binding.saveButton.performClick();
         String uuid = pref.readString(Constants.USER_ID,"");
         CheckUser();
@@ -1341,6 +1343,26 @@ binding.accountJidLayout.setError(null);
                 if (init || !accountInfoEdited()) {
                     errorLayout.requestFocus();
                 }
+                final Handler handler1 = new Handler();
+                handler1.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.cancelButton.performClick();
+
+                    }
+                }, 2000);
+
+
+                binding.accountRegisterNew.setChecked(false);
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.saveButton.performClick();
+                        progressDialog.dismiss();
+                    }
+                }, 2000);
             } else {
                 errorLayout = null;
             }
