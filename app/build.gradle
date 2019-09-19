@@ -33,7 +33,7 @@ android {
         versionCode 3
         versionName "1.02"
         multiDexEnabled true
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -59,6 +59,7 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+
     flavorDimensions("distribution")
 
     productFlavors {
@@ -86,6 +87,7 @@ android {
 
         }
     }
+
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
     }
@@ -122,7 +124,7 @@ dependencies {
     implementation 'com.github.jkwiecien:EasyImage:2.1.0'
     implementation 'com.loopj.android:android-async-http:1.4.9'
     debugImplementation 'com.amitshekhar.android:debug-db-encrypt:1.0.6'
-    compile('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {
+    implementation('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {
         transitive = true;
     }
     implementation 'androidx.multidex:multidex:2.0.1'

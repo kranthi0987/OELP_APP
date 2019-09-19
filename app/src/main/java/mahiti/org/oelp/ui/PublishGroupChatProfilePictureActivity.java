@@ -30,7 +30,7 @@
 package mahiti.org.oelp.ui;
 
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
+
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,9 +42,10 @@ import android.widget.Toast;
 
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import androidx.databinding.DataBindingUtil;
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.databinding.ActivityPublishProfilePictureBinding;
 import mahiti.org.oelp.Config;
+import mahiti.org.oelp.databinding.ActivityPublishProfilePictureBinding;
 import mahiti.org.oelp.entities.Conversation;
 import mahiti.org.oelp.ui.interfaces.OnAvatarPublication;
 import mahiti.org.oelp.ui.util.PendingItem;

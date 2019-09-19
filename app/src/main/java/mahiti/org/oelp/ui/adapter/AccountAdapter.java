@@ -1,6 +1,6 @@
 package mahiti.org.oelp.ui.adapter;
 
-import androidx.databinding.DataBindingUtil;
+
 import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +9,10 @@ import android.widget.ArrayAdapter;
 
 import java.util.List;
 
+import androidx.databinding.DataBindingUtil;
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.databinding.AccountRowBinding;
 import mahiti.org.oelp.Config;
+import mahiti.org.oelp.databinding.AccountRowBinding;
 import mahiti.org.oelp.entities.Account;
 import mahiti.org.oelp.ui.XmppActivity;
 import mahiti.org.oelp.ui.util.AvatarWorkerTask;

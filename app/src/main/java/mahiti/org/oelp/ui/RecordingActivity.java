@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
+
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,9 +24,10 @@ import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import androidx.databinding.DataBindingUtil;
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.databinding.ActivityRecordingBinding;
 import mahiti.org.oelp.Config;
+import mahiti.org.oelp.databinding.ActivityRecordingBinding;
 import mahiti.org.oelp.persistance.FileBackend;
 import mahiti.org.oelp.utils.ThemeHelper;
 

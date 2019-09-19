@@ -20,7 +20,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import androidx.databinding.DataBindingUtil;
+
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -51,9 +51,12 @@ import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 import net.java.otr4j.session.SessionID;
 
@@ -67,6 +70,8 @@ import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import mahiti.org.oelp.Config;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.crypto.PgpEngine;
@@ -731,43 +736,45 @@ public abstract class XmppActivity extends ActionBarActivity {
                            boolean password,
                            boolean permitEmpty) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        DialogQuickeditBinding binding = DataBindingUtil.inflate(getLayoutInflater(),R.layout.dialog_quickedit, null, false);
+        ViewDataBinding binding = DataBindingUtil.inflate(getLayoutInflater(),R.layout.dialog_quickedit, null, false);
+        EditText inputEditText = findViewById(R.id.input_edit_text);
+        TextInputLayout inputLayout = findViewById(R.id.input_layout);
         if (password) {
-            binding.inputEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            inputEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         }
         builder.setPositiveButton(R.string.accept, null);
         if (hint != 0) {
-            binding.inputLayout.setHint(getString(hint));
+            inputLayout.setHint(getString(hint));
         }
-        binding.inputEditText.requestFocus();
+        inputEditText.requestFocus();
         if (previousValue != null) {
-            binding.inputEditText.getText().append(previousValue);
+            inputEditText.getText().append(previousValue);
         }
         builder.setView(binding.getRoot());
         builder.setNegativeButton(R.string.cancel, null);
         final AlertDialog dialog = builder.create();
-        dialog.setOnShowListener(d -> SoftKeyboardUtils.showKeyboard(binding.inputEditText));
+        dialog.setOnShowListener(d -> SoftKeyboardUtils.showKeyboard(inputEditText));
         dialog.show();
         View.OnClickListener clickListener = v -> {
-            String value = binding.inputEditText.getText().toString();
+            String value = inputEditText.getText().toString();
             if (!value.equals(previousValue) && (!value.trim().isEmpty() || permitEmpty)) {
                 String error = callback.onValueEdited(value);
                 if (error != null) {
-                    binding.inputLayout.setError(error);
+                    inputLayout.setError(error);
                     return;
                 }
             }
-            SoftKeyboardUtils.hideSoftKeyboard(binding.inputEditText);
+            SoftKeyboardUtils.hideSoftKeyboard(inputEditText);
             dialog.dismiss();
         };
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(clickListener);
         dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener((v -> {
-            SoftKeyboardUtils.hideSoftKeyboard(binding.inputEditText);
+            SoftKeyboardUtils.hideSoftKeyboard(inputEditText);
             dialog.dismiss();
         }));
         dialog.setCanceledOnTouchOutside(false);
         dialog.setOnDismissListener(dialog1 -> {
-            SoftKeyboardUtils.hideSoftKeyboard(binding.inputEditText);
+            SoftKeyboardUtils.hideSoftKeyboard(inputEditText);
         });
     }
 

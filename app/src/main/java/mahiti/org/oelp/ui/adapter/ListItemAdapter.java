@@ -1,7 +1,7 @@
 package mahiti.org.oelp.ui.adapter;
 
 import android.content.SharedPreferences;
-import androidx.databinding.DataBindingUtil;
+
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +14,7 @@ import com.wefika.flowlayout.FlowLayout;
 
 import java.util.List;
 
+import androidx.databinding.DataBindingUtil;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.databinding.ContactBinding;
 import mahiti.org.oelp.entities.ListItem;

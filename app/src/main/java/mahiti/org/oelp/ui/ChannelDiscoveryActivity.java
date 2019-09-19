@@ -3,7 +3,7 @@ package mahiti.org.oelp.ui;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+import androidx.databinding.DataBindingUtil;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.databinding.ActivityChannelDiscoveryBinding;
 import mahiti.org.oelp.entities.Account;

@@ -1,12 +1,13 @@
 package mahiti.org.oelp.ui.adapter;
 
 import android.content.res.Resources;
-import androidx.databinding.DataBindingUtil;
+
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.DisplayMetrics;

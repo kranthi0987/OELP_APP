@@ -3,9 +3,11 @@ package mahiti.org.oelp.views.activities;
 import android.app.Activity;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.fragment.app.Fragment;

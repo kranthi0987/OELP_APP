@@ -86,6 +86,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 DBConstants.USER_UUID + DBConstants.TEXT_COMMA +
                 DBConstants.GROUP_UUID + DBConstants.TEXT_COMMA +
                 DBConstants.MEDIA_TYPE + DBConstants.TEXT_COMMA +
+                DBConstants.FILE_SIZE + DBConstants.TEXT_COMMA +
                 DBConstants.MEDIA_PATH + DBConstants.TEXT_COMMA +
                 DBConstants.MODIFIED + DBConstants.TEXT_COMMA +
                 DBConstants.SHARED_GLOBALLY + DBConstants.INTEGER + DBConstants.NOT_NULL_DEFAULT_ZERO +  // double not null default 0

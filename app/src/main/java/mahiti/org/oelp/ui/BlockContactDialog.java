@@ -1,11 +1,12 @@
 package mahiti.org.oelp.ui;
 
-import androidx.databinding.DataBindingUtil;
+
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.databinding.DataBindingUtil;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.databinding.DialogBlockContactBinding;
 import mahiti.org.oelp.entities.Blockable;

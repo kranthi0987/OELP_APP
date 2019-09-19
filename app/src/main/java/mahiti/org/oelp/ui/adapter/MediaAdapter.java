@@ -2,7 +2,7 @@ package mahiti.org.oelp.ui.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
-import androidx.databinding.DataBindingUtil;
+
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import androidx.annotation.AttrRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

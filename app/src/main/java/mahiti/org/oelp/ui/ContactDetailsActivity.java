@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import androidx.databinding.DataBindingUtil;
+
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,12 +35,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import androidx.databinding.DataBindingUtil;
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.databinding.ActivityContactDetailsBinding;
 import mahiti.org.oelp.Config;
 import mahiti.org.oelp.crypto.axolotl.AxolotlService;
 import mahiti.org.oelp.crypto.axolotl.FingerprintStatus;
 import mahiti.org.oelp.crypto.axolotl.XmppAxolotlSession;
+import mahiti.org.oelp.databinding.ActivityContactDetailsBinding;
 import mahiti.org.oelp.entities.Account;
 import mahiti.org.oelp.entities.Contact;
 import mahiti.org.oelp.entities.Conversation;

@@ -1,13 +1,14 @@
 package mahiti.org.oelp.ui;
 
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import androidx.databinding.DataBindingUtil;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.databinding.ActivityEnterNameBinding;
 import mahiti.org.oelp.entities.Account;

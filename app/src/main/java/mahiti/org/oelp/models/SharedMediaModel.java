@@ -40,7 +40,19 @@ public class SharedMediaModel {
     @Expose
     private String userName;
 
+    @SerializedName("global_access")
+    @Expose
+    private boolean globalAccess;
+
     private int sharedGlobally;
+
+    public boolean isGlobalAccess() {
+        return globalAccess;
+    }
+
+    public void setGlobalAccess(boolean globalAccess) {
+        this.globalAccess = globalAccess;
+    }
 
     public int getSharedGlobally() {
         return sharedGlobally;

@@ -2,9 +2,10 @@ package mahiti.org.oelp.ui;
 
 import android.app.Activity;
 import android.app.Dialog;
-import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AlertDialog;
 import android.text.Editable;
@@ -19,8 +20,8 @@ import java.util.Collections;
 import java.util.List;
 
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.databinding.EnterJidDialogBinding;
 import mahiti.org.oelp.Config;
+import mahiti.org.oelp.databinding.EnterJidDialogBinding;
 import mahiti.org.oelp.ui.adapter.KnownHostsAdapter;
 import mahiti.org.oelp.ui.interfaces.OnBackendConnected;
 import mahiti.org.oelp.ui.util.DelayedHintHelper;

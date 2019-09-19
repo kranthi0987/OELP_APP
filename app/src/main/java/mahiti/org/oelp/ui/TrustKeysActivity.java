@@ -2,7 +2,7 @@ package mahiti.org.oelp.ui;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
@@ -23,13 +23,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import androidx.databinding.DataBindingUtil;
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.databinding.ActivityTrustKeysBinding;
-import mahiti.org.oelp.databinding.KeysCardBinding;
 import mahiti.org.oelp.Config;
 import mahiti.org.oelp.crypto.OmemoSetting;
 import mahiti.org.oelp.crypto.axolotl.AxolotlService;
 import mahiti.org.oelp.crypto.axolotl.FingerprintStatus;
+import mahiti.org.oelp.databinding.ActivityTrustKeysBinding;
+import mahiti.org.oelp.databinding.KeysCardBinding;
 import mahiti.org.oelp.entities.Account;
 import mahiti.org.oelp.entities.Contact;
 import mahiti.org.oelp.entities.Conversation;

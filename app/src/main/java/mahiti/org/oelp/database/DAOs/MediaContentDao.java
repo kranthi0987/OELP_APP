@@ -54,6 +54,7 @@ public class MediaContentDao extends DatabaseHandlerClass {
                 contentValues.put(DBConstants.MEDIA_TYPE, model.getMediaType());
                 contentValues.put(DBConstants.MEDIA_PATH, model.getMediaFile());
                 contentValues.put(DBConstants.MODIFIED, model.getSubmissionTime());
+                /*contentValues.put(DBConstants.SHARED_GLOBALLY, model.getSharedGlobally());*/
                 insertlong = database.insertWithOnConflict(DBConstants.MEDIA_CONTENT_TABLE, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
                 Logger.logD(TAG, DBConstants.MEDIA_CONTENT_TABLE + " Inserting Values :" + contentValues.toString());
             }
@@ -178,4 +179,37 @@ public class MediaContentDao extends DatabaseHandlerClass {
         }
         return imageList;
     }
+
+    public String getFileSizeMediaShareTable(String fileuuid) {
+        initDatabase();
+        String fileSize = null;
+        String query = "Select filesize from "+DBConstants.MEDIA_CONTENT_TABLE+" where uuid='" + fileuuid + "'";
+        Logger.logD(TAG, "Getting filesize Item : " + query);
+        try {
+            database.beginTransaction();
+            Cursor cursor = database.rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+                fileSize = cursor.getString(cursor.getColumnIndex("filesize"));
+            }
+            cursor.close();
+            database.setTransactionSuccessful();
+        } catch (Exception ex) {
+            Logger.logE(TAG, ex.getMessage(), ex);
+        } finally {
+            database.endTransaction();
+        }
+        return fileSize;
+    }
+
+    public boolean addFileSizeMediaShareTable(String fileUuid, long filesize) {
+
+        initDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DBConstants.FILE_SIZE, filesize);
+        Log.d("CatalogDBHandler", "updating the view status to database" + fileUuid);
+        database.update(DBConstants.MEDIA_CONTENT_TABLE, values, DBConstants.UUID + " = ?", new String[]{fileUuid});
+
+        return true;
+    }
+
 }

@@ -2,8 +2,9 @@ package mahiti.org.oelp.ui.adapter;
 
 import android.app.PendingIntent;
 import android.content.IntentSender;
-import androidx.databinding.DataBindingUtil;
+
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,8 +16,8 @@ import android.view.ViewGroup;
 import org.openintents.openpgp.util.OpenPgpUtils;
 
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.databinding.ContactBinding;
 import mahiti.org.oelp.crypto.PgpEngine;
+import mahiti.org.oelp.databinding.ContactBinding;
 import mahiti.org.oelp.entities.Contact;
 import mahiti.org.oelp.entities.MucOptions;
 import mahiti.org.oelp.services.XmppConnectionService;

@@ -40,7 +40,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import androidx.databinding.DataBindingUtil;
+
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
@@ -68,10 +68,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.databinding.ActivityConversationsBinding;
 import mahiti.org.oelp.Config;
 import mahiti.org.oelp.crypto.OmemoSetting;
+import mahiti.org.oelp.databinding.ActivityConversationsBinding;
 import mahiti.org.oelp.entities.Account;
 import mahiti.org.oelp.entities.Conversation;
 import mahiti.org.oelp.entities.MucOptions;

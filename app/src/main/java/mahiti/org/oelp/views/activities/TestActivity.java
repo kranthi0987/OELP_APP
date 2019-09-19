@@ -1,10 +1,12 @@
 package mahiti.org.oelp.views.activities;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import androidx.databinding.DataBindingUtil;
+
 import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
@@ -30,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.databinding.ActivityTestBinding;
 import mahiti.org.oelp.models.QuestionAnswerModel;
 import mahiti.org.oelp.models.QuestionChoicesModel;
 import mahiti.org.oelp.utils.AppUtils;
@@ -44,7 +45,7 @@ public class TestActivity extends AppCompatActivity {
 
     private static final String TAG = TestActivity.class.getSimpleName();
     private TestViewModel testViewModel;
-    ActivityTestBinding binding;
+    ViewDataBinding binding;
     private Toolbar toolbar;
     private AlertDialog dialog;
     private LinearLayout questionsAnswersRadioLayout;
@@ -69,7 +70,6 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_test);
         testViewModel = ViewModelProviders.of(this).get(TestViewModel.class);
-        binding.setTestViewModel(testViewModel);
         binding.setLifecycleOwner(this);
         toolbar = findViewById(R.id.white_toolbar);
         toolbar = findViewById(R.id.white_toolbar);
@@ -80,7 +80,7 @@ public class TestActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
         }
-        questionsAnswersRadioLayout = binding.questionsAnswersRadioLayout;
+        questionsAnswersRadioLayout = findViewById(R.id.questionsAnswersRadioLayout);
         toolbar.inflateMenu(R.menu.teacher_menu);
         getIntentData();
         testViewModel.getShowDialog().observe(this, aBoolean -> {
@@ -318,7 +318,9 @@ public class TestActivity extends AppCompatActivity {
         testViewModel.setDCFId(dcfId);
         /*testViewModel.setDCFId(sectionUUID);*/
         String completeTilte = videoTitle.concat(getResources().getString(R.string.hiphen_question));
-        binding.tvTitle.setText(completeTilte);
+        TextView tvTitle = findViewById(R.id.tvTitle);
+        tvTitle.setText(completeTilte);
+
     }
 
     @Override

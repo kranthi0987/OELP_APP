@@ -22,16 +22,19 @@ import mahiti.org.oelp.models.SharedMediaModel;
 import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
+import mahiti.org.oelp.utils.MySharedPref;
 
 public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder> {
 
     private Activity context;
     private List<SharedMediaModel> sharedMediaList;
     private SharedMediaClickListener clickListener;
+    private MySharedPref sharedPref;
 
     public MyContAdapter(Activity context) {
         this.context = context;
         clickListener = (SharedMediaClickListener) context;
+        sharedPref = new MySharedPref(context);
 
     }
 
@@ -44,6 +47,7 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(MyContAdapter.ViewHolder viewHolder, final int position) {
+        int loginType = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
         SharedMediaModel model = sharedMediaList.get(position);
 
         viewHolder.tvMediaName.setText(model.getMediaTitle());
@@ -60,7 +64,8 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
         });
 
         viewHolder.llRecycler.setOnLongClickListener(view -> {
-            clickListener.onSharedMediaClick(model, true);
+            if(loginType==Constants.USER_TRAINER)
+                clickListener.onSharedMediaClick(model, true);
             return false;
         });
 
@@ -79,6 +84,7 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
         if (file.exists()) {
             Picasso.get()
                     .load("file://" + file)
+                    .resizeDimen(120, 120)
                     .fit()
                     .into(viewHolder.roundedImageView);
         }
