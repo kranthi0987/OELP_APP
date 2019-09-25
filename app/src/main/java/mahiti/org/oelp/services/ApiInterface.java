@@ -10,19 +10,11 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface ApiInterface {
-//    @Headers({
-//            "un:oelp2018",
-//            "pw:@!(^$o$#e!l#@p"
-//
-//    })
+
     @FormUrlEncoded
     @POST(RetrofitConstant.MOBILE_VALIDATION_URL)
     Call<MobileVerificationResponseModel> mobileValidation(@Field("mobile_number") String mobileNumber);
-//
-//    @Headers({
-//            "un:oelp2018",
-//            "pw:@!(^$o$#e!l#@p"
-//    })
+
     @FormUrlEncoded
     @POST(RetrofitConstant.USER_REGISTRATION_URL)
     Call<MobileVerificationResponseModel> userRegistration(@Field("userDetails") String userDetails);
@@ -92,44 +84,4 @@ public interface ApiInterface {
 
 
 
-//
-//    @Headers({
-//            "un:oelp2018",
-//            "pw:@!(^$o$#e!l#@p"
-//    })
-//    @FormUrlEncoded
-//    @POST(RetrofitConstant.DBPATH_URL)
-//    Call<MobileVerificationResponseModel> getDatabaseDownloadlink(@Field("version") String appVersion,
-//                                                                  @Field("user_id") String userId);
-//
-//    @Headers({
-//            "un:oelp2018",
-//            "pw:@!(^$o$#e!l#@p"
-//    })
-//    @FormUrlEncoded
-//    @POST(RetrofitConstant.USER_DETAILS_URL)
-//    Call<UserRegistrationResponseModel> callToUserRegistration(@Field("user_id") String userId,
-//                                                               @Field("name") String name,
-//                                                               @Field("mobile") String mobile,
-//                                                               @Field("block_id") String blockId,
-//                                                               @Field("school_name") String schoolName,
-//                                                               @Field("position_id") String positionId);
-//
-//    @Headers({
-//            "un:oelp2018",
-//            "pw:@!(^$o$#e!l#@p"
-//    })
-//    @FormUrlEncoded
-//    @POST(RetrofitConstant.REGISTER_USER_DETAILS)
-//    Call<UserRegistrationResponseModel> getUserDetails(@Field("user_id") String userId);
-//
-//    @Headers({
-//            "un:oelp2018",
-//            "pw:@!(^$o$#e!l#@p"})
-//    @FormUrlEncoded
-//    @POST(RetrofitConstant.QUESTION_AND_ANSWER_URL)
-//    Call<QuestionAndAnswerResponsemodel> questionAndAnswerResponseModelCall(@Field("user_id") String userId,
-//                                                                            @Field("video_id") String unitId,
-//                                                                            @Field("ans") JSONArray answer,
-//                                                                            @Field("submit_date") String dateTime);
 }

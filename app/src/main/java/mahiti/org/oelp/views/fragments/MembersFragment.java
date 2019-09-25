@@ -76,7 +76,7 @@ public class MembersFragment extends Fragment {
     }
 
     private void callApiForTeacherList(String userId) {
-        ApiInterface apiInterface = RetrofitClass.getAPIService();
+       /* ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.TEACHER_LIST_URL + " Param : userId:" + userId);
         apiInterface.getTeacherList(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
@@ -97,7 +97,7 @@ public class MembersFragment extends Fragment {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.TEACHER_LIST_URL + " Response :" + t.getMessage());
                 fetchTeacherList();
             }
-        });
+        });*/
     }
 
     private void insertDataIntoTeacherTable(List<TeacherModel> teachers) {

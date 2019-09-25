@@ -2,7 +2,6 @@ package mahiti.org.oelp.database.DAOs;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.util.Log;
 
 import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
@@ -13,14 +12,8 @@ import java.util.List;
 import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.fileandvideodownloader.FileModel;
-import mahiti.org.oelp.models.CatalogueDetailsModel;
-import mahiti.org.oelp.models.QuestionModel;
 import mahiti.org.oelp.models.SharedMediaModel;
 import mahiti.org.oelp.utils.Logger;
-
-import static mahiti.org.oelp.database.DBConstants.DESCENDING;
-import static mahiti.org.oelp.database.DBConstants.ICON_PATH;
-import static mahiti.org.oelp.database.DBConstants.QUESTION_TABLE;
 
 /**
  * Created by RAJ ARYAN on 09/09/19.

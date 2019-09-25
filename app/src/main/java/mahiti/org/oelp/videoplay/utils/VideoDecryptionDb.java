@@ -12,6 +12,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,11 +28,37 @@ public class VideoDecryptionDb extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String TAG = "VideoDecryptionDB";
     private static String DATABASE_NAME = VideoDbColumns.dbName;
+    private final File dbFile;
+    private final static String DB_PATH = "/data/data/mahiti.org.oelp/databases/";
     Context context;
 
     public VideoDecryptionDb(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
+        dbFile= new File(DB_PATH + VideoDbColumns.dbName);
+        if(!dbFile.exists()){
+            SQLiteDatabase db = super.getWritableDatabase();
+            copyDataBase(db.getPath());
+        }
+
+    }
+
+    private void copyDataBase(String dbPath){
+        try{
+            InputStream assestDB = context.getAssets().open(VideoDbColumns.dbName);
+            OutputStream appDB = new FileOutputStream(dbPath,false);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = assestDB.read(buffer)) > 0) {
+                appDB.write(buffer, 0, length);
+            }
+
+            appDB.flush();
+            appDB.close();
+            assestDB.close();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
 
     }
 

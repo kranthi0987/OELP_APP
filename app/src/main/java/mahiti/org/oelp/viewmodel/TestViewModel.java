@@ -119,7 +119,7 @@ public class TestViewModel extends AndroidViewModel {
         handlerClass.insertAnsweredQuestion(testUUID, mediaUUID, sectionUUID, unitUUID, arrayServer.toString(), AppUtils.getDateTime(), score, attempt, 0, arrayPreview.toString());  //0 Sync, 1 Async
         new MySharedPref(context).writeBoolean(Constants.VALUE_CHANGED, true);
 
-        if (CheckNetwork.checkNet(context)) {
+        /*if (CheckNetwork.checkNet(context)) {
             arrayList = handlerClass.getAnsweredQuestion("", 1);
             if (arrayList.size() != 0) {
                 for (SubmittedAnswerResponse model : arrayList) {
@@ -128,7 +128,7 @@ public class TestViewModel extends AndroidViewModel {
             } else {
                 Toast.makeText(context, context.getString(R.string.you_are_offline), Toast.LENGTH_SHORT).show();
             }
-        }
+        }*/
     }
 
     private void checkInternetAndCall(SubmittedAnswerResponse model) {
@@ -139,7 +139,7 @@ public class TestViewModel extends AndroidViewModel {
     }
 
     public void postQA(SubmittedAnswerResponse model) {
-        String response = "";
+       /* String response = "";
         Gson gson = new Gson();
         try {
             response = gson.toJson(model.getResponse());
@@ -163,7 +163,7 @@ public class TestViewModel extends AndroidViewModel {
 
 
             }
-        });
+        });*/
     }
 
     public int getTestAttemptCount(String mediaUUID) {

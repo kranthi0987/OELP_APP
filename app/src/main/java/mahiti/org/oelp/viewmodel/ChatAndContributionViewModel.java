@@ -42,12 +42,12 @@ public class ChatAndContributionViewModel extends AndroidViewModel {
         mContext = application;
         mediaContentDao = new MediaContentDao(mContext);
         MySharedPref pre = new MySharedPref(mContext);
-        callApiForMediaSharedList(pre.readString(Constants.USER_ID,""));
+        /*callApiForMediaSharedList(pre.readString(Constants.USER_ID,""));*/
 
     }
 
     public void callApiForMediaSharedList(String userUUID) {
-        final MobileVerificationResponseModel[] model = {null};
+       /* final MobileVerificationResponseModel[] model = {null};
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.FETCH_MEDIA_SHARED + " Param : user_uuid:" + userUUID);
         apiInterface.getMediaShared(userUUID).enqueue(new Callback<MobileVerificationResponseModel>() {
@@ -66,7 +66,7 @@ public class ChatAndContributionViewModel extends AndroidViewModel {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.FETCH_MEDIA_SHARED + " Response :" + t.getMessage());
                 getListOfImageFromMediaTable();
             }
-        });
+        });*/
     }
 
     private void insertDatatoTable(MobileVerificationResponseModel body) {

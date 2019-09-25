@@ -76,6 +76,7 @@ public class DBConstants {
     public static final String USER_NAME = "username";
     public static final String USER_UUID = "userUUID";
     public static final String SHARED_GLOBALLY = "sharedGlobally";
+    public static final String DB_PASSWORD = "oelp@12345";
     public static String EQUAL_TO=" = ";
     public static String NOT_EQUAL_TO=" != ";
     public static String EMPTY="''";
@@ -102,7 +103,7 @@ public class DBConstants {
 
     public static final String QA_TABLENAME = "question_answer";
     public static final String QA_DATA = "offline_data";
-    public static final String QA_SYNC_STATUS = "sync_status";
+    public static final String SYNC_STATUS = "sync_status";
     public static final String QA_ATTMEPTS = "submitted_date";
     public static final String QA_VIDEOID = "video_id";
     public static final String QA_COMPLETED = "isCompleted";

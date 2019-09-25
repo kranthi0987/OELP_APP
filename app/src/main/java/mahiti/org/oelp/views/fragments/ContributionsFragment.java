@@ -215,7 +215,7 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
     }
 
     public void callApiForMediaSharedList(String userUUID) {
-        final MobileVerificationResponseModel[] model = {null};
+       /* final MobileVerificationResponseModel[] model = {null};
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.FETCH_MEDIA_SHARED + " Param : user_uuid:" + userUUID);
         apiInterface.getMediaShared(userUUID).enqueue(new Callback<MobileVerificationResponseModel>() {
@@ -234,7 +234,7 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.FETCH_MEDIA_SHARED + " Response :" + t.getMessage());
                 fetchDataFromDb(switchContribution.isChecked());
             }
-        });
+        });*/
     }
 
     private void insertDatatoTable(MobileVerificationResponseModel body) {
@@ -320,15 +320,18 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
             Toast.makeText(getActivity(), "Please select file", Toast.LENGTH_SHORT).show();
         } else {
             alertDialog.dismiss();
-            if (CheckNetwork.checkNet(getActivity())) {
+            /*if (CheckNetwork.checkNet(getActivity())) {
                 uplaodImageToServer(s, imagesFiles.get(0));
 
             } else {
                 Toast.makeText(getActivity(), getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
-            }
+            }*/
+
 
         }
     }
+
+
 
     private void uplaodImageToServer(String fileNAme, File file) {
         progressBar.setVisibility(View.VISIBLE);

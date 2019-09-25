@@ -289,7 +289,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void callApiForCreateGroup(String userUUID, String groupName, String groupCreationKey, String teacherJson) {
-        ApiInterface apiInterface = RetrofitClass.getAPIService();
+        /*ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL: " + RetrofitConstant.BASE_URL + RetrofitConstant.CREATE_GROUP_URL + " Param :" + "user_uuid:" + userUUID + "name:" + groupName + "creation_key:" + groupCreationKey + "members:" + teacherJson);
         apiInterface.createGroup(userUUID, groupName, groupCreationKey, teacherJson).enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
@@ -310,12 +310,12 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
                 Toast.makeText(CreateGroupActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
             }
-        });
+        });*/
     }
 
     // Teacher API call
     public void callApiForTeachersList(String userId) {
-        ApiInterface apiInterface = RetrofitClass.getAPIService();
+        /*ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Param : userId:" + userId);
         apiInterface.getTeacherList(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
@@ -340,7 +340,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
                 progressBar.setVisibility(View.GONE);
             }
         });
-
+*/
     }
 
     private void checkAndFinish(MobileVerificationResponseModel body) {
@@ -353,7 +353,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void callApiForGroupList(String userId) {
-        ApiInterface apiInterface = RetrofitClass.getAPIService();
+       /* ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Param : userId:" + userId);
         apiInterface.getGroupList(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
@@ -377,7 +377,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Response :" + t.getMessage());
                 progressBar.setVisibility(View.GONE);
             }
-        });
+        });*/
 
     }
 

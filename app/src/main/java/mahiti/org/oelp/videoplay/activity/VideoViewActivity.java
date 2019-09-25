@@ -268,9 +268,9 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
                 }
             }
             /*    Hitting Api for Update the data for Video*/
-            if (CheckNetwork.checkNet(this)) {
+            /*if (CheckNetwork.checkNet(this)) {
                 callMediaTrackerApi();
-            }
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -355,9 +355,9 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     @Override
     public void onBackPressed() {
         updateOnVideoWatching();
-        if (CheckNetwork.checkNet(this)) {
+       /* if (CheckNetwork.checkNet(this)) {
             callMediaTrackerApi();
-        }
+        }*/
 //        contentUpdateStatus(mediaUUID);
         finish();
     }
@@ -502,9 +502,9 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         videoDecryptionDb.mediaTrackerUpdateDb(mediaTracker, mediaUUID);
 
 
-        if (CheckNetwork.checkNet(this)) {
+       /* if (CheckNetwork.checkNet(this)) {
             callMediaTrackerApi();
-        }
+        }*/
         boolean loginType = new MySharedPref(this).readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER;
 
 //        contentUpdateStatus(mediaUUID);
@@ -572,7 +572,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     }
 
     public void postQA(SubmittedAnswerResponse model) {
-        String response = "";
+        /*String response = "";
         Gson gson = new Gson();
         if (model.getResponse() != null) {
             try {
@@ -602,7 +602,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
 
 
             }
-        });
+        });*/
     }
 
     private void moveToAnswerPreview() {

@@ -30,7 +30,7 @@ public class CallAPIServicesData {
     }
 
     public void getSharedMediaList(String userUUID) {
-        final MobileVerificationResponseModel[] model = {null};
+        /*final MobileVerificationResponseModel[] model = {null};
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.FETCH_MEDIA_SHARED + " Param : user_uuid:" + userUUID);
         apiInterface.getMediaShared(userUUID).enqueue(new Callback<MobileVerificationResponseModel>() {
@@ -50,11 +50,11 @@ public class CallAPIServicesData {
                 model1.setStatus(Constants.Api_FAilure);
                 listener.onFetchDataFromApi(model1, "media");
             }
-        });
+        });*/
     }
 
     public List<String> shareMediaGlobally(String userUUID, String data) {
-        List<String> responseList = new ArrayList<>();
+        /*List<String> responseList = new ArrayList<>();
         final MobileVerificationResponseModel[] model = {null};
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.SHARED_MEDIA_GLOBALLY + " Param : user_uuid:" + userUUID);
@@ -76,6 +76,7 @@ public class CallAPIServicesData {
                 listener.onFetchDataFromApi(model1, "global");
             }
         });
-        return responseList;
+        return responseList;*/
+        return null;
     }
 }

@@ -3,13 +3,17 @@ package mahiti.org.oelp.database;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.ContentValues;
 import android.content.Context;
-import android.hardware.camera2.DngCreator;
 import android.util.Log;
 
 import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteOpenHelper;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +23,8 @@ import mahiti.org.oelp.models.GroupModel;
 import mahiti.org.oelp.models.LocationContent;
 import mahiti.org.oelp.models.LocationModel;
 import mahiti.org.oelp.models.Member;
-import mahiti.org.oelp.models.QuestionAnswerModel;
 import mahiti.org.oelp.models.QuestionChoicesModel;
 import mahiti.org.oelp.models.QuestionModel;
-import mahiti.org.oelp.models.SharedMediaModel;
 import mahiti.org.oelp.models.SubmittedAnswerResponse;
 import mahiti.org.oelp.models.TeacherModel;
 import mahiti.org.oelp.models.UserDetailsModel;
@@ -30,13 +32,11 @@ import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
 
 import static mahiti.org.oelp.database.DBConstants.CAT_TABLE_NAME;
-import static mahiti.org.oelp.database.DBConstants.FROM;
 import static mahiti.org.oelp.database.DBConstants.GROUP_TABLE;
 import static mahiti.org.oelp.database.DBConstants.ICON_PATH;
 import static mahiti.org.oelp.database.DBConstants.MEMBER_TABLE;
 import static mahiti.org.oelp.database.DBConstants.QUESTION_CHOICES_TABLE;
 import static mahiti.org.oelp.database.DBConstants.QUESTION_TABLE;
-import static mahiti.org.oelp.database.DBConstants.SINGLE_QUOTES;
 
 /**
  * Created by RAJ ARYAN on 02/08/19.
@@ -46,26 +46,36 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     Context mContext;
     public static SQLiteDatabase database;
     private static final String TAG = DatabaseHandlerClass.class.getSimpleName();
+    private final static String DB_PATH = "/data/data/mahiti.org.oelp/databases/";
+    File dbFile;
 
 
     public DatabaseHandlerClass(Context mContext) {
         super(mContext, DBConstants.DB_NAME, null, DBConstants.VERSION);
         this.mContext = mContext;
+        dbFile = new File(DB_PATH + DBConstants.DB_NAME);
 
+        if (!dbFile.exists()) {
+            SQLiteDatabase db = super.getWritableDatabase(DBConstants.DB_PASSWORD);
+            copyDataBase(db.getPath());
+        } else {
 
-        if (mContext == null)
-            return;
-        try {
-            SQLiteDatabase.loadLibs(mContext);
-            initDatabase();
-        } catch (Exception e) {
-            Log.e(TAG, "Exception in onCreate method", e);
+            if (mContext == null)
+                return;
+            try {
+                SQLiteDatabase.loadLibs(mContext);
+                initDatabase();
+            } catch (Exception e) {
+                Log.e(TAG, "Exception in onCreate method", e);
+            }
         }
+
+
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        createLocationTable(sqLiteDatabase);
+        /*createLocationTable(sqLiteDatabase);
         createCatalogueTable(sqLiteDatabase);
         createQuestionTable(sqLiteDatabase);
         createQuestionChoicesTable(sqLiteDatabase);
@@ -74,7 +84,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         createGroupMemberTable(sqLiteDatabase);
         createTeacherTable(sqLiteDatabase);
         createMediaStateTable(sqLiteDatabase);
-        createMediaContentTable(sqLiteDatabase);
+        createMediaContentTable(sqLiteDatabase);*/
 
     }
 
@@ -180,7 +190,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 DBConstants.QA_DATA + DBConstants.TEXT_COMMA +
                 DBConstants.QA_PREVIEW_TEXT + DBConstants.TEXT_COMMA +
                 DBConstants.MODIFIED + DBConstants.DATETIME_COMMA +
-                DBConstants.QA_SYNC_STATUS + DBConstants.INTEGER_COMMA +
+                DBConstants.SYNC_STATUS + DBConstants.INTEGER_COMMA +
                 DBConstants.ATTEMPT + DBConstants.INTEGER_COMMA +
                 DBConstants.QA_SCORE + DBConstants.TEXT_COMMA +
                 DBConstants.QA_TOTAL + DBConstants.TEXT +
@@ -473,6 +483,48 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     private void initDatabase() {
         if (database == null || !database.isOpen() || database.isReadOnly())
             database = this.getWritableDatabase(DBConstants.DATABASESECRETKEY);
+
+    }
+
+    private void copyDataBase(String dbPath) {
+        try {
+            InputStream assestDB = mContext.getAssets().open(DBConstants.DB_NAME);
+
+            OutputStream appDB = new FileOutputStream(dbPath, false);
+
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = assestDB.read(buffer)) > 0) {
+                appDB.write(buffer, 0, length);
+            }
+
+            appDB.flush();
+            appDB.close();
+            assestDB.close();
+
+            if (mContext == null)
+                return;
+            try {
+                SQLiteDatabase.loadLibs(mContext);
+                initDatabase();
+            } catch (Exception e) {
+                Log.e(TAG, "Exception in onCreate method", e);
+            }
+
+        } catch (IOException e) {
+
+            if (mContext == null)
+                return;
+            try {
+                SQLiteDatabase.loadLibs(mContext);
+                initDatabase();
+            } catch (Exception ex) {
+                Log.e(TAG, "Exception in onCreate method", ex);
+            }
+
+            e.printStackTrace();
+        }
+
     }
 
     public List<CatalogueDetailsModel> getCatalogData(String parentId) {
@@ -550,7 +602,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         QuestionModel questionModel;
         String query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.QUESTION_TABLE +
 //                DBConstants.WHERE + DBConstants.MEDIA_CONTENT + DBConstants.EQUAL_TO + "'" + mediaUUID + "'";
-                DBConstants.WHERE + DBConstants.DCF + DBConstants.EQUAL_TO +  + dcfId ;
+                DBConstants.WHERE + DBConstants.DCF + DBConstants.EQUAL_TO + +dcfId;
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase(DBConstants.DATABASESECRETKEY);
         try {
             Logger.logD(TAG, "Getting Question Item : " + query);
@@ -655,7 +707,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         values.put(DBConstants.ATTEMPT, attempt);
         values.put(DBConstants.QA_SCORE, score.get(0));
         values.put(DBConstants.QA_TOTAL, score.get(1));
-        values.put(DBConstants.QA_SYNC_STATUS, syncSTtaus);
+        values.put(DBConstants.SYNC_STATUS, syncSTtaus);
         Logger.logD("InsertQuestionAnswered", values.toString());
         database.insert(DBConstants.QA_TABLENAME, null, values);
 
@@ -677,7 +729,12 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         initDatabase();
         ContentValues cv = new ContentValues();
         cv.put(DBConstants.WATCH_STATUS, 0);
-        database.update(DBConstants.MEDIA_STATUS_TABLE, cv, null, null);
+        try {
+            database.update(DBConstants.MEDIA_STATUS_TABLE, cv, null, null);
+
+        } catch (Exception ex) {
+            Logger.logE("Exception", ex.getMessage(), ex);
+        }
     }
 
     public void updateWatchStatusForCatalog(String mediaUUID) {
@@ -700,7 +757,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                     DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES + videoId + DBConstants.SINGLE_QUOTES;
         } else if (typeSync == 1) {
             dataFetchQuery = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.QA_TABLENAME +
-                    DBConstants.WHERE + DBConstants.QA_SYNC_STATUS + DBConstants.EQUAL_TO +
+                    DBConstants.WHERE + DBConstants.SYNC_STATUS + DBConstants.EQUAL_TO +
                     Constants.QUESTION_ANSWER_ASYNC;
         } else {
             dataFetchQuery = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.QA_TABLENAME +
@@ -748,15 +805,19 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         initDatabase();
         String query = DBConstants.SELECT + DBConstants.WATCH_STATUS + DBConstants.FROM + DBConstants.MEDIA_STATUS_TABLE + DBConstants.WHERE + DBConstants.PARENT + " = '" + uuid + "'" + DBConstants.AND + DBConstants.WATCH_STATUS + " = 0";
         Logger.logD(TAG, "Content View Status Query : " + query);
-        android.database.Cursor cursor = database.rawQuery(query, null);
-        // If count is greater than 0, then module is not fully completed
-        if (cursor.getCount() > 0) {
-            isOpen = false;
-        } else {
-            updateWatchStatusForCatalog(uuid);
-            isOpen = true;
+        try {
+            android.database.Cursor cursor = database.rawQuery(query, null);
+            // If count is greater than 0, then module is not fully completed
+            if (cursor.getCount() > 0) {
+                isOpen = false;
+            } else {
+                updateWatchStatusForCatalog(uuid);
+                isOpen = true;
+            }
+            cursor.close();
+        } catch (Exception ex) {
+            Logger.logE("Exception", ex.getMessage(), ex);
         }
-        cursor.close();
         return isOpen;
     }
 
@@ -944,7 +1005,6 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     }
 
 
-
     public boolean addFileSize(String fileUuid, long filesize) {
 
         initDatabase();
@@ -994,7 +1054,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     public void updateSyncStatus() {
         initDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(DBConstants.QA_SYNC_STATUS, 1); //These Fields should be your String values of actual column names
+        cv.put(DBConstants.SYNC_STATUS, 1); //These Fields should be your String values of actual column names
 
         database.update(DBConstants.QA_TABLENAME, cv, null, null);
     }
@@ -1036,7 +1096,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     public void updateCompletedStatusFromCatalogTable() {
         initDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(DBConstants.QA_SYNC_STATUS, 1); //These Fields should be your String values of actual column names
+        cv.put(DBConstants.SYNC_STATUS, 1); //These Fields should be your String values of actual column names
 
         database.update(DBConstants.QA_TABLENAME, cv, null, null);
     }

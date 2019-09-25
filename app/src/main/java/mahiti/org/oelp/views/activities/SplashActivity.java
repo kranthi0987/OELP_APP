@@ -13,6 +13,7 @@ import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.MySharedPref;
@@ -30,6 +31,8 @@ public class SplashActivity extends AppCompatActivity {
         Fabric.with(this, new Crashlytics());
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
+        DatabaseHandlerClass helper = new DatabaseHandlerClass(this);
+
         rlMain = findViewById(R.id.rlMain);
 //        setLocale(1);
         sharedPref = new MySharedPref(this);

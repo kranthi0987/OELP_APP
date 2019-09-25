@@ -87,12 +87,13 @@ public class HomeViewModel extends AndroidViewModel {
         groupApiCalled = sharedPref.readString(RetrofitConstant.GROUP_LIST_URL, "").equalsIgnoreCase(AppUtils.getDate()) && !sharedPref.readBoolean(Constants.IS_UPDATED, true);
         teacherApiCalled = sharedPref.readString(RetrofitConstant.TEACHER_LIST_URL, "").equalsIgnoreCase(AppUtils.getDate());
         dataInserted.setValue(null);
-        if (CheckNetwork.checkNet(context)) {
+        /*if (CheckNetwork.checkNet(context)) {
             callAllAPI();
             apiCountMutable.setValue(0);
             Logger.logD("TAG", "API COUNT :" + apiCountMutable.getValue());
-        }
+        }*/
 //        getListOfImageFromDb();
+        getListOfImageFromDb();
 
         userType.setValue(sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER));
 
