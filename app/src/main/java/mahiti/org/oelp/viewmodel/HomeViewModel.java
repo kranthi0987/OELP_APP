@@ -93,6 +93,8 @@ public class HomeViewModel extends AndroidViewModel {
             Logger.logD("TAG", "API COUNT :" + apiCountMutable.getValue());
         }*/
 //        getListOfImageFromDb();
+        callApiForGroupList(userId);
+        callApiForTeacherList(userId);
         getListOfImageFromDb();
 
         userType.setValue(sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER));

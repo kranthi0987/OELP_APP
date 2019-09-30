@@ -67,7 +67,6 @@ public class MembersFragment extends Fragment {
     }
 
     private void checkInternetAndCAllApi() {
-        progressBar.setVisibility(View.VISIBLE);
         if (CheckNetwork.checkNet(getActivity())) {
             callApiForTeacherList(userUUiD);
         } else {
@@ -109,6 +108,7 @@ public class MembersFragment extends Fragment {
     }
 
     private void fetchTeacherList() {
+        progressBar.setVisibility(View.VISIBLE);
         teacherList = teacherDao.getTeachers(groupUUID, 1);
         setDataToAdapter(teacherList);
         progressBar.setVisibility(View.GONE);

@@ -76,7 +76,6 @@ public class DBConstants {
     public static final String USER_NAME = "username";
     public static final String USER_UUID = "userUUID";
     public static final String SHARED_GLOBALLY = "sharedGlobally";
-    public static final String DB_PASSWORD = "oelp@12345";
     public static String EQUAL_TO=" = ";
     public static String NOT_EQUAL_TO=" != ";
     public static String EMPTY="''";

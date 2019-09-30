@@ -3,11 +3,16 @@ package mahiti.org.oelp.views.fragments;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -31,6 +36,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.iceteck.silicompressorr.SiliCompressor;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -42,11 +48,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
 import mahiti.org.oelp.R;
@@ -91,8 +99,8 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
     private RelativeLayout llSwitch;
     private ProgressBar progressBar;
     private String userUUId;
-    private List<File> fileList;
     private boolean folderToSaveVideo;
+    private boolean folderToSaveVideo1;
     private String mediaCreationUUID;
 
 
@@ -131,6 +139,7 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
         llMain = view.findViewById(R.id.llMain);
         llSwitch = view.findViewById(R.id.llSwitch);
         llSwitch.setVisibility(View.VISIBLE);
+
         tvError = view.findViewById(R.id.tvError);
         switchContribution = view.findViewById(R.id.switchContribution);
         switchContribution.setOnCheckedChangeListener(this);
@@ -144,6 +153,8 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
         recyclerView.setAdapter(adapter);
         recyclerView.setFocusable(false);
 
+//        setViewForSwitch(false);
+
         fab.setOnClickListener(view1 -> {
             showDocumentsView();
         });
@@ -154,12 +165,12 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
 
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         String[] mimeTypes =
-                {"image/*", "application/pdf", "video/mp4"};
+                {"image/*", "video/mp4"};
 
         // Filter to only show results that can be "opened", such as a
         // file (as opposed to a list of contacts or timezones)
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
         intent.setType("*/*");
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
 
@@ -173,27 +184,24 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
     }
 
     private void checkInternetAndCAllApi() {
-        progressBar.setVisibility(View.VISIBLE);
-        if (CheckNetwork.checkNet(getActivity())) {
-            callApiForMediaSharedList(userUUId);
-        } else {
+
+//        if (CheckNetwork.checkNet(getActivity())) {
+//            callApiForMediaSharedList(userUUId);
+//        } else {
             fetchDataFromDb(switchContribution.isChecked());
-        }
+//        }
     }
 
 
     private void fetchDataFromDb(boolean checked) {
+        progressBar.setVisibility(View.VISIBLE);
         sharedMediaList = new ArrayList<>();
         MediaContentDao mediaContentDao = new MediaContentDao(getActivity());
         String uuid;
         setViewForSwitch(checked);
         if (checked) {
-            ivGroupContribution.setVisibility(View.VISIBLE);
-            ivTeacherContribution.setVisibility(View.GONE);
             uuid = groupUUID;
         } else {
-            ivGroupContribution.setVisibility(View.GONE);
-            ivTeacherContribution.setVisibility(View.VISIBLE);
             uuid = userUUId;
         }
         sharedMediaList = mediaContentDao.getSharedMedia(uuid, switchContribution.isChecked());
@@ -215,6 +223,7 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
     }
 
     public void callApiForMediaSharedList(String userUUID) {
+        progressBar.setVisibility(View.VISIBLE);
        /* final MobileVerificationResponseModel[] model = {null};
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.FETCH_MEDIA_SHARED + " Param : user_uuid:" + userUUID);
@@ -249,9 +258,18 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
     }
 
 
-    public void showDialogForUpload(List<File> imagesFiles) {
-        if (imagesFiles.isEmpty())
+    public void showDialogForUpload(String filePath) {
+        File mediaFile=null;
+        try{
+           mediaFile = new File(filePath);
+        }catch (Exception ex){
+            Logger.logE(TAG, ex.getMessage(), ex);
+        }
+        if (!mediaFile.exists()){
+
+            Toast.makeText(getActivity(), "File not found", Toast.LENGTH_SHORT).show();
             return;
+        }
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         View dialogView = getLayoutInflater().inflate(R.layout.profile_layout, null);
         dialogBuilder.setView(dialogView);
@@ -264,7 +282,7 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
         EditText etMediaName = dialogView.findViewById(R.id.etMediaName);
 
         try {
-            fileName = imagesFiles.get(0).getAbsolutePath();
+            fileName = mediaFile.getAbsolutePath();
         } catch (Exception ex) {
             Logger.logE("Exception", "Exc " + ex.getMessage(), ex);
         }
@@ -275,17 +293,19 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
             ivPlayButton.setVisibility(View.VISIBLE);
             ivProfileImage.setBackgroundColor(getResources().getColor(R.color.blackOpaque));
         } else {
-            showUIForImage(imagesFiles.get(0), ivProfileImage);
+            showUIForImage(mediaFile, ivProfileImage);
             ivPlayButton.setVisibility(View.GONE);
         }
 
         Button btnUpload = dialogView.findViewById(R.id.btnUpload);
         Button btnCancel = dialogView.findViewById(R.id.btnCancel);
 
+        File finalMediaFile = mediaFile;
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                validateAndProceed(etMediaName.getText().toString(), imagesFiles);
+
+                validateAndProceed(etMediaName.getText().toString(), finalMediaFile);
             }
         });
 
@@ -308,18 +328,32 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
         }
     }
 
-    private void validateAndProceed(String s, List<File> imagesFiles) {
+    String fileName = "";
+
+    private void validateAndProceed(String s, File imagesFiles) {
+        fileName = s;
 
         if (s.isEmpty()) {
             Toast.makeText(getActivity(), "Enter File Name", Toast.LENGTH_SHORT).show();
         } else if (imagesFiles == null) {
             alertDialog.dismiss();
             Toast.makeText(getActivity(), "Please select file", Toast.LENGTH_SHORT).show();
-        } else if (imagesFiles.isEmpty()) {
-            alertDialog.dismiss();
-            Toast.makeText(getActivity(), "Please select file", Toast.LENGTH_SHORT).show();
         } else {
+
             alertDialog.dismiss();
+            File fileDestination = null;
+            if (CheckNetwork.checkNet(getActivity())) {
+
+                if (fileType == Constants.IMAGE) {
+                    fileDestination = AppUtils.completeInternalStoragePath(getActivity(), Constants.IMAGE);
+                    new ImageCompressionAsyncTask(getActivity()).execute(imagesFiles.getAbsolutePath(), fileDestination.getAbsolutePath());
+                } else {
+                    fileDestination = AppUtils.completeInternalStoragePath(getActivity(), Constants.VIDEO);
+                    new VideoCompressAsyncTask(getActivity()).execute(imagesFiles.getAbsolutePath(), fileDestination.getAbsolutePath());
+                }
+            } else {
+                Toast.makeText(getActivity(), getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
+            }
             /*if (CheckNetwork.checkNet(getActivity())) {
                 uplaodImageToServer(s, imagesFiles.get(0));
 
@@ -330,7 +364,6 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
 
         }
     }
-
 
 
     private void uplaodImageToServer(String fileNAme, File file) {
@@ -424,27 +457,26 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.READ_REQUEST_CODE)
-            saveFiles(data, resultCode);
-    }
-
-    private void saveFiles(Intent data, int resultCode) {
-        if (resultCode == Activity.RESULT_CANCELED)
+        if (requestCode != Constants.READ_REQUEST_CODE || resultCode == Activity.RESULT_CANCELED)
             return;
-        createUriPath(data);
+        else {
+            Uri result = data.getData();
+            String filePath = getPath(result);
+            showDialogForUpload(filePath);
+        }
+
 
     }
+
+
 
 
     public void createUriPath(Intent data) {
         Uri result = data.getData();
         ClipData resultMulti = data.getClipData();
-        showDialogForUpload(getFileList(result, resultMulti));
-    }
 
-    public List<File> getFileList(Uri result, ClipData resultMulti) {
         List<Uri> list = new ArrayList<>();
-        List<File> fileList = new ArrayList<>();
+
         if (resultMulti == null) {
             Uri filePath = result;
             list.add(filePath);
@@ -457,38 +489,69 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
         }
 
         try {
-            fileList = changeUriToFile(list);
+
+//            fileList = changeUriToFile(list);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return fileList;
+       /* File fileDestination=null;
+
+        if (fileType==Constants.IMAGE){
+            fileDestination = AppUtils.completeInternalStoragePath(getActivity(), Constants.IMAGE);
+            new ImageCompressionAsyncTask(getActivity()).execute(fileList.get(0).getAbsolutePath(), fileDestination.getAbsolutePath());
+        }else {
+            fileDestination = AppUtils.completeInternalStoragePath(getActivity(), Constants.VIDEO);
+            new VideoCompressAsyncTask(getActivity()).execute(fileList.get(0).getAbsolutePath(), fileDestination.getAbsolutePath());
+        }*/
+
+//        showDialogForUpload(fileList);
     }
 
-    public List<File> changeUriToFile(List<Uri> uriList) throws IOException {
+
+
+    public String  getPath(Uri uri) {
+        String[] projection = { MediaStore.Video.Media.DATA };
+        Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            // HERE YOU WILL GET A NULLPOINTER IF CURSOR IS NULL
+            // THIS CAN BE, IF YOU USED OI FILE MANAGER FOR PICKING THE MEDIA
+            int column_index = cursor
+                    .getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } else
+            return null;
+    }
+
+    public File changeUriToFile(Uri fileUri) throws IOException {
+        /*uploadFile = new ArrayList<>();
         List<File> oelpFileList = new ArrayList<>();
         for (Uri mediaUri : uriList) {
             String fileNameFromUri = getFileNameFromUri(mediaUri);
-            int fileType = AppUtils.getFileType(fileNameFromUri);
-            File file = null;
+            fileType = AppUtils.getFileType(fileNameFromUri);
+            File fileSource = null;
+            File fileDes = null;
             if (fileType == Constants.VIDEO) {
-                file = AppUtils.completeInternalStoragePath(getActivity(), Constants.VIDEO);
+                fileSource = AppUtils.completePathInSDCard(Constants.VIDEO);
+                fileDes = AppUtils.completeInternalStoragePath(getActivity(), Constants.VIDEO);
             } else {
-                file = AppUtils.completeInternalStoragePath(getActivity(), Constants.IMAGE);
+                fileSource = AppUtils.completePathInSDCard(Constants.IMAGE);
             }
-            folderToSaveVideo = file.exists() || file.mkdirs();
+            folderToSaveVideo = fileSource.exists() || fileSource.mkdirs();
+            folderToSaveVideo1 = fileDes.exists() || fileDes.mkdirs();
             if (!folderToSaveVideo) {
                 Logger.logD(TAG, getString(R.string.couldnot_create_file));
                 return null;
             }
             mediaCreationUUID = AppUtils.getUUID();
             String lastExtension = fileNameFromUri.substring(fileNameFromUri.lastIndexOf("."));
-            String fileNAmeNew = mediaCreationUUID+lastExtension;
-            File oelpFile = new File(file, fileNAmeNew);
+            String fileNAmeNew = mediaCreationUUID + lastExtension;
+            File oelpFileS = new File(fileSource, fileNAmeNew);
 
             try {
 
                 InputStream in = getActivity().getContentResolver().openInputStream(mediaUri);
-                OutputStream out = new FileOutputStream(oelpFile);
+                OutputStream out = new FileOutputStream(oelpFileS);
                 byte[] buf = new byte[1024];
                 int len;
                 while ((len = in.read(buf)) > 0) {
@@ -496,16 +559,16 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
                 }
                 out.close();
                 in.close();
-                oelpFileList.add(oelpFile);
-                oelpFile.createNewFile();
-                Log.v(TAG, "the size of the file is......" + file.getName());
+                oelpFileList.add(oelpFileS);
+                oelpFileS.createNewFile();
 
             } catch (Exception e) {
                 Logger.logE(TAG, " checkFileExits ", e);
             }
 
         }
-        return oelpFileList;
+        return oelpFileList;*/
+        return null;
     }
 
 
@@ -531,4 +594,72 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
         return result;
     }
 
+    class ImageCompressionAsyncTask extends AsyncTask<String, Void, String> {
+
+        Context mContext;
+
+        public ImageCompressionAsyncTask(Context context) {
+            mContext = context;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String filePath = SiliCompressor.with(mContext).compress(params[0], new File(params[1]));
+            return filePath;
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+
+            File imageFile = new File(s);
+            uplaodImageToServer(fileName, imageFile);
+
+        }
+
+
+    }
+
+    class VideoCompressAsyncTask extends AsyncTask<String, String, String> {
+
+        Context mContext;
+
+        public VideoCompressAsyncTask(Context context) {
+            mContext = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            imageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_photo_camera_white_48px));
+//            compressionMsg.setVisibility(View.VISIBLE);
+//            picDescription.setVisibility(View.GONE);
+        }
+
+        @Override
+        protected String doInBackground(String... paths) {
+            String filePath = null;
+            try {
+
+                filePath = SiliCompressor.with(mContext).compressVideo(paths[0], paths[1]);
+
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            return filePath;
+
+        }
+
+
+        @Override
+        protected void onPostExecute(String compressedFilePath) {
+            super.onPostExecute(compressedFilePath);
+            File imageFile = new File(compressedFilePath);
+            float length = imageFile.length() / 1024f; // Size in KB
+            Log.i("Sizr", "Path: " + length);
+            uplaodImageToServer(fileName, imageFile);
+        }
+    }
 }

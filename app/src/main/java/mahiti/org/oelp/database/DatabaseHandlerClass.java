@@ -56,7 +56,8 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         dbFile = new File(DB_PATH + DBConstants.DB_NAME);
 
         if (!dbFile.exists()) {
-            SQLiteDatabase db = super.getWritableDatabase(DBConstants.DB_PASSWORD);
+            SQLiteDatabase.loadLibs(mContext);
+            SQLiteDatabase db = super.getWritableDatabase(DBConstants.DATABASESECRETKEY);
             copyDataBase(db.getPath());
         } else {
 
