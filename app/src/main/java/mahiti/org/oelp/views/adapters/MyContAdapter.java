@@ -97,6 +97,16 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
     }
 
     @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
     public int getItemCount() {
         return sharedMediaList.isEmpty() ? 0 : sharedMediaList.size();
     }

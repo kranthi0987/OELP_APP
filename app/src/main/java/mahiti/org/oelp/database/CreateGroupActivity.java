@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.DAOs.GroupDao;
 import mahiti.org.oelp.database.DAOs.TeacherDao;
 import mahiti.org.oelp.models.MobileVerificationResponseModel;
 import mahiti.org.oelp.models.TeacherModel;
@@ -117,7 +118,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
             adapter.setList(userDetailList, Constants.EDIT);
             btnCreate.setText(R.string.update);
 
-        }else {
+        } else {
             btnCreate.setText(R.string.create);
         }
 
@@ -164,9 +165,13 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
                 if (response.body() != null) {
                     UserDetailsModel userDetail = response.body().getUserDetails();
                     if (!userDetail.getUserid().isEmpty()) {
-                        if (userDetail.getUserGroup().isEmpty()) {
+                        if (userDetail.getUserGroup().isEmpty() ) {
+                            if (userDetail.getIsTrainer().equals(Constants.USER_TEACHER))
                             /*if(validateUser(userDetail)){*/
-                                aDDTeacherToList(userDetail);
+                            aDDTeacherToList(userDetail);
+                            else {
+                                Toast.makeText(CreateGroupActivity.this, "Please enter teacher numbers", Toast.LENGTH_SHORT).show();
+                            }
                             /*}else {
                                 movetoRegistrationActivity(userDetail);
                             }*/
@@ -235,25 +240,25 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
 
     private boolean validateUser(UserDetailsModel userDetail) {
         boolean status = true;
-        if (userDetail.getName()==null && userDetail.getName().isEmpty()){
+        if (userDetail.getName() == null && userDetail.getName().isEmpty()) {
             status = false;
         }
-        if (userDetail.getMobile_number()==null && userDetail.getMobile_number().isEmpty()){
+        if (userDetail.getMobile_number() == null && userDetail.getMobile_number().isEmpty()) {
             status = false;
         }
-        if (userDetail.getSchool()==null && userDetail.getSchool().isEmpty()){
+        if (userDetail.getSchool() == null && userDetail.getSchool().isEmpty()) {
             status = false;
         }
-        if (userDetail.getStateName()==null && userDetail.getStateName().isEmpty()){
+        if (userDetail.getStateName() == null && userDetail.getStateName().isEmpty()) {
             status = false;
         }
-        if (userDetail.getDistrictname()==null && userDetail.getDistrictname().isEmpty()){
+        if (userDetail.getDistrictname() == null && userDetail.getDistrictname().isEmpty()) {
             status = false;
         }
-        if (userDetail.getBlockName()==null && userDetail.getBlockName().isEmpty()){
+        if (userDetail.getBlockName() == null && userDetail.getBlockName().isEmpty()) {
             status = false;
         }
-        if (userDetail.getVillageName()==null && userDetail.getVillageName().isEmpty()){
+        if (userDetail.getVillageName() == null && userDetail.getVillageName().isEmpty()) {
             status = false;
         }
         return status;
@@ -358,7 +363,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
         else
             groupCreationKey = groupUUID;
 
-        createJson(lsitModel, userUUID,groupCreationKey);
+        createJson(lsitModel, userUUID, groupCreationKey);
 
     }
 
@@ -389,7 +394,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
 
     // Teacher API call
     public void callApiForTeachersList(String userId) {
-        /*ApiInterface apiInterface = RetrofitClass.getAPIService();
+        ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Param : userId:" + userId);
         apiInterface.getTeacherList(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
@@ -399,9 +404,9 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
                 MobileVerificationResponseModel model = response.body();
                 if (model != null) {
                     long insertedCount = new TeacherDao(CreateGroupActivity.this).insertTeacherDataToDB(model.getTeachers());
-                    Logger.logD(TAG, "teachers inserted count - "+insertedCount);
+                    Logger.logD(TAG, "teachers inserted count - " + insertedCount);
                 } else {
-                    Logger.logD(TAG, "teachers inserted count - "+model.getMessage());
+                    Logger.logD(TAG, "teachers inserted count - " + model.getMessage());
                 }
                 progressBar.setVisibility(View.GONE);
                 insertDataIntoGroupTable();
@@ -414,7 +419,6 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
                 progressBar.setVisibility(View.GONE);
             }
         });
-*/
     }
 
     private void checkAndFinish(MobileVerificationResponseModel body) {
@@ -427,7 +431,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void callApiForGroupList(String userId) {
-       /* ApiInterface apiInterface = RetrofitClass.getAPIService();
+        ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Param : userId:" + userId);
         apiInterface.getGroupList(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
@@ -440,9 +444,9 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
                     }
                     if (CheckNetwork.checkNet(CreateGroupActivity.this))
                         callApiForTeachersList(userId);
-
+                    else
+                        progressBar.setVisibility(View.GONE);
                 }
-//                progressBar.setVisibility(View.GONE);
 
             }
 
@@ -451,15 +455,15 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Response :" + t.getMessage());
                 progressBar.setVisibility(View.GONE);
             }
-        });*/
+        });
 
     }
 
     private void insertDataIntoGroupTable() {
-            Intent intent = new Intent();
-            intent.putExtra("result", true);
-            setResult(RESULT_OK, intent);
-            onBackPressed();
+        Intent intent = new Intent();
+        intent.putExtra("result", true);
+        setResult(RESULT_OK, intent);
+        onBackPressed();
 
     }
 
@@ -469,19 +473,19 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
         try {
             JSONObject object;
             for (UserDetailsModel model : lsitModel) {
-                if(model.isCheckBoxChecked()) {
+                if (model.isCheckBoxChecked()) {
                     object = new JSONObject();
                     object.put("creation_key", model.getUserid());
                     array.put(object);
-                    valide =true;
+                    valide = true;
                 }
             }
         } catch (Exception ex) {
             Logger.logE(TAG, ex.getMessage(), ex);
         }
-        if (valide){
+        if (valide) {
             callApiForCreateGroup(userUUID, groupName, groupCreationKey, array.toString());
-        }else {
+        } else {
             Toast.makeText(this, "Please select teacher", Toast.LENGTH_SHORT).show();
             progressBar.setVisibility(View.GONE);
         }

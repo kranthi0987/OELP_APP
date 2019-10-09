@@ -62,7 +62,14 @@ public class AddTeacherToGroupAdapter extends RecyclerView.Adapter<AddTeacherToG
     }
 
     public List<UserDetailsModel> getUserDetailsList(){
-        return modelList;
+        List<UserDetailsModel> modelData = new ArrayList<>();
+
+        for (UserDetailsModel model :modelList){
+            if (model.isCheckBoxChecked()){
+                modelData.add(model);
+            }
+        }
+        return modelData;
     }
 
     public void setList(List<UserDetailsModel> list, Integer type) {
