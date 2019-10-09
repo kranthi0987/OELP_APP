@@ -14,6 +14,7 @@ import java.util.List;
 
 import mahiti.org.oelp.database.DAOs.CatalogDao;
 import mahiti.org.oelp.database.DAOs.GroupDao;
+import mahiti.org.oelp.database.DAOs.MediaContentDao;
 import mahiti.org.oelp.fileandvideodownloader.FileModel;
 import mahiti.org.oelp.models.CatalogueDetailsModel;
 import mahiti.org.oelp.models.GroupModel;
@@ -46,6 +47,8 @@ public class HomeViewModel extends AndroidViewModel {
     public List<CatalogueDetailsModel> modelForCatalog = new ArrayList<>();
     public MutableLiveData<Integer> apiCountMutable = new MutableLiveData<>();
     public MutableLiveData<Long> insertLong = new MutableLiveData();
+    private MutableLiveData<List<FileModel>> imageListToDownload = new MutableLiveData<>();
+
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
@@ -67,6 +70,7 @@ public class HomeViewModel extends AndroidViewModel {
 
 
         getListOfImageFromDb();
+//        getListOfImageFromMediaTable();
 
         userType.setValue(sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER));
 
@@ -91,6 +95,35 @@ public class HomeViewModel extends AndroidViewModel {
         } else {
             dataInserted.setValue(2);
         }
+    }
+
+    private void getListOfImageFromMediaTable() {
+        List<FileModel> imageList = new MediaContentDao(context).getImageListFromMediaTable();
+        if (imageList!=null && !imageList.isEmpty()) {
+            checkOfflineAvailable1(imageList);
+        }
+    }
+    private void checkOfflineAvailable1(List<FileModel> imageList) {
+        List<FileModel> imagePathToRemove = new ArrayList<>();
+        for (FileModel iconPath : imageList) {
+            try {
+                File file = new File(AppUtils.completeInternalStoragePath(context, Constants.IMAGE), AppUtils.getFileName(iconPath.getFileUrl()));
+                if (file.exists()) {
+                    imagePathToRemove.add(iconPath);
+                }
+
+            } catch (Exception ex) {
+                Logger.logE(TAG, ex.getMessage(), ex);
+            }
+        }
+        imageList.removeAll(imagePathToRemove);
+        if (!imageList.isEmpty()) {
+            imageListToDownload.setValue(imageList);
+        }
+    }
+
+    public MutableLiveData<List<FileModel>> getListOfImageToDownload1() {
+        return imageListToDownload;
     }
 
     private void checkOfflineAvailable(List<FileModel> imageList) {

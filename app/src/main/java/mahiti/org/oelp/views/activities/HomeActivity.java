@@ -108,6 +108,11 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         homeViewModel.getListOfImageToDownload().observe(this, fileModels ->
 //                new DownloadClass(Constants.IMAGE, HomeActivity.this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.IMAGE).getAbsolutePath(), fileModels));
                 new DownloadClass(Constants.IMAGE, HomeActivity.this, RetrofitConstant.BASE_URL, AppUtils.completeInternalStoragePath(this, Constants.IMAGE).getAbsolutePath(), fileModels, ""));
+        homeViewModel.getListOfImageToDownload1().observe(this, fileModels ->
+//                new DownloadClass(Constants.IMAGE, HomeActivity.this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.IMAGE).getAbsolutePath(), fileModels));
+                new DownloadClass(Constants.IMAGE, HomeActivity.this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.IMAGE).getAbsolutePath(), fileModels, ""));
+
+
     }
 
     private void checKConditionAndProceed(List<GroupModel> groupModelList) {

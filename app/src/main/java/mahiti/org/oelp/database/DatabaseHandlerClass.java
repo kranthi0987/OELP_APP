@@ -230,8 +230,9 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES + uuid + DBConstants.SINGLE_QUOTES;
         try {
             Cursor cursor = database.rawQuery(query, null);
-            cursor.moveToFirst();
-            watchStatus = cursor.getInt(cursor.getColumnIndex(DBConstants.WATCH_STATUS));
+
+            if(cursor.moveToFirst())
+                watchStatus = cursor.getInt(cursor.getColumnIndex(DBConstants.WATCH_STATUS));
         } catch (Exception xe) {
             Logger.logE(TAG, "fetching watch status error :" + xe.getMessage(), xe);
         }

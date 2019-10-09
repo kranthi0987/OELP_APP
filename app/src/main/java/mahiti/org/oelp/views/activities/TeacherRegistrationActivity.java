@@ -199,7 +199,11 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
         LocationContent locationContent = new LocationContent();
         locationContent.setName(getResources().getString(R.string.please_select_state));
         contentArrayList.add(locationContent);
-        contentArrayList.addAll(teacherRegistrationViewModel.getStateSpinnerData().getValue());
+        List<LocationContent> stateList = teacherRegistrationViewModel.getStateSpinnerData().getValue();
+        if (stateList!=null && !stateList.isEmpty()){
+            contentArrayList.addAll(stateList);
+        }
+
         if (contentArrayList != null && !contentArrayList.isEmpty()) {
 //            ArrayAdapter<LocationContent> stateArrayAdpter = new ArrayAdapter<>(this, R.layout.custom_spinner_item,R.id.tvSpinnerItem, contentArrayList);
             ArrayAdapter<LocationContent> stateArrayAdpter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, contentArrayList);
@@ -246,7 +250,10 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
         LocationContent locationContent = new LocationContent();
         locationContent.setName(getResources().getString(R.string.please_select_district));
         contentArrayList.add(locationContent);
-        contentArrayList.addAll(teacherRegistrationViewModel.getDistrictSpinnerData(id, boundaryLevelType).getValue());
+        List<LocationContent> districtList = teacherRegistrationViewModel.getDistrictSpinnerData(id, boundaryLevelType).getValue();
+        if (districtList!=null && !districtList.isEmpty()){
+            contentArrayList.addAll(districtList);
+        }
 
 //        ArrayAdapter<LocationContent> stateArrayAdpter = new ArrayAdapter<>(this, R.layout.custom_spinner_item,R.id.tvSpinnerItem, contentArrayList);
         ArrayAdapter<LocationContent> stateArrayAdpter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, contentArrayList);
@@ -289,7 +296,10 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
         LocationContent locationContent = new LocationContent();
         locationContent.setName(getResources().getString(R.string.please_select_block));
         contentArrayList.add(locationContent);
-        contentArrayList.addAll(teacherRegistrationViewModel.getBlockSpinnerData(id, boundaryLevelType).getValue());
+        List<LocationContent> blockList = teacherRegistrationViewModel.getBlockSpinnerData(id, boundaryLevelType).getValue();
+        if (blockList!=null && !blockList.isEmpty()){
+            contentArrayList.addAll(blockList);
+        }
 
 
         ArrayAdapter<LocationContent> stateArrayAdpter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, contentArrayList);

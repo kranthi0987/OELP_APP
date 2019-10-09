@@ -42,6 +42,7 @@ public class ChatAndContributionViewModel extends AndroidViewModel {
         mContext = application;
         mediaContentDao = new MediaContentDao(mContext);
         MySharedPref pre = new MySharedPref(mContext);
+        getListOfImageFromMediaTable();
         /*callApiForMediaSharedList(pre.readString(Constants.USER_ID,""));*/
 
     }
@@ -82,7 +83,7 @@ public class ChatAndContributionViewModel extends AndroidViewModel {
         List<FileModel> imagePathToRemove = new ArrayList<>();
         for (FileModel iconPath : imageList) {
             try {
-                File file = new File(AppUtils.completeInternalStoragePath(mContext, Constants.IMAGE), AppUtils.getFileName(iconPath.getFileUrl()));
+                File file = new File(AppUtils.completePathInSDCard(Constants.IMAGE), AppUtils.getFileName(iconPath.getFileUrl()));
                 if (file.exists()) {
                     imagePathToRemove.add(iconPath);
                 }
