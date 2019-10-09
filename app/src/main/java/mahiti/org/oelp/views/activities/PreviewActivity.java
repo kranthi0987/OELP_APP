@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.DAOs.SurveyResponseDao;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.models.CatalogueDetailsModel;
 import mahiti.org.oelp.models.QuestionAnswerModel;
@@ -27,7 +28,7 @@ import mahiti.org.oelp.videoplay.activity.VideoViewActivity;
 import mahiti.org.oelp.views.adapters.PreviewAdapter;
 
 public class PreviewActivity extends AppCompatActivity implements View.OnClickListener {
-    DatabaseHandlerClass handlerClass;
+    SurveyResponseDao handlerClass;
     private TextView tvTitle;
     private Button btnOk;
     private TextView tvMarksObtain;
@@ -49,9 +50,9 @@ public class PreviewActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview);
         findViewsForLayout();
-        handlerClass = new DatabaseHandlerClass(this);
+        handlerClass = new SurveyResponseDao(this);
         getIntentData();
-        scoreAndAttempt = handlerClass.getAnsweredQuestion(mediaUUID,0);
+        scoreAndAttempt = handlerClass.fetchAnsweredQuestion(mediaUUID,0);
         showPreviewForAnswer(scoreAndAttempt);
     }
 

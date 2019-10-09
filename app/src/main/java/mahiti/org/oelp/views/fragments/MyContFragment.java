@@ -1,8 +1,6 @@
 package mahiti.org.oelp.views.fragments;
 
 import android.annotation.SuppressLint;
-import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,8 +16,11 @@ import java.util.List;
 
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.DAOs.MediaContentDao;
+import mahiti.org.oelp.interfaces.ListRefresh;
 import mahiti.org.oelp.models.SharedMediaModel;
 import mahiti.org.oelp.utils.Constants;
+import mahiti.org.oelp.views.activities.ChatAndContributionActivity;
+import mahiti.org.oelp.views.activities.TeacherInfoTabActivity;
 import mahiti.org.oelp.views.adapters.MyContAdapter;
 
 public class MyContFragment extends Fragment {
@@ -54,6 +55,19 @@ public class MyContFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
+        ((TeacherInfoTabActivity)getActivity()).setFragmentRefreshListener(new ListRefresh() {
+            @Override
+            public void onRefresh(int position, boolean isDelete) {
+
+                if (isDelete) {
+                    sharedMediaList.remove(position);
+                    adapter.notifyDataSetChanged();
+                }else {
+                    fetchDataFromDb();
+                }
+            }
+        });
+
         return rootView;
     }
 
@@ -79,9 +93,9 @@ public class MyContFragment extends Fragment {
     }
 
 
-    private void fetchDataFromDb(boolean forGroup, int i) {
+    private void fetchDataFromDb() {
         MediaContentDao mediaContentDao = new MediaContentDao(getActivity());
-        sharedMediaList = mediaContentDao.getSharedMedia(teacherUUID, false);
+        sharedMediaList = mediaContentDao.fetchSharedMedia(teacherUUID, false, 0);
         progressBar.setVisibility(View.GONE);
         if (sharedMediaList != null && !sharedMediaList.isEmpty()) {
             adapter.setList(sharedMediaList);
@@ -99,7 +113,7 @@ public class MyContFragment extends Fragment {
 
     private void setViewAndDataForMember(int i) {
         progressBar.setVisibility(View.VISIBLE);
-        fetchDataFromDb(false, i);
+        fetchDataFromDb();
 
     }
 

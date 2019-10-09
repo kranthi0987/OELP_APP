@@ -69,16 +69,6 @@ public class ChatAndContributionViewModel extends AndroidViewModel {
         });*/
     }
 
-    private void insertDatatoTable(MobileVerificationResponseModel body) {
-        if (body.getData()!= null && !body.getData().isEmpty()) {
-            MediaContentDao mediaContentDao = new MediaContentDao(mContext);
-            mediaContentDao.insertSharedMedia(body.getData());
-            if (body.getGlobally() != null && !body.getGlobally().isEmpty()) {
-                mediaContentDao.updateGloabllyShareMediaUUID(body.getGlobally());
-            }
-        }
-        getListOfImageFromMediaTable();
-    }
 
 
     private void getListOfImageFromMediaTable() {

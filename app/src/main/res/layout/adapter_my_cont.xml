@@ -24,9 +24,22 @@
             app:cardElevation="12dp">
 
 
+
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/ivTickMark"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="2dp"
+                    android:src="@drawable/share_icon"
+                    android:visibility="gone" />
+
+
 
 
                 <com.makeramen.roundedimageview.RoundedImageView
@@ -34,6 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
+                    android:scaleType="fitXY"
                     app:riv_corner_radius="10dip"
                     app:riv_mutate_background="true" />
 

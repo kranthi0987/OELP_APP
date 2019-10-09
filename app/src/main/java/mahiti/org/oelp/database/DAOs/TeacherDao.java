@@ -12,23 +12,21 @@ import java.util.List;
 
 import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
+import mahiti.org.oelp.models.Member;
 import mahiti.org.oelp.models.TeacherModel;
+import mahiti.org.oelp.models.UserDetailsModel;
 import mahiti.org.oelp.utils.Logger;
 
 
 public class TeacherDao extends DatabaseHandlerClass {
 
     private static final String TAG = DatabaseHandlerClass.class.getSimpleName();
+    Context mContext;
 
     public TeacherDao(Context mContext) {
         super(mContext);
-    }
+        this.mContext = mContext;
 
-
-
-    private void initDatabase() {
-        if (database == null || !database.isOpen() || database.isReadOnly())
-            database = this.getWritableDatabase(DBConstants.DATABASESECRETKEY);
     }
 
 
@@ -109,6 +107,7 @@ public class TeacherDao extends DatabaseHandlerClass {
                     model.setLastLoggedIn(cursor.getString(cursor.getColumnIndex(DBConstants.LAST_LOGGEDIN)));
                     model.setMobileNumber(cursor.getString(cursor.getColumnIndex(DBConstants.MOBILE_NUMBER)));
                     model.setName(cursor.getString(cursor.getColumnIndex(DBConstants.TEACHER_NAME)));
+                    model.setMediaCount(new MediaContentDao(mContext).fetchSharedMedia(model.getUserUuid(), false, 0).size());
                     teachersList.add(model);
                 } while (cursor.moveToNext());
                 cursor.close();
@@ -135,6 +134,22 @@ public class TeacherDao extends DatabaseHandlerClass {
         }
         return blockName;
     }
+
+    public List<UserDetailsModel> getUserDetailsModels(List<TeacherModel> teacherList) {
+        List<UserDetailsModel> modelLsit = new ArrayList<>();
+        UserDetailsModel userDetailsModel;
+        for (TeacherModel model : teacherList) {
+            userDetailsModel = new UserDetailsModel();
+            userDetailsModel.setName(model.getName());
+            userDetailsModel.setUserid(model.getUserUuid());
+            userDetailsModel.setMobile_number(model.getMobileNumber());
+            userDetailsModel.setCheckBoxChecked(true);
+            modelLsit.add(userDetailsModel);
+        }
+        return modelLsit;
+    }
+
+
 
 
 

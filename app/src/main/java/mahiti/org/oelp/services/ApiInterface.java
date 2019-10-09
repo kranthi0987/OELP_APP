@@ -79,8 +79,12 @@ public interface ApiInterface {
     Call<MobileVerificationResponseModel> getMediaShared(@Field("user_uuid") String userId);
 
     @FormUrlEncoded
-    @POST(RetrofitConstant.FETCH_MEDIA_SHARED)
+    @POST(RetrofitConstant.SHARED_MEDIA_GLOBALLY)
     Call<MobileVerificationResponseModel> shareMediaGlobally(@Field("user_uuid") String userUUID, @Field("data") String data);
+
+    @FormUrlEncoded
+    @POST(RetrofitConstant.DELETE_SHARED_MEDIA)
+    Call<MobileVerificationResponseModel> deleteMedia(@Field("user_uuid") String userUUID, @Field("delete_data") String data);
 
 
 

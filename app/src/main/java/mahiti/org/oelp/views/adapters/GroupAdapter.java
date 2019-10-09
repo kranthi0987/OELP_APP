@@ -82,7 +82,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.LayoutView> 
 
     private void setValues(GroupModel catalogueDetailsModel, LayoutView layout, int position) {
         layout.binding.tvGroupName.setText(catalogueDetailsModel.getGroupName());
-        layout.binding.tvMemberCount.setText(String.valueOf(catalogueDetailsModel.getMembers().size()));
+        layout.binding.tvMemberCount.setText(""+catalogueDetailsModel.getMembersCount());
 //        layout.binding.tvMemberCount.setText("3");
 //        layout.binding.tvMessageCount.setText(String.valueOf(4));
     }

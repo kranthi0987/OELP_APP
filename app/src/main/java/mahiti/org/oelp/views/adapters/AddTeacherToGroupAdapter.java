@@ -43,19 +43,21 @@ public class AddTeacherToGroupAdapter extends RecyclerView.Adapter<AddTeacherToG
         layoutView.tvMobileNo.setText(userDetails.getMobile_number());
         checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
 
-            if(compoundButton.isChecked()){
+          /*  if(compoundButton.isChecked()){
+                modelList.remove(i);
+//                this.notifyDataSetChanged();
                 modelList.get(i).setCheckBoxChecked(true);
             }
             else{
                 modelList.get(i).setCheckBoxChecked(false);
-            }
-            /*if (!userDetails.isCheckBoxChecked()){
+            }*/
+            if (!userDetails.isCheckBoxChecked()){
                userDetails.setCheckBoxChecked(true);
                modelList.add(userDetails);
             }else {
                 userDetails.setCheckBoxChecked(false);
                 modelList.remove(userDetails);
-            }*/
+            }
         });
     }
 

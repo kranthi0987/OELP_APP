@@ -123,6 +123,7 @@ public class MobileLoginActivity extends AppCompatActivity {
     private void moveToRegistrationActivity() {
         Intent intent = new Intent(MobileLoginActivity.this, TeacherRegistrationActivity.class);
         intent.putExtra("mobileno", etMobileNo.getText().toString());
+        intent.putExtra("ActivityType", 0);  // Activity Type 1 for CreateGroupActivity 0 for MobileLoginActivity
         startActivity(intent);
         overridePendingTransition(R.anim.anim_slide_in_left,
                 R.anim.anim_slide_out_left);

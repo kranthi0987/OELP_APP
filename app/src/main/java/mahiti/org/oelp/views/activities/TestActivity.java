@@ -21,18 +21,24 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.databinding.ActivityTestBinding;
+import mahiti.org.oelp.models.QuestionAnswerIdModel;
 import mahiti.org.oelp.models.QuestionAnswerModel;
 import mahiti.org.oelp.models.QuestionChoicesModel;
+import mahiti.org.oelp.models.SubmittedAnswerResponse;
 import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.CheckNetwork;
 import mahiti.org.oelp.utils.Constants;
@@ -190,14 +196,28 @@ public class TestActivity extends AppCompatActivity {
         Log.i(TAG, "server Json: " + arrayServer);
         Log.i(TAG, "preview Json: " + arrayPreview);
 
-        /*Saving Answered Question To Question Answer Table*/
-//        if (CheckNetwork.checkNet(this)) {
-            String testUUId = AppUtils.getUUID();
-            testViewModel.saveValueToDb(arrayServer, arrayPreview, mediaUUID, scoreList, testUUId, sectionUUID, unitUUID);
+        SubmittedAnswerResponse model = new SubmittedAnswerResponse();
+        model.setCreationKey(AppUtils.getUUID());
+        model.setMediacontent(mediaUUID);
+        model.setSectionUUID(sectionUUID);
+        model.setUnitUUID(unitUUID);
+        /*
+        * Coverting Json Array to Lsit*/
 
-//        } else {
-//            Toast.makeText(this, getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
-//        }
+        List<QuestionAnswerIdModel> responses;
+        Type listType = new TypeToken<List<QuestionAnswerIdModel>>() {}.getType();
+        responses= new Gson().fromJson(String.valueOf(arrayServer), listType);
+        model.setResponse(responses);
+        model.setSubmissionDate(AppUtils.getDateTime());
+        model.setAttempts(0);
+        model.setScore(Float.parseFloat(scoreList.get(0)));
+        model.setTotal(scoreList.get(1));
+        model.setSyncStatus(1);
+        List<SubmittedAnswerResponse> list = new ArrayList<>();
+        list.add(model);
+
+        testViewModel.saveValueToDb(list);
+
         moveToNextActivity();
 
 

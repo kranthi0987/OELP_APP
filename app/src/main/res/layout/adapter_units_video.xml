@@ -48,6 +48,7 @@
                         android:layout_height="match_parent"
                         android:layout_centerInParent="true"
                         app:riv_corner_radius="10dip"
+                        android:scaleType="fitXY"
                         app:riv_mutate_background="true" />
 
                     <com.makeramen.roundedimageview.RoundedImageView

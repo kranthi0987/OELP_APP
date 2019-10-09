@@ -13,10 +13,12 @@ import org.json.JSONObject;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.DAOs.LocationDao;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.models.LocationContent;
 import mahiti.org.oelp.models.LocationModel;
 import mahiti.org.oelp.models.MobileVerificationResponseModel;
+import mahiti.org.oelp.models.UserDetailsModel;
 import mahiti.org.oelp.services.ApiInterface;
 import mahiti.org.oelp.services.RetrofitClass;
 import mahiti.org.oelp.services.RetrofitConstant;
@@ -59,6 +61,10 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
     public MutableLiveData<Integer> districtId = new MutableLiveData<>();
     public MutableLiveData<Boolean> districtClickable = new MutableLiveData<>();
     public MutableLiveData<Boolean> blockClickable = new MutableLiveData<>();
+    public MutableLiveData<UserDetailsModel> userDetailsModelData = new MutableLiveData<>();
+
+    public MutableLiveData<Integer> activityType = new MutableLiveData<>();
+
 
 
     private MutableLiveData<Action> mAction = new MutableLiveData<>();
@@ -66,7 +72,8 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
 
     public MutableLiveData<String> errorMessage = new MutableLiveData<>();
     public MutableLiveData<Long> insertLong = new MutableLiveData<>();
-    private DatabaseHandlerClass databaseHandlerClass;
+//    private DatabaseHandlerClass databaseHandlerClass;
+    private LocationDao locationDao;
     public MutableLiveData<MobileVerificationResponseModel> data = new MutableLiveData<>();
     private static final String TAG = TeacherRegistrationViewModel.class.getSimpleName();
 
@@ -77,15 +84,14 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
         context = application;
         showProgresBar.setValue(true);
         insertLong.setValue(null);
-        databaseHandlerClass = new DatabaseHandlerClass(context);
+        locationDao = new LocationDao(context);
         districtClickable.setValue(false);
         blockClickable.setValue(false);
         stateId.setValue(0);
         districtId.setValue(0);
         blockId.setValue(0);
-        state.setValue(context.getResources().getString(R.string.please_select_state_start));
-        district.setValue(context.getResources().getString(R.string.please_select_district));
-        block.setValue(context.getResources().getString(R.string.please_select_block));
+        activityType.setValue(0);
+
         sharedPref = new MySharedPref(context);
         if (CheckNetwork.checkNet(context)) {
             callApiForLocation();
@@ -126,7 +132,7 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
 
     private void checkDataAndProceed(LocationModel locationModel) {
         if (locationModel.getStatus().equals(RetrofitConstant.STATUS_TRUE)){
-            insertLong.setValue(databaseHandlerClass.insertLocationDataToDB(locationModel));
+            insertLong.setValue(locationDao.insertLocationDataToDB(locationModel));
             showProgresBar.setValue(false);
 
         }else {
@@ -150,19 +156,19 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
 
     public LiveData<List<LocationContent>> getStateSpinnerData(){
         MutableLiveData<List<LocationContent>> stateArray = new MutableLiveData<>();
-        stateArray = databaseHandlerClass.getSpinnerList(1, 2);
+        stateArray = locationDao.getSpinnerList(1, 2);
         return stateArray;
     }
 
     public LiveData<List<LocationContent>> getDistrictSpinnerData(int parentId, int level){
         MutableLiveData<List<LocationContent>> stateArray = new MutableLiveData<>();
-        stateArray = databaseHandlerClass.getSpinnerList(parentId, level);
+        stateArray = locationDao.getSpinnerList(parentId, level);
         return stateArray;
     }
 
     public LiveData<List<LocationContent>> getBlockSpinnerData(int parentId, int level){
         MutableLiveData<List<LocationContent>> stateArray = new MutableLiveData<>();
-        stateArray = databaseHandlerClass.getSpinnerList(parentId, level);
+        stateArray = locationDao.getSpinnerList(parentId, level);
         return stateArray;
     }
 
@@ -179,6 +185,17 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
 
     private void prepareJsonAndCallApi() {
         String userDetails ="";
+        if (activityType.getValue()==1){
+            UserDetailsModel details = new UserDetailsModel();
+            details.setName(name.getValue());
+            details.setMobile_number(phoneNo.getValue());
+            details.setSchool(school.getValue());
+            details.setStateName(state.getValue());
+            details.setDistrictname(district.getValue());
+            details.setBlockName(district.getValue());
+            details.setVillageName(district.getValue());
+            userDetailsModelData.setValue(details);
+        }
         try{
             JSONObject obj = new JSONObject();
             obj.put("name", name.getValue());
@@ -206,6 +223,10 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
 
     }
 
+    public UserDetailsModel getUserDetailsData(){
+        return userDetailsModelData.getValue();
+    }
+
     private void callApiForRegistration(String userDetails) {
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL: "+RetrofitConstant.BASE_URL+RetrofitConstant.USER_REGISTRATION_URL +" Param : userDetails:"+userDetails);
@@ -217,9 +238,12 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
                     MobileVerificationResponseModel model = response.body();
                     model.setmAction(new Action(Action.STATUS_TRUE));
                     data.setValue(model);
-                    sharedPref.writeString(Constants.MOBILE_NO, userDetails);
-                    saveUserIDAndUserTypeAndUserName(model.getUserid(), Constants.USER_TEACHER);
                     showProgresBar.setValue(false);
+
+                    if (activityType.getValue()==0) {
+                        sharedPref.writeString(Constants.MOBILE_NO, userDetails);
+                        saveUserIDAndUserTypeAndUserName(model.getUserid(), Constants.USER_TEACHER);
+                    }
 
                 }else {
                     MobileVerificationResponseModel model = new MobileVerificationResponseModel(2, context.getResources().getString(R.string.SOMETHING_WRONG));
@@ -264,20 +288,6 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
             return status;
         }
 
-//        if (AppUtils.textEmpty(phoneNo.getValue())){
-//            phoneNo = null;
-//        }else {
-//            status = false;
-//            phoneNo.setValue(context.getResources().getString(R.string.please_enter_phone));
-//        }
-
-//        if (!AppUtils.textEmpty(school.getValue())){
-//            errorSchool = null;
-//        }else {
-//            status = false;
-//            errorSchool.setValue(context.getResources().getString(R.string.please_enter_school));
-//        }
-
         if (!AppUtils.textEmpty(state.getValue()) && !state.getValue().equalsIgnoreCase(context.getString(R.string.please_select_state_start))){
             errorState = null;
         }else {
@@ -285,131 +295,41 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
             errorState.setValue(context.getResources().getString(R.string.please_select_state));
             return status;
         }
+        if (activityType.getValue()!=null && activityType.getValue()==1) {
 
-//        if (!AppUtils.textEmpty(district.getValue())){
-//            errorDistrict = null;
-//        }else {
-//            status = false;
-//            errorDistrict.setValue(context.getResources().getString(R.string.please_select_district));
-//        }
+            if (!AppUtils.textEmpty(district.getValue())) {
+                errorDistrict = null;
+            } else {
+                status = false;
+                errorDistrict.setValue(context.getResources().getString(R.string.please_select_district));
+            }
 
-//        if (!AppUtils.textEmpty(block.getValue())){
-//            errorBlock = null;
-//        }else {
-//            status = false;
-//            errorBlock.setValue(context.getResources().getString(R.string.please_select_block));
-//        }
+            if (!AppUtils.textEmpty(block.getValue())) {
+                errorBlock = null;
+            } else {
+                status = false;
+                errorBlock.setValue(context.getResources().getString(R.string.please_select_block));
+            }
 
-//        if (!AppUtils.textEmpty(village.getValue())){
-//            errorVillage = null;
-//        }else {
-//            status = false;
-//            errorVillage.setValue(context.getResources().getString(R.string.please_select_village));
-//        }
+            if (!AppUtils.textEmpty(village.getValue())) {
+                errorVillage = null;
+            } else {
+                status = false;
+                errorVillage.setValue(context.getResources().getString(R.string.please_select_village));
+            }
+        }
 
         return status;
     }
 
 
-    /*@InverseBindingAdapter(attribute = "state", event = "selectionAttrChanged")
-    public static String getSelectedStateValue(AdapterView view) {
-        return (String) view.getSelectedItem();
-    }
-
-    @InverseBindingAdapter(attribute = "district", event = "selectionAttrChanged")
-    public static String getSelectedDistrictValue(AdapterView view) {
-        return (String) view.getSelectedItem();
-    }
-
-    @InverseBindingAdapter(attribute = "block", event = "selectionAttrChanged")
-    public static String getSelectedBlockValue(AdapterView view) {
-        return (String) view.getSelectedItem();
-    }
-
-    @InverseBindingAdapter(attribute = "village", event = "selectionAttrChanged")
-    public static String getSelectedVillageValue(AdapterView view) {
-        return (String) view.getSelectedItem();
-    }
-
-    @BindingAdapter(value = {"state", "selectionAttrChanged", "adapter"}, requireAll = false)
-    public static void setStateAdapter(AdapterView view, String newSelection, final InverseBindingListener bindingListener, ArrayAdapter adapter) {
-        view.setAdapter(adapter);
-        view.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                bindingListener.onChange();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //Nothing
-            }
-        });
-        if (newSelection != null) {
-            int pos = ((ArrayAdapter) view.getAdapter()).getPosition(newSelection);
-            view.setSelection(pos);
+    public void setActivityType(int activityType) {
+        this.activityType.setValue(activityType);
+        if (this.activityType!=null && this.activityType.getValue()==0){
+            state.setValue(context.getResources().getString(R.string.please_select_state_start));
+            district.setValue(context.getResources().getString(R.string.please_select_district));
+            block.setValue(context.getResources().getString(R.string.please_select_block));
         }
     }
 
-    @BindingAdapter(value = {"district", "selectionAttrChanged", "adapter"}, requireAll = false)
-    public static void setDistrictAdapter(AdapterView view, String newSelection, final InverseBindingListener bindingListener, ArrayAdapter adapter) {
-        view.setAdapter(adapter);
-        view.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                bindingListener.onChange();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //Nothing
-            }
-        });
-        if (newSelection != null) {
-            int pos = ((ArrayAdapter) view.getAdapter()).getPosition(newSelection);
-            view.setSelection(pos);
-        }
-    }
-
-    @BindingAdapter(value = {"block", "selectionAttrChanged", "adapter"}, requireAll = false)
-    public static void setBlockAdapter(AdapterView view, String newSelection, final InverseBindingListener bindingListener, ArrayAdapter adapter) {
-        view.setAdapter(adapter);
-        view.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                bindingListener.onChange();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //Nothing
-            }
-        });
-        if (newSelection != null) {
-            int pos = ((ArrayAdapter) view.getAdapter()).getPosition(newSelection);
-            view.setSelection(pos);
-        }
-    }
-
-
-    @BindingAdapter(value = {"village", "selectionAttrChanged", "adapter"}, requireAll = false)
-    public static void setVillageAdapter(AdapterView view, String newSelection, final InverseBindingListener bindingListener, ArrayAdapter adapter) {
-        view.setAdapter(adapter);
-        view.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                bindingListener.onChange();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //Nothing
-            }
-        });
-        if (newSelection != null) {
-            int pos = ((ArrayAdapter) view.getAdapter()).getPosition(newSelection);
-            view.setSelection(pos);
-        }
-    }
-*/
 }

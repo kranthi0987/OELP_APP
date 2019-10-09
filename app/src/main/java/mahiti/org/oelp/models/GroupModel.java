@@ -30,7 +30,17 @@ public class GroupModel {
     @Expose
     private List<Member> members;
 
+    private int membersCount;
+
     public GroupModel() {
+    }
+
+    public int getMembersCount() {
+        return membersCount;
+    }
+
+    public void setMembersCount(int membersCount) {
+        this.membersCount = membersCount;
     }
 
     public String getUserUUID() {

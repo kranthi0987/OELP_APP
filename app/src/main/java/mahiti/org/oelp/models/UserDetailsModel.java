@@ -58,6 +58,86 @@ public class UserDetailsModel implements Parcelable{
 
     private boolean isCheckBoxChecked;
 
+    private String stateName;
+    private String districtname;
+    private String blockName;
+    private String villageName;
+
+    protected UserDetailsModel(Parcel in) {
+        lastActive = in.readString();
+        userGroup = in.createStringArrayList();
+        videoCoveredCount = in.readString();
+        lastLoggedIn = in.readString();
+        school = in.readString();
+        name = in.readString();
+        userid = in.readString();
+        if (in.readByte() == 0) {
+            active = null;
+        } else {
+            active = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            blockIds = null;
+        } else {
+            blockIds = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            isTrainer = null;
+        } else {
+            isTrainer = in.readInt();
+        }
+        mobile_number = in.readString();
+        isCheckBoxChecked = in.readByte() != 0;
+        stateName = in.readString();
+        districtname = in.readString();
+        blockName = in.readString();
+        villageName = in.readString();
+    }
+
+    public static final Creator<UserDetailsModel> CREATOR = new Creator<UserDetailsModel>() {
+        @Override
+        public UserDetailsModel createFromParcel(Parcel in) {
+            return new UserDetailsModel(in);
+        }
+
+        @Override
+        public UserDetailsModel[] newArray(int size) {
+            return new UserDetailsModel[size];
+        }
+    };
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
+    public String getDistrictname() {
+        return districtname;
+    }
+
+    public void setDistrictname(String districtname) {
+        this.districtname = districtname;
+    }
+
+    public String getBlockName() {
+        return blockName;
+    }
+
+    public void setBlockName(String blockName) {
+        this.blockName = blockName;
+    }
+
+    public String getVillageName() {
+        return villageName;
+    }
+
+    public void setVillageName(String villageName) {
+        this.villageName = villageName;
+    }
+
     public boolean isCheckBoxChecked() {
         return isCheckBoxChecked;
     }
@@ -154,6 +234,11 @@ public class UserDetailsModel implements Parcelable{
         this.lastLoggedIn = lastLoggedIn;
     }
 
+
+
+    public UserDetailsModel() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -161,36 +246,37 @@ public class UserDetailsModel implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        this.school = parcel.readString();
-        this.name = parcel.readString();
-        this.userid = parcel.readString();
-        this.isTrainer = parcel.readInt();
-        this.mobile_number = parcel.readString();
-        this.active = parcel.readInt();
-        this.blockIds = parcel.readInt();
-    }
-
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public UserDetailsModel createFromParcel(Parcel in) {
-            return new UserDetailsModel(in);
+        parcel.writeString(lastActive);
+        parcel.writeStringList(userGroup);
+        parcel.writeString(videoCoveredCount);
+        parcel.writeString(lastLoggedIn);
+        parcel.writeString(school);
+        parcel.writeString(name);
+        parcel.writeString(userid);
+        if (active == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(active);
         }
-
-        public UserDetailsModel[] newArray(int size) {
-            return new UserDetailsModel[size];
+        if (blockIds == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(blockIds);
         }
-    };
-
-    public UserDetailsModel() {
-    }
-
-    public UserDetailsModel(Parcel in){
-        this.school = in.readString();
-        this.name = in.readString();
-        this.userid =  in.readString();
-        this.isTrainer =  in.readInt();
-        this.mobile_number =  in.readString();
-        this.active =  in.readInt();
-        this.blockIds =  in.readInt();
+        if (isTrainer == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(isTrainer);
+        }
+        parcel.writeString(mobile_number);
+        parcel.writeByte((byte) (isCheckBoxChecked ? 1 : 0));
+        parcel.writeString(stateName);
+        parcel.writeString(districtname);
+        parcel.writeString(blockName);
+        parcel.writeString(villageName);
     }
 
 }

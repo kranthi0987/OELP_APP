@@ -113,6 +113,11 @@
     <string name="chats">Chats</string>
     <string name="contributions">Contributions</string>
     <string name="members">Members</string>
+    <string name="what_you_want_to_do_with_media">What you want to do with media?</string>
+    <string-array name="option_array" >
+        <item>Delete Media</item>
+        <item>Share Media</item>
+    </string-array>
     <array name="contribution_array">
         <item>All Contribution</item>
         <item>Others Contribution</item>

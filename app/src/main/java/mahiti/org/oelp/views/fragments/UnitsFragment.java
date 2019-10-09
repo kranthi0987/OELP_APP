@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.DAOs.CatalogDao;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.models.CatalogueDetailsModel;
 import mahiti.org.oelp.utils.Constants;
@@ -37,7 +38,7 @@ public class UnitsFragment extends Fragment {
     private int mediaLevel;
     private List<CatalogueDetailsModel> catalogueDetailsModels = new ArrayList<>();
     //    FragmentUnitsBinding binding;
-    private DatabaseHandlerClass handlerClass;
+    private CatalogDao handlerClass;
     private List<CatalogueDetailsModel> list1;
 
 
@@ -45,7 +46,7 @@ public class UnitsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        homeViewModel = ViewModelProviders.of(getActivity()).get(HomeViewModel.class);
-        handlerClass = new DatabaseHandlerClass(getActivity());
+        handlerClass = new CatalogDao(getActivity());
     }
 
     @Nullable

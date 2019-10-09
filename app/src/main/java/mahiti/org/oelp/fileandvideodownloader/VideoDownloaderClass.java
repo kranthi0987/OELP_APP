@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.DAOs.CatalogDao;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.Logger;
@@ -418,7 +419,7 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
 
     public void updateFileSizeInDatabase(String uuid, long fileSize) {
         if (!uuid.isEmpty()) {
-            DatabaseHandlerClass catalogDBHandler = new DatabaseHandlerClass(context);
+            CatalogDao catalogDBHandler = new CatalogDao(context);
             boolean getupdatedStatus = catalogDBHandler.addFileSize(uuid, fileSize);
             Log.i("getUpdatedPD", getupdatedStatus + "");
         }

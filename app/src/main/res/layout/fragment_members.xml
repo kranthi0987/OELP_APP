@@ -24,6 +24,17 @@
         android:layout_marginTop="8dp"
         android:theme="@style/AppTheme.WhiteAccent"/>
 
+    <TextView
+        android:id="@+id/tvError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="Members not found for this group"
+        android:textColor="@color/red"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -32,7 +43,7 @@
         android:layout_alignParentRight="true"
         android:layout_margin="20dp"
         android:backgroundTint="@color/green"
-        android:src="@drawable/ic_add"
+        android:src="@drawable/ic_edit"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
 

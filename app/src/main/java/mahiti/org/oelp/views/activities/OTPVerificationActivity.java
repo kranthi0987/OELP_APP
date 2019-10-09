@@ -296,6 +296,8 @@ public class OTPVerificationActivity extends AppCompatActivity {
 //            saveUserTypeToPref();
         } else {
             Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
+            if(data.getmAction().getValue()== Action.STATUS_FALSE)
+                clearAllOTPText();
         }
     }
 

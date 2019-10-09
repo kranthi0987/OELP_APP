@@ -12,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.squareup.picasso.Picasso;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 import java.util.List;
@@ -154,9 +156,15 @@ public class UnitsVideoAdpater extends RecyclerView.Adapter<UnitsVideoAdpater.La
             File imageFile = new File(iconCompletePath);
             Log.i("ADAPTER", "Image path in device : " + imageFile.getPath());
             if (imageFile.exists()) {
-                Picasso.get()
+              /*  Picasso.get()
                         .load("file://" + imageFile.getPath())
                         .fit()
+                        .into(layout.binding.roundedImageView);*/
+                RequestOptions myOptions = new RequestOptions()
+                        .fitCenter();
+                Glide.with(mContext)
+                        .load("file://"+imageFile.getPath())
+                        .apply(myOptions)
                         .into(layout.binding.roundedImageView);
             }
             else {

@@ -6,6 +6,9 @@ import android.content.Context;
 import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,13 +29,8 @@ public class MediaContentDao extends DatabaseHandlerClass {
         super(mContext);
     }
 
-    private void initDatabase() {
-        if (database == null || !database.isOpen() || database.isReadOnly())
-            database = this.getWritableDatabase(DBConstants.DATABASESECRETKEY);
-    }
-
-    public long insertSharedMedia(List<SharedMediaModel> modelList) {
-        long insertlong =0;
+    public long insertSharedData(List<SharedMediaModel> modelList) {
+        long insertlong = 0;
         initDatabase();
         database.beginTransaction();
         try {
@@ -60,23 +58,33 @@ public class MediaContentDao extends DatabaseHandlerClass {
         return insertlong;
     }
 
-
-    public List<SharedMediaModel> getSharedMedia(String uuid, boolean forGroup) {
+    /**
+     * @param forGroup true for groupData false for user specific data
+     * @param type 0 for both sync and unsync data and 1 for unsync data
+     * @param uuid groupuuid or useruuid
+     * */
+    public List<SharedMediaModel> fetchSharedMedia(String uuid, boolean forGroup, int type) {
         List<SharedMediaModel> sharedMediaList = new ArrayList<>();
-        String query="";
-        if (forGroup) {
+        String query;
+        if (type==0) {
+            if (forGroup) {
+                query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.MEDIA_CONTENT_TABLE +
+                        DBConstants.WHERE + DBConstants.GROUP_UUID + DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES + uuid + DBConstants.SINGLE_QUOTES + DBConstants.AND + DBConstants.DELETE_MEDIA + DBConstants.NOT_EQUAL_TO + 1 + DBConstants.ORDER_BY + DBConstants.MODIFIED + DBConstants.DESCENDING;
+            } else {
+                query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.MEDIA_CONTENT_TABLE +
+                        DBConstants.WHERE + DBConstants.USER_UUID + DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES + uuid + DBConstants.SINGLE_QUOTES + DBConstants.AND + DBConstants.DELETE_MEDIA + DBConstants.NOT_EQUAL_TO + 1 + DBConstants.ORDER_BY + DBConstants.MODIFIED + DBConstants.DESCENDING;
+            }
+        }else{
             query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.MEDIA_CONTENT_TABLE +
-                    DBConstants.WHERE + DBConstants.GROUP_UUID + DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES + uuid + DBConstants.SINGLE_QUOTES+DBConstants.ORDER_BY+DBConstants.MODIFIED+DBConstants.DESCENDING;
-        }else {
-            query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.MEDIA_CONTENT_TABLE +
-                    DBConstants.WHERE + DBConstants.USER_UUID + DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES + uuid + DBConstants.SINGLE_QUOTES+DBConstants.ORDER_BY+DBConstants.MODIFIED+DBConstants.DESCENDING;;
+                    DBConstants.WHERE + DBConstants.SYNC_STATUS + DBConstants.EQUAL_TO + 1;
+
         }
+
         Logger.logD(TAG, DBConstants.MEDIA_CONTENT_TABLE + " Fetch Attempt Query :" + query);
         Cursor cursor;
         try {
             cursor = database.rawQuery(query, null);
             if (cursor.moveToFirst()) {
-
                 do {
                     SharedMediaModel model = new SharedMediaModel();
                     model.setMediaUuid(cursor.getString(cursor.getColumnIndex(DBConstants.UUID)));
@@ -88,7 +96,6 @@ public class MediaContentDao extends DatabaseHandlerClass {
                     model.setUserName(cursor.getString(cursor.getColumnIndex(DBConstants.USER_NAME)));
                     model.setSubmissionTime(cursor.getString(cursor.getColumnIndex(DBConstants.MODIFIED)));
                     model.setSharedGlobally(cursor.getInt(cursor.getColumnIndex(DBConstants.SHARED_GLOBALLY)));
-
                     sharedMediaList.add(model);
 
                 } while (cursor.moveToNext());
@@ -99,44 +106,35 @@ public class MediaContentDao extends DatabaseHandlerClass {
         return sharedMediaList;
     }
 
-    /*public List<CatalogueDetailsModel> getWatchStatus(String parentUUID) {
-        CatalogueDetailsModel model;
-        List<CatalogueDetailsModel> list = new ArrayList<>();
-        String query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.ModuleWatchLockTable +
-                DBConstants.WHERE + DBConstants.PARENT + DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES +
-                parentUUID + DBConstants.SINGLE_QUOTES+DBConstants.AND +DBConstants.WATCH_STATUS+
-                DBConstants.NOT_EQUAL_TO+DBConstants.ZERO;
-        Logger.logD(TAG, DBConstants.ModuleWatchLockTable + " Fetch WatchStatusAndLock Query :" + query);
+    public long updateGloballyShareMediaUUID(String mediaUUID) {
+        long updateLong = 0;
         initDatabase();
-        Cursor cursor;
-        try {
-            cursor = database.rawQuery(query, null);
-            if (cursor.moveToFirst()) {
-                do {
-                    model = new CatalogueDetailsModel();
-                    model.setUuid(cursor.getString(cursor.getColumnIndex(DBConstants.UUID)));
-                    model.setParent(cursor.getString(cursor.getColumnIndex(DBConstants.PARENT)));
-                    model.setWatchStatus(cursor.getInt(cursor.getColumnIndex(DBConstants.WATCH_STATUS)));
-                    model.setOrder(cursor.getInt(cursor.getColumnIndex(DBConstants.ORDER)));
-                    model.setLock(cursor.getInt(cursor.getColumnIndex(DBConstants.SCORE)));
-                    list.add(model);
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception ex) {
-            Logger.logE(TAG, DBConstants.ModuleWatchLockTable + " Fetch WatchStatus Exception :" + ex.getMessage(), ex);
-        }
-        return list;
-    }*/
+        ContentValues cv = new ContentValues();
+        cv.put(DBConstants.UUID, mediaUUID); //These Fields should be your String values of actual column names
+        cv.put(DBConstants.SHARED_GLOBALLY, 1); //These Fields should be your String values of actual column names
+        updateLong = database.updateWithOnConflict(DBConstants.MEDIA_CONTENT_TABLE, cv, "uuid = ?", new String[]{mediaUUID}, SQLiteDatabase.CONFLICT_REPLACE);
+        return updateLong;
+    }
 
-    public long updateGloabllyShareMediaUUID(List<SharedMediaModel> sharedMediaGlobally) {
-        long updateLong =0;
+    public long updateSyncData(String mediaUUID) {
+        long updateLong = 0;
         initDatabase();
-        for (SharedMediaModel model :sharedMediaGlobally ){
-            ContentValues cv = new ContentValues();
-            cv.put(DBConstants.UUID, model.getMediaUuid()); //These Fields should be your String values of actual column names
-            updateLong = database.update(DBConstants.MEDIA_STATUS_TABLE, cv, "uuid = ?", new String[]{model.getMediaUuid()});
-        }
-            return updateLong;
+        ContentValues cv = new ContentValues();
+        cv.put(DBConstants.UUID, mediaUUID); //These Fields should be your String values of actual column names
+        cv.put(DBConstants.SYNC_STATUS, 0); //These Fields should be your String values of actual column names
+        updateLong = database.updateWithOnConflict(DBConstants.MEDIA_CONTENT_TABLE, cv, "uuid = ?", new String[]{mediaUUID}, SQLiteDatabase.CONFLICT_REPLACE);
+        return updateLong;
+    }
+
+
+    public long deleteMediaUUID(String mediaUUID) {
+        long updateLong = 0;
+        initDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(DBConstants.UUID, mediaUUID); //These Fields should be your String values of actual column names
+        cv.put(DBConstants.DELETE_MEDIA, 1); //These Fields should be your String values of actual column names
+        updateLong = database.update(DBConstants.MEDIA_CONTENT_TABLE, cv, "uuid = ?", new String[]{mediaUUID});
+        return updateLong;
     }
 
     public List<FileModel> getImageListFromMediaTable() {
@@ -145,7 +143,7 @@ public class MediaContentDao extends DatabaseHandlerClass {
         String query = DBConstants.SELECT + DBConstants.MEDIA_PATH + DBConstants.COMMA + DBConstants.MEDIA_NAME +
                 DBConstants.COMMA + DBConstants.UUID + DBConstants.FROM + DBConstants.MEDIA_CONTENT_TABLE +
                 DBConstants.WHERE + DBConstants.MEDIA_PATH + DBConstants.NOT_EQUAL_TO + DBConstants.EMPTY +
-                DBConstants.AND + DBConstants.MEDIA_PATH + DBConstants.IS_NOT_NULL+DBConstants.AND+DBConstants.MEDIA_TYPE+DBConstants.EQUAL_TO+1;
+                DBConstants.AND + DBConstants.MEDIA_PATH + DBConstants.IS_NOT_NULL + DBConstants.AND + DBConstants.MEDIA_TYPE + DBConstants.EQUAL_TO + 1;
         initDatabase();
         try {
             Logger.logD(TAG, "Getting Image List Query : " + query);
@@ -166,4 +164,69 @@ public class MediaContentDao extends DatabaseHandlerClass {
         }
         return imageList;
     }
+
+    public String fetchDeletedMedia() {
+        List<SharedMediaModel> sharedMediaList = new ArrayList<>();
+        JSONArray array = new JSONArray();
+        JSONObject jsonObject;
+        String query = DBConstants.SELECT + DBConstants.UUID +DBConstants.FROM +DBConstants.MEDIA_CONTENT_TABLE +
+                    DBConstants.WHERE + DBConstants.DELETE_MEDIA + DBConstants.EQUAL_TO +1;
+
+        Logger.logD(TAG, DBConstants.MEDIA_CONTENT_TABLE + " Fetch Attempt Query :" + query);
+        Cursor cursor;
+        try {
+            cursor = database.rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+
+                do {
+                    jsonObject = new JSONObject();
+                    jsonObject.put("media_uuid",cursor.getString(cursor.getColumnIndex(DBConstants.UUID)));
+                    array.put(jsonObject);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception ex) {
+            Logger.logE(TAG, DBConstants.MEDIA_CONTENT_TABLE + " Fetch Attempt Exception :" + ex.getMessage(), ex);
+        }
+        return array.toString();
+    }
+
+    public String fetchGlobalSharedMedia() {
+        JSONArray array = new JSONArray();
+        String data ="";
+        JSONObject jsonObject;
+        String query = DBConstants.SELECT + DBConstants.UUID +DBConstants.FROM +DBConstants.MEDIA_CONTENT_TABLE +
+                DBConstants.WHERE + DBConstants.SHARED_GLOBALLY + DBConstants.EQUAL_TO +1;
+
+        Logger.logD(TAG, DBConstants.MEDIA_CONTENT_TABLE + " Fetch Attempt Query :" + query);
+        Cursor cursor;
+        try {
+            cursor = database.rawQuery(query, null);
+            if (cursor.moveToFirst()) {
+
+                do {
+                    jsonObject = new JSONObject();
+                    jsonObject.put("media_uuid",cursor.getString(cursor.getColumnIndex(DBConstants.UUID)));
+                    array.put(jsonObject);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception ex) {
+            Logger.logE(TAG, DBConstants.MEDIA_CONTENT_TABLE + " Fetch Attempt Exception :" + ex.getMessage(), ex);
+        }
+        data = array.toString();
+        return data;
+    }
+
+    public long removeDeleteMedia(String mediaUUID) {
+        long updateLong = 0;
+        initDatabase();
+        String selection = DBConstants.DELETE_MEDIA + " = ?";
+        String[] selectionArgs = { "1" };
+        ContentValues cv = new ContentValues();
+        cv.put(DBConstants.UUID, mediaUUID);
+        cv.put(DBConstants.DELETE_MEDIA, 1);
+        updateLong = database.delete(DBConstants.MEDIA_STATUS_TABLE, selection, selectionArgs);
+        return updateLong;
+    }
+
+
 }

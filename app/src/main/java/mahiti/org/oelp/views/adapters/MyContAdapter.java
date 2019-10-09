@@ -9,7 +9,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 import java.util.List;
@@ -54,31 +55,43 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
         }
 
         viewHolder.llRecycler.setOnClickListener(view -> {
-            if ((model.getMediaType()).equals("3"))
-                clickListener.onSharedMediaClick(model, false);
+            clickListener.onSharedMediaClick(model, false, position);
+
+
         });
 
+        if (model.getSharedGlobally()==1)
+            viewHolder.ivTickMark.setVisibility(View.VISIBLE);
+        else
+            viewHolder.ivTickMark.setVisibility(View.GONE);
+
         viewHolder.llRecycler.setOnLongClickListener(view -> {
-            clickListener.onSharedMediaClick(model, true);
+            clickListener.onSharedMediaClick(model, true, position);
             return false;
         });
 
     }
 
     public void showUIForImage(String path, ViewHolder viewHolder) {
-        if (path==null)
+        if (path == null)
             return;
         String fileName = AppUtils.getFileName(path);
         File file = null;
-        try{
-            file = new File(AppUtils.completeInternalStoragePath(context, Constants.IMAGE), fileName);
-        }catch (Exception ex){
+        try {
+            file = new File(AppUtils.completePathInSDCard(Constants.IMAGE), fileName);
+        } catch (Exception ex) {
             Logger.logE("Exce", ex.getMessage(), ex);
         }
         if (file.exists()) {
-            Picasso.get()
+           /* Picasso.get()
                     .load("file://" + file)
                     .fit()
+                    .into(viewHolder.roundedImageView);*/
+            RequestOptions myOptions = new RequestOptions()
+                    .centerCrop();
+            Glide.with(context)
+                    .load("file://" + file)
+                    .apply(myOptions)
                     .into(viewHolder.roundedImageView);
         }
     }
@@ -100,6 +113,7 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
         private TextView tvUploadedBy;
         private LinearLayout llRecycler;
         private ImageView ivPlayButton;
+        private ImageView ivTickMark;
         private ImageView roundedImageView;
 
         public ViewHolder(View itemView) {
@@ -110,6 +124,7 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
             llRecycler = itemView.findViewById(R.id.llRecycler);
             ivPlayButton = itemView.findViewById(R.id.ivPlayButton);
             roundedImageView = itemView.findViewById(R.id.roundedImageView);
+            ivTickMark = itemView.findViewById(R.id.ivTickMark);
 
         }
     }

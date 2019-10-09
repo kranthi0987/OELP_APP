@@ -42,6 +42,16 @@ public class TeacherModel {
     @Expose
     private String videoCoveredCount;
 
+    private int mediaCount;
+
+    public int getMediaCount() {
+        return mediaCount;
+    }
+
+    public void setMediaCount(int mediaCount) {
+        this.mediaCount = mediaCount;
+    }
+
     public String getBlockName() {
         return blockName;
     }

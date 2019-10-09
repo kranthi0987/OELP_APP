@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -21,7 +20,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -30,8 +28,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
-
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 
@@ -43,34 +39,23 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.database.DBConstants;
+import mahiti.org.oelp.database.DAOs.SurveyResponseDao;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
-import mahiti.org.oelp.models.MobileVerificationResponseModel;
-import mahiti.org.oelp.models.QuestionAnswerModel;
 import mahiti.org.oelp.models.SubmittedAnswerResponse;
-import mahiti.org.oelp.services.ApiInterface;
-import mahiti.org.oelp.services.RetrofitClass;
-import mahiti.org.oelp.services.RetrofitConstant;
 import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.CheckNetwork;
 import mahiti.org.oelp.utils.Constants;
-import mahiti.org.oelp.utils.Logger;
 import mahiti.org.oelp.utils.MySharedPref;
 import mahiti.org.oelp.videoplay.UpdateDbInterface;
 import mahiti.org.oelp.videoplay.api.MediaTrackerApi;
-import mahiti.org.oelp.videoplay.api.VideoAPI;
 import mahiti.org.oelp.videoplay.tracker.MediaTracker;
 import mahiti.org.oelp.videoplay.utils.CheckNet;
 import mahiti.org.oelp.videoplay.utils.DecryptClass;
 import mahiti.org.oelp.videoplay.utils.SevendaysVariables;
 import mahiti.org.oelp.videoplay.utils.Validation;
-import mahiti.org.oelp.videoplay.utils.VideoDbColumns;
 import mahiti.org.oelp.videoplay.utils.VideoDecryptionDb;
 import mahiti.org.oelp.views.activities.PreviewActivity;
 import mahiti.org.oelp.views.activities.TestActivity;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class VideoViewActivity extends AppCompatActivity implements SevendaysVariables,
@@ -108,9 +93,9 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     String mediaUUID = "";
     int dcfId = 0;
     String deviceId = "";
-    private DatabaseHandlerClass catalogDbHandler;
     private String errorMessage;
     private Boolean takeRetest = true;
+    private SurveyResponseDao surveyResponseDao;
 
 
     @SuppressLint("DefaultLocale")
@@ -153,7 +138,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_view);
         mySharedPref = new MySharedPref(this);
-        catalogDbHandler = new DatabaseHandlerClass(this);
+        surveyResponseDao = new SurveyResponseDao(this);
 
         actionBar = findViewById(R.id.toolbar);
         toolbarTitle = findViewById(R.id.toolbarTitle);
@@ -358,7 +343,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
        /* if (CheckNetwork.checkNet(this)) {
             callMediaTrackerApi();
         }*/
-//        contentUpdateStatus(mediaUUID);
+        contentUpdateStatus(mediaUUID);
         finish();
     }
 
@@ -462,13 +447,12 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         }
     }
 
-//    public void contentUpdateStatus(String uuid) {
-//        if (!uuid.isEmpty()) {
-//            DatabaseHandlerClass catalogDBHandler = new DatabaseHandlerClass(VideoViewActivity.this);
-//            int getInsertedPD = catalogDBHandler.insertViewStatusToDatabase(uuid);
-//            Log.i("getInsertedPD", getInsertedPD + "");
-//        }
-//    }
+    public void contentUpdateStatus(String uuid) {
+        if (!uuid.isEmpty()) {
+            DatabaseHandlerClass catalogDBHandler = new DatabaseHandlerClass(VideoViewActivity.this);
+            catalogDBHandler.updateWatchStatus(uuid);
+        }
+    }
 
     private void updateDbAfterApi() {
         displayDirectoryContents(srcPath);
@@ -507,23 +491,23 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         }*/
         boolean loginType = new MySharedPref(this).readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER;
 
-//        contentUpdateStatus(mediaUUID);
+        contentUpdateStatus(mediaUUID);
         /*
          * Checking Login Type if Trainer there is no Test Section If Teacher there is Test Section
          * */
         takeRetest = getIntent().getBooleanExtra("takeRetest", true);
+        /*If login type is teacher will move to next Activity else it will back from here*/
         if (loginType) {
-            SubmittedAnswerResponse scoreAndAttempt = catalogDbHandler.getCount(mediaUUID);
+            SubmittedAnswerResponse scoreAndAttempt = new SurveyResponseDao(this).getCount(mediaUUID);
             if (scoreAndAttempt != null) {
-                if (scoreAndAttempt.getAttempts() > 2) {
+                if (scoreAndAttempt.getAttempts() == 2) {
                     onBackPressed();
 
                 } else {
                     if (dcfId != 0) {
                         moveToQuestionAnswerActivity();
                     } else {
-                        updateDBandCAllApi();
-//                        catalogDbHandler.updateWatchStatusForCatalog(mediaUUID);
+//                        updateDBandCAllApi();
                         new MySharedPref(VideoViewActivity.this).writeBoolean(Constants.VALUE_CHANGED, true);
                         onBackPressed();
                     }
@@ -532,26 +516,19 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
                 onBackPressed();
             }
         } else {
-            catalogDbHandler.updateWatchStatusForCatalog(mediaUUID);
             new MySharedPref(VideoViewActivity.this).writeBoolean(Constants.VALUE_CHANGED, true);
             onBackPressed();
         }
-
-
-//        if (!getIntent().getStringExtra("sectionUUID").isEmpty() && loginType)
-//            moveToQuestionAnswerActivity();
-//        else
-//            onBackPressed();
     }
 
-    private void updateDBandCAllApi() {
+    /*private void updateDBandCAllApi() {
         String testUUId = AppUtils.getUUID();
         List<String> list = new ArrayList<>();
         list.add("0");
         list.add("0");
-        catalogDbHandler.insertAnsweredQuestion(testUUId, mediaUUID, sectionUUID, unitUUID, "", AppUtils.getDateTime(), list, 0, 0, "");  //0 Sync, 1 Async
+        surveyResponseDao.insertAnsweredQuestion(testUUId, mediaUUID, sectionUUID, unitUUID, "", AppUtils.getDateTime(), list, 0, 1, "");
         if (CheckNetwork.checkNet(this)) {
-            List<SubmittedAnswerResponse> arrayList = catalogDbHandler.getAnsweredQuestion("", 1);
+            List<SubmittedAnswerResponse> arrayList = surveyResponseDao.fetchAnsweredQuestion("", 1);
             if (arrayList.size() != 0) {
                 for (SubmittedAnswerResponse model : arrayList) {
                     checkInternetAndCall(model);
@@ -562,7 +539,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         }
 
 
-    }
+    }*/
 
     private void checkInternetAndCall(SubmittedAnswerResponse model) {
         if (CheckNetwork.checkNet(this))

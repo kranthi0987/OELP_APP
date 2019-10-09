@@ -26,12 +26,13 @@ public class OTPTimer extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        start30MinTimerForOTP();
+        /*start30MinTimerForOTP();
         Data data = new Data.Builder()
                 .putString(TASK_DESC, countDownTime.getValue())
                 .build();
         setOutputData(data);
-        return Result.SUCCESS;
+        return Result.SUCCESS;*/
+        return null;
 
     }
 

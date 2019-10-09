@@ -60,11 +60,10 @@ public class DBConstants {
     public static final String QA_TOTAL = "totalMarks";
     public static final String GROUP_TABLE = "groupTable";
     public static final String GROUP_NAME = "groupName";
-    public static final String MEMBER_TABLE = "memberTable";
+//    public static final String MEMBER_TABLE = "memberTable";
     public static final String GROUP_ID = "groupId";
     public static final String MEMBER_UUID = "memberUUID";
     public static final String GROUP_UUID = "groupUUID";
-    public static final String TEACHER_TABLE = "teacherTable";
     public static final String QA_PREVIEW_TEXT = "previewText";
     public static final Integer ZERO = 0;
     public static final String ATTEMPT = "attempt";
@@ -76,6 +75,9 @@ public class DBConstants {
     public static final String USER_NAME = "username";
     public static final String USER_UUID = "userUUID";
     public static final String SHARED_GLOBALLY = "sharedGlobally";
+    public static final String COUNT = " count ";
+    public static final String MEMBERS_COUNT = "membersCount";
+    public static final String DELETE_MEDIA = "deleteMedia";
     public static String EQUAL_TO=" = ";
     public static String NOT_EQUAL_TO=" != ";
     public static String EMPTY="''";

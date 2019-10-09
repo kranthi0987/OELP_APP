@@ -43,7 +43,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.ViewHold
         viewHolder.tvBlock.setText(teachersList.get(position).getBlockName());
         viewHolder.tvMemberName.setText(teachersList.get(position).getName());
         viewHolder.tvSchoolName.setText(teachersList.get(position).getSchool());
-        viewHolder.tvMediaCount.setText("" + position);
+        viewHolder.tvMediaCount.setText(""+teachersList.get(position).getMediaCount());
         MySharedPref sharedPref = new MySharedPref(context);
         userType = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
 

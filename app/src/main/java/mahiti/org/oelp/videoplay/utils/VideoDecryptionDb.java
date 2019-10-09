@@ -106,7 +106,7 @@ public class VideoDecryptionDb extends SQLiteOpenHelper {
 //                queryList.add(insertQuery + columnsForm + values);
             }
         } catch (Exception e) {
-            Logger.logE("VideoDecryptionDB", "insertData", e);
+            Logger.logE("VideoDecryptionDB", "insertSharedData", e);
         }
 
         try {

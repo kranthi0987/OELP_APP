@@ -7,5 +7,5 @@ import mahiti.org.oelp.models.SharedMediaModel;
  */
 public interface SharedMediaClickListener {
 
-    public void onSharedMediaClick(SharedMediaModel mediaModel, boolean shareGlobally);
+    public void onSharedMediaClick(SharedMediaModel mediaModel, boolean shareGlobally, int position);
 }

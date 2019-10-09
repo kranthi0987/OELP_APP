@@ -52,6 +52,16 @@ public class SubmittedAnswerResponse {
 
     private String total;
 
+    private Integer syncStatus;
+
+    public Integer getSyncStatus() {
+        return syncStatus;
+    }
+
+    public void setSyncStatus(Integer syncStatus) {
+        this.syncStatus = syncStatus;
+    }
+
     public String getTotal() {
         return total;
     }

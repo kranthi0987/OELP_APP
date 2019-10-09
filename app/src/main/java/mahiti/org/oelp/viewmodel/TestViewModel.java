@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.DAOs.ChoicesDao;
+import mahiti.org.oelp.database.DAOs.QuestionDao;
+import mahiti.org.oelp.database.DAOs.SurveyResponseDao;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.models.MobileVerificationResponseModel;
 import mahiti.org.oelp.models.QuestionAnswerIdModel;
@@ -43,7 +46,7 @@ import retrofit2.Response;
 public class TestViewModel extends AndroidViewModel {
     private static final String TAG = TestViewModel.class.getSimpleName();
     private int dcfId;
-    DatabaseHandlerClass handlerClass;
+    SurveyResponseDao handlerClass;
     private List<QuestionModel> questionModelList;
     private MutableLiveData<Boolean> showDialog = new MutableLiveData<>();
     private MutableLiveData<Boolean> onSubmitClick = new MutableLiveData<>();
@@ -56,7 +59,7 @@ public class TestViewModel extends AndroidViewModel {
     public TestViewModel(@NonNull Application application) {
         super(application);
         context = application;
-        handlerClass = new DatabaseHandlerClass(application);
+        handlerClass = new SurveyResponseDao(application);
     }
 
     public void onSubmitClick() {
@@ -71,7 +74,7 @@ public class TestViewModel extends AndroidViewModel {
 
     private void parseListOfQuestion(int dcfId) {
 //        questionModelList = handlerClass.getQuestion(dcfId, "", Constants.QA);
-        questionModelList = handlerClass.getQuestion("", "", Constants.QA, dcfId);
+        questionModelList = new QuestionDao(context).getQuestion("", "", Constants.QA, dcfId);
         Log.i("QuestionList", String.valueOf(questionModelList.size()));
         if (questionModelList.size() == 0) {
             showDialog.setValue(true);
@@ -108,63 +111,17 @@ public class TestViewModel extends AndroidViewModel {
     }
 
     private List<QuestionChoicesModel> parseDataFromDBChoices(int Questionid) {
-        return handlerClass.getChoices(Questionid);
+        return new ChoicesDao(context).getChoices(Questionid);
     }
 
 
-    public void saveValueToDb(JSONArray arrayServer, JSONArray arrayPreview, String mediaUUID, List<String> score, String testUUID, String sectionUUID, String unitUUID) {
-//        String unitUUID = "";
-        int attempt = 0;
-        List<SubmittedAnswerResponse> arrayList = new ArrayList<>();
-        handlerClass.insertAnsweredQuestion(testUUID, mediaUUID, sectionUUID, unitUUID, arrayServer.toString(), AppUtils.getDateTime(), score, attempt, 0, arrayPreview.toString());  //0 Sync, 1 Async
-        new MySharedPref(context).writeBoolean(Constants.VALUE_CHANGED, true);
-
-        /*if (CheckNetwork.checkNet(context)) {
-            arrayList = handlerClass.getAnsweredQuestion("", 1);
-            if (arrayList.size() != 0) {
-                for (SubmittedAnswerResponse model : arrayList) {
-                    checkInternetAndCall(model);
-                }
-            } else {
-                Toast.makeText(context, context.getString(R.string.you_are_offline), Toast.LENGTH_SHORT).show();
-            }
-        }*/
-    }
-
-    private void checkInternetAndCall(SubmittedAnswerResponse model) {
-        if (CheckNetwork.checkNet(context))
-            postQA(model);
-        else
-            Toast.makeText(context, context.getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
-    }
-
-    public void postQA(SubmittedAnswerResponse model) {
-       /* String response = "";
-        Gson gson = new Gson();
-        try {
-            response = gson.toJson(model.getResponse());
-        } catch (Exception ex) {
-            Logger.logE(TAG, "Exception in model to json :" + ex.getMessage(), ex);
+    public void saveValueToDb(List<SubmittedAnswerResponse> modelList) {
+        if (!modelList.isEmpty()) {
+            handlerClass.insertAnsweredQuestion(modelList);
+            new MySharedPref(context).writeBoolean(Constants.VALUE_CHANGED, true);
         }
-        ApiInterface apiService = RetrofitClass.getAPIService();
-        String userId = new MySharedPref(context).readString(Constants.USER_ID, "");
-        Call<MobileVerificationResponseModel> call = apiService.submitAnswer(userId, model.getCreationKey(), model.getSectionUUID(), model.getUnitUUID(), model.getSubmissionDate(), model.getMediacontent(),
-                model.getScore(), model.getAttempts(), response);
-        Logger.logD(TAG, "QUESTION_AND_ANSWER_URL : " + RetrofitConstant.BASE_URL + RetrofitConstant.SUBMIT_ANSWER);
-        call.enqueue(new Callback<MobileVerificationResponseModel>() {
-            @Override
-            public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
-                Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                handlerClass.updateSyncStatus();
-            }
-
-            @Override
-            public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
-
-
-            }
-        });*/
     }
+
 
     public int getTestAttemptCount(String mediaUUID) {
         return handlerClass.getAttemptFromDb(mediaUUID, 0);

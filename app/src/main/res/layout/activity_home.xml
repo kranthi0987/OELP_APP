@@ -253,7 +253,7 @@
 
             <!--android:visibility="@{homeViewModel.apiErrorMessage.isEmpty()?View.VISIBLE:View.GONE}">-->
 
-            <ProgressBar
+            <!--<ProgressBar
                 android:theme="@style/AppTheme.WhiteAccent"
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyle"
@@ -263,7 +263,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
                 android:visibility="@{homeViewModel.apiCountMutable>0? View.VISIBLE:View.INVISIBLE}" />
-
+-->
         </RelativeLayout>
 
         <RelativeLayout

@@ -14,6 +14,7 @@ public class RetrofitConstant {
     public static final String SUBMIT_ANSWER = "/api/question-answer/";
     public static final String FETCH_MEDIA_SHARED = "/api/share/media/list/";
     public static final String SHARED_MEDIA_GLOBALLY = "/api/share/media/globally/";
+    public static final String DELETE_SHARED_MEDIA = "/api/share/media/globally/";
     public static final String UPLAOD_MEDIA_SHARED = "/api/share/media/upload/";
 
     private RetrofitConstant() {

@@ -34,6 +34,7 @@ import java.util.Map;
 
 import mahiti.org.oelp.BuildConfig;
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.DAOs.CatalogDao;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.services.RetrofitConstant;
 import mahiti.org.oelp.utils.AppUtils;
@@ -194,7 +195,7 @@ public class DownloadUtility {
         try {
 
 //            File f = new File(AppUtils.completePathInSDCard(Constants.VIDEO) + File.separator + AppUtils.getFileName(path));
-            File f = new File(AppUtils.completeInternalStoragePath(activity, Constants.VIDEO) + File.separator + AppUtils.getFileName(path));
+            File f = new File(path);
             Logger.logD(TAG, " complete video path : " + f);
             if (f.exists()) {
                 Intent i = new Intent(activity, VideoViewActivity.class);
@@ -434,7 +435,7 @@ public class DownloadUtility {
 //            file_size = u
 //        }
 
-        DatabaseHandlerClass databaseHandlerClass=new DatabaseHandlerClass(context);
+        CatalogDao databaseHandlerClass=new CatalogDao(context);
         String fileSizeFromDatabase=databaseHandlerClass.getFileSize(fileModel.getUuid());
 //        File f = new File(AppUtils.completePathInSDCard(Constants.VIDEO) + File.separator + AppUtils.getFileName(fileModel.getFileUrl()));
         File f = new File(AppUtils.completeInternalStoragePath(context,Constants.VIDEO) + File.separator + AppUtils.getFileName(fileModel.getFileUrl()));

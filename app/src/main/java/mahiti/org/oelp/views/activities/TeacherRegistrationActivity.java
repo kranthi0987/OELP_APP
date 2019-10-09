@@ -38,7 +38,7 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
     RelativeLayout rlDistrict;
     RelativeLayout rlBlock;
     String mobileNo;
-
+    private int activityType;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -88,21 +88,21 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
         });
 
         teacherRegistrationViewModel.errorDistrict.observe(this, s -> {
-//            if (s != null) {
-//                setErrorDistrict(s);
-//            }
+            if (s != null) {
+                showToast(s);
+            }
         });
 
         teacherRegistrationViewModel.errorBlock.observe(this, s -> {
-//            if (s != null) {
-//                setErrorBlock(s);
-//            }
+            if (s != null) {
+                showToast(s);
+            }
         });
 
         teacherRegistrationViewModel.errorVillage.observe(this, s -> {
-//            if (s != null) {
-//                teacherRegistrationActivityBinding.etVillage.setError(s);
-//            }
+            if (s != null) {
+                showToast(s);
+            }
         });
 
 
@@ -134,8 +134,35 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
 
 
     private void getIntentData() {
-        mobileNo = new MySharedPref(this).readString(Constants.MOBILE_NO_New, "");
-        teacherRegistrationViewModel.phoneNo.setValue(mobileNo);
+        activityType = getIntent().getIntExtra("ActivityType",0);
+        teacherRegistrationViewModel.setActivityType(activityType);
+        if (activityType==0) {
+            mobileNo = new MySharedPref(this).readString(Constants.MOBILE_NO_New, "");
+            teacherRegistrationViewModel.phoneNo.setValue(mobileNo);
+        }else {
+            UserDetailsModel userDetail = getIntent().getParcelableExtra("UserDetails");
+            if (userDetail.getName()!=null && !userDetail.getName().isEmpty()){
+                teacherRegistrationViewModel.name.setValue(userDetail.getName());
+            }
+            if (userDetail.getMobile_number()!=null && userDetail.getMobile_number().isEmpty()){
+                teacherRegistrationViewModel.phoneNo.setValue(userDetail.getMobile_number());
+            }
+            if (userDetail.getSchool()!=null && userDetail.getSchool().isEmpty()){
+                teacherRegistrationViewModel.school.setValue(userDetail.getSchool());
+            }
+            if (userDetail.getStateName()!=null && userDetail.getStateName().isEmpty()){
+                teacherRegistrationViewModel.state.setValue(userDetail.getStateName());
+            }
+            if (userDetail.getDistrictname()!=null && userDetail.getDistrictname().isEmpty()){
+                teacherRegistrationViewModel.district.setValue(userDetail.getDistrictname());
+            }
+            if (userDetail.getBlockName()!=null && userDetail.getBlockName().isEmpty()){
+                teacherRegistrationViewModel.block.setValue(userDetail.getBlockName());
+            }
+            if (userDetail.getVillageName()!=null && userDetail.getVillageName().isEmpty()){
+                teacherRegistrationViewModel.village.setValue(userDetail.getVillageName());
+            }
+        }
     }
 
     private void handleData(@NonNull final MobileVerificationResponseModel data) {
@@ -143,8 +170,18 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
         if (data.getmAction().getValue() == Action.STATUS_FALSE) {
             Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
         } else if (data.getmAction().getValue() == Action.STATUS_TRUE) {
-            moveToVerifyActivity(data.getUserDetails());
+            if (activityType==0)
+                moveToVerifyActivity(data.getUserDetails());
+            else
+                movetOPreviousActivity(teacherRegistrationViewModel.getUserDetailsData());
         }
+    }
+
+    private void movetOPreviousActivity(UserDetailsModel userDetailsData) {
+        Intent intent= new Intent();
+        intent.putExtra("UserDetails",userDetailsData);
+        setResult(RESULT_OK,intent);
+        finish();
     }
 
     private void moveToVerifyActivity(UserDetailsModel userDetails) {
