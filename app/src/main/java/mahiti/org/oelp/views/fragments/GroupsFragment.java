@@ -1,16 +1,18 @@
 package mahiti.org.oelp.views.fragments;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import android.content.Intent;
+
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +25,6 @@ import java.util.List;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.databinding.FragmentGroupsBinding;
 import mahiti.org.oelp.models.GroupModel;
-import mahiti.org.oelp.utils.CheckNetwork;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.MySharedPref;
 import mahiti.org.oelp.viewmodel.HomeViewModel;
@@ -72,8 +73,7 @@ public class GroupsFragment extends Fragment {
         fab = binding.fab;
 
         fab.setOnClickListener(view1 -> {
-            checkInternet();
-
+            ((HomeActivity)getActivity()).onCallNextActivity();
         });
 
 
@@ -105,22 +105,6 @@ public class GroupsFragment extends Fragment {
         });*/
 
         return view;
-    }
-
-    private void checkInternet() {
-        if (CheckNetwork.checkNet(getActivity()))
-            ((HomeActivity)getActivity()).onCallNextActivity();
-        else
-            showAlertDialog();
-    }
-
-    private void showAlertDialog() {
-        AlertDialog dialog1 ;
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogStyle);
-        builder.setMessage(getResources().getString(R.string.check_internet));
-        builder.setNegativeButton(R.string.ok, (dialog, id) -> dialog.dismiss());
-        dialog1 = builder.create();
-        dialog1.show();
     }
 
 

@@ -40,26 +40,18 @@ public class SharedMediaModel {
     @Expose
     private String userName;
 
-    private Integer syncStatus=0;  //syncStatus=1 (to Sync), syncStatus=0 (Synced)
-
-    private Integer deleteStatus=1;  //deleteStatus=1 (to delete), deleteStatus=0 (Sync)
+    @SerializedName("global_access")
+    @Expose
+    private boolean globalAccess;
 
     private int sharedGlobally;
 
-    public Integer getSyncStatus() {
-        return syncStatus;
+    public boolean isGlobalAccess() {
+        return globalAccess;
     }
 
-    public void setSyncStatus(Integer syncStatus) {
-        this.syncStatus = syncStatus;
-    }
-
-    public Integer getDeleteStatus() {
-        return deleteStatus;
-    }
-
-    public void setDeleteStatus(Integer deleteStatus) {
-        this.deleteStatus = deleteStatus;
+    public void setGlobalAccess(boolean globalAccess) {
+        this.globalAccess = globalAccess;
     }
 
     public int getSharedGlobally() {

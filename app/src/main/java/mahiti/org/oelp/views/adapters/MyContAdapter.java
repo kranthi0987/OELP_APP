@@ -1,7 +1,9 @@
 package mahiti.org.oelp.views.adapters;
 
 import android.app.Activity;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.List;
@@ -21,16 +22,19 @@ import mahiti.org.oelp.models.SharedMediaModel;
 import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
+import mahiti.org.oelp.utils.MySharedPref;
 
 public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder> {
 
     private Activity context;
     private List<SharedMediaModel> sharedMediaList;
     private SharedMediaClickListener clickListener;
+    private MySharedPref sharedPref;
 
     public MyContAdapter(Activity context) {
         this.context = context;
         clickListener = (SharedMediaClickListener) context;
+        sharedPref = new MySharedPref(context);
 
     }
 
@@ -43,6 +47,7 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(MyContAdapter.ViewHolder viewHolder, final int position) {
+        int loginType = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
         SharedMediaModel model = sharedMediaList.get(position);
 
         viewHolder.tvMediaName.setText(model.getMediaTitle());
@@ -55,18 +60,12 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
         }
 
         viewHolder.llRecycler.setOnClickListener(view -> {
-            clickListener.onSharedMediaClick(model, false, position);
-
-
+            clickListener.onSharedMediaClick(model, false);
         });
 
-        if (model.getSharedGlobally()==1)
-            viewHolder.ivTickMark.setVisibility(View.VISIBLE);
-        else
-            viewHolder.ivTickMark.setVisibility(View.GONE);
-
         viewHolder.llRecycler.setOnLongClickListener(view -> {
-            clickListener.onSharedMediaClick(model, true, position);
+            if(loginType==Constants.USER_TRAINER)
+                clickListener.onSharedMediaClick(model, true);
             return false;
         });
 
@@ -78,32 +77,17 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
         String fileName = AppUtils.getFileName(path);
         File file = null;
         try {
-            file = new File(AppUtils.completePathInSDCard(Constants.IMAGE), fileName);
+            file = new File(AppUtils.completeInternalStoragePath(context, Constants.IMAGE), fileName);
         } catch (Exception ex) {
             Logger.logE("Exce", ex.getMessage(), ex);
         }
         if (file.exists()) {
-           /* Picasso.get()
+            Picasso.get()
                     .load("file://" + file)
+                    .resizeDimen(120, 120)
                     .fit()
-                    .into(viewHolder.roundedImageView);*/
-            RequestOptions myOptions = new RequestOptions()
-                    .centerCrop();
-            Glide.with(context)
-                    .load("file://" + file)
-                    .apply(myOptions)
                     .into(viewHolder.roundedImageView);
         }
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position;
     }
 
     @Override
@@ -123,7 +107,6 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
         private TextView tvUploadedBy;
         private LinearLayout llRecycler;
         private ImageView ivPlayButton;
-        private ImageView ivTickMark;
         private ImageView roundedImageView;
 
         public ViewHolder(View itemView) {
@@ -134,7 +117,6 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
             llRecycler = itemView.findViewById(R.id.llRecycler);
             ivPlayButton = itemView.findViewById(R.id.ivPlayButton);
             roundedImageView = itemView.findViewById(R.id.roundedImageView);
-            ivTickMark = itemView.findViewById(R.id.ivTickMark);
 
         }
     }

@@ -235,7 +235,7 @@
                                             android:layout_alignParentRight="true"
                                             android:src="@drawable/downarrow" />
 
-                                        <android.support.v7.widget.AppCompatSpinner
+                                        <androidx.appcompat.widget.AppCompatSpinner
                                             android:id="@+id/spinnerState1"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
@@ -308,7 +308,7 @@
                                         android:paddingRight="15dp"
                                         android:paddingTop="10dp">
 
-                                        <android.support.v7.widget.AppCompatSpinner
+                                        <androidx.appcompat.widget.AppCompatSpinner
                                             android:id="@+id/spinnerDistrict1"
                                             android:layout_width="match_parent"
                                             android:layout_height="30dp"
@@ -389,7 +389,7 @@
                                         android:paddingRight="15dp"
                                         android:paddingTop="10dp">
 
-                                        <android.support.v7.widget.AppCompatSpinner
+                                        <androidx.appcompat.widget.AppCompatSpinner
                                             android:id="@+id/spinnerBlock1"
                                             android:layout_width="match_parent"
                                             android:layout_height="30dp"

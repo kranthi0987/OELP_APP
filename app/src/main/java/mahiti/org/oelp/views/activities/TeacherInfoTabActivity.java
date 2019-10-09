@@ -1,14 +1,19 @@
 package mahiti.org.oelp.views.activities;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
+import com.google.android.material.tabs.TabLayout;
+import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -16,19 +21,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.makeramen.roundedimageview.RoundedImageView;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.database.DAOs.MediaContentDao;
 import mahiti.org.oelp.fileandvideodownloader.DownloadClass;
 import mahiti.org.oelp.fileandvideodownloader.DownloadUtility;
 import mahiti.org.oelp.fileandvideodownloader.FileModel;
-import mahiti.org.oelp.interfaces.ListRefresh;
 import mahiti.org.oelp.interfaces.SharedMediaClickListener;
 import mahiti.org.oelp.models.SharedMediaModel;
 import mahiti.org.oelp.services.RetrofitConstant;
@@ -56,7 +56,6 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
     private String teacherName = "";
     private TextView tvTitle;
     private AlertDialog alertDialogPop;
-    private ListRefresh refresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,78 +151,45 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
 
 
     @Override
-    public void onSharedMediaClick(SharedMediaModel mediaModel, boolean shareGlobally, int position) {
-        if (!shareGlobally) {
-            if (mediaModel.getMediaType().equalsIgnoreCase(String.valueOf(Constants.VIDEO))) {
-                checkVideoAndDownload(new FileModel(mediaModel.getMediaTitle(), mediaModel.getMediaFile(), mediaModel.getMediaUuid(), 0));
-            } else if (mediaModel.getMediaType().equalsIgnoreCase(String.valueOf(Constants.IMAGE))) {
-                shoWImagePopUp(mediaModel);
-            }
-        } else {
-            if (new MySharedPref(this).readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER) {
-                showPopupForDelete(mediaModel, position);
-            } else {
-                showPopForDeleteAndGlobalShare(mediaModel, position);
-            }
+    public void onSharedMediaClick(SharedMediaModel mediaModel, boolean shareGlobally) {
+        if (mediaModel.getMediaType().equalsIgnoreCase(String.valueOf(Constants.VIDEO))) {
+            checkVideoAndDownload(new FileModel(mediaModel.getMediaTitle(), mediaModel.getMediaFile(), mediaModel.getMediaUuid(), 0));
+        } else if (mediaModel.getMediaType().equalsIgnoreCase(String.valueOf(Constants.IMAGE))) {
+            shoWImagePopUp(mediaModel);
         }
-
     }
 
-    public void showPopForDeleteAndGlobalShare(SharedMediaModel model, int position) {
-        new AlertDialog.Builder(this, R.style.AlertDialogTheme)
-                .setTitle(R.string.what_you_want_to_do_with_media)
-                .setItems(R.array.option_array, (dialog, which) -> {
-                    if (which == 0)
-                        deleteData(model, position);
-                    else
-                        shareDataGlobally(model, position);
-                    dialog.dismiss();
 
-                })
-                .show();
+    private void checkVideoAndDownload(FileModel fileModel) {
 
+        String userUUId = new MySharedPref(this).readString(Constants.USER_ID, "");
+        if (videoAvailable(fileModel) && DownloadUtility.checkFileCorruptStatus(fileModel,TeacherInfoTabActivity.this)) {
+            DownloadUtility.playVideo(this, fileModel.getFileUrl(), fileModel.getFileName(), userUUId, fileModel.getUuid(), "", fileModel.getDcfId(), "");
+        } else {
+            downloadVideo(fileModel);
+        }
     }
 
-    public void shareDataGlobally(SharedMediaModel model, int position) {
-        MediaContentDao mediaContentDao = new MediaContentDao(this);
-        long shareLong = mediaContentDao.updateGloballyShareMediaUUID(model.getMediaUuid());
-        if (shareLong != -1)
-            if (getFragmentRefreshListener() != null)
-                getFragmentRefreshListener().onRefresh(position, false);
+    private void downloadVideo(FileModel fileModel) {
+        if (CheckNetwork.checkNet(this)) {
+            List<FileModel> fileModelList = new ArrayList<>();
+            fileModelList.add(fileModel);
+            new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL, AppUtils.completeInternalStoragePath(this, Constants.VIDEO).getAbsolutePath(), fileModelList, "");
+        } else {
+            Toast.makeText(this, getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
+
+        }
     }
 
-    private void showPopupForDelete(SharedMediaModel mediaModel, int position) {
-
-
-        new AlertDialog.Builder(this, R.style.AlertDialogTheme)
-                .setTitle("Delete Media")
-                .setMessage("Delete " + mediaModel.getMediaTitle())
-                .setPositiveButton("Delete", (dialog, which) -> {
-                    deleteData(mediaModel, position);
-                    dialog.dismiss();
-                })
-
-                .setNegativeButton("Cancel", (dialog, which) -> {
-                    dialog.dismiss();
-                })
-                .show();
-
-    }
-
-    private void deleteData(SharedMediaModel model, int position) {
-        MediaContentDao mediaContentDao = new MediaContentDao(this);
-        long deletelong = mediaContentDao.deleteMediaUUID(model.getMediaUuid());
-        if (deletelong != -1)
-            if (getFragmentRefreshListener() != null)
-                getFragmentRefreshListener().onRefresh(position, true);
-    }
-
-    public ListRefresh getFragmentRefreshListener() {
-        return refresh;
-    }
-
-    public void setFragmentRefreshListener(ListRefresh fragmentRefreshListener) {
-        this.refresh = fragmentRefreshListener;
+    private boolean videoAvailable(FileModel fileModel) {
+        try {
+            File videoFile = new File(AppUtils.completeInternalStoragePath(this, Constants.VIDEO), AppUtils.getFileName(fileModel.getFileUrl()));
+            if (videoFile.exists())
+                return true;
+        } catch (Exception ex) {
+            Logger.logE(TAG, ex.getMessage(), ex);
+        }
+        return false;
     }
 
     private void shoWImagePopUp(SharedMediaModel mediaModel) {
@@ -266,12 +232,12 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
             String fileName1 = AppUtils.getFileName(mediaModel.getMediaFile());
             File file = null;
             try {
-                file = new File(AppUtils.completePathInSDCard(Constants.IMAGE), fileName1);
+                file = new File(AppUtils.completeInternalStoragePath(TeacherInfoTabActivity.this, Constants.IMAGE), fileName1);
             } catch (Exception ex) {
                 Logger.logE("Exce", ex.getMessage(), ex);
             }
             if (file.exists()) {
-                Glide.with(this)
+                Picasso.get()
                         .load("file://" + file)
                         .into(ivSharedContent);
             }
@@ -283,68 +249,35 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
     }
 
 
-    private void checkVideoAndDownload(FileModel fileModel) {
+class ViewPagerAdapter extends FragmentPagerAdapter {
+    private final List<Fragment> mFragmentList = new ArrayList<>();
+    private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        String userUUId = new MySharedPref(this).readString(Constants.USER_ID, "");
-        if (videoAvailable(fileModel)) {
-            DownloadUtility.playVideo(this, fileModel.getFileUrl(), fileModel.getFileName(), userUUId, fileModel.getUuid(), "", fileModel.getDcfId(), "");
-        } else {
-            downloadVideo(fileModel);
-        }
+    public ViewPagerAdapter(FragmentManager manager) {
+        super(manager);
     }
 
-    private void downloadVideo(FileModel fileModel) {
-        if (CheckNetwork.checkNet(this)) {
-            List<FileModel> fileModelList = new ArrayList<>();
-            fileModelList.add(fileModel);
-            new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.VIDEO).getAbsolutePath(), fileModelList, "");
-        } else {
-            Toast.makeText(this, getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
-
-        }
+    @Override
+    public Fragment getItem(int position) {
+        return mFragmentList.get(position);
     }
 
-
-    private boolean videoAvailable(FileModel fileModel) {
-        try {
-            File videoFile = new File(AppUtils.completePathInSDCard(Constants.VIDEO), AppUtils.getFileName(fileModel.getFileUrl()));
-            if (videoFile.exists())
-                return true;
-        } catch (Exception ex) {
-            Logger.logE(TAG, ex.getMessage(), ex);
-        }
-        return false;
+    @Override
+    public int getCount() {
+        return mFragmentList.size();
     }
 
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
+    public void addFragment(Fragment fragment, String title) {
+        mFragmentList.add(fragment);
+        mFragmentTitleList.add(title);
     }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return mFragmentTitleList.get(position);
+    }
+
+}
 
 
     @Override

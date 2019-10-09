@@ -1,0 +1,208 @@
+package mahiti.org.oelp.ui;
+
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import mahiti.org.oelp.R;
+import mahiti.org.oelp.Config;
+import mahiti.org.oelp.entities.Account;
+import mahiti.org.oelp.utils.Constants;
+import mahiti.org.oelp.utils.CryptoHelper;
+import mahiti.org.oelp.utils.MySharedPref;
+import rocks.xmpp.addr.Jid;
+
+public class MagicCreateActivity extends XmppActivity implements TextWatcher, AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
+
+    private TextView mFullJidDisplay;
+    private EditText mUsername;
+    private CheckBox mUseOwnProvider;
+    private Spinner mServer;
+    private boolean useOwnProvider = false;
+    String domain = null;
+
+    @Override
+    protected void refreshUiReal() {
+
+    }
+
+    @Override
+    void onBackendConnected() {
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        final int theme = findTheme();
+        if (this.mTheme != theme) {
+            recreate();
+        }
+    }
+
+    @Override
+    protected void onCreate(final Bundle savedInstanceState) {
+        if (getResources().getBoolean(R.bool.portrait_only)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_magic_create);
+        setSupportActionBar(findViewById(R.id.toolbar));
+        configureActionBar(getSupportActionBar());
+        mFullJidDisplay = findViewById(R.id.full_jid);
+        final List<String> domains = Arrays.asList(getResources().getStringArray(R.array.domains));
+        Collections.sort(domains, String::compareToIgnoreCase);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_selectable_list_item, domains);
+        int defaultServer = adapter.getPosition("blabber.im");
+        mUsername = findViewById(R.id.username);
+        mUseOwnProvider = findViewById(R.id.use_own);
+        mUseOwnProvider.setOnCheckedChangeListener(this);
+        mServer = findViewById(R.id.server);
+        mServer.setAdapter(adapter);
+        mServer.setSelection(defaultServer);
+        mServer.setOnItemSelectedListener(this);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Button next = findViewById(R.id.create_account);
+        next.setOnClickListener(v -> {
+            try {
+                String username = mUsername.getText().toString();
+                if (domain == null && !useOwnProvider) {
+                    domain = mahiti.org.oelp.Config.MAGIC_CREATE_DOMAIN;
+                }
+                if (useOwnProvider) {
+                    domain = "your-domain.com";
+                }
+                Jid jid = Jid.of(username.toLowerCase(), domain, null);
+                if (!jid.getEscapedLocal().equals(jid.getLocal()) || username.length() < 3) {
+                    mUsername.setError(getString(R.string.invalid_username));
+                    mUsername.requestFocus();
+                } else {
+                    mUsername.setError(null);
+                    Account account = xmppConnectionService.findAccountByJid(jid);
+                    String password = CryptoHelper.createPassword(new SecureRandom());
+                    if (account == null) {
+                        account = new Account(jid, password);
+                        account.setOption(Account.OPTION_REGISTER, true);
+                        account.setOption(Account.OPTION_DISABLED, true);
+                        account.setOption(Account.OPTION_MAGIC_CREATE, true);
+                        xmppConnectionService.createAccount(account);
+                    }
+                    Intent intent = new Intent(MagicCreateActivity.this, EditAccountActivity.class);
+                    intent.putExtra("jid", account.getJid().asBareJid().toString());
+                    intent.putExtra("init", true);
+                    intent.putExtra("existing", false);
+                    intent.putExtra("useownprovider", useOwnProvider);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle(getString(R.string.create_account));
+                    builder.setCancelable(false);
+                    StringBuilder messasge = new StringBuilder();
+                    messasge.append(getString(R.string.secure_password_generated));
+                    messasge.append("\n\n");
+                    messasge.append(getString(R.string.password));
+                    messasge.append(": ");
+                    messasge.append(password);
+                    messasge.append("\n\n");
+                    messasge.append(getString(R.string.change_password_in_next_step));
+                    builder.setMessage(messasge);
+                    builder.setPositiveButton(getString(R.string.copy_to_clipboard), (dialogInterface, i) -> {
+                        if (copyTextToClipboard(password, R.string.create_account)) {
+                            StartConversationActivity.addInviteUri(intent, getIntent());
+                            startActivity(intent);
+                            overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+                            finish();
+                            overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
+                        }
+                    });
+                    builder.create().show();
+                }
+            } catch (IllegalArgumentException e) {
+                mUsername.setError(getString(R.string.invalid_username));
+                mUsername.requestFocus();
+            }
+        });
+        mUsername.addTextChangedListener(this);
+       /* MySharedPref pref = new MySharedPref(this);
+        String uuid = pref.readString(Constants.USER_ID,"");
+        if(!uuid.isEmpty()){
+            mUsername.setText(uuid+"@206.189.136.186");
+            mUsername.setEnabled(false);
+            mUsername.setKeyListener(null);
+        }*/
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        generateJID(s.toString());
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        generateJID(mUsername.getText().toString());
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        generateJID(mUsername.getText().toString());
+    }
+
+    private void generateJID(String s) {
+        domain = mServer.getSelectedItem().toString();
+        if (s.trim().length() > 0) {
+            try {
+                mFullJidDisplay.setVisibility(View.VISIBLE);
+                if (domain == null) {
+                    domain = Config.MAGIC_CREATE_DOMAIN;
+                }
+                Jid jid = Jid.of(s.toLowerCase(), domain, null);
+                mFullJidDisplay.setText(getString(R.string.your_full_jid_will_be, jid.toEscapedString()));
+            } catch (IllegalArgumentException e) {
+                mFullJidDisplay.setVisibility(View.INVISIBLE);
+            }
+
+        } else {
+            mFullJidDisplay.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (mUseOwnProvider.isChecked()) {
+            mServer.setEnabled(false);
+            mFullJidDisplay.setVisibility(View.GONE);
+            useOwnProvider = true;
+        } else {
+            mServer.setEnabled(true);
+            mFullJidDisplay.setVisibility(View.VISIBLE);
+            useOwnProvider = false;
+        }
+    }
+}

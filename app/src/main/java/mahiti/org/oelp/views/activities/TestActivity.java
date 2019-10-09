@@ -1,16 +1,18 @@
 package mahiti.org.oelp.views.activities;
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.databinding.DataBindingUtil;
+
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatRadioButton;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatRadioButton;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -21,24 +23,17 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.databinding.ActivityTestBinding;
-import mahiti.org.oelp.models.QuestionAnswerIdModel;
 import mahiti.org.oelp.models.QuestionAnswerModel;
 import mahiti.org.oelp.models.QuestionChoicesModel;
-import mahiti.org.oelp.models.SubmittedAnswerResponse;
 import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.CheckNetwork;
 import mahiti.org.oelp.utils.Constants;
@@ -50,7 +45,7 @@ public class TestActivity extends AppCompatActivity {
 
     private static final String TAG = TestActivity.class.getSimpleName();
     private TestViewModel testViewModel;
-    ActivityTestBinding binding;
+    ViewDataBinding binding;
     private Toolbar toolbar;
     private AlertDialog dialog;
     private LinearLayout questionsAnswersRadioLayout;
@@ -75,7 +70,6 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_test);
         testViewModel = ViewModelProviders.of(this).get(TestViewModel.class);
-        binding.setTestViewModel(testViewModel);
         binding.setLifecycleOwner(this);
         toolbar = findViewById(R.id.white_toolbar);
         toolbar = findViewById(R.id.white_toolbar);
@@ -86,7 +80,7 @@ public class TestActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
         }
-        questionsAnswersRadioLayout = binding.questionsAnswersRadioLayout;
+        questionsAnswersRadioLayout = findViewById(R.id.questionsAnswersRadioLayout);
         toolbar.inflateMenu(R.menu.teacher_menu);
         getIntentData();
         testViewModel.getShowDialog().observe(this, aBoolean -> {
@@ -196,28 +190,14 @@ public class TestActivity extends AppCompatActivity {
         Log.i(TAG, "server Json: " + arrayServer);
         Log.i(TAG, "preview Json: " + arrayPreview);
 
-        SubmittedAnswerResponse model = new SubmittedAnswerResponse();
-        model.setCreationKey(AppUtils.getUUID());
-        model.setMediacontent(mediaUUID);
-        model.setSectionUUID(sectionUUID);
-        model.setUnitUUID(unitUUID);
-        /*
-        * Coverting Json Array to Lsit*/
+        /*Saving Answered Question To Question Answer Table*/
+//        if (CheckNetwork.checkNet(this)) {
+            String testUUId = AppUtils.getUUID();
+            testViewModel.saveValueToDb(arrayServer, arrayPreview, mediaUUID, scoreList, testUUId, sectionUUID, unitUUID);
 
-        List<QuestionAnswerIdModel> responses;
-        Type listType = new TypeToken<List<QuestionAnswerIdModel>>() {}.getType();
-        responses= new Gson().fromJson(String.valueOf(arrayServer), listType);
-        model.setResponse(responses);
-        model.setSubmissionDate(AppUtils.getDateTime());
-        model.setAttempts(0);
-        model.setScore(Float.parseFloat(scoreList.get(0)));
-        model.setTotal(scoreList.get(1));
-        model.setSyncStatus(1);
-        List<SubmittedAnswerResponse> list = new ArrayList<>();
-        list.add(model);
-
-        testViewModel.saveValueToDb(list);
-
+//        } else {
+//            Toast.makeText(this, getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
+//        }
         moveToNextActivity();
 
 
@@ -338,7 +318,9 @@ public class TestActivity extends AppCompatActivity {
         testViewModel.setDCFId(dcfId);
         /*testViewModel.setDCFId(sectionUUID);*/
         String completeTilte = videoTitle.concat(getResources().getString(R.string.hiphen_question));
-        binding.tvTitle.setText(completeTilte);
+        TextView tvTitle = findViewById(R.id.tvTitle);
+        tvTitle.setText(completeTilte);
+
     }
 
     @Override

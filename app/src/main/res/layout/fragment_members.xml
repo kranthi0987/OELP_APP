@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -24,18 +24,7 @@
         android:layout_marginTop="8dp"
         android:theme="@style/AppTheme.WhiteAccent"/>
 
-    <TextView
-        android:id="@+id/tvError"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:fontFamily="@font/montserrat_medium"
-        android:text="Members not found for this group"
-        android:textColor="@color/red"
-        android:textSize="18sp"
-        android:visibility="gone" />
-
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,8 +32,9 @@
         android:layout_alignParentRight="true"
         android:layout_margin="20dp"
         android:backgroundTint="@color/green"
-        android:src="@drawable/ic_edit"
+        android:src="@drawable/ic_add"
         app:elevation="6dp"
+        android:visibility="gone"
         app:pressedTranslationZ="12dp" />
 
 </RelativeLayout>
