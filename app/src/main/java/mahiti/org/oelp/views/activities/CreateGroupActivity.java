@@ -1,12 +1,8 @@
-package mahiti.org.oelp.database;
+package mahiti.org.oelp.views.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
@@ -23,7 +19,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.DAOs.GroupDao;
 import mahiti.org.oelp.database.DAOs.TeacherDao;
 import mahiti.org.oelp.models.MobileVerificationResponseModel;
 import mahiti.org.oelp.models.TeacherModel;
@@ -36,7 +39,6 @@ import mahiti.org.oelp.utils.CheckNetwork;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
 import mahiti.org.oelp.utils.MySharedPref;
-import mahiti.org.oelp.videoplay.utils.CheckNet;
 import mahiti.org.oelp.views.adapters.AddTeacherToGroupAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -63,6 +65,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
     private AlertDialog dialog;
     private String groupUUID;
     private String groupTitle;
+    private UserDetailsModel model;
 
 
     @Override
@@ -111,7 +114,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
             adapter.setList(userDetailList, Constants.EDIT);
             btnCreate.setText(R.string.update);
 
-        }else {
+        } else {
             btnCreate.setText(R.string.create);
         }
 
@@ -159,9 +162,17 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
                     UserDetailsModel userDetail = response.body().getUserDetails();
                     if (!userDetail.getUserid().isEmpty()) {
                         if (userDetail.getUserGroup().isEmpty()) {
-                            userDetailList.add(response.body().getUserDetails());
-                            etMobileNo.getText().clear();
-                            adapter.setList(userDetailList, Constants.ADD);
+                            if (userDetail.getIsTrainer().equals(Constants.USER_TEACHER))
+//                                if (validateUser(userDetail)) {
+                                    aDDTeacherToList(userDetail);
+//                                } else {
+//                                    movetoRegistrationActivity(userDetail);
+//                                }
+                            else {
+                                Toast.makeText(CreateGroupActivity.this, "Please enter teacher numbers", Toast.LENGTH_SHORT).show();
+                            }
+
+
                         } else {
                             showAlertDialog(userDetail);
                         }
@@ -185,6 +196,74 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
                 progressBar.setVisibility(View.GONE);
             }
         });
+    }
+
+    private void aDDTeacherToList(UserDetailsModel userDetail) {
+        userDetailList.add(userDetail);
+        etMobileNo.getText().clear();
+        adapter.setList(userDetailList, Constants.ADD);
+    }
+
+    private void movetoRegistrationActivity(UserDetailsModel userDetail) {
+        new AlertDialog.Builder(this, R.style.AlertDialogTheme)
+                .setTitle("User Profile Incomplete")
+                .setMessage("Do you want to complete the profile ")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    Intent i = new Intent(CreateGroupActivity.this, TeacherRegistrationActivity.class);
+                    i.putExtra("UserDetails", userDetail);
+                    i.putExtra("ActivityType", 0);  // Activity Type 1 for CreateGroupActivity 0 for MobileLoginActivity
+                    startActivityForResult(i, 100);
+                    overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+                    dialog.dismiss();
+                })
+
+                .setNegativeButton("No", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != 100 || resultCode == Activity.RESULT_CANCELED)
+            return;
+        else {
+            model = getIntent().getParcelableExtra("UserDetails");
+            aDDTeacherToList(model);
+        }
+
+    }
+
+    private boolean validateUser(UserDetailsModel userDetail) {
+        boolean status=true;
+        if (userDetail.getName().isEmpty()) {
+            status = false;
+        }
+        if (userDetail.getMobile_number().isEmpty()) {
+            status = false;
+        }
+
+        if (userDetail.getSchool().isEmpty()) {
+            status = false;
+        }
+
+        if (userDetail.getStateName().isEmpty()) {
+            status = false;
+        }
+
+        if (userDetail.getDistrictname().isEmpty()) {
+            status = false;
+        }
+        if (userDetail.getBlockName().isEmpty()) {
+            status = false;
+        }
+        if (userDetail.getVillageName().isEmpty()) {
+            status = false;
+        }
+
+        return status;
+
     }
 
     private void showAlertDialog(UserDetailsModel userDetail) {
@@ -265,6 +344,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
         List<UserDetailsModel> lsitModel = new ArrayList<>();
         lsitModel.clear();
         lsitModel = adapter.getUserDetailsList();
+
         if (groupName.isEmpty()) {
             progressBar.setVisibility(View.GONE);
             Toast.makeText(this, "Please enter group name", Toast.LENGTH_SHORT).show();
@@ -284,7 +364,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
         else
             groupCreationKey = groupUUID;
 
-        createJson(lsitModel, userUUID,groupCreationKey);
+        createJson(lsitModel, userUUID, groupCreationKey);
 
     }
 
@@ -325,9 +405,9 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
                 MobileVerificationResponseModel model = response.body();
                 if (model != null) {
                     long insertedCount = new TeacherDao(CreateGroupActivity.this).insertTeacherDataToDB(model.getTeachers());
-                    Logger.logD(TAG, "teachers inserted count - "+insertedCount);
+                    Logger.logD(TAG, "teachers inserted count - " + insertedCount);
                 } else {
-                    Logger.logD(TAG, "teachers inserted count - "+model.getMessage());
+                    Logger.logD(TAG, "teachers inserted count - " + model.getMessage());
                 }
                 progressBar.setVisibility(View.GONE);
                 insertDataIntoGroupTable();
@@ -340,7 +420,6 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
                 progressBar.setVisibility(View.GONE);
             }
         });
-
     }
 
     private void checkAndFinish(MobileVerificationResponseModel body) {
@@ -362,13 +441,13 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
                 MobileVerificationResponseModel model = response.body();
                 if (model != null) {
                     if (!model.getGroups().isEmpty()) {
-                        new DatabaseHandlerClass(CreateGroupActivity.this).insertDatatoGroupsTable(model.getGroups());
+                        new GroupDao(CreateGroupActivity.this).insertDataToGroupsTable(model.getGroups());
                     }
                     if (CheckNetwork.checkNet(CreateGroupActivity.this))
                         callApiForTeachersList(userId);
-
+                    else
+                        progressBar.setVisibility(View.GONE);
                 }
-//                progressBar.setVisibility(View.GONE);
 
             }
 
@@ -382,10 +461,10 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void insertDataIntoGroupTable() {
-            Intent intent = new Intent();
-            intent.putExtra("result", true);
-            setResult(RESULT_OK, intent);
-            onBackPressed();
+        Intent intent = new Intent();
+        intent.putExtra("result", true);
+        setResult(RESULT_OK, intent);
+        onBackPressed();
 
     }
 
@@ -395,19 +474,17 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
         try {
             JSONObject object;
             for (UserDetailsModel model : lsitModel) {
-                if(model.isCheckBoxChecked()) {
                     object = new JSONObject();
                     object.put("creation_key", model.getUserid());
                     array.put(object);
-                    valide =true;
-                }
+                    valide = true;
             }
         } catch (Exception ex) {
             Logger.logE(TAG, ex.getMessage(), ex);
         }
-        if (valide){
+        if (valide) {
             callApiForCreateGroup(userUUID, groupName, groupCreationKey, array.toString());
-        }else {
+        } else {
             Toast.makeText(this, "Please select teacher", Toast.LENGTH_SHORT).show();
             progressBar.setVisibility(View.GONE);
         }

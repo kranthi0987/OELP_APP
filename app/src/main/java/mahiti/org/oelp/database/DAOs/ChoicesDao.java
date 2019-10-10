@@ -1,6 +1,6 @@
 package mahiti.org.oelp.database.DAOs;
 
-import android.arch.lifecycle.MutableLiveData;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
@@ -11,6 +11,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.lifecycle.MutableLiveData;
 import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.models.QuestionChoicesModel;
@@ -35,9 +36,10 @@ public class ChoicesDao extends DatabaseHandlerClass {
         QuestionChoicesModel questionChoicesModel;
         String query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.QUESTION_CHOICES_TABLE + DBConstants.WHERE + DBConstants.Q_ID + DBConstants.EQUAL_TO + questionId;
         initDatabase();
+        Cursor cursor = null;
         try {
             Logger.logD(TAG, "Getting Question Choices : " + query);
-            Cursor cursor = database.rawQuery(query, null);
+            cursor = database.rawQuery(query, null);
             if (cursor.moveToFirst()) {
                 do {
                     questionChoicesModel = new QuestionChoicesModel();
@@ -58,6 +60,8 @@ public class ChoicesDao extends DatabaseHandlerClass {
             }
         } catch (Exception e) {
             Logger.logE(TAG, "getSubject", e);
+        }finally {
+            closeCursor(cursor);
         }
         questionChoicesModelList1.setValue(questionChoicesModelsList);
         return questionChoicesModelList1.getValue();

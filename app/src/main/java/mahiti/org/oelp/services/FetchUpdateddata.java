@@ -6,12 +6,14 @@ import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.DAOs.CatalogDao;
 import mahiti.org.oelp.database.DAOs.ChoicesDao;
 import mahiti.org.oelp.database.DAOs.GroupDao;
+import mahiti.org.oelp.database.DAOs.LocationDao;
 import mahiti.org.oelp.database.DAOs.MediaContentDao;
 import mahiti.org.oelp.database.DAOs.QuestionDao;
 import mahiti.org.oelp.database.DAOs.SurveyResponseDao;
 import mahiti.org.oelp.database.DAOs.TeacherDao;
 import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
+import mahiti.org.oelp.models.LocationModel;
 import mahiti.org.oelp.models.MobileVerificationResponseModel;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
@@ -33,6 +35,7 @@ public class FetchUpdateddata {
     private ChoicesDao choicesDao;
     private MediaContentDao mediaContentDao;
     private SurveyResponseDao surveyResponseDao;
+    private LocationDao locationDao;
     private DatabaseHandlerClass databaseHandlerClass;
     private Context mContext;
 
@@ -48,6 +51,7 @@ public class FetchUpdateddata {
         choicesDao = new ChoicesDao(mContext);
         mediaContentDao = new MediaContentDao(mContext);
         surveyResponseDao = new SurveyResponseDao(mContext);
+        locationDao = new LocationDao(mContext);
         databaseHandlerClass = new DatabaseHandlerClass(mContext);
 
 //        callCatalogApi(userUUID);
@@ -56,9 +60,31 @@ public class FetchUpdateddata {
 //        callQuestionApi(userUUID);
 //        callChoicesApi(userUUID);
         callMediaSharedApi(userUUID);
+        callApiForLocation();
         if (userType==Constants.USER_TEACHER)
             callSubmittedAnswerApi(userUUID);
     }
+
+    private void callApiForLocation() {
+        ApiInterface apiInterface = RetrofitClass.getAPIService();
+        apiInterface.getLocationData().enqueue(new Callback<LocationModel>() {
+            @Override
+            public void onResponse(Call<LocationModel> call, Response<LocationModel> response) {
+                Logger.logD(TAG, "URL "+ RetrofitConstant.BASE_URL+RetrofitConstant.LOCATION_LIST_URL+" Response :"+response.body());
+                LocationModel locationModel = response.body();
+                if (locationModel!=null){
+                    locationDao.insertLocationDataToDB(locationModel);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LocationModel> call, Throwable t) {
+                Logger.logD(TAG, "URL "+ RetrofitConstant.BASE_URL+RetrofitConstant.LOCATION_LIST_URL+" Response :"+t.getMessage());
+
+            }
+        });
+    }
+
 
     private void callSubmittedAnswerApi(String userId) {
         String modifiedDate = databaseHandlerClass.getModifiedDate(DBConstants.CAT_TABLE_NAME);

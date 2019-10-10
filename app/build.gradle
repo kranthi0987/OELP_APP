@@ -17,6 +17,7 @@ repositories {
 
 
 android {
+    compileSdkVersion 28
     signingConfigs {
         release {
             storeFile file('/Volumes/work/progaurd_minify_fixed/OELP_APP/app/JKS/oelp.jks')
@@ -25,15 +26,15 @@ android {
             keyPassword 'oelp@1234'
         }
     }
-    compileSdkVersion 28
+
     defaultConfig {
+        multiDexEnabled true
         applicationId "mahiti.org.oelp"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 3
-        versionName "1.02"
-        multiDexEnabled true
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionCode 4
+        versionName "1.03"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -50,6 +51,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
+
+
     }
 
     dataBinding {
@@ -60,21 +63,14 @@ android {
         sourceCompatibility 1.8
     }
 
-    flavorDimensions("distribution")
 
-    productFlavors {
-        standardPush {
-            dimension "distribution"
-        }
-        standard
-    }
 
     lintOptions {
         disable 'ExtraTranslation', 'MissingTranslation', 'InvalidPackage', 'MissingQuantity', 'AppCompatResource', 'RestrictedApi'
         abortOnError false
     }
 
-    subprojects {
+   /* subprojects {
 
         afterEvaluate {
             if (getPlugins().hasPlugin('android') ||
@@ -86,7 +82,7 @@ android {
             }
 
         }
-    }
+    }*/
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
@@ -115,7 +111,7 @@ dependencies {
     implementation 'androidx.work:work-runtime:2.0.1'
     implementation 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
     implementation 'com.makeramen:roundedimageview:2.3.0'
-    implementation 'com.squareup.picasso:picasso:2.71828'
+//    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.mindorks.android:prdownloader:0.4.0'
     implementation 'gun0912.ted:tedpermission:2.2.2'
     implementation 'com.snatik:storage:2.1.0'
@@ -123,6 +119,12 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.github.jkwiecien:EasyImage:2.1.0'
     implementation 'com.loopj.android:android-async-http:1.4.9'
+    implementation 'com.iceteck.silicompressorr:silicompressor:2.2.2'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+
+
+
+
     debugImplementation 'com.amitshekhar.android:debug-db-encrypt:1.0.6'
     implementation('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {
         transitive = true;
@@ -176,6 +178,8 @@ dependencies {
     implementation project(':android-transcoder')
     implementation project(':fullscreenvideoview')
     implementation project(':xmpp-addr')
+
+
 
 
 

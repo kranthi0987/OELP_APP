@@ -2,53 +2,41 @@ package mahiti.org.oelp.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.tabs.TabLayout;
-import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.bumptech.glide.Glide;
+import com.google.android.material.tabs.TabLayout;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.database.CreateGroupActivity;
 import mahiti.org.oelp.database.DAOs.MediaContentDao;
 import mahiti.org.oelp.databinding.ActivityChatAndContributionBinding;
 import mahiti.org.oelp.fileandvideodownloader.DownloadClass;
 import mahiti.org.oelp.fileandvideodownloader.DownloadUtility;
 import mahiti.org.oelp.fileandvideodownloader.FileModel;
 import mahiti.org.oelp.fileandvideodownloader.OnMediaDownloadListener;
-import mahiti.org.oelp.interfaces.FetchDataFromApiListener;
+import mahiti.org.oelp.interfaces.ListRefresh;
 import mahiti.org.oelp.interfaces.SharedMediaClickListener;
-import mahiti.org.oelp.models.MobileVerificationResponseModel;
 import mahiti.org.oelp.models.SharedMediaModel;
 import mahiti.org.oelp.services.CallAPIServicesData;
 import mahiti.org.oelp.services.RetrofitConstant;
@@ -58,16 +46,16 @@ import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
 import mahiti.org.oelp.utils.MySharedPref;
 import mahiti.org.oelp.viewmodel.ChatAndContributionViewModel;
-import mahiti.org.oelp.views.fragments.ChatFragment;
 import mahiti.org.oelp.views.fragments.ContributionsFragment;
 import mahiti.org.oelp.views.fragments.MembersFragment;
 
-public class ChatAndContributionActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, SharedMediaClickListener, OnMediaDownloadListener, FetchDataFromApiListener {
+public class ChatAndContributionActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, SharedMediaClickListener, OnMediaDownloadListener {
 
 
     private Toolbar toolbar;
 
     private FragmentManager fragManager;
+    private ListRefresh refresh;
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
@@ -79,7 +67,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     private String usertype;
     private TextView tvTitle;
     ChatAndContributionViewModel viewModel;
-    ViewDataBinding binding;
+    ActivityChatAndContributionBinding binding;
     private ProgressBar progressBar;
     private String TAG = ChatAndContributionActivity.class.getSimpleName();
     private CallAPIServicesData servicesData;
@@ -91,12 +79,12 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_chat_and_contribution);
         viewModel = ViewModelProviders.of(this).get(ChatAndContributionViewModel.class);
+        binding.setChatAndContributionViewModel(viewModel);
         binding.setLifecycleOwner(this);
 
-        servicesData = new CallAPIServicesData(this);
 
-        tvTitle = findViewById(R.id.tvTitle);
-        progressBar = findViewById(R.id.progressBar);
+        tvTitle = binding.tvTitle;
+        progressBar = binding.progressBar;
 
         sharedPref = new MySharedPref(this);
         userType = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
@@ -114,7 +102,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
         viewModel.getListOfImageToDownload().observe(this, imageListToDownload -> {
             if (imageListToDownload != null && !imageListToDownload.isEmpty()) {
-                new DownloadClass(Constants.IMAGE, this, RetrofitConstant.BASE_URL, AppUtils.completeInternalStoragePath(this, Constants.IMAGE).getAbsolutePath(), imageListToDownload, "");
+                new DownloadClass(Constants.IMAGE, this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard( Constants.IMAGE).getAbsolutePath(), imageListToDownload, "");
             }
         });
 
@@ -190,43 +178,36 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
         Bundle bundle = new Bundle();
         bundle.putString("groupUUID", groupUUID);
 
-        ChatFragment chatFragment;
         ContributionsFragment contributionsFragment;
         MembersFragment membersFragment;
-        /*if (userType == Constants.USER_TEACHER) {
-            chatFragment = new ChatFragment();
-            myContriFragment = new MyContFragment();
-            teacherContFragment = new TeacherContFragment();
 
-            adapter.addFragment(chatFragment, getString(R.string.chats));
-            adapter.addFragment(teacherContFragment, "Group's" + "\n" + "Teacher");
-            adapter.addFragment(myContriFragment, "Contribution");
-        } else {
-            chatFragment = new ChatFragment();*/
         membersFragment = new MembersFragment();
         membersFragment.setArguments(bundle);
         contributionsFragment = new ContributionsFragment();
         contributionsFragment.setArguments(bundle);
 
-        /*adapter.addFragment(chatFragment, getString(R.string.chats));*/
         adapter.addFragment(membersFragment, getString(R.string.members));
         adapter.addFragment(contributionsFragment, getString(R.string.contributions));
 
-        /*}*/
         viewPager.setAdapter(adapter);
     }
 
     @Override
-    public void onSharedMediaClick(SharedMediaModel mediaModel, boolean shareGlobally) {
+    public void onSharedMediaClick(SharedMediaModel mediaModel, boolean shareGlobally, int position) {
         if (!shareGlobally) {
-            if (mediaModel.getMediaType() .equalsIgnoreCase(String.valueOf(Constants.VIDEO))) {
+            if (mediaModel.getMediaType().equalsIgnoreCase(String.valueOf(Constants.VIDEO))) {
                 checkVideoAndDownload(new FileModel(mediaModel.getMediaTitle(), mediaModel.getMediaFile(), mediaModel.getMediaUuid(), 0));
             } else if (mediaModel.getMediaType().equalsIgnoreCase(String.valueOf(Constants.IMAGE))) {
                 shoWImagePopUp(mediaModel);
             }
         } else {
-            showPopup(mediaModel);
+            if (sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER) {
+                showPopupForDelete(mediaModel, position);
+            } else {
+                showPopForDeleteAndGlobalShare(mediaModel, position);
+            }
         }
+
     }
 
     private void shoWImagePopUp(SharedMediaModel mediaModel) {
@@ -269,12 +250,12 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
             String fileName1 = AppUtils.getFileName(mediaModel.getMediaFile());
             File file = null;
             try {
-                file = new File(AppUtils.completeInternalStoragePath(ChatAndContributionActivity.this, Constants.IMAGE), fileName1);
+                file = new File(AppUtils.completePathInSDCard(Constants.IMAGE), fileName1);
             } catch (Exception ex) {
                 Logger.logE("Exce", ex.getMessage(), ex);
             }
             if (file.exists()) {
-                Picasso.get()
+                Glide.with(this)
                         .load("file://" + file)
                         .into(ivSharedContent);
             }
@@ -285,15 +266,46 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
         alertDialogPop.show();
     }
 
-    private void showPopup(SharedMediaModel mediaModel) {
+
+    public void showPopForDeleteAndGlobalShare(SharedMediaModel model, int position) {
+        new AlertDialog.Builder(this, R.style.AlertDialogTheme)
+                .setTitle(R.string.what_you_want_to_do_with_media)
+                .setItems(R.array.option_array, (dialog, which) -> {
+                    if (which == 0)
+                        deleteData(model, position);
+                    else
+                        shareDataGlobally(model, position);
+                    dialog.dismiss();
+
+                })
+                .show();
+
+    }
+
+    public ListRefresh getFragmentRefreshListener() {
+        return refresh;
+    }
+
+    public void setFragmentRefreshListener(ListRefresh fragmentRefreshListener) {
+        this.refresh = fragmentRefreshListener;
+    }
+
+    private void deleteData(SharedMediaModel model, int position) {
+        MediaContentDao mediaContentDao = new MediaContentDao(this);
+        long deletelong = mediaContentDao.deleteMediaUUID(model.getMediaUuid());
+        if (deletelong != -1)
+            if (getFragmentRefreshListener() != null)
+                getFragmentRefreshListener().onRefresh(position, true);
+    }
+
+    private void showPopupForDelete(SharedMediaModel mediaModel, int position) {
 
 
         new AlertDialog.Builder(this, R.style.AlertDialogTheme)
-                .setTitle("Share Media")
-                .setMessage("Share " + mediaModel.getMediaTitle() + " with all group")
-                .setPositiveButton("Share", (dialog, which) -> {
-                    progressBar.setVisibility(View.VISIBLE);
-                    shareDataGlobally(mediaModel);
+                .setTitle("Delete Media")
+                .setMessage("Delete " + mediaModel.getMediaTitle())
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    deleteData(mediaModel, position);
                     dialog.dismiss();
                 })
 
@@ -304,25 +316,18 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
     }
 
-    public void shareDataGlobally(SharedMediaModel mediaModel) {
-        String userUUID = new MySharedPref(this).readString(Constants.USER_ID, "");
-        String data = "";
-        try {
-            JSONArray array = new JSONArray();
-            JSONObject obj = new JSONObject();
-            obj.put("media_uuid", mediaModel.getMediaUuid());
-            array.put(obj);
-            data = array.toString();
-        } catch (Exception ex) {
-            Logger.logE(TAG, "Exception in Conversion :" + ex.getMessage(), ex);
-        }
-        servicesData.shareMediaGlobally(userUUID, data);
+    public void shareDataGlobally(SharedMediaModel model, int position) {
+        MediaContentDao mediaContentDao = new MediaContentDao(this);
+        long sharelong = mediaContentDao.updateGloballyShareMediaUUID(model.getMediaUuid());
+        if (sharelong != -1)
+            if (getFragmentRefreshListener() != null)
+                getFragmentRefreshListener().onRefresh(position, false);
     }
 
     private void checkVideoAndDownload(FileModel fileModel) {
 
         String userUUId = new MySharedPref(this).readString(Constants.USER_ID, "");
-        if (videoAvailable(fileModel) && DownloadUtility.checkFileCorruptStatus(fileModel,ChatAndContributionActivity.this)) {
+        if (videoAvailable(fileModel)) {
             DownloadUtility.playVideo(this, fileModel.getFileUrl(), fileModel.getFileName(), userUUId, fileModel.getUuid(), "", fileModel.getDcfId(), "");
         } else {
             downloadVideo(fileModel);
@@ -333,7 +338,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
         if (CheckNetwork.checkNet(this)) {
             List<FileModel> fileModelList = new ArrayList<>();
             fileModelList.add(fileModel);
-            new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL, AppUtils.completeInternalStoragePath(this, Constants.VIDEO).getAbsolutePath(), fileModelList, "");
+            new DownloadClass(Constants.VIDEO, this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.VIDEO).getAbsolutePath(), fileModelList, "");
         } else {
             Toast.makeText(this, getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
 
@@ -342,7 +347,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
     private boolean videoAvailable(FileModel fileModel) {
         try {
-            File videoFile = new File(AppUtils.completeInternalStoragePath(this, Constants.VIDEO), AppUtils.getFileName(fileModel.getFileUrl()));
+            File videoFile = new File(AppUtils.completePathInSDCard(Constants.VIDEO), AppUtils.getFileName(fileModel.getFileUrl()));
             if (videoFile.exists())
                 return true;
         } catch (Exception ex) {
@@ -360,22 +365,6 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
             }
         }
 
-    }
-
-    @Override
-    public void onFetchDataFromApi(MobileVerificationResponseModel model, String type) {
-        progressBar.setVisibility(View.GONE);
-        if (type.equalsIgnoreCase("global")) {
-
-        } else {
-            if (model.getData() != null && !model.getData().isEmpty()) {
-                MediaContentDao mediaContentDao = new MediaContentDao(this);
-                mediaContentDao.insertSharedMedia(model.getData());
-                if (model.getGlobally() != null && !model.getGlobally().isEmpty()) {
-                    mediaContentDao.updateGloabllyShareMediaUUID(model.getGlobally());
-                }
-            }
-        }
     }
 
 

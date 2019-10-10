@@ -42,9 +42,9 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             app:backgroundTint="?attr/colorAccent"
-            app:sdMainFabClosedBackgroundColor="?attr/colorAccent"
+            app:sdMainFabClosedBackgroundColor="@color/colorAccent"
             app:sdMainFabClosedSrc="@drawable/ic_menu_white_24dp"
-            app:sdMainFabOpenedBackgroundColor="?attr/colorAccent"
+            app:sdMainFabOpenedBackgroundColor="@color/colorAccent"
             app:sdMainFabOpenedSrc="@drawable/ic_close_white_24dp"
             app:sdOverlayLayout="@id/overlay" />
     </RelativeLayout>

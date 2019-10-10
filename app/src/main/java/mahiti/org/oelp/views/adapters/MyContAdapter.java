@@ -1,9 +1,6 @@
 package mahiti.org.oelp.views.adapters;
 
 import android.app.Activity;
-
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,31 +8,39 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.interfaces.SharedMediaClickListener;
 import mahiti.org.oelp.models.SharedMediaModel;
 import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
-import mahiti.org.oelp.utils.MySharedPref;
 
 public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder> {
 
     private Activity context;
-    private List<SharedMediaModel> sharedMediaList;
+    private List<SharedMediaModel> sharedMediaList=new ArrayList<>();
     private SharedMediaClickListener clickListener;
-    private MySharedPref sharedPref;
 
     public MyContAdapter(Activity context) {
         this.context = context;
         clickListener = (SharedMediaClickListener) context;
-        sharedPref = new MySharedPref(context);
 
+    }
+
+    public MyContAdapter(Activity activity, List<SharedMediaModel> sharedMediaList) {
+        this.context = activity;
+        clickListener = (SharedMediaClickListener) context;
+        this.sharedMediaList = sharedMediaList;
     }
 
 
@@ -47,7 +52,6 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(MyContAdapter.ViewHolder viewHolder, final int position) {
-        int loginType = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
         SharedMediaModel model = sharedMediaList.get(position);
 
         viewHolder.tvMediaName.setText(model.getMediaTitle());
@@ -60,12 +64,18 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
         }
 
         viewHolder.llRecycler.setOnClickListener(view -> {
-            clickListener.onSharedMediaClick(model, false);
+            clickListener.onSharedMediaClick(model, false, position);
+
+
         });
 
+        if (model.getSharedGlobally()==1)
+            viewHolder.ivTickMark.setVisibility(View.VISIBLE);
+        else
+            viewHolder.ivTickMark.setVisibility(View.GONE);
+
         viewHolder.llRecycler.setOnLongClickListener(view -> {
-            if(loginType==Constants.USER_TRAINER)
-                clickListener.onSharedMediaClick(model, true);
+            clickListener.onSharedMediaClick(model, true, position);
             return false;
         });
 
@@ -77,27 +87,43 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
         String fileName = AppUtils.getFileName(path);
         File file = null;
         try {
-            file = new File(AppUtils.completeInternalStoragePath(context, Constants.IMAGE), fileName);
+            file = new File(AppUtils.completePathInSDCard(Constants.IMAGE), fileName);
         } catch (Exception ex) {
             Logger.logE("Exce", ex.getMessage(), ex);
         }
         if (file.exists()) {
-            Picasso.get()
+           /* Picasso.get()
                     .load("file://" + file)
-                    .resizeDimen(120, 120)
                     .fit()
+                    .into(viewHolder.roundedImageView);*/
+            RequestOptions myOptions = new RequestOptions()
+                    .centerCrop();
+            Glide.with(context)
+                    .load("file://" + file)
+                    .apply(myOptions)
                     .into(viewHolder.roundedImageView);
         }
     }
 
     @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
     public int getItemCount() {
-        return sharedMediaList.isEmpty() ? 0 : sharedMediaList.size();
+        return sharedMediaList.size();
     }
 
     public void setList(List<SharedMediaModel> sharedMediaList) {
-        this.sharedMediaList = sharedMediaList;
-        notifyDataSetChanged();
+        this.sharedMediaList.clear();
+        this.sharedMediaList.addAll(sharedMediaList);
+        this.notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -107,6 +133,7 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
         private TextView tvUploadedBy;
         private LinearLayout llRecycler;
         private ImageView ivPlayButton;
+        private ImageView ivTickMark;
         private ImageView roundedImageView;
 
         public ViewHolder(View itemView) {
@@ -117,6 +144,7 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
             llRecycler = itemView.findViewById(R.id.llRecycler);
             ivPlayButton = itemView.findViewById(R.id.ivPlayButton);
             roundedImageView = itemView.findViewById(R.id.roundedImageView);
+            ivTickMark = itemView.findViewById(R.id.ivTickMark);
 
         }
     }

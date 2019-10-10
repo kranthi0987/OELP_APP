@@ -1,38 +1,30 @@
 package mahiti.org.oelp.views.activities;
 
-import android.app.Activity;
-
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
-
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.database.CreateGroupActivity;
 import mahiti.org.oelp.databinding.ActivityHomeBinding;
 import mahiti.org.oelp.fileandvideodownloader.DownloadClass;
-import mahiti.org.oelp.fileandvideodownloader.FileModel;
 import mahiti.org.oelp.fileandvideodownloader.OnMediaDownloadListener;
 import mahiti.org.oelp.interfaces.ItemClickListerner;
 import mahiti.org.oelp.models.CatalogueDetailsModel;
 import mahiti.org.oelp.models.GroupModel;
 import mahiti.org.oelp.services.RetrofitConstant;
-import mahiti.org.oelp.ui.StartUI;
 import mahiti.org.oelp.utils.AppUtils;
+import mahiti.org.oelp.utils.CheckNetwork;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.MySharedPref;
 import mahiti.org.oelp.utils.PermissionClass;
@@ -79,12 +71,6 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         if (getIntent().getBooleanExtra("UnitClick", false))
             homeViewModel.unitsClick.setValue(true);
 
-
-//        if (homeViewModel.apiCount==0){
-//            homeViewModel.unitsClick.setValue(true);
-//        }
-
-
         homeViewModel.unitsClick.observe(this, aBoolean -> {
             if (aBoolean != null && aBoolean) {
                 setImageAndTextColor(Constants.Units);
@@ -105,10 +91,6 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
             }
         });
 
-        homeViewModel.getApiErrorMessage().observe(this, s -> {
-            if (s != null)
-                Toast.makeText(HomeActivity.this, s, Toast.LENGTH_SHORT).show();
-        });
 
 
 
@@ -123,23 +105,33 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         homeViewModel.getListOfImageToDownload().observe(this, fileModels ->
 //                new DownloadClass(Constants.IMAGE, HomeActivity.this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.IMAGE).getAbsolutePath(), fileModels));
                 new DownloadClass(Constants.IMAGE, HomeActivity.this, RetrofitConstant.BASE_URL, AppUtils.completeInternalStoragePath(this, Constants.IMAGE).getAbsolutePath(), fileModels, ""));
+        homeViewModel.getListOfImageToDownload1().observe(this, fileModels ->
+//                new DownloadClass(Constants.IMAGE, HomeActivity.this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.IMAGE).getAbsolutePath(), fileModels));
+                new DownloadClass(Constants.IMAGE, HomeActivity.this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.IMAGE).getAbsolutePath(), fileModels, ""));
+
+
     }
 
     private void checKConditionAndProceed(List<GroupModel> groupModelList) {
-        if(userType == Constants.USER_TEACHER){
-            if(groupModelList!=null && !groupModelList.isEmpty()) {
+        if (groupModelList != null && !groupModelList.isEmpty()) {
+            if (userType == Constants.USER_TEACHER) {
                 moveTONextActivity(groupModelList.get(0).getGroupName(), groupModelList.get(0).getGroupUUID());
+            } else {
+                setImageAndTextColor(Constants.Groups);
+                setFragment(Constants.Groups);
             }
-            else {
-                Toast.makeText(this, "Not in any group", Toast.LENGTH_SHORT).show();
+        } else {
+            if (userType == Constants.USER_TEACHER) {
+                if (CheckNetwork.checkNet(this)) {
+                    Toast.makeText(this, "Not in any group", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                setImageAndTextColor(Constants.Groups);
+                setFragment(Constants.Groups);
             }
         }
-        else
-        {
-            setImageAndTextColor(Constants.Groups);
-            setFragment(Constants.Groups);
-        }
-
 
     }
 
@@ -151,7 +143,6 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
         clicked = 0;
     }
-
 
 
     GroupsFragment groupsFragment = null;
@@ -195,8 +186,8 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     @Override
     protected void onResume() {
         super.onResume();
-        if(sharedPref.readBoolean(Constants.IS_UPDATED, false)){
-            if (groupsFragment!=null) {
+        if (sharedPref.readBoolean(Constants.IS_UPDATED, false)) {
+            if (groupsFragment != null) {
                 groupsFragment.setValueToAdapter();
                 sharedPref.writeBoolean(Constants.IS_UPDATED, false);
             }
@@ -343,9 +334,9 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
 //        }
     }
 
-    public void onCallNextActivity(){
+    public void onCallNextActivity() {
         Intent intent = new Intent(this, CreateGroupActivity.class);
-        intent.putExtra("groupUUID","");
+        intent.putExtra("groupUUID", "");
         intent.putExtra("groupName", "");
         startActivityForResult(intent, 101);
         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
@@ -356,11 +347,9 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 101 && resultCode == RESULT_OK) {
             homeViewModel.apiCountMutable.setValue(0);
-            homeViewModel.callApiForGroupList(sharedPref.readString(Constants.USER_ID,""));
             groupsFragment.setValueToAdapter();
-        }else if (requestCode == 102 && resultCode == RESULT_OK) {
+        } else if (requestCode == 103 && resultCode == RESULT_OK) {
             homeViewModel.apiCountMutable.setValue(0);
-            homeViewModel.callApiForGroupList(sharedPref.readString(Constants.USER_ID,""));
             groupsFragment.setValueToAdapter();
         }
     }

@@ -5,8 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.StrictMode;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -34,8 +32,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.database.DAOs.MediaContentDao;
+import mahiti.org.oelp.database.DAOs.CatalogDao;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.Logger;
@@ -417,28 +417,11 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
     }
 
     public void updateFileSizeInDatabase(String uuid, long fileSize) {
-        String fileNameUrl = AppUtils.getFileName(fileModelList.get(0).getFileUrl());
-        String fileName = fileNameUrl.split(".")[0];
         if (!uuid.isEmpty()) {
-            if (fileName.equals(uuid)){
-                updateMediaShareTableFileSize(uuid, fileSize);
-            }else {
-                updateCatalogMediaSize(uuid, fileSize);
-            }
-
+            CatalogDao catalogDBHandler = new CatalogDao(context);
+            boolean getupdatedStatus = catalogDBHandler.addFileSize(uuid, fileSize);
+            Log.i("getUpdatedPD", getupdatedStatus + "");
         }
-    }
-
-    private void updateCatalogMediaSize(String uuid, long fileSize) {
-        MediaContentDao catalogDBHandler = new MediaContentDao(context);
-        boolean getupdatedStatus = catalogDBHandler.addFileSizeMediaShareTable(uuid, fileSize);
-        Log.i("getUpdatedPD", getupdatedStatus + "");
-    }
-
-    private void updateMediaShareTableFileSize(String uuid, long fileSize) {
-        DatabaseHandlerClass catalogDBHandler = new DatabaseHandlerClass(context);
-        boolean getupdatedStatus = catalogDBHandler.addFileSize(uuid, fileSize);
-        Log.i("getUpdatedPD", getupdatedStatus + "");
     }
 
 }

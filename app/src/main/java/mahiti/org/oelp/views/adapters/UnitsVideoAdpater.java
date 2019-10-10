@@ -1,12 +1,6 @@
 package mahiti.org.oelp.views.adapters;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +13,11 @@ import com.bumptech.glide.request.RequestOptions;
 import java.io.File;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.databinding.AdapterUnitsVideoBinding;
 import mahiti.org.oelp.interfaces.ItemClickListerner;

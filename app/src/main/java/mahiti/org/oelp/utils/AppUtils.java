@@ -1,5 +1,6 @@
 package mahiti.org.oelp.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
@@ -11,7 +12,8 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import androidx.appcompat.app.AppCompatActivity;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
@@ -27,17 +29,21 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.content.CursorLoader;
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.ui.StartUI;
 import mahiti.org.oelp.views.activities.AboutUsActivity;
@@ -94,6 +100,14 @@ public class AppUtils {
         return message;
     }
 
+    public static void showChatUI(Context context) {
+        Intent intent = new Intent(context, StartUI.class);
+        context.startActivity(intent);
+        ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_left,
+                R.anim.anim_slide_out_left);
+    }
+
+
     public static String getDateTime() {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.000000");
@@ -103,10 +117,32 @@ public class AppUtils {
     }
 
     public static String getDate() {
-
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = new Date();
         return simpleDateFormat.format(date);
+
+    }
+
+    public static void copyDataBase( Context mContext, String destinationFolder) {
+        File destDbFile = new File(destinationFolder);
+        if (!destDbFile.exists()) {
+            try {
+                InputStream assestDB = mContext.getAssets().open(DBConstants.DB_NAME);
+                OutputStream appDB = new FileOutputStream(destinationFolder, false);
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = assestDB.read(buffer)) > 0) {
+                    appDB.write(buffer, 0, length);
+                }
+                appDB.flush();
+                appDB.close();
+                assestDB.close();
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
+        }
 
     }
 
@@ -304,7 +340,62 @@ public class AppUtils {
 
     }
 
-    public static String subPath(int type) { // 0-Image, 1- Pdf, 2- Video
+    @SuppressLint("NewApi")
+    public static String getRealPathFromURI_API19(Context context, Uri uri){
+        String filePath = "";
+        String wholeID = DocumentsContract.getDocumentId(uri);
+
+        // Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
+
+        String[] column = { MediaStore.Images.Media.DATA };
+
+        // where id is equal to
+        String sel = MediaStore.Images.Media._ID + "=?";
+
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                column, sel, new String[]{ id }, null);
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+        cursor.close();
+        return filePath;
+    }
+
+
+    @SuppressLint("NewApi")
+    public static String getRealPathFromURI_API11to18(Context context, Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        String result = null;
+
+        CursorLoader cursorLoader = new CursorLoader(
+                context,
+                contentUri, proj, null, null, null);
+        Cursor cursor = cursorLoader.loadInBackground();
+
+        if(cursor != null){
+            int column_index =
+                    cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            result = cursor.getString(column_index);
+        }
+        return result;
+    }
+
+    public static String getRealPathFromURI_BelowAPI11(Context context, Uri contentUri){
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+        int column_index
+                = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+
+    public static String subPath(int type) {
         String subPath = "";
         switch (type) {
             case Constants.IMAGE:
@@ -374,7 +465,7 @@ public class AppUtils {
 
     public static void clearPreviousUserData(Context context){
         DatabaseHandlerClass dbHandler = new DatabaseHandlerClass(context);
-        dbHandler.updateWatchStatusForMediaAll();
+        dbHandler.updateAllWatchStatus();
         dbHandler.deleteAllDataFromDB(5);
         dbHandler.deleteAllDataFromDB(6);
         dbHandler.deleteAllDataFromDB(7);
@@ -412,14 +503,6 @@ public class AppUtils {
                 R.anim.anim_slide_out_left);
     }
 
-    public static void showChatUI(Context context) {
-        Intent intent = new Intent(context, StartUI.class);
-        context.startActivity(intent);
-        ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_left,
-                R.anim.anim_slide_out_left);
-    }
-
-
     public static String getUUID() {
         return UUID.randomUUID().toString();
     }
@@ -437,7 +520,7 @@ public class AppUtils {
     }
 
     public static int getFileType(String fileName ){
-        int fileType ;
+        int fileType = Constants.IMAGE;
         String lastFileExtension = fileName.substring(fileName.lastIndexOf("."));
         if (lastFileExtension.contains(".mp4") || lastFileExtension.contains(".3GP") || lastFileExtension.contains(".OGG")
                 || lastFileExtension.contains(".WMV")||lastFileExtension.contains(".WEBM")||lastFileExtension.contains(".FLV")
@@ -493,6 +576,26 @@ public class AppUtils {
             }
             if (destination != null) {
                 destination.close();
+            }
+        }
+    }
+
+    public static boolean renameFileName(File oldFile, File newFile) {
+        if(oldFile.renameTo(newFile)){
+            System.out.println("File rename success");
+            return true;
+        }else{
+            System.out.println("File rename failed");
+            return false;
+        }
+    }
+
+    public static void createDir(File file) {
+        if (!file.exists()) {
+            if (file.mkdir()) {
+                System.out.println("Directory is created!");
+            } else {
+                System.out.println("Failed to create directory!");
             }
         }
     }

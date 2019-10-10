@@ -1046,12 +1046,16 @@
     <string name="unable_to_perform_this_action">Unable to perform this action</string>
     <string name="waiting_for_transfer">Waiting for transfer</string>
     <string name="x_has_written">%s has written:</string>
-
     <string name="type_message_here">Type message here</string>
-    <string name="chats">चैट</string>
+    <string name="chats">Chats</string>
     <string name="contributions">Contributions</string>
     <string name="members">Members</string>
+    <string name="what_you_want_to_do_with_media">What you want to do with media?</string>
     <string name="applicationId" />
+    <string-array name="option_array" >
+        <item>Delete Media</item>
+        <item>Share Media</item>
+    </string-array>
     <array name="contribution_array">
         <item>All Contribution</item>
         <item>Others Contribution</item>

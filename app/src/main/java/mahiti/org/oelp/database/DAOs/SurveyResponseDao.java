@@ -32,51 +32,58 @@ public class SurveyResponseDao extends DatabaseHandlerClass {
     public void insertAnsweredQuestion(List<SubmittedAnswerResponse> list) {
 
         Gson gson = new Gson();
-        int attempt=0;
-
-        for (SubmittedAnswerResponse response : list) {
-            String responseData = "";
-            try{
-               responseData = gson.toJson(response.getResponse());
-            }catch (Exception xe){
-                Logger.logE("Exception", xe.getMessage(), xe);
+        int attempt = 0;
+        initDatabase();
+        database.beginTransaction();
+        try {
+            for (SubmittedAnswerResponse response : list) {
+                String responseData = "";
+                try {
+                    responseData = gson.toJson(response.getResponse());
+                } catch (Exception xe) {
+                    Logger.logE("Exception", xe.getMessage(), xe);
+                }
+                ContentValues values = new ContentValues();
+                values.put(DBConstants.UUID, response.getCreationKey());
+                values.put(DBConstants.QA_VIDEOID, response.getMediacontent());
+                values.put(DBConstants.SECTION_UUID, response.getSectionUUID());
+                values.put(DBConstants.UNIT_UUID, response.getUnitUUID());
+                values.put(DBConstants.QA_DATA, responseData);
+                values.put(DBConstants.QA_PREVIEW_TEXT, "");
+                values.put(DBConstants.MODIFIED, response.getSubmissionDate());
+                if (response.getAttempts() == 0) {
+                    attempt = getAttemptFromDb(response.getMediacontent(), 1);
+                }
+                values.put(DBConstants.ATTEMPT, attempt);
+                values.put(DBConstants.QA_SCORE, response.getScore());
+                values.put(DBConstants.QA_TOTAL, response.getTotal());
+                values.put(DBConstants.SYNC_STATUS, response.getSyncStatus());
+                Logger.logD("InsertQuestionAnswered", values.toString());
+                database.insert(DBConstants.QA_TABLENAME, null, values);
+                updateWatchStatus(response.getCreationKey());
             }
-
-            ContentValues values = new ContentValues();
-            values.put(DBConstants.UUID, response.getCreationKey());
-            values.put(DBConstants.QA_VIDEOID, response.getMediacontent());
-            values.put(DBConstants.SECTION_UUID, response.getSectionUUID());
-            values.put(DBConstants.UNIT_UUID, response.getUnitUUID());
-            values.put(DBConstants.QA_DATA, responseData);
-            values.put(DBConstants.QA_PREVIEW_TEXT, "");
-            values.put(DBConstants.MODIFIED, response.getSubmissionDate());
-            if (response.getAttempts() == 0) {
-                attempt = getAttemptFromDb(response.getMediacontent(), 1);
-            }
-            values.put(DBConstants.ATTEMPT, attempt);
-            values.put(DBConstants.QA_SCORE, response.getScore());
-            values.put(DBConstants.QA_TOTAL, response.getTotal());
-            values.put(DBConstants.SYNC_STATUS, response.getSyncStatus());
-            Logger.logD("InsertQuestionAnswered", values.toString());
-            database.insert(DBConstants.QA_TABLENAME, null, values);
-
-            updateWatchStatus(response.getCreationKey());
+            database.setTransactionSuccessful();
+        } catch (Exception ex) {
+            Logger.logE(TAG, ex.getMessage(), ex);
+        } finally {
+            database.endTransaction();
         }
-
     }
 
     public int getAttemptFromDb(String mediaUUID, int type) {
         String query = DBConstants.SELECT + DBConstants.ATTEMPT + DBConstants.FROM + DBConstants.QA_TABLENAME +
                 DBConstants.WHERE + DBConstants.QA_VIDEOID + DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES + mediaUUID + DBConstants.SINGLE_QUOTES;
         Logger.logD(TAG, DBConstants.QA_TABLENAME + " Fetch Attempt Query :" + query);
-        Cursor cursor;
+        initDatabase();
+        Cursor cursor = null;
         int attempt = 0;
         try {
             cursor = database.rawQuery(query, null);
-
             attempt = cursor.getCount();
         } catch (Exception ex) {
             Logger.logE(TAG, DBConstants.QA_TABLENAME + " Fetch Attempt Exception :" + ex.getMessage(), ex);
+        } finally {
+            closeCursor(cursor);
         }
         if (type == 1) {
             attempt++;
@@ -109,33 +116,39 @@ public class SurveyResponseDao extends DatabaseHandlerClass {
                     DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES + videoId + DBConstants.SINGLE_QUOTES;
         }
         initDatabase();
-        Cursor cursor = database.rawQuery(dataFetchQuery, null);
-        Logger.logD("Query", dataFetchQuery);
+        Cursor cursor = null;
+        try {
+            cursor = database.rawQuery(dataFetchQuery, null);
+            Logger.logD("Query", dataFetchQuery);
 
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                SubmittedAnswerResponse model = new SubmittedAnswerResponse();
-                model.setCreationKey(cursor.getString(cursor.getColumnIndex(DBConstants.UUID)));
-                model.setMediacontent(cursor.getString(cursor.getColumnIndex(DBConstants.QA_VIDEOID)));
-                model.setSectionUUID(cursor.getString(cursor.getColumnIndex(DBConstants.SECTION_UUID)));
-                model.setUnitUUID(cursor.getString(cursor.getColumnIndex(DBConstants.UNIT_UUID)));
-                model.setServerString(cursor.getString(cursor.getColumnIndex(DBConstants.QA_DATA)));
-                model.setPreviewString(cursor.getString(cursor.getColumnIndex(DBConstants.QA_PREVIEW_TEXT)));
-                model.setSubmissionDate(cursor.getString(cursor.getColumnIndex(DBConstants.MODIFIED)));
-                model.setAttempts(cursor.getInt(cursor.getColumnIndex(DBConstants.ATTEMPT)));
-                String scorre;
-                scorre = cursor.getString(cursor.getColumnIndex(DBConstants.QA_SCORE));
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    SubmittedAnswerResponse model = new SubmittedAnswerResponse();
+                    model.setCreationKey(cursor.getString(cursor.getColumnIndex(DBConstants.UUID)));
+                    model.setMediacontent(cursor.getString(cursor.getColumnIndex(DBConstants.QA_VIDEOID)));
+                    model.setSectionUUID(cursor.getString(cursor.getColumnIndex(DBConstants.SECTION_UUID)));
+                    model.setUnitUUID(cursor.getString(cursor.getColumnIndex(DBConstants.UNIT_UUID)));
+                    model.setServerString(cursor.getString(cursor.getColumnIndex(DBConstants.QA_DATA)));
+                    model.setPreviewString(cursor.getString(cursor.getColumnIndex(DBConstants.QA_PREVIEW_TEXT)));
+                    model.setSubmissionDate(cursor.getString(cursor.getColumnIndex(DBConstants.MODIFIED)));
+                    model.setAttempts(cursor.getInt(cursor.getColumnIndex(DBConstants.ATTEMPT)));
+                    String scorre;
+                    scorre = cursor.getString(cursor.getColumnIndex(DBConstants.QA_SCORE));
 
-                if (scorre != null && !scorre.isEmpty() && scorre.equalsIgnoreCase("null"))
-                    model.setScore(Float.parseFloat(scorre));
-                else
-                    model.setScore(0.0f);
+                    if (scorre != null && !scorre.isEmpty() && scorre.equalsIgnoreCase("null"))
+                        model.setScore(Float.parseFloat(scorre));
+                    else
+                        model.setScore(0.0f);
 
-                model.setTotal(cursor.getString(cursor.getColumnIndex(DBConstants.QA_TOTAL)));
+                    model.setTotal(cursor.getString(cursor.getColumnIndex(DBConstants.QA_TOTAL)));
+                    asyncQuestionAnswer.add(model);
+                } while (cursor.moveToNext());
 
-                asyncQuestionAnswer.add(model);
-            } while (cursor.moveToNext());
-
+            }
+        } catch (Exception e) {
+            Logger.logE(TAG, "getSubject", e);
+        } finally {
+            closeCursor(cursor);
         }
         Logger.logD("QuestionAnswered", asyncQuestionAnswer.toString());
         return asyncQuestionAnswer;
@@ -149,10 +162,11 @@ public class SurveyResponseDao extends DatabaseHandlerClass {
                 DBConstants.FROM + DBConstants.QA_TABLENAME + DBConstants.WHERE + DBConstants.QA_VIDEOID + DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES +
                 mediaUUID + DBConstants.SINGLE_QUOTES;
         initDatabase();
+        Cursor cursor = null;
         try {
             database.beginTransaction();
             Logger.logD(TAG, DBConstants.QA_TABLENAME + " Get Attempt query :" + query);
-            Cursor cursor = database.rawQuery(query, null);
+            cursor = database.rawQuery(query, null);
             if (cursor.moveToFirst()) {
                 response = new SubmittedAnswerResponse();
                 response.setTotal(cursor.getString(cursor.getColumnIndex(DBConstants.QA_TOTAL)));
@@ -165,12 +179,12 @@ public class SurveyResponseDao extends DatabaseHandlerClass {
                 response.setTotal(cursor.getString(cursor.getColumnIndex(DBConstants.QA_TOTAL)));
                 response.setAttempts(cursor.getInt(cursor.getColumnIndex(DBConstants.ATTEMPT)));
             }
-            cursor.close();
             database.setTransactionSuccessful();
         } catch (Exception ex) {
             Logger.logE(TAG, DBConstants.QA_TABLENAME + " Get Attempt query Exception:" + ex.getMessage(), ex);
         } finally {
             database.endTransaction();
+            closeCursor(cursor);
         }
 
         return response;

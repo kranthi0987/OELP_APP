@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
@@ -24,7 +25,7 @@ import mahiti.org.oelp.viewmodel.HomeViewModel;
  */
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.LayoutView> {
     AdapterGroupViewBinding binding;
-    private List<GroupModel> modelList;
+    private List<GroupModel> modelList = new ArrayList<>();
     private Context mContext;
     private ItemClickListerner listener;
 
@@ -76,10 +77,12 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.LayoutView> 
     }
 
     public void setList(List<GroupModel> list, Context context) {
-        this.modelList = list;
+        if (modelList!=null)
+            this.modelList.clear();
+        modelList.addAll(list);
         listener = (ItemClickListerner) context;
         mContext = context;
-        notifyDataSetChanged();
+        this.notifyDataSetChanged();
     }
 
     private void setValues(GroupModel catalogueDetailsModel, LayoutView layout, int position) {

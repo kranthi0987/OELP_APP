@@ -58,9 +58,10 @@ public class GroupDao extends DatabaseHandlerClass {
         GroupModel groupModel;
         String query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.GROUP_TABLE;
         initDatabase();
+        Cursor cursor = null;
         try {
             Logger.logD(TAG, "Getting Group Item : " + query);
-            Cursor cursor = database.rawQuery(query, null);
+            cursor = database.rawQuery(query, null);
             if (cursor.moveToFirst()) {
                 do {
                     groupModel = new GroupModel();
@@ -75,6 +76,8 @@ public class GroupDao extends DatabaseHandlerClass {
             }
         } catch (Exception e) {
             Logger.logE(TAG, "getSubject", e);
+        }finally {
+            closeCursor(cursor);
         }
         return groupList1;
     }

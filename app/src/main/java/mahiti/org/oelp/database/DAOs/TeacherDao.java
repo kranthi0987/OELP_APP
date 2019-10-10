@@ -83,19 +83,21 @@ public class TeacherDao extends DatabaseHandlerClass {
             mainQuery = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.TEACHER_TABLENAME + DBConstants.WHERE + DBConstants.GROUP_UUID_COL + DBConstants.IN+DBConstants.OPEN_BRACKET+DBConstants.SINGLE_QUOTES+ groupUUID +DBConstants.SINGLE_QUOTES+DBConstants.CLOSE_BRACKET;
         else
             mainQuery = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.TEACHER_TABLENAME + DBConstants.WHERE + DBConstants.USER_UID + DBConstants.EQUAL_TO+DBConstants.SINGLE_QUOTES+ groupUUID +DBConstants.SINGLE_QUOTES;
+
         initDatabase();
+        Cursor cursor=null;
         List<TeacherModel> teachersList = new ArrayList<>();
         try {
             Logger.logD(TAG, "getTeachers : " + mainQuery);
-            Cursor cursor = database.rawQuery(mainQuery, null);
+            cursor = database.rawQuery(mainQuery, null);
             if (cursor.moveToFirst()) {
                 do {
                     TeacherModel model = new TeacherModel();
                     model.setActive(cursor.getInt(cursor.getColumnIndex(DBConstants.ACTIVE)));
                     model.setCreated(cursor.getString(cursor.getColumnIndex(DBConstants.CREATED)));
                     model.setVideoCoveredCount(cursor.getString(cursor.getColumnIndex(DBConstants.VIDEOCOVERED_COUNT)));
-                    model.setVideoCoveredCount(cursor.getString(cursor.getColumnIndex(DBConstants.VIDEOCOVERED_COUNT)));
                     model.setBlockName(blockName(cursor.getInt(cursor.getColumnIndex(DBConstants.BLOCK_ID))));
+                    model.setSchool(cursor.getString(cursor.getColumnIndex(DBConstants.SCHOOL)));
                     model.setBlockIds(cursor.getInt(cursor.getColumnIndex(DBConstants.BLOCK_ID)));
                     model.setStateId(cursor.getInt(cursor.getColumnIndex(DBConstants.STATE_ID)));
                     model.setDistrictId(cursor.getInt(cursor.getColumnIndex(DBConstants.DISTRICT_ID)));
@@ -107,13 +109,15 @@ public class TeacherDao extends DatabaseHandlerClass {
                     model.setLastLoggedIn(cursor.getString(cursor.getColumnIndex(DBConstants.LAST_LOGGEDIN)));
                     model.setMobileNumber(cursor.getString(cursor.getColumnIndex(DBConstants.MOBILE_NUMBER)));
                     model.setName(cursor.getString(cursor.getColumnIndex(DBConstants.TEACHER_NAME)));
-                    model.setMediaCount(new MediaContentDao(mContext).fetchSharedMedia(model.getUserUuid(), false, 0).size());
+                    model.setMediaCount(new MediaContentDao(mContext).fetchSharedMedia(model.getUserUuid(),"", false, 0).size());
                     teachersList.add(model);
                 } while (cursor.moveToNext());
                 cursor.close();
             }
         } catch (Exception e) {
             Logger.logE(TAG, "getTeachers", e);
+        }finally {
+            closeCursor(cursor);
         }
         return teachersList;
     }
@@ -121,16 +125,19 @@ public class TeacherDao extends DatabaseHandlerClass {
     public String blockName(int blockId){
         String mainQuery = DBConstants.SELECT +DBConstants.NAME+ DBConstants.FROM + DBConstants.LOC_TABLE_NAME + DBConstants.WHERE + DBConstants.ID + DBConstants.EQUAL_TO+ blockId;
         initDatabase();
+        Cursor cursor=null;
         String blockName = "";
         try {
             Logger.logD(TAG, "get block : " + mainQuery);
-            Cursor cursor = database.rawQuery(mainQuery, null);
+            cursor = database.rawQuery(mainQuery, null);
             if (cursor.getCount()!=0 && cursor.moveToFirst()) {
                 blockName = cursor.getString(cursor.getColumnIndex(DBConstants.NAME));
             }
             cursor.close();
         } catch (Exception e) {
             Logger.logE(TAG, "get block", e);
+        }finally {
+            closeCursor(cursor);
         }
         return blockName;
     }

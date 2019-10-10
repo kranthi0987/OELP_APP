@@ -87,9 +87,10 @@ public class CatalogDao extends DatabaseHandlerClass {
             query2 = "'" + parentId + "'" + DBConstants.ORDER_BY + DBConstants.ORDER;
         mainQuery = query1 + query2;
         initDatabase();
+        Cursor cursor = null;
         try {
             Logger.logD(TAG, "Getting Spinner Item : " + mainQuery);
-            Cursor cursor = database.rawQuery(mainQuery, null);
+            cursor = database.rawQuery(mainQuery, null);
             if (cursor.moveToFirst()) {
                 do {
 
@@ -123,6 +124,8 @@ public class CatalogDao extends DatabaseHandlerClass {
             }
         } catch (Exception e) {
             Logger.logE(TAG, "getSubject", e);
+        }finally {
+            closeCursor(cursor);
         }
         return catalogList1;
     }
@@ -134,9 +137,10 @@ public class CatalogDao extends DatabaseHandlerClass {
                 DBConstants.WHERE + ICON_PATH + DBConstants.NOT_EQUAL_TO + DBConstants.EMPTY +
                 DBConstants.AND + DBConstants.ICON_PATH + DBConstants.IS_NOT_NULL;
         initDatabase();
+        Cursor cursor = null;
         try {
             Logger.logD(TAG, "Getting Image List Query : " + query);
-            Cursor cursor = database.rawQuery(query, null);
+            cursor = database.rawQuery(query, null);
             if (cursor.moveToFirst()) {
                 do {
                     fileModel = new FileModel();
@@ -151,6 +155,8 @@ public class CatalogDao extends DatabaseHandlerClass {
             }
         } catch (Exception e) {
             Logger.logE(TAG, "get ICON", e);
+        }finally {
+            closeCursor(cursor);
         }
         return imageList;
     }

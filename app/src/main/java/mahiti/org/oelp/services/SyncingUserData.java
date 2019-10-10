@@ -48,7 +48,7 @@ public class SyncingUserData {
 
     public void uploadMedia() {
 
-        List<SharedMediaModel> sharedMediaModelList = mediaContentDao.fetchSharedMedia("", false, 1);
+        List<SharedMediaModel> sharedMediaModelList = mediaContentDao.fetchSharedMedia("","", false, 1);
 
         if (sharedMediaModelList != null && !sharedMediaModelList.isEmpty()) {
             for (SharedMediaModel sharedMediaModel : sharedMediaModelList) {
@@ -75,7 +75,7 @@ public class SyncingUserData {
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-                        Toast.makeText(mContext, "Media Shared Success", Toast.LENGTH_SHORT).show();
+                        /*Toast.makeText(mContext, "Media Shared Success", Toast.LENGTH_SHORT).show();*/
                         mediaContentDao.updateSyncData(sharedMediaModel.getMediaUuid());
 
 
@@ -83,7 +83,7 @@ public class SyncingUserData {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
-                        Toast.makeText(mContext, "Media Shared Failure", Toast.LENGTH_SHORT).show();
+                        /*Toast.makeText(mContext, "Media Shared Failure", Toast.LENGTH_SHORT).show();*/
 
                     }
 
@@ -160,12 +160,12 @@ public class SyncingUserData {
 
     }
 
-    public List<String> deleteMedia(String userUUID, String deleteData) {
+    public List<String> deleteMedia(String deleteData) { /// send comma separated uuid
         List<String> responseList = new ArrayList<>();
         final MobileVerificationResponseModel[] model = {null};
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.SHARED_MEDIA_GLOBALLY + " Param : user_uuid:" + userUUID);
-        apiInterface.deleteMedia(userUUID, deleteData).enqueue(new Callback<MobileVerificationResponseModel>() {
+        apiInterface.deleteMedia(deleteData).enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.SHARED_MEDIA_GLOBALLY + " Response :" + response.body());

@@ -6,10 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -21,24 +18,23 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 import mahiti.org.oelp.R;
-import mahiti.org.oelp.database.CreateGroupActivity;
+import mahiti.org.oelp.views.activities.CreateGroupActivity;
 import mahiti.org.oelp.database.DAOs.TeacherDao;
-import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.models.MobileVerificationResponseModel;
 import mahiti.org.oelp.models.TeacherModel;
 import mahiti.org.oelp.services.ApiInterface;
 import mahiti.org.oelp.services.RetrofitClass;
 import mahiti.org.oelp.services.RetrofitConstant;
-import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.CheckNetwork;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
 import mahiti.org.oelp.utils.MySharedPref;
-import mahiti.org.oelp.views.activities.ChatAndContributionActivity;
 import mahiti.org.oelp.views.adapters.MembersAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.app.Activity.RESULT_OK;
 
 public class MembersFragment extends Fragment {
 
@@ -117,7 +113,7 @@ public class MembersFragment extends Fragment {
     }
 
     private void setDataToAdapter(List<TeacherModel> teacherList) {
-        if (teacherList!=null)
+        if (teacherList != null)
             membersAdapter.setList(teacherList);
     }
 
@@ -135,7 +131,7 @@ public class MembersFragment extends Fragment {
         userUUiD = sharedPref.readString(Constants.USER_ID, "");
         teacherDao = new TeacherDao(getActivity());
 
-        if (sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER)==Constants.USER_TRAINER){
+        if (sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TRAINER) {
             fab.setVisibility(View.VISIBLE);
         }
 
@@ -157,5 +153,21 @@ public class MembersFragment extends Fragment {
                 R.anim.anim_slide_out_left);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (sharedPref.readBoolean(Constants.IS_UPDATED, false)) {
+            fetchTeacherList();
+        }
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 103 && resultCode == RESULT_OK) {
+            fetchTeacherList();
+            sharedPref.writeBoolean(Constants.IS_UPDATED, true);
+        }
+    }
 }

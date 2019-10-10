@@ -11,9 +11,11 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.DAOs.LocationDao;
 import mahiti.org.oelp.models.TeacherModel;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.MySharedPref;
@@ -22,7 +24,7 @@ import mahiti.org.oelp.views.activities.TeacherInfoTabActivity;
 public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.ViewHolder> {
 
     private Activity context;
-    List<TeacherModel> teachersList;
+    List<TeacherModel> teachersList=new ArrayList<>();
     private int userType;
 
 
@@ -40,7 +42,8 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(MembersAdapter.ViewHolder viewHolder, final int position) {
-        viewHolder.tvBlock.setText(teachersList.get(position).getBlockName());
+        String blockName = new LocationDao(context).getName(teachersList.get(position).getBlockIds());
+        viewHolder.tvBlock.setText(blockName);
         viewHolder.tvMemberName.setText(teachersList.get(position).getName());
         viewHolder.tvSchoolName.setText(teachersList.get(position).getSchool());
         viewHolder.tvMediaCount.setText(""+teachersList.get(position).getMediaCount());
@@ -66,7 +69,9 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.ViewHold
     }
 
     public void setList(List<TeacherModel> teacherList) {
-        this.teachersList = teacherList;
+        if (teacherList!=null)
+            this.teachersList.clear();
+        this.teachersList.addAll(teacherList);
         notifyDataSetChanged();
     }
 

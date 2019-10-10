@@ -84,7 +84,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(RetrofitConstant.DELETE_SHARED_MEDIA)
-    Call<MobileVerificationResponseModel> deleteMedia(@Field("user_uuid") String userUUID, @Field("delete_data") String data);
+    Call<MobileVerificationResponseModel> deleteMedia(@Field("media_uuid") String data);
 
 
 

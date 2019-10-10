@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import mahiti.org.oelp.R;
@@ -20,7 +21,7 @@ import mahiti.org.oelp.utils.Constants;
  * Created by RAJ ARYAN on 24/08/19.
  */
 public class AddTeacherToGroupAdapter extends RecyclerView.Adapter<AddTeacherToGroupAdapter.LayoutView> {
-    private List<UserDetailsModel> modelList;
+    private List<UserDetailsModel> modelList=new ArrayList<>();
     private Integer type;
 
     @NonNull
@@ -70,11 +71,30 @@ public class AddTeacherToGroupAdapter extends RecyclerView.Adapter<AddTeacherToG
             }
         }
         return modelData;
+//        return removEDuplicate(modelData);
+    }
+
+    public List<String > removEDuplicate(List<String> list){
+        ArrayList<String> nonDupList = new ArrayList<String>();
+        Iterator<String> dupIter = list.iterator();
+        while(dupIter.hasNext())
+        {
+            String dupWord = dupIter.next();
+            if(nonDupList.contains(dupWord))
+            {
+                dupIter.remove();
+            }else
+            {
+                nonDupList.add(dupWord);
+            }
+        }
+        return nonDupList;
     }
 
     public void setList(List<UserDetailsModel> list, Integer type) {
-        this.modelList = list;
-        notifyDataSetChanged();
+        this.modelList.clear();
+        modelList.addAll(list);
+        this.notifyDataSetChanged();
         this.type = type;
     }
     @Override

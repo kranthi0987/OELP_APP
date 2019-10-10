@@ -133,7 +133,7 @@
             android:name="io.fabric.ApiKey"
             android:value="02925ef542d587b0d078678a1e73a90a8291f618" />
 
-        <activity android:name=".database.CreateGroupActivity"
+        <activity android:name=".views.activities.CreateGroupActivity"
             android:screenOrientation="userPortrait"/>
 
         <meta-data

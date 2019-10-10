@@ -1,6 +1,5 @@
 package mahiti.org.oelp.database.DAOs;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
@@ -11,6 +10,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.lifecycle.MutableLiveData;
 import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.models.LocationContent;
@@ -64,10 +64,11 @@ public class LocationDao extends DatabaseHandlerClass {
         String mainQuery = "";
         String query1 = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.LOC_TABLE_NAME + DBConstants.WHERE + DBConstants.BOUNDARY_LEVEL_TYPE + DBConstants.EQUAL_TO + level + DBConstants.AND + DBConstants.PARENT + DBConstants.EQUAL_TO + parentId;
         mainQuery = query1;
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase(DBConstants.DATABASESECRETKEY);
+        initDatabase();
+        Cursor cursor = null;
         try {
             Logger.logD(TAG, "Getting Spinner Item : " + mainQuery);
-            Cursor cursor = sqLiteDatabase.rawQuery(mainQuery, null);
+            cursor = database.rawQuery(mainQuery, null);
             if (cursor.moveToFirst()) {
                 do {
 
@@ -85,7 +86,30 @@ public class LocationDao extends DatabaseHandlerClass {
             }
         } catch (Exception e) {
             Logger.logE(TAG, "getSubject", e);
+        }finally {
+            closeCursor(cursor);
         }
         return locationList;
+    }
+
+    public String getName(Integer blockIds) {
+        String name ="";
+        String id = String.valueOf(blockIds);
+        String query = DBConstants.SELECT+DBConstants.NAME+DBConstants.FROM+DBConstants.LOC_TABLE_NAME+
+                DBConstants.WHERE+DBConstants.ID+DBConstants.EQUAL_TO+DBConstants.SINGLE_QUOTES+id+DBConstants.SINGLE_QUOTES;
+        initDatabase();
+        Cursor cursor = null;
+        Logger.logD(TAG, "Getting  : " + query);
+        cursor = database.rawQuery(query, null);
+        try {
+           if (cursor.moveToFirst()){
+               name = cursor.getString(cursor.getColumnIndex(DBConstants.NAME));
+           }
+        }catch (Exception e) {
+            Logger.logE(TAG, "getSubject", e);
+        }finally {
+            closeCursor(cursor);
+        }
+        return name;
     }
 }

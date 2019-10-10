@@ -1,6 +1,6 @@
 package mahiti.org.oelp.database.DAOs;
 
-import android.arch.lifecycle.MutableLiveData;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
@@ -59,10 +59,11 @@ public class QuestionDao extends DatabaseHandlerClass {
         QuestionModel questionModel;
         String query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.QUESTION_TABLE +
                 DBConstants.WHERE + DBConstants.DCF + DBConstants.EQUAL_TO + +dcfId;
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase(DBConstants.DATABASESECRETKEY);
+        initDatabase();
+        Cursor cursor = null;
         try {
             Logger.logD(TAG, "Getting Question Item : " + query);
-            Cursor cursor = sqLiteDatabase.rawQuery(query, null);
+            cursor = database.rawQuery(query, null);
             if (cursor.moveToFirst()) {
                 do {
                     questionModel = new QuestionModel();
@@ -80,6 +81,8 @@ public class QuestionDao extends DatabaseHandlerClass {
             }
         } catch (Exception e) {
             Logger.logE(TAG, "getSubject", e);
+        }finally {
+            closeCursor(cursor);
         }
         return questionModelsList;
     }

@@ -1,5 +1,6 @@
 package mahiti.org.oelp.views.fragments;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import java.util.List;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.databinding.FragmentGroupsBinding;
 import mahiti.org.oelp.models.GroupModel;
+import mahiti.org.oelp.utils.CheckNetwork;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.MySharedPref;
 import mahiti.org.oelp.viewmodel.HomeViewModel;
@@ -46,6 +49,7 @@ public class GroupsFragment extends Fragment {
     private GroupAdapter adapter;
     private ProgressBar progressBar;
     public MutableLiveData<Boolean> moveToCreateGroup = new MutableLiveData<>();
+    private TextView tvError;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +67,7 @@ public class GroupsFragment extends Fragment {
         View view = binding.getRoot();
         recyclerView = binding.recyclerView;
         progressBar = binding.progressBar;
+        tvError = binding.tvError;
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
         recyclerView.setHasFixedSize(true);
@@ -73,7 +78,7 @@ public class GroupsFragment extends Fragment {
         fab = binding.fab;
 
         fab.setOnClickListener(view1 -> {
-            ((HomeActivity)getActivity()).onCallNextActivity();
+            checkInternet();
         });
 
 
@@ -106,6 +111,24 @@ public class GroupsFragment extends Fragment {
 
         return view;
     }
+    private void checkInternet() {
+        if (CheckNetwork.checkNet(getActivity()))
+            ((HomeActivity)getActivity()).onCallNextActivity();
+        else
+            showAlertDialog();
+    }
+
+
+    private void showAlertDialog() {
+        AlertDialog dialog1 ;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.MyAlertDialogStyle);
+        builder.setMessage(getResources().getString(R.string.check_internet));
+        builder.setNegativeButton(R.string.ok, (dialog, id) -> dialog.dismiss());
+        dialog1 = builder.create();
+        dialog1.show();
+    }
+
+
 
 
     public void setValueToAdapter() {
@@ -113,8 +136,9 @@ public class GroupsFragment extends Fragment {
         if (groupModelList != null && !groupModelList.isEmpty()) {
             adapter.setList(groupModelList, getActivity());
             progressBar.setVisibility(View.GONE);
-
+            tvError.setVisibility(View.GONE);
         }else {
+            tvError.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
             Toast.makeText(getActivity(), "Data not found", Toast.LENGTH_SHORT).show();
         }
