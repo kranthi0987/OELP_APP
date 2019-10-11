@@ -109,6 +109,7 @@ public class SyncingUserData {
                 @Override
                 public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                     Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.SHARED_MEDIA_GLOBALLY + " Response :" + response.body());
+//                    mediaContentDao.updateSyncData(sharedMediaModel.getMediaUuid());
                 }
 
                 @Override
