@@ -3,6 +3,7 @@ package mahiti.org.oelp.utils;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -25,12 +26,15 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,6 +49,8 @@ import androidx.loader.content.CursorLoader;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
+import mahiti.org.oelp.models.UserDetails;
+import mahiti.org.oelp.models.UserDetailsModel;
 import mahiti.org.oelp.ui.StartUI;
 import mahiti.org.oelp.views.activities.AboutUsActivity;
 import mahiti.org.oelp.views.activities.MobileLoginActivity;
@@ -340,33 +346,36 @@ public class AppUtils {
 
     }
 
-    @SuppressLint("NewApi")
     public static String getRealPathFromURI_API19(Context context, Uri uri){
         String filePath = "";
-        String wholeID = DocumentsContract.getDocumentId(uri);
 
-        // Split at colon, use second item in the array
-        String id = wholeID.split(":")[1];
+        try {
+            String wholeID = DocumentsContract.getDocumentId(uri);
 
-        String[] column = { MediaStore.Images.Media.DATA };
+            // Split at colon, use second item in the array
+            String id = wholeID.split(":")[1];
 
-        // where id is equal to
-        String sel = MediaStore.Images.Media._ID + "=?";
+            String[] column = {MediaStore.Images.Media.DATA};
 
-        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                column, sel, new String[]{ id }, null);
+            // where id is equal to
+            String sel = MediaStore.Images.Media._ID + "=?";
 
-        int columnIndex = cursor.getColumnIndex(column[0]);
+            Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    column, sel, new String[]{id}, null);
 
-        if (cursor.moveToFirst()) {
-            filePath = cursor.getString(columnIndex);
+            int columnIndex = cursor.getColumnIndex(column[0]);
+
+            if (cursor.moveToFirst()) {
+                filePath = cursor.getString(columnIndex);
+            }
+            cursor.close();
+        }catch (Exception ex){
+            Logger.logE(TAG, ex.getMessage(), ex);
         }
-        cursor.close();
         return filePath;
     }
 
 
-    @SuppressLint("NewApi")
     public static String getRealPathFromURI_API11to18(Context context, Uri contentUri) {
         String[] proj = { MediaStore.Images.Media.DATA };
         String result = null;
@@ -599,6 +608,112 @@ public class AppUtils {
             }
         }
     }
+
+    public static String getRealPathFromURI_OreoAndAbove(Uri uri) {
+        String filePath = null;
+        if (uri.getPath()!=null) {
+            File file = new File(uri.getPath());//create path from uri
+            final String[] split = file.getPath().split(":");//split the path.
+            filePath = split[1];//assign it to a string(your choice).
+        }
+        return filePath;
+    }
+
+    @SuppressLint("NewApi")
+    public static String getRealPathFromURI_OreoBelow(Context context, Uri uri) throws URISyntaxException {
+        final boolean needToCheckUri = Build.VERSION.SDK_INT >= 19;
+        String selection = null;
+        String[] selectionArgs = null;
+        // Uri is different in versions after KITKAT (Android 4.4), we need to
+        // deal with different Uris.
+        if (needToCheckUri && DocumentsContract.isDocumentUri(context.getApplicationContext(), uri)) {
+            if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                return Environment.getExternalStorageDirectory() + "/" + split[1];
+            } else if (isDownloadsDocument(uri)) {
+                final String id = DocumentsContract.getDocumentId(uri);
+                uri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+            } else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+                if ("image".equals(type)) {
+                    uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+                selection = "_id=?";
+                selectionArgs = new String[]{ split[1] };
+            }
+        }
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+            String[] projection = { MediaStore.Images.Media.DATA };
+            Cursor cursor = null;
+            try {
+                cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(column_index);
+                }
+            } catch (Exception e) {
+            }
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
+    }
+
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is ExternalStorageProvider.
+     */
+    public static boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is DownloadsProvider.
+     */
+    public static boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is MediaProvider.
+     */
+    public static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    public static void chnageToString(MySharedPref sharedPref, UserDetailsModel userDetails) {
+        String userData="";
+        if (userDetails!=null){
+            try {
+                Gson gson = new Gson();
+                userData = gson.toJson(userDetails);
+                sharedPref.writeString(Constants.KRANTHI, userData);
+            }catch (Exception ex){
+                Logger.logE(TAG, ex.getMessage(), ex);
+            }
+        }
+
+    }
+
+//    public static UserDetails changeToModel(String userData){
+//        UserDetails userDetails = null;
+//        Gson gson;
+//        try {
+//           gson = new Gson();
+//           userDetails = gson.fromJson(userData, UserDetails.class);
+//        }
+//    }
 
     public void showDocumentsView(Activity context) {
 

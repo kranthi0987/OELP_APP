@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -463,6 +464,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
     private void insertDataIntoGroupTable() {
         Intent intent = new Intent();
         intent.putExtra("result", true);
+        intent.putExtra(Constants.GROUP_NAME, etGroupName.getText().toString().trim());
         setResult(RESULT_OK, intent);
         onBackPressed();
 
@@ -470,6 +472,10 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
 
     private void createJson(List<UserDetailsModel> lsitModel, String userUUID, String groupCreationKey) {
         JSONArray array = new JSONArray();
+        /*
+        Add Trainer Info also to group
+         */
+
         boolean valide = false;
         try {
             JSONObject object;
@@ -482,6 +488,15 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
         } catch (Exception ex) {
             Logger.logE(TAG, ex.getMessage(), ex);
         }
+        JSONObject object = new JSONObject();
+
+        try {
+            object.put("creation_key", userUUID);
+            array.put(object);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         if (valide) {
             callApiForCreateGroup(userUUID, groupName, groupCreationKey, array.toString());
         } else {

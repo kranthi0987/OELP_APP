@@ -42,22 +42,12 @@ public class AddTeacherToGroupAdapter extends RecyclerView.Adapter<AddTeacherToG
         }
         layoutView.tvName.setText(userDetails.getName());
         layoutView.tvMobileNo.setText(userDetails.getMobile_number());
-        checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
 
-          /*  if(compoundButton.isChecked()){
-                modelList.remove(i);
-//                this.notifyDataSetChanged();
-                modelList.get(i).setCheckBoxChecked(true);
-            }
-            else{
-                modelList.get(i).setCheckBoxChecked(false);
-            }*/
+        checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
             if (!userDetails.isCheckBoxChecked()){
                userDetails.setCheckBoxChecked(true);
-               modelList.add(userDetails);
             }else {
                 userDetails.setCheckBoxChecked(false);
-                modelList.remove(userDetails);
             }
         });
     }
@@ -71,25 +61,8 @@ public class AddTeacherToGroupAdapter extends RecyclerView.Adapter<AddTeacherToG
             }
         }
         return modelData;
-//        return removEDuplicate(modelData);
     }
 
-    public List<String > removEDuplicate(List<String> list){
-        ArrayList<String> nonDupList = new ArrayList<String>();
-        Iterator<String> dupIter = list.iterator();
-        while(dupIter.hasNext())
-        {
-            String dupWord = dupIter.next();
-            if(nonDupList.contains(dupWord))
-            {
-                dupIter.remove();
-            }else
-            {
-                nonDupList.add(dupWord);
-            }
-        }
-        return nonDupList;
-    }
 
     public void setList(List<UserDetailsModel> list, Integer type) {
         this.modelList.clear();

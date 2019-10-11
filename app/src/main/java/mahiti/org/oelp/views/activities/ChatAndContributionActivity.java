@@ -367,6 +367,11 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
     }
 
+    public void setGroupName(String groupName) {
+        if (groupName!=null && !groupName.isEmpty())
+            tvTitle.setText(groupName);
+    }
+
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();

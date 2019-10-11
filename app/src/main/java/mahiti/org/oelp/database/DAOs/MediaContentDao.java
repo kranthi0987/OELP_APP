@@ -121,14 +121,18 @@ public class MediaContentDao extends DatabaseHandlerClass {
         return updateLong;
     }
 
-    public long updateSyncData(String mediaUUID) {
+    /**
+     *
+     * @param mediaUUID media uuid to update
+     * @param columnName column name which has to update
+     */
+    public void updateSyncData(String mediaUUID, String columnName) {
         long updateLong = 0;
         initDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(DBConstants.UUID, mediaUUID); //These Fields should be your String values of actual column names
-        cv.put(DBConstants.SYNC_STATUS, 0); //These Fields should be your String values of actual column names
-        updateLong = database.updateWithOnConflict(DBConstants.MEDIA_CONTENT_TABLE, cv, "uuid = ?", new String[]{mediaUUID}, SQLiteDatabase.CONFLICT_REPLACE);
-        return updateLong;
+        cv.put(DBConstants.UUID, mediaUUID);
+        cv.put(columnName, 0);
+        database.updateWithOnConflict(DBConstants.MEDIA_CONTENT_TABLE, cv, "uuid = ?", new String[]{mediaUUID}, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public long deleteMediaUUID(String mediaUUID) {
@@ -228,7 +232,8 @@ public class MediaContentDao extends DatabaseHandlerClass {
             closeCursor(cursor);
             closeDatabase();
         }
-        data = array.toString();
+        if (array.length()>0)
+            data = array.toString();
         return data;
     }
 

@@ -2,6 +2,8 @@ package mahiti.org.oelp.services;
 
 import android.content.Context;
 
+import org.json.JSONObject;
+
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.DAOs.CatalogDao;
 import mahiti.org.oelp.database.DAOs.ChoicesDao;
@@ -42,7 +44,7 @@ public class FetchUpdateddata {
     public FetchUpdateddata(Context mContext) {
         this.mContext = mContext;
         String userUUID = new MySharedPref(mContext).readString(Constants.USER_ID, "");
-        int userType = new MySharedPref(mContext).readInt(Constants.USER_TYPE,Constants.USER_TEACHER);
+        int userType = new MySharedPref(mContext).readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
 
         catalogDao = new CatalogDao(mContext);
         groupDao = new GroupDao(mContext);
@@ -59,10 +61,26 @@ public class FetchUpdateddata {
         callTeacherApi(userUUID);
 //        callQuestionApi(userUUID);
 //        callChoicesApi(userUUID);
-        callMediaSharedApi(userUUID);
+        String groupUUIDString = getGroupUUID();
+        callMediaSharedApi(userUUID, groupUUIDString);
         callApiForLocation();
-        if (userType==Constants.USER_TEACHER)
+        if (userType == Constants.USER_TEACHER)
             callSubmittedAnswerApi(userUUID);
+    }
+
+    private String getGroupUUID() {
+        String userGroup = "";
+        MySharedPref sharedPref = new MySharedPref(mContext);
+        String userData = sharedPref.readString(Constants.KRANTHI, "");
+        if (!userData.isEmpty()) {
+            try {
+                JSONObject obj = new JSONObject(userData);
+                userGroup = obj.getString("user_group");
+            } catch (Exception ex) {
+                Logger.logE(TAG, ex.getMessage(), ex);
+            }
+        }
+        return userGroup;
     }
 
     private void callApiForLocation() {
@@ -70,16 +88,16 @@ public class FetchUpdateddata {
         apiInterface.getLocationData().enqueue(new Callback<LocationModel>() {
             @Override
             public void onResponse(Call<LocationModel> call, Response<LocationModel> response) {
-                Logger.logD(TAG, "URL "+ RetrofitConstant.BASE_URL+RetrofitConstant.LOCATION_LIST_URL+" Response :"+response.body());
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.LOCATION_LIST_URL + " Response :" + response.body());
                 LocationModel locationModel = response.body();
-                if (locationModel!=null){
+                if (locationModel != null) {
                     locationDao.insertLocationDataToDB(locationModel);
                 }
             }
 
             @Override
             public void onFailure(Call<LocationModel> call, Throwable t) {
-                Logger.logD(TAG, "URL "+ RetrofitConstant.BASE_URL+RetrofitConstant.LOCATION_LIST_URL+" Response :"+t.getMessage());
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.LOCATION_LIST_URL + " Response :" + t.getMessage());
 
             }
         });
@@ -95,7 +113,7 @@ public class FetchUpdateddata {
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.SUBMITTED_ANSWER_RESPONSE_URL + " Response :" + response.body());
                 MobileVerificationResponseModel model = response.body();
-                if (model != null && model.getResponsesData()!=null) {
+                if (model != null && model.getResponsesData() != null) {
                     surveyResponseDao.insertAnsweredQuestion(model.getResponsesData());
                 }
             }
@@ -107,10 +125,10 @@ public class FetchUpdateddata {
         });
     }
 
-    private void callMediaSharedApi(String userId) {
+    private void callMediaSharedApi(String userId, String usergroup) {
         ApiInterface apiInterface = RetrofitClass.getAPIService();
-        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.FETCH_MEDIA_SHARED + " Param : user_uuid:" + userId);
-        apiInterface.getMediaShared(userId).enqueue(new Callback<MobileVerificationResponseModel>() {
+        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.FETCH_MEDIA_SHARED + " Param : user_uuid:" + userId+" group_uuid "+usergroup);
+        apiInterface.getMediaShared(userId, usergroup).enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                 if (response.body() != null) {

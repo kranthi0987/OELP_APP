@@ -106,13 +106,13 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
         setHasOptionsMenu(true);
         checkInternetAndCAllApi();
 
-        ((ChatAndContributionActivity)getActivity()).setFragmentRefreshListener(new ListRefresh() {
+        ((ChatAndContributionActivity) getActivity()).setFragmentRefreshListener(new ListRefresh() {
             @Override
             public void onRefresh(int position, boolean isDelete) {
 
                 if (isDelete) {
                     checkInternetAndCAllApi();
-                }else {
+                } else {
                     Toast.makeText(getActivity(), "Share Media Global Success", Toast.LENGTH_SHORT).show();
                     checkInternetAndCAllApi();
                 }
@@ -192,7 +192,7 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
         sharedMediaList = new ArrayList<>();
         MediaContentDao mediaContentDao = new MediaContentDao(getActivity());
         setViewForSwitch(checked);
-        sharedMediaList = mediaContentDao.fetchSharedMedia(userUUId,groupUUID, checked, 0);
+        sharedMediaList = mediaContentDao.fetchSharedMedia(userUUId, groupUUID, checked, 0);
         setAdapters(sharedMediaList);
     }
 
@@ -397,23 +397,25 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
         else {
             Uri result = data.getData();
             String filePath = getPath(result);
-            showDialogForUpload(filePath);
+            String groupName = data.getStringExtra(Constants.GROUP_NAME);
+            ((ChatAndContributionActivity)getActivity()).setGroupName(groupName);
+            if (filePath!=null)
+                showDialogForUpload(filePath);
         }
     }
 
     public String getPath(Uri uri) {
+        int currentVersion = android.os.Build.VERSION.SDK_INT;
         String path = null;
-        if (Build.VERSION.SDK_INT < 11)
-            path = AppUtils.getRealPathFromURI_BelowAPI11(getActivity(), uri);
-
-            // SDK >= 11 && SDK < 19
-        else if (Build.VERSION.SDK_INT < 19)
-            path = AppUtils.getRealPathFromURI_API11to18(getActivity(), uri);
-
-            // SDK > 19 (Android 4.4)
-        else
-            path = AppUtils.getRealPathFromURI_API19(getActivity(), uri);
-        Log.d(TAG, "File Path: " + path);
+        if (currentVersion >= Build.VERSION_CODES.O) {
+            path = AppUtils.getRealPathFromURI_OreoAndAbove(uri);
+        } else {
+            try {
+                path = AppUtils.getRealPathFromURI_OreoBelow(getActivity(), uri);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
         return path;
     }
 
@@ -546,7 +548,6 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
         adapter.setList(sharedMediaList);
         insertData(model);
     }
-
 
 
     private void insertData(MobileVerificationResponseModel body) {

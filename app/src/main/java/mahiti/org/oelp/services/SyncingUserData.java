@@ -9,6 +9,9 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import mahiti.org.oelp.database.DAOs.MediaContentDao;
 import mahiti.org.oelp.database.DAOs.SurveyResponseDao;
+import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.models.MobileVerificationResponseModel;
 import mahiti.org.oelp.models.SharedMediaModel;
 import mahiti.org.oelp.models.SubmittedAnswerResponse;
@@ -48,7 +52,7 @@ public class SyncingUserData {
 
     public void uploadMedia() {
 
-        List<SharedMediaModel> sharedMediaModelList = mediaContentDao.fetchSharedMedia("","", false, 1);
+        List<SharedMediaModel> sharedMediaModelList = mediaContentDao.fetchSharedMedia("", "", false, 1);
 
         if (sharedMediaModelList != null && !sharedMediaModelList.isEmpty()) {
             for (SharedMediaModel sharedMediaModel : sharedMediaModelList) {
@@ -76,7 +80,7 @@ public class SyncingUserData {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] response) {
                         /*Toast.makeText(mContext, "Media Shared Success", Toast.LENGTH_SHORT).show();*/
-                        mediaContentDao.updateSyncData(sharedMediaModel.getMediaUuid());
+                        mediaContentDao.updateSyncData(sharedMediaModel.getMediaUuid(), DBConstants.SYNC_STATUS);
 
 
                     }
@@ -109,7 +113,7 @@ public class SyncingUserData {
                 @Override
                 public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                     Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.SHARED_MEDIA_GLOBALLY + " Response :" + response.body());
-//                    mediaContentDao.updateSyncData(sharedMediaModel.getMediaUuid());
+                    changeToArray(globalShareData, 0);
                 }
 
                 @Override
@@ -117,6 +121,26 @@ public class SyncingUserData {
                     Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.SHARED_MEDIA_GLOBALLY + " Response :" + t.getMessage());
                 }
             });
+        }
+    }
+
+    /**
+     * @param globalShareData JSON String
+     * @param type            0- update and 1 delete
+     */
+    private void changeToArray(String globalShareData, int type) {
+        try {
+            JSONArray jsonArray = new JSONArray(globalShareData);
+            for (int a = 0; a < jsonArray.length(); a++) {
+                JSONObject obj = jsonArray.getJSONObject(a);
+                String mediaUUID = obj.optString("media_uuid");
+                if (type == 0)
+                    mediaContentDao.updateSyncData(mediaUUID, DBConstants.SHARED_GLOBALLY);
+                else if (type == 1)
+                    mediaContentDao.removeDeleteMedia(mediaUUID);
+            }
+        } catch (Exception ex) {
+
         }
     }
 
@@ -170,8 +194,7 @@ public class SyncingUserData {
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.SHARED_MEDIA_GLOBALLY + " Response :" + response.body());
-
-
+                changeToArray(deleteData, 1);
             }
 
             @Override
