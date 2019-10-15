@@ -25,7 +25,6 @@ import android.hardware.Camera.CameraInfo;
 import android.util.Log;
 import android.view.TextureView;
 
-import com.google.zxing.PlanarYUVLuminanceSource;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -268,11 +267,11 @@ public final class CameraManager {
         }
     }
 
-    public PlanarYUVLuminanceSource buildLuminanceSource(final byte[] data) {
-        return new PlanarYUVLuminanceSource(data, cameraResolution.width, cameraResolution.height,
-                (int) framePreview.left, (int) framePreview.top, (int) framePreview.width(),
-                (int) framePreview.height(), false);
-    }
+//    public PlanarYUVLuminanceSource buildLuminanceSource(final byte[] data) {
+//        return new PlanarYUVLuminanceSource(data, cameraResolution.width, cameraResolution.height,
+//                (int) framePreview.left, (int) framePreview.top, (int) framePreview.width(),
+//                (int) framePreview.height(), false);
+//    }
 
     public void setTorch(final boolean enabled) {
         if (enabled != getTorchEnabled(camera))

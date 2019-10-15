@@ -48,7 +48,6 @@ import mahiti.org.oelp.utils.StringUtils;
 import mahiti.org.oelp.utils.StylingHelper;
 import mahiti.org.oelp.utils.TimeframeUtils;
 import mahiti.org.oelp.utils.XmppUri;
-import me.drakeet.support.toast.ToastCompat;
 import rocks.xmpp.addr.Jid;
 
 public class ConferenceDetailsActivity extends XmppActivity implements XmppConnectionService.OnConversationUpdate, XmppConnectionService.OnMucRosterUpdate, XmppConnectionService.OnAffiliationChanged, XmppConnectionService.OnConfigurationPushed, TextWatcher, OnMediaLoaded {
@@ -681,7 +680,7 @@ public class ConferenceDetailsActivity extends XmppActivity implements XmppConne
             if (isFinishing()) {
                 return;
             }
-            ToastCompat.makeText(this, msg, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         });
     }
 

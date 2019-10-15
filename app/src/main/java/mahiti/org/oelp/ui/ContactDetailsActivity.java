@@ -608,9 +608,9 @@ public class ContactDetailsActivity extends OmemoActivity implements XmppConnect
             binding.showInactiveDevices.setVisibility(View.GONE);
         }
         binding.scanButton.setVisibility(hasKeys && isCameraFeatureAvailable() ? View.VISIBLE : View.GONE);
-        if (hasKeys) {
-            binding.scanButton.setOnClickListener((v) -> ScanActivity.scan(this));
-        }
+//        if (hasKeys) {
+//            binding.scanButton.setOnClickListener((v) -> ScanActivity.scan(this));
+//        }
         if (Config.supportOpenPgp() && contact.getPgpKeyId() != 0) {
             hasKeys = true;
             View view = inflater.inflate(R.layout.contact_key, binding.detailsContactKeys, false);

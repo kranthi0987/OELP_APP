@@ -6,9 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.widget.Toast;
 
 import mahiti.org.oelp.R;
-import me.drakeet.support.toast.ToastCompat;
 
 public class TorServiceUtils {
 
@@ -31,7 +31,7 @@ public class TorServiceUtils {
         try {
             activity.startActivityForResult(intent, requestCode);
         } catch (ActivityNotFoundException e) {
-            ToastCompat.makeText(activity, R.string.no_market_app_installed, ToastCompat.LENGTH_SHORT).show();
+            Toast.makeText(activity, R.string.no_market_app_installed, Toast.LENGTH_SHORT).show();
         }
     }
 

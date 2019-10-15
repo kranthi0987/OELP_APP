@@ -437,7 +437,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     protected void showQrForContact() {
         int position = contact_context_id;
         Contact contact = (Contact) contacts.get(position);
-        showQrCode("xmpp:" + contact.getJid().asBareJid().toEscapedString());
+//        showQrCode("xmpp:" + contact.getJid().asBareJid().toEscapedString());
     }
 
     protected void toggleContactBlock() {
@@ -748,12 +748,12 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (grantResults.length > 0) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                ScanActivity.onRequestPermissionResult(this, requestCode, grantResults);
-                if (requestCode == REQUEST_SYNC_CONTACTS && xmppConnectionServiceBound) {
-                    xmppConnectionService.startContactObserver();
-                }
-            }
+//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                ScanActivity.onRequestPermissionResult(this, requestCode, grantResults);
+//                if (requestCode == REQUEST_SYNC_CONTACTS && xmppConnectionServiceBound) {
+//                    xmppConnectionService.startContactObserver();
+//                }
+//            }
         }
     }
 

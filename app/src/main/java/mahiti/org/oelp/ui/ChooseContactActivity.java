@@ -289,9 +289,9 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_scan_qr_code:
-                ScanActivity.scan(this);
-                return true;
+//            case R.id.action_scan_qr_code:
+//                ScanActivity.scan(this);
+//                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -343,13 +343,13 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
     }
 
     private void handleActivityResult(ActivityResult activityResult) {
-        if (activityResult.resultCode == RESULT_OK && activityResult.requestCode == ScanActivity.REQUEST_SCAN_QR_CODE) {
-            String result = activityResult.data.getStringExtra(ScanActivity.INTENT_EXTRA_RESULT);
-            XmppUri uri = new XmppUri(result == null ? "" : result);
-            if (uri.isJidValid()) {
-                showEnterJidDialog(uri);
-            }
-        }
+//        if (activityResult.resultCode == RESULT_OK && activityResult.requestCode == ScanActivity.REQUEST_SCAN_QR_CODE) {
+//            String result = activityResult.data.getStringExtra(ScanActivity.INTENT_EXTRA_RESULT);
+//            XmppUri uri = new XmppUri(result == null ? "" : result);
+//            if (uri.isJidValid()) {
+//                showEnterJidDialog(uri);
+//            }
+//        }
     }
 
     @Override
@@ -377,7 +377,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity im
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        ScanActivity.onRequestPermissionResult(this, requestCode, grantResults);
+//        ScanActivity.onRequestPermissionResult(this, requestCode, grantResults);
     }
 
     @Override

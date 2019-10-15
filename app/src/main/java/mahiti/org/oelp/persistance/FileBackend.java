@@ -66,8 +66,6 @@ import mahiti.org.oelp.utils.FileUtils;
 import mahiti.org.oelp.utils.FileWriterException;
 import mahiti.org.oelp.utils.MimeUtils;
 import mahiti.org.oelp.xmpp.pep.Avatar;
-import ezvcard.Ezvcard;
-import ezvcard.VCard;
 
 public class FileBackend {
 
@@ -1115,9 +1113,11 @@ public class FileBackend {
             }
         } else if (audio) {
             body.append("|0|0|").append(getMediaRuntime(file));
-        } else if (vcard) {
-            body.append("|0|0|0|").append(getVCard(file));
-        } else if (apk) {
+        }
+//        else if (vcard) {
+//            body.append("|0|0|0|").append(getVCard(file));
+//        }
+        else if (apk) {
             body.append("|0|0|0|").append(getAPK(file, mXmppConnectionService.getApplicationContext()));
         }
         message.setBody(body.toString());
@@ -1164,30 +1164,30 @@ public class FileBackend {
         return APKName;
     }
 
-    private String getVCard(File file) {
-        VCard VCard = new VCard();
-        String VCardName = "";
-        try {
-            VCard = Ezvcard.parse(file).first();
-            if (VCard != null) {
-                final String version = VCard.getVersion().toString();
-                Log.d(Config.LOGTAG, "VCard version: " + version);
-                final String name = VCard.getFormattedName().getValue();
-                VCardName = " (" + name + ")";
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            byte[] data = VCardName.getBytes("UTF-8");
-            VCardName = Base64.encodeToString(data, Base64.DEFAULT);
-
-        } catch (UnsupportedEncodingException e) {
-            VCardName = "";
-            e.printStackTrace();
-        }
-        return VCardName;
-    }
+//    private String getVCard(File file) {
+//        VCard VCard = new VCard();
+//        String VCardName = "";
+//        try {
+//            VCard = Ezvcard.parse(file).first();
+//            if (VCard != null) {
+//                final String version = VCard.getVersion().toString();
+//                Log.d(Config.LOGTAG, "VCard version: " + version);
+//                final String name = VCard.getFormattedName().getValue();
+//                VCardName = " (" + name + ")";
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            byte[] data = VCardName.getBytes("UTF-8");
+//            VCardName = Base64.encodeToString(data, Base64.DEFAULT);
+//
+//        } catch (UnsupportedEncodingException e) {
+//            VCardName = "";
+//            e.printStackTrace();
+//        }
+//        return VCardName;
+//    }
 
     private Dimensions getImageDimensions(File file) {
         BitmapFactory.Options options = new BitmapFactory.Options();

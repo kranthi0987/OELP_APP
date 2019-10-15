@@ -63,7 +63,6 @@ import mahiti.org.oelp.databinding.DialogPresenceBinding;
 import mahiti.org.oelp.entities.Account;
 import mahiti.org.oelp.entities.Presence;
 import mahiti.org.oelp.entities.PresenceTemplate;
-import mahiti.org.oelp.services.BarcodeProvider;
 import mahiti.org.oelp.services.QuickConversationsService;
 import mahiti.org.oelp.services.XmppConnectionService;
 import mahiti.org.oelp.ui.adapter.KnownHostsAdapter;
@@ -935,7 +934,7 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
                 changeMoreTableVisibility(!item.isChecked());
                 break;
             case R.id.action_share_barcode:
-                shareBarcode();
+//                shareBarcode();
                 break;
             case R.id.action_share_http:
                 shareLink(true);
@@ -1003,13 +1002,13 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
         }
     }
 
-    private void shareBarcode() {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_STREAM, BarcodeProvider.getUriForAccount(this, mAccount));
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.setType("image/png");
-        startActivity(Intent.createChooser(intent, getText(R.string.share_with)));
-    }
+//    private void shareBarcode() {
+//        Intent intent = new Intent(Intent.ACTION_SEND);
+//        intent.putExtra(Intent.EXTRA_STREAM, BarcodeProvider.getUriForAccount(this, mAccount));
+//        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//        intent.setType("image/png");
+//        startActivity(Intent.createChooser(intent, getText(R.string.share_with)));
+//    }
 
     private void changeMoreTableVisibility(boolean visible) {
         binding.serverInfoMore.setVisibility(visible ? View.VISIBLE : View.GONE);

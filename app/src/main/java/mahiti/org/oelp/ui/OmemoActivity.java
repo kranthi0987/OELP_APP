@@ -67,9 +67,9 @@ public abstract class OmemoActivity extends XmppActivity {
             case R.id.copy_omemo_key:
                 copyOmemoFingerprint(mSelectedFingerprint);
                 break;
-            case R.id.verify_scan:
-                ScanActivity.scan(this);
-                break;
+//            case R.id.verify_scan:
+//                ScanActivity.scan(this);
+//                break;
         }
         return true;
     }
@@ -77,15 +77,15 @@ public abstract class OmemoActivity extends XmppActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, requestCode, intent);
-        if (requestCode == ScanActivity.REQUEST_SCAN_QR_CODE && resultCode == RESULT_OK) {
-            String result = intent.getStringExtra(ScanActivity.INTENT_EXTRA_RESULT);
-            XmppUri uri = new XmppUri(result == null ? "" : result);
-            if (xmppConnectionServiceBound) {
-                processFingerprintVerification(uri);
-            } else {
-                this.mPendingFingerprintVerificationUri = uri;
-            }
-        }
+//        if (requestCode == ScanActivity.REQUEST_SCAN_QR_CODE && resultCode == RESULT_OK) {
+//            String result = intent.getStringExtra(ScanActivity.INTENT_EXTRA_RESULT);
+//            XmppUri uri = new XmppUri(result == null ? "" : result);
+//            if (xmppConnectionServiceBound) {
+//                processFingerprintVerification(uri);
+//            } else {
+//                this.mPendingFingerprintVerificationUri = uri;
+//            }
+//        }
     }
 
     protected abstract void processFingerprintVerification(XmppUri uri);
@@ -206,6 +206,6 @@ public abstract class OmemoActivity extends XmppActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        ScanActivity.onRequestPermissionResult(this, requestCode, grantResults);
+//        ScanActivity.onRequestPermissionResult(this, requestCode, grantResults);
     }
 }

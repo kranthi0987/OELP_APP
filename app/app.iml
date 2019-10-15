@@ -89,7 +89,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/shaders" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/build" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 28 Platform (1)" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 28 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.12@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-integration:1.3@jar" level="project" />
@@ -124,7 +124,6 @@
     <orderEntry type="library" name="Gradle: org.bouncycastle:bcpkix-jdk15on:1.58@jar" level="project" />
     <orderEntry type="library" name="Gradle: org.bouncycastle:bcprov-jdk15on:1.58@jar" level="project" />
     <orderEntry type="library" name="Gradle: org.gnu.inet:libidn:1.15@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.zxing:core:3.3.3@jar" level="project" />
     <orderEntry type="library" name="Gradle: de.measite.minidns:minidns-hla:0.2.4@jar" level="project" />
     <orderEntry type="library" name="Gradle: de.measite.minidns:minidns-dnssec:0.2.4@jar" level="project" />
     <orderEntry type="library" name="Gradle: de.measite.minidns:minidns-iterative-resolver:0.2.4@jar" level="project" />
@@ -134,11 +133,6 @@
     <orderEntry type="library" name="Gradle: com.google.protobuf:protobuf-java:2.5.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: jetty:javax.servlet:5.1.12@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.intellij:annotations:12.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.googlecode.ez-vcard:ez-vcard:0.10.5@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.mangstadt:vinnie:2.0.2@jar" level="project" />
-    <orderEntry type="library" name="Gradle: org.jsoup:jsoup:1.11.3@jar" level="project" />
-    <orderEntry type="library" name="Gradle: org.freemarker:freemarker:2.3.28@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.9.8@jar" level="project" />
     <orderEntry type="library" name="Gradle: org.hsluv:hsluv:0.2@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.retrofit2:retrofit:2.6.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp:3.12.2@jar" level="project" />
@@ -149,6 +143,7 @@
     <orderEntry type="library" name="Gradle: com.google.errorprone:error_prone_annotations:2.2.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.j2objc:j2objc-annotations:1.1@jar" level="project" />
     <orderEntry type="library" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.17@jar" level="project" />
+    <orderEntry type="library" name="Gradle: org.jsoup:jsoup:1.11.3@jar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.databinding:databinding-adapters:3.5.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.databinding:databinding-runtime:3.5.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-core:17.2.0@aar" level="project" />
@@ -210,7 +205,6 @@
     <orderEntry type="library" name="Gradle: com.squareup.picasso:picasso:2.71828@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.exifinterface:exifinterface:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.cardview:cardview:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: me.drakeet.support:toastcompat:1.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.versionedparcelable:versionedparcelable:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.arch.core:core-runtime:2.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel:2.0.0@aar" level="project" />
@@ -244,6 +238,10 @@
     <orderEntry type="library" name="Gradle: org.conscrypt:conscrypt-android:1.4.2@aar" level="project" />
     <orderEntry type="library" name="Gradle: pl.droidsonroids.gif:android-gif-drawable:1.2.15@aar" level="project" />
     <orderEntry type="library" name="Gradle: org.osmdroid:osmdroid-android:6.1.0@aar" level="project" />
+    <orderEntry type="module" module-name="android-transcoder" />
+    <orderEntry type="module" module-name="fullscreenvideoview" />
+    <orderEntry type="module" module-name="xmpp-addr" />
+    <orderEntry type="library" name="Gradle: net.zetetic:android-database-sqlcipher:3.5.7@aar" level="project" />
     <orderEntry type="module" module-name="android-transcoder" />
     <orderEntry type="module" module-name="fullscreenvideoview" />
     <orderEntry type="module" module-name="xmpp-addr" />

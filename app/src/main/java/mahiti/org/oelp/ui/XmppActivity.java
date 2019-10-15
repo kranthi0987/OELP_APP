@@ -82,7 +82,6 @@ import mahiti.org.oelp.entities.Conversation;
 import mahiti.org.oelp.entities.Message;
 import mahiti.org.oelp.entities.Presences;
 import mahiti.org.oelp.services.AvatarService;
-import mahiti.org.oelp.services.BarcodeProvider;
 import mahiti.org.oelp.services.EmojiService;
 import mahiti.org.oelp.services.UpdateService;
 import mahiti.org.oelp.services.XmppConnectionService;
@@ -1116,24 +1115,24 @@ public abstract class XmppActivity extends ActionBarActivity {
     }
 
     protected void showQrCode() {
-        showQrCode(getShareableUri());
+//        showQrCode(getShareableUri());
     }
 
-    protected void showQrCode(final String uri) {
-        if (uri == null || uri.isEmpty()) {
-            return;
-        }
-        Point size = new Point();
-        getWindowManager().getDefaultDisplay().getSize(size);
-        final int width = (size.x < size.y ? size.x : size.y);
-        Bitmap bitmap = BarcodeProvider.create2dBarcodeBitmap(uri, width);
-        ImageView view = new ImageView(this);
-        view.setBackgroundColor(Color.WHITE);
-        view.setImageBitmap(bitmap);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(view);
-        builder.create().show();
-    }
+//    protected void showQrCode(final String uri) {
+//        if (uri == null || uri.isEmpty()) {
+//            return;
+//        }
+//        Point size = new Point();
+//        getWindowManager().getDefaultDisplay().getSize(size);
+//        final int width = (size.x < size.y ? size.x : size.y);
+//        Bitmap bitmap = BarcodeProvider.create2dBarcodeBitmap(uri, width);
+//        ImageView view = new ImageView(this);
+//        view.setBackgroundColor(Color.WHITE);
+//        view.setImageBitmap(bitmap);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setView(view);
+//        builder.create().show();
+//    }
 
     protected Account extractAccount(Intent intent) {
         String jid = intent != null ? intent.getStringExtra(EXTRA_ACCOUNT) : null;

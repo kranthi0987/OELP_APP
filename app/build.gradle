@@ -143,7 +143,7 @@ dependencies {
     implementation 'org.bouncycastle:bcmail-jdk15on:1.58'
     implementation 'org.jitsi:org.otr4j:0.22'
     implementation 'org.gnu.inet:libidn:1.15'
-    implementation 'com.google.zxing:core:3.3.3'
+//    implementation 'com.google.zxing:core:3.3.3'
     implementation 'de.measite.minidns:minidns-hla:0.2.4'
     implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
     implementation 'org.whispersystems:signal-protocol-java:2.6.2'
@@ -164,11 +164,11 @@ dependencies {
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
     implementation 'pub.devrel:easypermissions:2.0.1' // version >= 3.0.0 needs android X libraries
     implementation 'com.wefika:flowlayout:0.4.1'
-    implementation 'com.googlecode.ez-vcard:ez-vcard:0.10.5'
+//    implementation 'com.googlecode.ez-vcard:ez-vcard:0.10.5'
     implementation 'org.hsluv:hsluv:0.2'
     implementation 'org.conscrypt:conscrypt-android:1.4.2'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.15' // 1.2.15 is last working version for minSDK 16
-    implementation 'me.drakeet.support:toastcompat:1.1.0'
+//    implementation 'me.drakeet.support:toastcompat:1.1.0'
     implementation 'org.osmdroid:osmdroid-android:6.1.0'
     implementation 'com.leinardi.android:speed-dial:2.0.1' // version >= 3.0.0 needs android X libraries
     implementation 'com.squareup.picasso:picasso:2.71828'
@@ -180,7 +180,7 @@ dependencies {
     implementation project(':fullscreenvideoview')
     implementation project(':xmpp-addr')
 
-
+    implementation 'org.jsoup:jsoup:1.11.3'
 
 
 
