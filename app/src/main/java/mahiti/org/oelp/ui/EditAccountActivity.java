@@ -17,12 +17,16 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
+
 import androidx.annotation.NonNull;
+
 import com.google.android.material.textfield.TextInputLayout;
+
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -49,6 +53,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import androidx.databinding.DataBindingUtil;
+
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.Config;
 import mahiti.org.oelp.crypto.axolotl.AxolotlService;
@@ -102,7 +107,7 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
     private Jid jidToEdit;
     private boolean mInitMode = false;
     private Boolean mForceRegister = null;
-    private boolean mUsernameMode = mahiti.org.oelp.Config.DOMAIN_LOCK != null;
+    private boolean mUsernameMode = Config.DOMAIN_LOCK != null;
     private boolean mShowOptions = false;
     private boolean useOwnProvider = false;
     private Account mAccount;
@@ -136,7 +141,7 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
             if (mForceRegister != null) {
                 registerNewAccount = mForceRegister;
             } else {
-                registerNewAccount = binding.accountRegisterNew.isChecked() && !mahiti.org.oelp.Config.DISALLOW_REGISTRATION_IN_UI;
+                registerNewAccount = binding.accountRegisterNew.isChecked() && !Config.DISALLOW_REGISTRATION_IN_UI;
             }
             if (mUsernameMode && binding.accountJid.getText().toString().contains("@")) {
                 binding.accountJidLayout.setError(getString(R.string.invalid_username));
@@ -290,7 +295,6 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
                 updateSaveButton();
                 updateAccountInformation(true);
             }
-binding.accountJidLayout.setError(null);
             refreshUiReal();
         }
     };
@@ -354,7 +358,7 @@ binding.accountJidLayout.setError(null);
         if (mInitMode && mAccount != null && !mAccount.isOptionSet(Account.OPTION_LOGGED_IN_SUCCESSFULLY)) {
             xmppConnectionService.deleteAccount(mAccount);
         }
-        if (xmppConnectionService.getAccounts().size() == 0 && mahiti.org.oelp.Config.MAGIC_CREATE_DOMAIN != null) {
+        if (xmppConnectionService.getAccounts().size() == 0 && Config.MAGIC_CREATE_DOMAIN != null) {
             Intent intent = SignupUtils.getSignUpIntent(this);
             startActivity(intent);
             overridePendingTransition(R.animator.fade_in, R.animator.fade_out);
@@ -469,7 +473,7 @@ binding.accountJidLayout.setError(null);
             if (template != null && resultCode == Activity.RESULT_OK) {
                 generateSignature(data, template);
             } else {
-                Log.d(mahiti.org.oelp.Config.LOGTAG, "pgp result not ok");
+                Log.d(Config.LOGTAG, "pgp result not ok");
             }
         }
         if (requestCode == REQUEST_ORBOT) {
@@ -605,6 +609,7 @@ binding.accountJidLayout.setError(null);
             return null;
         }
     }
+
     ProgressDialog progressDialog;
 
     @Override
@@ -642,7 +647,7 @@ binding.accountJidLayout.setError(null);
             updateInfoButtons();
         };
         this.binding.accountRegisterNew.setOnCheckedChangeListener(OnCheckedShowConfirmPassword);
-        if (mahiti.org.oelp.Config.DISALLOW_REGISTRATION_IN_UI) {
+        if (Config.DISALLOW_REGISTRATION_IN_UI) {
             this.binding.accountRegisterNew.setVisibility(View.GONE);
         }
         this.binding.showPrivacyPolicy.setOnClickListener(view -> {
@@ -657,12 +662,11 @@ binding.accountJidLayout.setError(null);
         });
         binding.accountPasswordLayout.setVisibility(View.GONE);
         binding.accountRegisterNew.setChecked(true);
-      //  binding.saveButton.performClick();
-        String uuid = pref.readString(Constants.USER_ID,"");
-        CheckUser();
-        if(!uuid.isEmpty()){
-            uuid=uuid.replace("-","");
-            binding.accountJid.setText(uuid+"@206.189.136.186");
+        //  binding.saveButton.performClick();
+        String uuid = pref.readString(Constants.USER_ID, "");
+        if (!uuid.isEmpty()) {
+            uuid = uuid.replace("-", "");
+            binding.accountJid.setText(uuid + "@206.189.136.186");
             binding.accountJid.setEnabled(false);
             binding.accountJid.setKeyListener(null);
             binding.accountPassword.setText("123456");
@@ -671,24 +675,19 @@ binding.accountJidLayout.setError(null);
             binding.accountPassword.setKeyListener(null);
 
         }
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
+
+        Handler handlerTimer = new Handler();
+        handlerTimer.postDelayed(new Runnable() {
             public void run() {
+                // do something
                 binding.saveButton.performClick();
             }
         }, 2000);
-
-    }
-    public boolean CheckUser() {
-
-        return true;
-
     }
 
     private void onEditYourNameClicked(View view) {
         quickEdit(mAccount.getDisplayName(), R.string.your_name, value -> {
-            final String displayName = pref.readString(Constants.USER_NAME,"");
+            final String displayName = pref.readString(Constants.USER_NAME, "");
             updateDisplayName(displayName);
             mAccount.setDisplayName(displayName);
             xmppConnectionService.publishDisplayName(mAccount);
@@ -791,9 +790,9 @@ binding.accountJidLayout.setError(null);
             boolean existing = intent.getBooleanExtra("existing", false);
             useOwnProvider = intent.getBooleanExtra("useownprovider", false);
             boolean openedFromNotification = intent.getBooleanExtra(EXTRA_OPENED_FROM_NOTIFICATION, false);
-            Log.d(mahiti.org.oelp.Config.LOGTAG, "extras " + intent.getExtras());
+            Log.d(Config.LOGTAG, "extras " + intent.getExtras());
             this.mForceRegister = intent.hasExtra(EXTRA_FORCE_REGISTER) ? intent.getBooleanExtra(EXTRA_FORCE_REGISTER, false) : null;
-            Log.d(mahiti.org.oelp.Config.LOGTAG, "force register=" + mForceRegister);
+            Log.d(Config.LOGTAG, "force register=" + mForceRegister);
             this.mInitMode = init || this.jidToEdit == null;
             this.messageFingerprint = intent.getStringExtra("fingerprint");
             if (!mInitMode) {
@@ -803,7 +802,7 @@ binding.accountJidLayout.setError(null);
             } else {
                 this.binding.yourNameBox.setVisibility(View.GONE);
                 this.binding.avater.setVisibility(View.GONE);
-                configureActionBar(getSupportActionBar(), !(init && mahiti.org.oelp.Config.MAGIC_CREATE_DOMAIN == null));
+                configureActionBar(getSupportActionBar(), !(init && Config.MAGIC_CREATE_DOMAIN == null));
                 if (mForceRegister != null) {
                     if (mForceRegister) {
                         setTitle(R.string.action_add_new_account);
@@ -879,7 +878,7 @@ binding.accountJidLayout.setError(null);
         }
 
 
-        if (mahiti.org.oelp.Config.MAGIC_CREATE_DOMAIN == null && this.xmppConnectionService.getAccounts().size() == 0) {
+        if (Config.MAGIC_CREATE_DOMAIN == null && this.xmppConnectionService.getAccounts().size() == 0) {
             this.binding.cancelButton.setEnabled(false);
         }
         if (mUsernameMode) {
@@ -903,7 +902,7 @@ binding.accountJidLayout.setError(null);
         if (mAccount != null && mAccount.getJid().getDomain() != null) {
             return mAccount.getJid().getDomain();
         } else {
-            return mahiti.org.oelp.Config.DOMAIN_LOCK;
+            return Config.DOMAIN_LOCK;
         }
     }
 
@@ -1259,7 +1258,7 @@ binding.accountJidLayout.setError(null);
                 this.binding.serverInfoPush.setText(R.string.server_info_unavailable);
             }
             final long pgpKeyId = this.mAccount.getPgpId();
-            if (pgpKeyId != 0 && mahiti.org.oelp.Config.supportOpenPgp()) {
+            if (pgpKeyId != 0 && Config.supportOpenPgp()) {
                 OnClickListener openPgp = view -> launchOpenKeyChain(pgpKeyId);
                 OnClickListener delete = view -> showDeletePgpDialog();
                 this.binding.pgpFingerprintBox.setVisibility(View.VISIBLE);
@@ -1274,7 +1273,7 @@ binding.accountJidLayout.setError(null);
                 this.binding.pgpFingerprintBox.setVisibility(View.GONE);
             }
             final String otrFingerprint = this.mAccount.getOtrFingerprint();
-            if (otrFingerprint != null && mahiti.org.oelp.Config.supportOtr()) {
+            if (otrFingerprint != null && Config.supportOtr()) {
                 if ("otr".equals(messageFingerprint)) {
                     this.binding.otrFingerprintDesc.setTextColor(ContextCompat.getColor(this, R.color.accent));
                 }
@@ -1293,7 +1292,7 @@ binding.accountJidLayout.setError(null);
                 this.binding.otrFingerprintBox.setVisibility(View.GONE);
             }
             final String ownAxolotlFingerprint = this.mAccount.getAxolotlService().getOwnFingerprint();
-            if (ownAxolotlFingerprint != null && mahiti.org.oelp.Config.supportOmemo()) {
+            if (ownAxolotlFingerprint != null && Config.supportOmemo()) {
                 this.binding.axolotlFingerprintBox.setVisibility(View.VISIBLE);
                 if (ownAxolotlFingerprint.equals(messageFingerprint)) {
                     this.binding.ownFingerprintDesc.setTextAppearance(this, R.style.TextAppearance_Conversations_Caption_Highlight);
@@ -1333,37 +1332,34 @@ binding.accountJidLayout.setError(null);
             if (this.mAccount.errorStatus()) {
                 if (this.mAccount.getStatus() == Account.State.UNAUTHORIZED || this.mAccount.getStatus() == Account.State.DOWNGRADE_ATTACK) {
                     errorLayout = this.binding.accountPasswordLayout;
-                } else if (mShowOptions
-                        && this.mAccount.getStatus() == Account.State.SERVER_NOT_FOUND
-                        && this.binding.hostname.getText().length() > 0) {
+                } else if (mShowOptions && this.mAccount.getStatus() == Account.State.SERVER_NOT_FOUND && this.binding.hostname.getText().length() > 0) {
                     errorLayout = this.binding.hostnameLayout;
+                } else if ("Username already in use".equalsIgnoreCase(getString(this.mAccount.getStatus().getReadableId()))) {
+
+                    binding.accountRegisterNew.setChecked(false);
+                    boolean isdone = true;
+                    if (isdone) {
+                        Handler handlerTimer = new Handler();
+                        handlerTimer.postDelayed(new Runnable() {
+                            public void run() {
+                                // do something
+                                binding.saveButton.performClick();
+
+                            }
+                        }, 4000);
+                        isdone =false;
+                    }
+                    errorLayout = null;
+                    mAccount=null;
+
                 } else {
                     errorLayout = this.binding.accountJidLayout;
                 }
-                errorLayout.setError(getString(this.mAccount.getStatus().getReadableId()));
-                if (init || !accountInfoEdited()) {
-                    errorLayout.requestFocus();
-                }
-                final Handler handler1 = new Handler();
-                handler1.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        binding.cancelButton.performClick();
+//                errorLayout.setError(getString(this.mAccount.getStatus().getReadableId()));
+//                if (init || !accountInfoEdited()) {
+//                    errorLayout.requestFocus();
+//                }
 
-                    }
-                }, 2000);
-
-
-                binding.accountRegisterNew.setChecked(false);
-
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        binding.saveButton.performClick();
-                        progressDialog.dismiss();
-                    }
-                }, 2000);
             } else {
                 errorLayout = null;
             }
@@ -1371,6 +1367,12 @@ binding.accountJidLayout.setError(null);
             this.binding.stats.setVisibility(View.GONE);
             this.binding.otherDeviceKeysCard.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        progressDialog.dismiss();
     }
 
     private void updateDisplayName(String displayName) {

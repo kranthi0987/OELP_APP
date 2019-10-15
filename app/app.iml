@@ -116,7 +116,7 @@
     <orderEntry type="library" name="Gradle: com.google.guava:guava:27.1-android@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.loopj.android:android-async-http:1.4.9@jar" level="project" />
-    <orderEntry type="library" name="Gradle: cz.msebera.android:httpclient:4.3.6@jar" level="project" />
+    <orderEntry type="library" name="Gradle: cz.msebera.android:httpclient:4.4.1.2@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.bumptech.glide:disklrucache:4.8.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.bumptech.glide:annotations:4.8.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: org.bouncycastle:bcmail-jdk15on:1.58@jar" level="project" />

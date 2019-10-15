@@ -34,6 +34,7 @@ public class HomeViewModel extends AndroidViewModel {
     private static final String TAG = AndroidViewModel.class.getSimpleName();
     private final Context context;
     private final String userId;
+    private final SyncingUserData data;
     public boolean teacherLogin;
     public MutableLiveData<Boolean> unitsClick = new MutableLiveData<>();
     public MutableLiveData<Boolean> groupsClick = new MutableLiveData<>();
@@ -58,13 +59,14 @@ public class HomeViewModel extends AndroidViewModel {
         userId = sharedPref.readString(Constants.USER_ID, "");
         teacherLogin = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER;
         dataInserted.setValue(null);
+        data = new SyncingUserData(context);
 
         if (CheckNetwork.checkNet(context)){
             new FetchUpdateddata(context);
-            SyncingUserData data = new SyncingUserData(context);
-            data.uploadMedia();
-            data.shareMediaGlobally();
-            data.postQA();
+            updateSharedMedia();
+            updateDeleteMedia();
+            updateGlobalShareMedia();
+            postQA();
         }
 
 
@@ -82,6 +84,22 @@ public class HomeViewModel extends AndroidViewModel {
             groupsClick.setValue(false);
         }
 
+    }
+
+    public void updateSharedMedia(){
+        data.uploadMedia();
+    }
+
+    public void updateDeleteMedia(){
+        data.deleteMedia();
+    }
+
+    public void updateGlobalShareMedia(){
+        data.shareMediaGlobally();
+    }
+
+    public void postQA(){
+        data.postQA();
     }
 
     public void setDataInserted(Integer dataInserted) {

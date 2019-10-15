@@ -28,6 +28,9 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -36,6 +39,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.nio.channels.FileChannel;
+import java.sql.Struct;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,7 +53,6 @@ import androidx.loader.content.CursorLoader;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
-import mahiti.org.oelp.models.UserDetails;
 import mahiti.org.oelp.models.UserDetailsModel;
 import mahiti.org.oelp.ui.StartUI;
 import mahiti.org.oelp.views.activities.AboutUsActivity;
@@ -692,18 +695,39 @@ public class AppUtils {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
-    public static void chnageToString(MySharedPref sharedPref, UserDetailsModel userDetails) {
+    public static void chnageToString(MySharedPref sharedPref, List<String> userDetails) {
         String userData="";
         if (userDetails!=null){
             try {
                 Gson gson = new Gson();
                 userData = gson.toJson(userDetails);
-                sharedPref.writeString(Constants.KRANTHI, userData);
+                sharedPref.writeString(Constants.GROUP_UUID_LIST, userData);
             }catch (Exception ex){
                 Logger.logE(TAG, ex.getMessage(), ex);
             }
         }
 
+    }
+
+    public static String makeJsonArray(String usergroup1) {
+        String jsonArray = "";
+        JSONArray array= new JSONArray();
+        JSONObject obj;
+        String use1 = usergroup1.replace("[","");
+        String use = use1.replace("]","");
+        String[] userGroupArray = use.split(",");
+        try {
+            for (int i =0; i<userGroupArray.length;i++){
+                obj = new JSONObject();
+                obj.put("group_uuid", userGroupArray[i]);
+                array.put(obj);
+            }
+            jsonArray = array.toString();
+        }catch (Exception ex){
+            Logger.logE(TAG, "group uuid error: "+ex.getMessage(), ex);
+        }
+
+        return jsonArray;
     }
 
 //    public static UserDetails changeToModel(String userData){

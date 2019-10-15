@@ -109,7 +109,7 @@ public class TeacherDao extends DatabaseHandlerClass {
                     model.setLastLoggedIn(cursor.getString(cursor.getColumnIndex(DBConstants.LAST_LOGGEDIN)));
                     model.setMobileNumber(cursor.getString(cursor.getColumnIndex(DBConstants.MOBILE_NUMBER)));
                     model.setName(cursor.getString(cursor.getColumnIndex(DBConstants.TEACHER_NAME)));
-                    model.setMediaCount(new MediaContentDao(mContext).fetchSharedMedia(model.getUserUuid(),"", false, 0).size());
+                    model.setMediaCount(new MediaContentDao(mContext).fetchSharedMedia(model.getUserUuid(),groupUUID, false, 0).size());
                     teachersList.add(model);
                 } while (cursor.moveToNext());
                 cursor.close();

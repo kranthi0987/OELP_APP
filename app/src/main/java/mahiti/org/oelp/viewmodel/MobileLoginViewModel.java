@@ -1,11 +1,15 @@
 package mahiti.org.oelp.viewmodel;
 
 import android.app.Application;
+
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import android.content.Context;
+
 import androidx.annotation.NonNull;
+
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -50,25 +54,24 @@ public class MobileLoginViewModel extends AndroidViewModel {
     }
 
 
-
     public void onSubmitClick() {
         if (CheckNetwork.checkNet(context)) {
             validateAndProceed();
-        }else {
+        } else {
             Toast.makeText(context, context.getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
         }
 
     }
 
     private void validateAndProceed() {
-        if (phoneNo.getValue()!=null){
+        if (phoneNo.getValue() != null) {
             String validationStatus = AppUtils.checkMobileValidation(context, phoneNo.getValue());
-            if (validationStatus.equalsIgnoreCase(Constants.STATUS_TRUE)){
+            if (validationStatus.equalsIgnoreCase(Constants.STATUS_TRUE)) {
                 showProgresBar.setValue(true);
                 getMobileVerified(phoneNo.getValue());
-            }else
+            } else
                 status.setValue(validationStatus);
-        }else {
+        } else {
             status.setValue(context.getResources().getString(R.string.please_enter_mobile_number));
         }
     }
@@ -82,36 +85,33 @@ public class MobileLoginViewModel extends AndroidViewModel {
     }
 
 
-
-
-
     private void getMobileVerified(String mobileNo) {
 
         MutableLiveData<MobileVerificationResponseModel> model = new MutableLiveData<MobileVerificationResponseModel>();
 
         ApiInterface apiInterface = RetrofitClass.getAPIService();
-        Logger.logD(TAG, "URL: "+RetrofitConstant.BASE_URL+RetrofitConstant.MOBILE_VALIDATION_URL +" Param :"+"mobile_number:"+mobileNo);
+        Logger.logD(TAG, "URL: " + RetrofitConstant.BASE_URL + RetrofitConstant.MOBILE_VALIDATION_URL + " Param :" + "mobile_number:" + mobileNo);
         apiInterface.mobileValidation(mobileNo).enqueue(new Callback<MobileVerificationResponseModel>() {
-            public String groupId="";
+            public String groupId = "";
 
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
-                Logger.logD(TAG, "URL "+ RetrofitConstant.BASE_URL+RetrofitConstant.MOBILE_VALIDATION_URL +" Response :"+response.body());
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.MOBILE_VALIDATION_URL + " Response :" + response.body());
 
                 if (response.body() != null) {
                     MobileVerificationResponseModel model = response.body();
                     model.setmAction(new Action(Action.STATUS_TRUE));
                     sharedPref.writeString(Constants.MOBILE_NO_New, mobileNo);
-                    AppUtils.chnageToString(sharedPref, model.getUserDetails());
-                    if (!model.getUserDetails().getUserid().equals(Constants.USER_INVALID)){
+
+                    if (!model.getUserDetails().getUserid().equals(Constants.USER_INVALID)) {
+
                         saveUserDataToPref(model.getUserDetails());
                         if (!model.getUserDetails().getUserGroup().isEmpty())
-                            groupId = model.getUserDetails().getUserGroup().get(model.getUserDetails().getUserGroup().size()-1);
-                        saveUserIDAndUserType(model.getUserDetails().getUserid(), model.getUserDetails().getIsTrainer(), groupId);
+                            saveUserIDAndUserType(model.getUserDetails().getUserid(), model.getUserDetails().getIsTrainer(), model.getUserDetails().getUserGroup().toString());
                     }
                     data.setValue(model);
                     showProgresBar.setValue(false);
-                } else{
+                } else {
                     MobileVerificationResponseModel model = new MobileVerificationResponseModel(2,
                             context.getResources().getString(R.string.SOMETHING_WRONG));
                     model.setmAction(new Action(Action.STATUS_FALSE));
@@ -122,7 +122,7 @@ public class MobileLoginViewModel extends AndroidViewModel {
 
             @Override
             public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
-                Logger.logD(TAG, "URL "+ RetrofitConstant.BASE_URL+RetrofitConstant.MOBILE_VALIDATION_URL +" Response :"+t.getMessage());
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.MOBILE_VALIDATION_URL + " Response :" + t.getMessage());
 
                 MobileVerificationResponseModel model = new MobileVerificationResponseModel(2, t.getMessage());
                 model.setmAction(new Action(Action.STATUS_FALSE));
@@ -134,23 +134,23 @@ public class MobileLoginViewModel extends AndroidViewModel {
 
     }
 
-    private void saveUserIDAndUserType(String userid, Integer isTrainer, String groupUUID) {
-       sharedPref.writeString(Constants.USER_ID, userid);
-       sharedPref.writeInt(Constants.USER_TYPE, isTrainer);
-       sharedPref.writeString(Constants.GROUP_UUID, groupUUID);
+    private void saveUserIDAndUserType(String userid, Integer isTrainer, String groupUUIDList) {
+        sharedPref.writeString(Constants.USER_ID, userid);
+        sharedPref.writeInt(Constants.USER_TYPE, isTrainer);
+        sharedPref.writeString(Constants.GROUP_UUID_LIST, groupUUIDList);
     }
 
     private void saveUserDataToPref(UserDetailsModel userDetails) {
-        if (userDetails!=null){
-            try{
+        if (userDetails != null) {
+            try {
                 JSONObject obj = new JSONObject();
                 obj.put("name", userDetails.getName());
                 obj.put("school", userDetails.getSchool());
                 obj.put("mobile_number", userDetails.getMobile_number());
                 obj.put("blockIds", userDetails.getBlockIds());
-                sharedPref.writeString(Constants.USER_DETAILS,obj.toString());
-                sharedPref.writeString(Constants.USER_NAME,userDetails.getName());
-            }catch (Exception ex){
+                sharedPref.writeString(Constants.USER_DETAILS, obj.toString());
+                sharedPref.writeString(Constants.USER_NAME, userDetails.getName());
+            } catch (Exception ex) {
                 Logger.logE(TAG, ex.getMessage(), ex);
             }
         }

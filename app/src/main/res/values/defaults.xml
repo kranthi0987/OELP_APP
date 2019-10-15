@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="welcome_header" translatable="false">Pix-Art Messenger</string>
+    <string name="welcome_header" translatable="false">Oelp</string>
     <string name="type_pc" translatable="false">Computer</string>
     <string name="type_phone" translatable="false">Mobile phone</string>
     <string name="type_tablet" translatable="false">Tablet</string>
     <string name="type_web" translatable="false">Web browser</string>
     <string name="type_console" translatable="false">Console</string>
-    <string name="pref_about_message" translatable="false"><b>Pix-Art Messenger</b>
+    <string name="pref_about_message" translatable="false"><b>Oelp</b>
 			\n\nCopyright © 2014-2019 Christian Schneppe
 			\n\nhttp://jabber.pix-art.de
 			\n\nThis program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 			along with this program. If not, see https://www.gnu.org/licenses
 			\n\nDownload the full original source code at https://github.com/siacs/Conversations (Copyright © 2014-2019 Daniel Gultsch)
 			\n\nDownload the modified source code at https://github.com/kriztan/Pix-Art-Messenger
-            \n\nPix-Art Messenger recommends blabber.im as provider. More information can be found at https://blabber.im
+            \n\nOelp recommends blabber.im as provider. More information can be found at https://blabber.im
             \n\nYou can support me by making a donation in form of a gift in sense of § 516 ff BGB i.e. a gratuitous donation.
 	</string>
     <string name="pref_about_libraries" translatable="false"><b>Libraries</b>

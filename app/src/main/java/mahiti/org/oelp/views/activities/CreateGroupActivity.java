@@ -488,14 +488,14 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
         } catch (Exception ex) {
             Logger.logE(TAG, ex.getMessage(), ex);
         }
-        JSONObject object = new JSONObject();
 
+        /*JSONObject object = new JSONObject();
         try {
             object.put("creation_key", userUUID);
             array.put(object);
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
 
         if (valide) {
             callApiForCreateGroup(userUUID, groupName, groupCreationKey, array.toString());

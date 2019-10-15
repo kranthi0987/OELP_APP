@@ -69,10 +69,10 @@ public class UserAdapter extends ListAdapter<MucOptions.User, UserAdapter.ViewHo
         final MucOptions.User user = getItem(position);
         AvatarWorkerTask.loadAvatar(user, viewHolder.binding.contactPhoto, R.dimen.avatar);
         viewHolder.binding.getRoot().setOnClickListener(v -> {
-            final XmppActivity activity = XmppActivity.find(v);
-            if (activity != null) {
-                activity.highlightInMuc(user.getConversation(), user.getName());
-            }
+//            final XmppActivity activity = XmppActivity.find(v);
+//            if (activity != null) {
+//                activity.highlightInMuc(user.getConversation(), user.getName());
+//            }
         });
         viewHolder.binding.getRoot().setTag(user);
         viewHolder.binding.getRoot().setOnCreateContextMenuListener(this);
@@ -97,19 +97,19 @@ public class UserAdapter extends ListAdapter<MucOptions.User, UserAdapter.ViewHo
         if (advancedMode && user.getPgpKeyId() != 0) {
             viewHolder.binding.key.setVisibility(View.VISIBLE);
             viewHolder.binding.key.setOnClickListener(v -> {
-                final XmppActivity activity = XmppActivity.find(v);
-                final XmppConnectionService service = activity == null ? null : activity.xmppConnectionService;
-                final PgpEngine pgpEngine = service == null ? null : service.getPgpEngine();
-                if (pgpEngine != null) {
-                    PendingIntent intent = pgpEngine.getIntentForKey(user.getPgpKeyId());
-                    if (intent != null) {
-                        try {
-                            activity.startIntentSenderForResult(intent.getIntentSender(), 0, null, 0, 0, 0);
-                        } catch (IntentSender.SendIntentException ignored) {
-
-                        }
-                    }
-                }
+//                final XmppActivity activity = XmppActivity.find(v);
+//                final XmppConnectionService service = activity == null ? null : activity.xmppConnectionService;
+//                final PgpEngine pgpEngine = service == null ? null : service.getPgpEngine();
+//                if (pgpEngine != null) {
+//                    PendingIntent intent = pgpEngine.getIntentForKey(user.getPgpKeyId());
+//                    if (intent != null) {
+//                        try {
+//                            activity.startIntentSenderForResult(intent.getIntentSender(), 0, null, 0, 0, 0);
+//                        } catch (IntentSender.SendIntentException ignored) {
+//
+//                        }
+//                    }
+//                }
             });
             viewHolder.binding.key.setText(OpenPgpUtils.convertKeyIdToHex(user.getPgpKeyId()));
         }

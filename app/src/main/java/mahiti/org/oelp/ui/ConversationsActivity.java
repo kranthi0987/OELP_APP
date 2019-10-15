@@ -131,7 +131,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     private AtomicBoolean mRedirectInProcess = new AtomicBoolean(false);
 
     private static boolean isViewOrShareIntent(Intent i) {
-        Log.d(mahiti.org.oelp.Config.LOGTAG, "action: " + (i == null ? null : i.getAction()));
+        Log.d(Config.LOGTAG, "action: " + (i == null ? null : i.getAction()));
         return i != null && VIEW_AND_SHARE_ACTIONS.contains(i.getAction()) && i.hasExtra(EXTRA_CONVERSATION);
     }
 
@@ -155,7 +155,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         if (performRedirectIfNecessary(true)) {
             return;
         }
-        Log.d(mahiti.org.oelp.Config.LOGTAG, "ConversationsActivity onBackendConnected(): setIsInForeground = true");
+        Log.d(Config.LOGTAG, "ConversationsActivity onBackendConnected(): setIsInForeground = true");
         xmppConnectionService.getNotificationService().setIsInForeground(true);
 
         final Intent FirstStartIntent = getIntent();
@@ -163,11 +163,11 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (extras != null && extras.containsKey(PREF_FIRST_START)) {
                 FirstStartTime = extras.getLong(PREF_FIRST_START);
-                Log.d(mahiti.org.oelp.Config.LOGTAG, "Get first start time from StartUI: " + FirstStartTime);
+                Log.d(Config.LOGTAG, "Get first start time from StartUI: " + FirstStartTime);
             }
         } else {
             FirstStartTime = System.currentTimeMillis();
-            Log.d(mahiti.org.oelp.Config.LOGTAG, "Device is running Android < SDK 23, no restart required: " + FirstStartTime);
+            Log.d(Config.LOGTAG, "Device is running Android < SDK 23, no restart required: " + FirstStartTime);
         }
 
         Intent intent = pendingViewIntent.pop();
@@ -181,7 +181,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         }
 
         if (FirstStartTime == 0) {
-            Log.d(mahiti.org.oelp.Config.LOGTAG, "First start time: " + FirstStartTime + ", restarting App");
+            Log.d(Config.LOGTAG, "First start time: " + FirstStartTime + ", restarting App");
             //write first start timestamp to file
             FirstStartTime = System.currentTimeMillis();
             SharedPreferences FirstStart = getApplicationContext().getSharedPreferences(PREF_FIRST_START, Context.MODE_PRIVATE);
@@ -277,27 +277,27 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     private void openBatteryOptimizationDialogIfNeeded() {
         if (hasAccountWithoutPush()
                 && isOptimizingBattery()
-                && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                 && getPreferences().getBoolean(getBatteryOptimizationPreferenceKey(), true)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.battery_optimizations_enabled);
-            builder.setMessage(R.string.battery_optimizations_enabled_dialog);
-            builder.setPositiveButton(R.string.next, (dialog, which) -> {
-                Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                Uri uri = Uri.parse("package:" + getPackageName());
-                intent.setData(uri);
-                try {
-                    startActivityForResult(intent, REQUEST_BATTERY_OP);
-                } catch (ActivityNotFoundException e) {
-                    Toast.makeText(this, R.string.device_does_not_support_battery_op, Toast.LENGTH_SHORT).show();
-                }
-            });
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                builder.setOnDismissListener(dialog -> setNeverAskForBatteryOptimizationsAgain());
-            }
-            final AlertDialog dialog = builder.create();
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
+//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//            builder.setTitle(R.string.battery_optimizations_enabled);
+//            builder.setMessage(R.string.battery_optimizations_enabled_dialog);
+//            builder.setPositiveButton(R.string.next, (dialog, which) -> {
+//                Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+//                Uri uri = Uri.parse("package:" + getPackageName());
+//                intent.setData(uri);
+//                try {
+//                    startActivityForResult(intent, REQUEST_BATTERY_OP);
+//                } catch (ActivityNotFoundException e) {
+//                    Toast.makeText(this, R.string.device_does_not_support_battery_op, Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+//                builder.setOnDismissListener(dialog -> setNeverAskForBatteryOptimizationsAgain());
+//            }
+//            final AlertDialog dialog = builder.create();
+//            dialog.setCanceledOnTouchOutside(false);
+//            dialog.show();
         }
     }
 
@@ -326,11 +326,11 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     private boolean processViewIntent(Intent intent) {
-        Log.d(mahiti.org.oelp.Config.LOGTAG, "process view intent");
+        Log.d(Config.LOGTAG, "process view intent");
         String uuid = intent.getStringExtra(EXTRA_CONVERSATION);
         Conversation conversation = uuid != null ? xmppConnectionService.findConversationByUuid(uuid) : null;
         if (conversation == null) {
-            Log.d(mahiti.org.oelp.Config.LOGTAG, "unable to view conversation with uuid:" + uuid);
+            Log.d(Config.LOGTAG, "unable to view conversation with uuid:" + uuid);
             return false;
         }
         openConversation(conversation, intent.getExtras());
@@ -390,10 +390,10 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     private void handlePositiveActivityResult(int requestCode, final Intent data) {
-        Log.d(mahiti.org.oelp.Config.LOGTAG, "positive activity result");
+        Log.d(Config.LOGTAG, "positive activity result");
         Conversation conversation = ConversationFragment.getConversationReliable(this);
         if (conversation == null) {
-            Log.d(mahiti.org.oelp.Config.LOGTAG, "conversation not found");
+            Log.d(Config.LOGTAG, "conversation not found");
             return;
         }
         switch (requestCode) {
@@ -473,7 +473,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     public void onConversationSelected(Conversation conversation) {
         clearPendingViewIntent();
         if (ConversationFragment.getConversation(this) == conversation) {
-            Log.d(mahiti.org.oelp.Config.LOGTAG, "ignore onConversationSelected() because conversation is already open");
+            Log.d(Config.LOGTAG, "ignore onConversationSelected() because conversation is already open");
             return;
         }
         openConversation(conversation, null);
@@ -481,7 +481,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
     public void clearPendingViewIntent() {
         if (pendingViewIntent.clear()) {
-            Log.e(mahiti.org.oelp.Config.LOGTAG, "cleared pending view intent");
+            Log.e(Config.LOGTAG, "cleared pending view intent");
         }
     }
 
@@ -518,7 +518,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                 try {
                     fragmentTransaction.commit();
                 } catch (IllegalStateException e) {
-                    Log.w(mahiti.org.oelp.Config.LOGTAG, "sate loss while opening conversation", e);
+                    Log.w(Config.LOGTAG, "sate loss while opening conversation", e);
                     //allowing state loss is probably fine since view intents et all are already stored and a click can probably be 'ignored'
                     return;
                 }
@@ -614,7 +614,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         } else if (intent != null && ACTION_DESTROY_MUC.equals(intent.getAction())) {
             final Bundle extras = intent.getExtras();
             if (extras != null && extras.containsKey("MUC_UUID")) {
-                Log.d(mahiti.org.oelp.Config.LOGTAG, "Get " + intent.getAction() + " intent for " + extras.getString("MUC_UUID"));
+                Log.d(Config.LOGTAG, "Get " + intent.getAction() + " intent for " + extras.getString("MUC_UUID"));
                 Conversation conversation = xmppConnectionService.findConversationByUuid(extras.getString("MUC_UUID"));
                 ConversationsActivity.this.xmppConnectionService.clearConversationHistory(conversation);
                 xmppConnectionService.destroyRoom(conversation, ConversationsActivity.this);
@@ -647,10 +647,10 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         Fragment mainFragment = getFragmentManager().findFragmentById(R.id.main_fragment);
         Fragment secondaryFragment = getFragmentManager().findFragmentById(R.id.secondary_fragment);
         if (mainFragment != null) {
-            Log.d(mahiti.org.oelp.Config.LOGTAG, "initializeFragment(). main fragment exists");
+            Log.d(Config.LOGTAG, "initializeFragment(). main fragment exists");
             if (binding.secondaryFragment != null) {
                 if (mainFragment instanceof ConversationFragment) {
-                    Log.d(mahiti.org.oelp.Config.LOGTAG, "gained secondary fragment. moving...");
+                    Log.d(Config.LOGTAG, "gained secondary fragment. moving...");
                     getFragmentManager().popBackStack();
                     transaction.remove(mainFragment);
                     transaction.commit();
@@ -663,7 +663,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
                 }
             } else {
                 if (secondaryFragment instanceof ConversationFragment) {
-                    Log.d(mahiti.org.oelp.Config.LOGTAG, "lost secondary fragment. moving...");
+                    Log.d(Config.LOGTAG, "lost secondary fragment. moving...");
                     transaction.remove(secondaryFragment);
                     transaction.commit();
                     getFragmentManager().executePendingTransactions();
@@ -856,7 +856,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
             try {
                 getFragmentManager().popBackStack();
             } catch (IllegalStateException e) {
-                Log.w(mahiti.org.oelp.Config.LOGTAG, "state loss while popping back state after archiving conversation", e);
+                Log.w(Config.LOGTAG, "state loss while popping back state after archiving conversation", e);
                 //this usually means activity is no longer active; meaning on the next open we will run through this again
             }
             return;
@@ -882,7 +882,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
 
     @Override
     public void switchToConversation(Conversation conversation) {
-        Log.d(mahiti.org.oelp.Config.LOGTAG, "override");
+        Log.d(Config.LOGTAG, "override");
         openConversation(conversation, null);
     }
 
@@ -891,7 +891,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         if (!mActivityPaused && pendingViewIntent.peek() == null) {
             xmppConnectionService.sendReadMarker(conversation, upToUuid);
         } else {
-            Log.d(mahiti.org.oelp.Config.LOGTAG, "ignoring read callback. mActivityPaused=" + Boolean.toString(mActivityPaused));
+            Log.d(Config.LOGTAG, "ignoring read callback. mActivityPaused=" + Boolean.toString(mActivityPaused));
         }
     }
 
@@ -914,7 +914,7 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
     }
 
     @Override
-    public void OnUpdateBlocklist(OnUpdateBlocklist.Status status) {
+    public void OnUpdateBlocklist(Status status) {
         this.refreshUi();
     }
 
@@ -927,15 +927,15 @@ public class ConversationsActivity extends XmppActivity implements OnConversatio
         String PREFS_NAME = "UpdateTimeStamp";
         SharedPreferences UpdateTimeStamp = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         long lastUpdateTime = UpdateTimeStamp.getLong("lastUpdateTime", 0);
-        Log.d(mahiti.org.oelp.Config.LOGTAG, "AppUpdater: LastUpdateTime: " + lastUpdateTime);
-        if ((lastUpdateTime + (mahiti.org.oelp.Config.UPDATE_CHECK_TIMER * 1000)) < System.currentTimeMillis()) {
+        Log.d(Config.LOGTAG, "AppUpdater: LastUpdateTime: " + lastUpdateTime);
+        if ((lastUpdateTime + (Config.UPDATE_CHECK_TIMER * 1000)) < System.currentTimeMillis()) {
             lastUpdateTime = System.currentTimeMillis();
             SharedPreferences.Editor editor = UpdateTimeStamp.edit();
             editor.putLong("lastUpdateTime", lastUpdateTime);
             editor.apply();
-            Log.d(mahiti.org.oelp.Config.LOGTAG, "AppUpdater: CurrentTime: " + lastUpdateTime);
+            Log.d(Config.LOGTAG, "AppUpdater: CurrentTime: " + lastUpdateTime);
             if (Store == null) {
-                Log.d(mahiti.org.oelp.Config.LOGTAG, "AppUpdater started");
+                Log.d(Config.LOGTAG, "AppUpdater started");
                 openInstallFromUnknownSourcesDialogIfNeeded(false);
             }
         } else {

@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -26,6 +27,7 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -541,7 +543,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             ft.remove(prev);
         }
         ft.addToBackStack(null);
-         JoinConferenceDialog joinConferenceFragment = JoinConferenceDialog.newInstance("oelp-teachers@conference.206.189.136.186", mActivatedAccounts, false);
+        JoinConferenceDialog joinConferenceFragment = JoinConferenceDialog.newInstance("oelp-teachers@conference.206.189.136.186", mActivatedAccounts, false);
         joinConferenceFragment.show(ft, FRAGMENT_TAG_DIALOG);
 
     }
@@ -637,6 +639,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         }
         MenuItem qrCodeScanMenuItem = menu.findItem(R.id.action_scan_qr_code);
         qrCodeScanMenuItem.setVisible(isCameraFeatureAvailable());
+        qrCodeScanMenuItem.setVisible(false);
         menuHideOffline.setChecked(this.mHideOfflineContacts);
         mMenuSearchView = menu.findItem(R.id.action_search);
         mMenuSearchView.setOnActionExpandListener(mOnActionExpandListener);
@@ -955,6 +958,7 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 //        navigateBack();
 //        Intent i=new Intent(this,ConversationsActivity.class);
 //        startActivity(i);
+        finish();
     }
 
     private void navigateBack() {
@@ -1218,9 +1222,9 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
             if (fragments[position] == null) {
                 final MyListFragment listFragment = new MyListFragment();
 //                if (position == 1) {
-                    listFragment.setListAdapter(mConferenceAdapter);
-                    listFragment.setContextMenu(R.menu.conference_context);
-                    listFragment.setOnListItemClickListener((arg0, arg1, p, arg3) -> openConversationForBookmark(p));
+                listFragment.setListAdapter(mConferenceAdapter);
+                listFragment.setContextMenu(R.menu.conference_context);
+                listFragment.setOnListItemClickListener((arg0, arg1, p, arg3) -> openConversationForBookmark(p));
 //                } else {
 //
 //                    listFragment.setListAdapter(mContactsAdapter);

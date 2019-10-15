@@ -13,7 +13,9 @@ import java.util.List;
 import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.models.GroupModel;
+import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
+import mahiti.org.oelp.utils.MySharedPref;
 
 import static mahiti.org.oelp.database.DBConstants.GROUP_TABLE;
 
@@ -23,14 +25,17 @@ import static mahiti.org.oelp.database.DBConstants.GROUP_TABLE;
 public class GroupDao extends DatabaseHandlerClass {
 
     private static final String TAG = GroupDao.class.getSimpleName();
+    private final Context mContext;
 
     public GroupDao(Context context) {
         super(context);
+        mContext = context;
     }
 
     public long insertDataToGroupsTable(List<GroupModel> groups) {
         long insertData = 0;
         initDatabase();
+        List<String> groupUUIDList = new ArrayList<>();
         database.beginTransaction();
         try {
             ContentValues values = new ContentValues();
@@ -38,8 +43,8 @@ public class GroupDao extends DatabaseHandlerClass {
                 values.put(DBConstants.UUID, groupModel.getUserUUID());
                 values.put(DBConstants.GROUP_NAME, groupModel.getGroupName());
                 values.put(DBConstants.GROUP_UUID, groupModel.getGroupUUID());
+                groupUUIDList.add(groupModel.getGroupUUID());
                 values.put(DBConstants.MEMBERS_COUNT, groupModel.getMembers().size());
-//                insertDataToMembersTable(groupModel.getMembers(), groupModel.getGroupUUID());
                 Log.d(TAG, GROUP_TABLE + values.toString());
                 insertData = database.insertWithOnConflict(GROUP_TABLE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
                 Log.d(TAG, "Group values inserting into  " + GROUP_TABLE + values.toString());
@@ -49,8 +54,9 @@ public class GroupDao extends DatabaseHandlerClass {
             Logger.logE(TAG, ex.getMessage(), ex);
         } finally {
             database.endTransaction();
+            new MySharedPref(mContext).writeString(Constants.GROUP_UUID_LIST, groupUUIDList.toString());
+            return insertData;
         }
-        return insertData;
     }
 
     public List<GroupModel> getGroupList() {

@@ -95,6 +95,8 @@ public class OTPVerificationViewModel extends AndroidViewModel {
             if (validateOTP(completeOtp.getValue())) {
                 showProgresBar.setValue(true);
                 getOTPVerified(prepareUserDetail(), completeOtp.getValue());
+            }else {
+                Toast.makeText(context, "OTP validation failed", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(context, context.getString(R.string.check_internet), Toast.LENGTH_SHORT).show();

@@ -101,14 +101,16 @@ public class MembersFragment extends Fragment {
     private void insertDataIntoTeacherTable(List<TeacherModel> teachers) {
         if (!teachers.isEmpty()) {
             teacherDao.insertTeacherDataToDB(teachers);
-            teacherList = teacherDao.getTeachers(groupUUID, 1);
+//            teacherList = teacherDao.getTeachers(groupUUID, 1);
             fetchTeacherList();
         }
     }
 
+
     private void fetchTeacherList() {
         teacherList = teacherDao.getTeachers(groupUUID, 1);
         setDataToAdapter(teacherList);
+//        setDataToAdapter(teacherList);
         progressBar.setVisibility(View.GONE);
     }
 
@@ -159,6 +161,8 @@ public class MembersFragment extends Fragment {
         if (sharedPref.readBoolean(Constants.IS_UPDATED, false)) {
             fetchTeacherList();
         }
+        if (sharedPref.readBoolean(Constants.MEDIACONTENTCHANGE, false))
+            fetchTeacherList();
 
     }
 

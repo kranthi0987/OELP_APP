@@ -4,7 +4,6 @@ import android.content.Context;
 
 import org.json.JSONObject;
 
-import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.DAOs.CatalogDao;
 import mahiti.org.oelp.database.DAOs.ChoicesDao;
 import mahiti.org.oelp.database.DAOs.GroupDao;
@@ -17,6 +16,7 @@ import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.models.LocationModel;
 import mahiti.org.oelp.models.MobileVerificationResponseModel;
+import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
 import mahiti.org.oelp.utils.MySharedPref;
@@ -40,11 +40,15 @@ public class FetchUpdateddata {
     private LocationDao locationDao;
     private DatabaseHandlerClass databaseHandlerClass;
     private Context mContext;
+    private MySharedPref sharedPref;
 
     public FetchUpdateddata(Context mContext) {
         this.mContext = mContext;
-        String userUUID = new MySharedPref(mContext).readString(Constants.USER_ID, "");
-        int userType = new MySharedPref(mContext).readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
+
+
+        sharedPref = new MySharedPref(mContext);
+        int userType = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
+        String userUUID = sharedPref.readString(Constants.USER_ID, "");
 
         catalogDao = new CatalogDao(mContext);
         groupDao = new GroupDao(mContext);
@@ -56,22 +60,19 @@ public class FetchUpdateddata {
         locationDao = new LocationDao(mContext);
         databaseHandlerClass = new DatabaseHandlerClass(mContext);
 
-//        callCatalogApi(userUUID);
         callGroupApi(userUUID);
+        callMediaSharedApi(userUUID, sharedPref.readString(Constants.GROUP_UUID_LIST,""));
         callTeacherApi(userUUID);
-//        callQuestionApi(userUUID);
-//        callChoicesApi(userUUID);
-        String groupUUIDString = getGroupUUID();
-        callMediaSharedApi(userUUID, groupUUIDString);
         callApiForLocation();
         if (userType == Constants.USER_TEACHER)
             callSubmittedAnswerApi(userUUID);
+
+
     }
 
     private String getGroupUUID() {
         String userGroup = "";
-        MySharedPref sharedPref = new MySharedPref(mContext);
-        String userData = sharedPref.readString(Constants.KRANTHI, "");
+        String userData = sharedPref.readString(Constants.GROUP_UUID_LIST, "");
         if (!userData.isEmpty()) {
             try {
                 JSONObject obj = new JSONObject(userData);
@@ -125,7 +126,14 @@ public class FetchUpdateddata {
         });
     }
 
-    private void callMediaSharedApi(String userId, String usergroup) {
+    private void callMediaSharedApi(String userId, String usergroup1) {
+        if (usergroup1.isEmpty() || usergroup1.equalsIgnoreCase("[]"))
+            return;
+
+        String usergroup = AppUtils.makeJsonArray(usergroup1);
+        if (usergroup.isEmpty())
+            return;
+
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.FETCH_MEDIA_SHARED + " Param : user_uuid:" + userId+" group_uuid "+usergroup);
         apiInterface.getMediaShared(userId, usergroup).enqueue(new Callback<MobileVerificationResponseModel>() {
@@ -218,11 +226,15 @@ public class FetchUpdateddata {
                 if (model != null) {
                     groupDao.insertDataToGroupsTable(model.getGroups());
                 }
+
+
             }
 
             @Override
             public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Response :" + t.getMessage());
+                String groupUUIDString = getGroupUUID();
+                callMediaSharedApi(userId, groupUUIDString);
             }
         });
     }

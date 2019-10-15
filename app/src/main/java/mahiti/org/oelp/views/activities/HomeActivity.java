@@ -192,6 +192,19 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
                 sharedPref.writeBoolean(Constants.IS_UPDATED, false);
             }
         }
+
+        if (CheckNetwork.checkNet(this)){
+            if (sharedPref.readBoolean(Constants.DELETEDATACHANGE, false)) {
+                homeViewModel.updateDeleteMedia();
+            }
+            if (sharedPref.readBoolean(Constants.GLOBALSHARECHANGE, false)) {
+                homeViewModel.updateGlobalShareMedia();
+            }
+            if (sharedPref.readBoolean(Constants.MEDIACONTENTCHANGE, false)) {
+                homeViewModel.updateSharedMedia();
+            }
+        }
+
     }
 
     private void setImageAndTextColor(String type) {

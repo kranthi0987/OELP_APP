@@ -293,6 +293,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     private void deleteData(SharedMediaModel model, int position) {
         MediaContentDao mediaContentDao = new MediaContentDao(this);
         long deletelong = mediaContentDao.deleteMediaUUID(model.getMediaUuid());
+        sharedPref.writeBoolean(Constants.DELETEDATACHANGE, true);
         if (deletelong != -1)
             if (getFragmentRefreshListener() != null)
                 getFragmentRefreshListener().onRefresh(position, true);
@@ -319,6 +320,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     public void shareDataGlobally(SharedMediaModel model, int position) {
         MediaContentDao mediaContentDao = new MediaContentDao(this);
         long sharelong = mediaContentDao.updateGloballyShareMediaUUID(model.getMediaUuid());
+        sharedPref.writeBoolean(Constants.GLOBALSHARECHANGE, true);
         if (sharelong != -1)
             if (getFragmentRefreshListener() != null)
                 getFragmentRefreshListener().onRefresh(position, false);
@@ -363,6 +365,8 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
                 String userUUID = new MySharedPref(this).readString(Constants.USER_ID, "");
                 DownloadUtility.playVideo(this, savedPath, name, userUUID, uuid, "", dcfId, unitUUID);
             }
+        }else {
+            setupViewPager(viewPager);
         }
 
     }

@@ -5,13 +5,11 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +27,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.iceteck.silicompressorr.RealPathUtils;
 import com.iceteck.silicompressorr.SiliCompressor;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -53,16 +50,19 @@ import mahiti.org.oelp.database.DAOs.MediaContentDao;
 import mahiti.org.oelp.interfaces.ListRefresh;
 import mahiti.org.oelp.models.MobileVerificationResponseModel;
 import mahiti.org.oelp.models.SharedMediaModel;
+import mahiti.org.oelp.services.ApiInterface;
+import mahiti.org.oelp.services.RetrofitClass;
 import mahiti.org.oelp.services.RetrofitConstant;
-import mahiti.org.oelp.services.SyncingUserData;
 import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.CheckNetwork;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
 import mahiti.org.oelp.utils.MySharedPref;
 import mahiti.org.oelp.views.activities.ChatAndContributionActivity;
-import mahiti.org.oelp.views.activities.MainActivity;
 import mahiti.org.oelp.views.adapters.MyContAdapter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ContributionsFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
 
@@ -83,9 +83,8 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
     private boolean alertDialogWasOpen = false;
     private int fileType;
     private RelativeLayout llSwitch;
-    private String userUUId;
+    private String userUUID;
     private String date;
-    private String userUUid;
     private File fileDestination = null;
     private GridLayoutManager manager;
 
@@ -126,7 +125,7 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
     private void initViews(View view) {
 
         sharedPref = new MySharedPref(getActivity());
-        userUUId = sharedPref.readString(Constants.USER_ID, "");
+        userUUID = sharedPref.readString(Constants.USER_ID, "");
 
         fab = view.findViewById(R.id.fab);
 
@@ -145,14 +144,12 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
 
 
         manager = new GridLayoutManager(getActivity(), 2);
-
-        adapter = new MyContAdapter(getActivity());
-        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(manager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setFocusable(false);
+        adapter = new MyContAdapter(getActivity());
+        recyclerView.setAdapter(adapter);
 
-//        setViewForSwitch(false);
 
         fab.setOnClickListener(view1 -> {
             showDocumentsView();
@@ -183,8 +180,39 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
     }
 
     private void checkInternetAndCAllApi() {
+//        if (CheckNetwork.checkNet(getActivity())) {
+//            callMediaSharedApi(userUUID, sharedPref.readString(Constants.GROUP_UUID_LIST,""));
+//        } else {
+            fetchDataFromDb(switchContribution.isChecked());
+//        }
+    }
 
-        fetchDataFromDb(switchContribution.isChecked());
+    private void callMediaSharedApi(String userId, String usergroup1) {
+
+        if (usergroup1.isEmpty() || usergroup1.equalsIgnoreCase("[]"))
+            return;
+
+        String usergroup = AppUtils.makeJsonArray(usergroup1);
+        if (usergroup.isEmpty())
+            return;
+
+        ApiInterface apiInterface = RetrofitClass.getAPIService();
+        Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.FETCH_MEDIA_SHARED + " Param : user_uuid:" + userId+" group_uuid "+usergroup);
+        apiInterface.getMediaShared(userId, usergroup).enqueue(new Callback<MobileVerificationResponseModel>() {
+            @Override
+            public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
+                if (response.body() != null) {
+                    new MediaContentDao(getActivity()).insertSharedData(response.body().getData());
+                    fetchDataFromDb(switchContribution.isChecked());
+                }
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.FETCH_MEDIA_SHARED + " Response :" + response.body());
+            }
+
+            @Override
+            public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
+                Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.FETCH_MEDIA_SHARED + " Response :" + t.getMessage());
+            }
+        });
     }
 
 
@@ -192,7 +220,7 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
         sharedMediaList = new ArrayList<>();
         MediaContentDao mediaContentDao = new MediaContentDao(getActivity());
         setViewForSwitch(checked);
-        sharedMediaList = mediaContentDao.fetchSharedMedia(userUUId, groupUUID, checked, 0);
+        sharedMediaList = mediaContentDao.fetchSharedMedia(userUUID, groupUUID, checked, 0);
         setAdapters(sharedMediaList);
     }
 
@@ -318,7 +346,7 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
         String mediaCreationUUID = AppUtils.getUUID();
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams paramMap = new RequestParams();
-        paramMap.put("user_uuid", userUUid);
+        paramMap.put("user_uuid", userUUID);
         paramMap.put("media_uuid", mediaCreationUUID);
         paramMap.put("group_uuid", groupUUID);
         paramMap.put("media_type", String.valueOf(fileType));
@@ -508,7 +536,6 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
 
     private void createDataToUpload(String fileNAme, File file) {
 
-        userUUid = sharedPref.readString(Constants.USER_ID, "");
         date = AppUtils.getDateTime();
         String mediaCreationUUID = AppUtils.getUUID();
 
@@ -517,7 +544,7 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
         List<SharedMediaModel> dataList = new ArrayList<>();
         SharedMediaModel data = new SharedMediaModel();
         data.setMediaUuid(mediaCreationUUID);
-        data.setUserUuid(userUUid);
+        data.setUserUuid(userUUID);
         data.setGroupUuid(groupUUID);
         data.setMediaType(String.valueOf(fileType));
 
@@ -554,6 +581,7 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
         if (body.getData() != null && !body.getData().isEmpty()) {
             MediaContentDao mediaContentDao = new MediaContentDao(getActivity());
             mediaContentDao.insertSharedData(body.getData());
+            sharedPref.writeBoolean(Constants.MEDIACONTENTCHANGE, true);
         }
     }
 

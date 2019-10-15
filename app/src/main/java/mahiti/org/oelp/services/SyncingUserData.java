@@ -37,6 +37,7 @@ import retrofit2.Response;
 public class SyncingUserData {
 
     private static final String TAG = SyncingUserData.class.getSimpleName();
+    private final MySharedPref mySharedPref;
     private Context mContext;
     private MediaContentDao mediaContentDao;
     private SurveyResponseDao surveyResponseDao;
@@ -46,7 +47,7 @@ public class SyncingUserData {
         this.mContext = mContext;
         mediaContentDao = new MediaContentDao(mContext);
         surveyResponseDao = new SurveyResponseDao(mContext);
-        MySharedPref mySharedPref = new MySharedPref(mContext);
+        mySharedPref = new MySharedPref(mContext);
         userUUID = mySharedPref.readString(Constants.USER_ID, "");
     }
 
@@ -69,6 +70,7 @@ public class SyncingUserData {
                     paramMap.put("media_file", new File(sharedMediaModel.getMediaFile()));
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
+                    return;
                 }
 
 
@@ -81,12 +83,15 @@ public class SyncingUserData {
                     public void onSuccess(int statusCode, Header[] headers, byte[] response) {
                         /*Toast.makeText(mContext, "Media Shared Success", Toast.LENGTH_SHORT).show();*/
                         mediaContentDao.updateSyncData(sharedMediaModel.getMediaUuid(), DBConstants.SYNC_STATUS);
+                        mySharedPref.writeBoolean(Constants.MEDIACONTENTCHANGE, false);
 
 
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
+                        Logger.logE(TAG, e.getMessage(), null);
+//                        mediaContentDao.updateSyncData(sharedMediaModel.getMediaUuid(), DBConstants.SYNC_STATUS);
                         /*Toast.makeText(mContext, "Media Shared Failure", Toast.LENGTH_SHORT).show();*/
 
                     }
@@ -106,6 +111,9 @@ public class SyncingUserData {
 
     public void shareMediaGlobally() {
         String globalShareData = mediaContentDao.fetchGlobalSharedMedia();
+
+        Logger.logD(TAG, "Global Share data :"+globalShareData);
+
         if (!globalShareData.isEmpty()) {
             ApiInterface apiInterface = RetrofitClass.getAPIService();
             Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.SHARED_MEDIA_GLOBALLY + " Param : user_uuid:" + userUUID);
@@ -114,6 +122,7 @@ public class SyncingUserData {
                 public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                     Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.SHARED_MEDIA_GLOBALLY + " Response :" + response.body());
                     changeToArray(globalShareData, 0);
+                    mySharedPref.writeBoolean(Constants.GLOBALSHARECHANGE, false);
                 }
 
                 @Override
@@ -185,16 +194,21 @@ public class SyncingUserData {
 
     }
 
-    public List<String> deleteMedia(String deleteData) { /// send comma separated uuid
-        List<String> responseList = new ArrayList<>();
-        final MobileVerificationResponseModel[] model = {null};
+    public void deleteMedia() { /// send comma separated uuid
+        String deleteMediaData = mediaContentDao.fetchDeletedMedia();
+        if (deleteMediaData.isEmpty() || deleteMediaData.equalsIgnoreCase("[]"))
+            return;
+
+        Logger.logD(TAG, "Delete data :"+deleteMediaData);
+
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.SHARED_MEDIA_GLOBALLY + " Param : user_uuid:" + userUUID);
-        apiInterface.deleteMedia(deleteData).enqueue(new Callback<MobileVerificationResponseModel>() {
+        apiInterface.deleteMedia(deleteMediaData).enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.SHARED_MEDIA_GLOBALLY + " Response :" + response.body());
-                changeToArray(deleteData, 1);
+                changeToArray(deleteMediaData, 1);
+                mySharedPref.writeBoolean(Constants.DELETEDATACHANGE, false);
             }
 
             @Override
@@ -205,7 +219,6 @@ public class SyncingUserData {
                 model1.setStatus(0);
             }
         });
-        return responseList;
     }
 
 

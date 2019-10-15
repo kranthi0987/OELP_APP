@@ -45,13 +45,13 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
 
 
     @Override
-    public MyContAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.adapter_my_cont, viewGroup, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MyContAdapter.ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         SharedMediaModel model = sharedMediaList.get(position);
 
         viewHolder.tvMediaName.setText(model.getMediaTitle());
