@@ -23,6 +23,7 @@ import mahiti.org.oelp.interfaces.ItemClickListerner;
 import mahiti.org.oelp.models.CatalogueDetailsModel;
 import mahiti.org.oelp.models.GroupModel;
 import mahiti.org.oelp.services.RetrofitConstant;
+import mahiti.org.oelp.services.XmppConnectionService;
 import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.CheckNetwork;
 import mahiti.org.oelp.utils.Constants;
@@ -32,6 +33,7 @@ import mahiti.org.oelp.viewmodel.HomeViewModel;
 import mahiti.org.oelp.views.fragments.GroupsFragment;
 import mahiti.org.oelp.views.fragments.HomeFragment;
 import mahiti.org.oelp.views.fragments.UnitsFragment;
+import mahiti.org.oelp.xmpp.XmppConnection;
 
 public class HomeActivity extends AppCompatActivity implements ItemClickListerner, OnMediaDownloadListener {
 
@@ -266,6 +268,9 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
             case R.id.logout:
                 AppUtils.makeUserLogout(this);
 //                makeUserLogout();
+//                XmppConnectionService service=new XmppConnectionService();
+//                service.logoutAndSave(true);
+
                 return true;
             case R.id.chats:
                 showChatUI();

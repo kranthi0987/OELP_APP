@@ -241,12 +241,5 @@
     <orderEntry type="module" module-name="android-transcoder" />
     <orderEntry type="module" module-name="fullscreenvideoview" />
     <orderEntry type="module" module-name="xmpp-addr" />
-    <orderEntry type="library" name="Gradle: net.zetetic:android-database-sqlcipher:3.5.7@aar" level="project" />
-    <orderEntry type="module" module-name="android-transcoder" />
-    <orderEntry type="module" module-name="fullscreenvideoview" />
-    <orderEntry type="module" module-name="xmpp-addr" />
-    <orderEntry type="module" module-name="android-transcoder" />
-    <orderEntry type="module" module-name="fullscreenvideoview" />
-    <orderEntry type="module" module-name="xmpp-addr" />
   </component>
 </module>

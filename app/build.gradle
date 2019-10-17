@@ -29,6 +29,7 @@ android {
 
     defaultConfig {
         multiDexEnabled true
+
         applicationId "mahiti.org.oelp"
         minSdkVersion 19
         targetSdkVersion 28
