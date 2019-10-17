@@ -70,6 +70,7 @@
     </RelativeLayout>
 
     <EditText
+        android:textCursorDrawable="@null"
         android:id="@+id/etMediaName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -91,15 +92,7 @@
         android:gravity="right">
 
 
-        <Button
-            android:id="@+id/btnUpload"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginRight="10dp"
-            android:text="Upload"
-            android:textColor="@color/black" />
+
 
 
         <Button
@@ -109,6 +102,16 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="Cancel"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/btnUpload"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dp"
+            android:text="Upload"
             android:textColor="@color/black" />
 
 

@@ -27,6 +27,10 @@ public class MobileVerificationResponseModel {
     @Expose
     private String userid;
 
+    @SerializedName("userid")
+    @Expose
+    private String useridreg;
+
     @SerializedName("userDetails")
     @Expose
     private UserDetailsModel userDetails;
@@ -68,6 +72,14 @@ public class MobileVerificationResponseModel {
     @SerializedName("data")
     @Expose
     private List<SharedMediaModel> data;
+
+    public String getUseridreg() {
+        return useridreg;
+    }
+
+    public void setUseridreg(String useridreg) {
+        this.useridreg = useridreg;
+    }
 
     public List<SharedMediaModel> getGlobally() {
         return globally;

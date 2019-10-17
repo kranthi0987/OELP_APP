@@ -18,6 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.views.activities.ChatAndContributionActivity;
 import mahiti.org.oelp.views.activities.CreateGroupActivity;
 import mahiti.org.oelp.database.DAOs.TeacherDao;
 import mahiti.org.oelp.models.MobileVerificationResponseModel;
@@ -172,6 +173,11 @@ public class MembersFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 103 && resultCode == RESULT_OK) {
             fetchTeacherList();
+
+            String groupName = data.getStringExtra(Constants.GROUP_NAME);
+            if (getActivity()!=null)
+                ((ChatAndContributionActivity)getActivity()).setTitle(groupName);
+
             sharedPref.writeBoolean(Constants.IS_UPDATED, true);
         }
     }

@@ -54,6 +54,7 @@ public class Constants {
     public static final String MEDIACONTENTCHANGE = "mediacontentchange";
     public static final String GLOBALSHARECHANGE = "globalsharechange";
     public static final String DELETEDATACHANGE = "deletedatachange";
+    public static final String QACHANGED = "qachanged";
     public static Integer No_Internet= 101;
     public static Integer Api_FAilure = 102;
     public static final int READ_REQUEST_CODE = 332;

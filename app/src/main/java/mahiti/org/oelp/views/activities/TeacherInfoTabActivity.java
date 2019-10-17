@@ -28,6 +28,7 @@ import mahiti.org.oelp.database.DAOs.MediaContentDao;
 import mahiti.org.oelp.fileandvideodownloader.DownloadClass;
 import mahiti.org.oelp.fileandvideodownloader.DownloadUtility;
 import mahiti.org.oelp.fileandvideodownloader.FileModel;
+import mahiti.org.oelp.fileandvideodownloader.OnMediaDownloadListener;
 import mahiti.org.oelp.interfaces.ListRefresh;
 import mahiti.org.oelp.interfaces.SharedMediaClickListener;
 import mahiti.org.oelp.models.SharedMediaModel;
@@ -42,7 +43,7 @@ import mahiti.org.oelp.views.fragments.MyContFragment;
 import mahiti.org.oelp.views.fragments.NewTeacherFragment;
 import mahiti.org.oelp.views.fragments.TeacherInfoFragment;
 
-public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, SharedMediaClickListener {
+public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, SharedMediaClickListener , OnMediaDownloadListener {
 
     private static final String TAG = TeacherInfoTabActivity.class.getSimpleName();
     private Toolbar toolbar;
@@ -53,7 +54,9 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
     private TabLayout tabLayout;
     private ViewPagerAdapter adapter;
     private String teacherUuid = "";
+    private String tecaherContri="";
     private String teacherName = "";
+    private String groupUUID = "";
     private TextView tvTitle;
     private AlertDialog alertDialogPop;
     private ListRefresh refresh;
@@ -86,6 +89,8 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
     private void getIntentValues() {
         teacherUuid = getIntent().getStringExtra(Constants.TEACHER_UUID);
         teacherName = getIntent().getStringExtra("teacherName");
+        groupUUID = getIntent().getStringExtra(Constants.GROUP_UUID);
+        tecaherContri = getIntent().getStringExtra("teachercontri");
         tvTitle.setText(teacherName);
     }
 
@@ -287,7 +292,8 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
 
         String userUUId = new MySharedPref(this).readString(Constants.USER_ID, "");
         if (videoAvailable(fileModel)) {
-            DownloadUtility.playVideo(this, fileModel.getFileUrl(), fileModel.getFileName(), userUUId, fileModel.getUuid(), "", fileModel.getDcfId(), "");
+            String filePath = AppUtils.completePathInSDCard(Constants.VIDEO)+"/"+AppUtils.getFileName(fileModel.getFileUrl());
+            DownloadUtility.playVideo(this, filePath, fileModel.getFileName(), userUUId, fileModel.getUuid(), "", fileModel.getDcfId(), "");
         } else {
             downloadVideo(fileModel);
         }
@@ -314,6 +320,16 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
             Logger.logE(TAG, ex.getMessage(), ex);
         }
         return false;
+    }
+
+    @Override
+    public void onMediaDownload(int type, String savedPath, String name, int position, String uuid, int dcfId, String unitUUID) {
+        if (type == Constants.VIDEO) {
+            if (savedPath != null && !savedPath.isEmpty()) {
+                String userUUID = new MySharedPref(this).readString(Constants.USER_ID, "");
+                DownloadUtility.playVideo(this, savedPath, name, userUUID, uuid, "", dcfId, unitUUID);
+            }
+        }
     }
 
 

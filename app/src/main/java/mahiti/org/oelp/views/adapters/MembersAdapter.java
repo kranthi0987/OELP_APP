@@ -43,10 +43,11 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.ViewHold
     @Override
     public void onBindViewHolder(MembersAdapter.ViewHolder viewHolder, final int position) {
         String blockName = new LocationDao(context).getName(teachersList.get(position).getBlockIds());
+        String mediaCount = String.valueOf(teachersList.get(position).getMediaCount());
         viewHolder.tvBlock.setText(blockName);
         viewHolder.tvMemberName.setText(teachersList.get(position).getName());
         viewHolder.tvSchoolName.setText(teachersList.get(position).getSchool());
-        viewHolder.tvMediaCount.setText(""+teachersList.get(position).getMediaCount());
+        viewHolder.tvMediaCount.setText(mediaCount);
         MySharedPref sharedPref = new MySharedPref(context);
         userType = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
 
@@ -55,6 +56,8 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.ViewHold
                 Intent intent = new Intent(context, TeacherInfoTabActivity.class);
                 intent.putExtra(Constants.TEACHER_UUID, teachersList.get(position).getUserUuid());
                 intent.putExtra("teacherName", teachersList.get(position).getName());
+                intent.putExtra("teachercontri", mediaCount);
+                intent.putExtra(Constants.GROUP_UUID, teachersList.get(position).getGroupUuid());
                 context.startActivity(intent);
                 context.overridePendingTransition(R.anim.anim_slide_in_left,
                         R.anim.anim_slide_out_left);

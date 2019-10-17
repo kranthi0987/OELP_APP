@@ -52,8 +52,10 @@ public class SurveyResponseDao extends DatabaseHandlerClass {
                 values.put(DBConstants.QA_DATA, responseData);
                 values.put(DBConstants.QA_PREVIEW_TEXT, "");
                 values.put(DBConstants.SUBMISSION_DATE, response.getSubmissionDate());
-                if (response.getAttempts() == 0) {
-                    attempt = getAttemptFromDb(response.getMediacontent(), 1);
+                if (null!=response.getResponse()) {
+                    if (response.getAttempts() == 0) {
+                        attempt = getAttemptFromDb(response.getMediacontent(), 1);
+                    }
                 }
                 values.put(DBConstants.ATTEMPT, attempt);
                 values.put(DBConstants.QA_SCORE, response.getScore());

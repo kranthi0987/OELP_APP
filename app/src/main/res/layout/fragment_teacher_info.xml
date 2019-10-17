@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/linearLayoutTeacherInfo"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginTop="20dp"
@@ -10,14 +10,15 @@
 
     <ScrollView
         android:scrollbars="none"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
+            
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginLeft="40dp"
@@ -25,13 +26,12 @@
                 android:layout_marginRight="40dp">
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
-                    >
+                    android:layout_marginBottom="10dp">
 
 
                     <TextView
@@ -43,7 +43,7 @@
                         android:textSize="15sp"
                         android:fontFamily="@font/montserrat_bold"/>
                     <TextView
-                        android:id="@+id/textViewTeacherName"
+                        android:id="@+id/tvName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -60,21 +60,21 @@
                     android:background="@color/grey"
                     />
             </LinearLayout>
+            
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp">
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
-                    >
+                    android:layout_marginBottom="10dp">
 
 
                     <TextView
@@ -86,7 +86,7 @@
                         android:textSize="15sp"
                         android:fontFamily="@font/montserrat_bold"/>
                     <TextView
-                        android:id="@+id/textViewPhoneno"
+                        android:id="@+id/tvPhone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -103,15 +103,16 @@
                     android:background="@color/grey"
                     />
             </LinearLayout>
+            
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp">
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="5dp"
@@ -124,16 +125,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="District"
+                        android:text="School"
                         android:textColor="@color/black"
                         android:textSize="15sp"
                         android:fontFamily="@font/montserrat_bold"/>
                     <TextView
-                        android:id="@+id/textViewDistrict"
+                        android:id="@+id/tvSchool"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="Vishakhapatnam"
+                        android:text="Shivam convent"
                         android:textColor="@color/black"
                         android:fontFamily="@font/montserrat_regular"
                         android:textSize="13sp" />
@@ -146,15 +147,16 @@
                     android:background="@color/grey"
                     />
             </LinearLayout>
+
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp">
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="5dp"
@@ -172,7 +174,7 @@
                         android:textSize="15sp"
                         android:fontFamily="@font/montserrat_bold"/>
                     <TextView
-                        android:id="@+id/textViewBlock"
+                        android:id="@+id/tvBlock"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -189,15 +191,104 @@
                     android:background="@color/grey"
                     />
             </LinearLayout>
+
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp">
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    >
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="District"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/montserrat_bold"/>
+                    <TextView
+                        android:id="@+id/tvDistrict"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="Vishakhapatnam"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/grey"
+                    />
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    >
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="State"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/montserrat_bold"/>
+                    <TextView
+                        android:id="@+id/tvState"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="Vishakhapatnam"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/grey"
+                    />
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="5dp"
@@ -215,7 +306,7 @@
                         android:textSize="15sp"
                         android:fontFamily="@font/montserrat_bold"/>
                     <TextView
-                        android:id="@+id/textViewNoofContri"
+                        android:id="@+id/tvContri"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -232,15 +323,16 @@
                     android:background="@color/grey"
                     />
             </LinearLayout>
+            
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp">
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="5dp"
@@ -258,7 +350,7 @@
                         android:textSize="15sp"
                         android:fontFamily="@font/montserrat_bold"/>
                     <TextView
-                        android:id="@+id/textViewGroupName"
+                        android:id="@+id/tvGroupName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -275,15 +367,16 @@
                     android:background="@color/grey"
                     />
             </LinearLayout>
+            
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp">
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="5dp"
@@ -301,7 +394,7 @@
                         android:textSize="15sp"
                         android:fontFamily="@font/montserrat_bold"/>
                     <TextView
-                        android:id="@+id/textViewSubunits"
+                        android:id="@+id/tvVideosCovererd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -318,15 +411,16 @@
                     android:background="@color/grey"
                     />
             </LinearLayout>
+            
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp">
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="5dp"
@@ -344,7 +438,7 @@
                         android:textSize="15sp"
                         android:fontFamily="@font/montserrat_bold"/>
                     <TextView
-                        android:id="@+id/textViewLastActive"
+                        android:id="@+id/tvLastActive"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -361,15 +455,16 @@
                     android:background="@color/grey"
                     />
             </LinearLayout>
+            
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp">
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="5dp"
@@ -387,7 +482,7 @@
                         android:textSize="15sp"
                         android:fontFamily="@font/montserrat_bold"/>
                     <TextView
-                        android:id="@+id/textViewLastLoggedin"
+                        android:id="@+id/tvLastLoggedin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -404,15 +499,16 @@
                     android:background="@color/grey"
                     />
             </LinearLayout>
+            
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp">
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="5dp"
@@ -430,7 +526,7 @@
                         android:textSize="15sp"
                         android:fontFamily="@font/montserrat_bold"/>
                     <TextView
-                        android:id="@+id/textViewSchool"
+                        android:id="@+id/tvSessionUsage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -447,6 +543,7 @@
                     android:background="@color/grey"
                     />
             </LinearLayout>
+            
         </LinearLayout>
     </ScrollView>
 

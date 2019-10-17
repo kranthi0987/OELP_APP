@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -30,7 +33,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
-import ezvcard.property.Related;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.DAOs.MediaContentDao;
 import mahiti.org.oelp.databinding.ActivityChatAndContributionBinding;
@@ -71,8 +73,10 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     private TextView tvTitle;
     private TextView tvMember;
     private TextView tvContribution;
-    private RelativeLayout rlMembers;
-    private RelativeLayout rlContributions;
+    private LinearLayout rlMembers;
+    private LinearLayout rlContributions;
+    private View lineMembers;
+    private View lineContri;
     ChatAndContributionViewModel viewModel;
     ActivityChatAndContributionBinding binding;
     private ProgressBar progressBar;
@@ -95,6 +99,8 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
         tvMember = binding.tvMember;
         tvContribution = binding.tvContribution;
         rlMembers = binding.rlMembers;
+        lineMembers = binding.lineMembers;
+        lineContri = binding.lineContri;
         rlContributions = binding.rlContributions;
         progressBar = binding.progressBar;
 
@@ -113,12 +119,12 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
         getIntentValues();
         initViews();
         setFragment(new MembersFragment());
-        setTextColor(membersClick);
+        setTextColor(membersClick, 0);
 
         rlMembers.setOnClickListener(view -> {
             if (!membersClick) {
                 setFragment(new MembersFragment());
-                setTextColor(!membersClick);
+                setTextColor(!membersClick, 1);
                 membersClick=true;
             }
 
@@ -126,7 +132,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
         rlContributions.setOnClickListener(view -> {
             if (membersClick) {
                 setFragment(new ContributionsFragment());
-                setTextColor(!membersClick);
+                setTextColor(!membersClick,1);
                 membersClick = false;
             }
         });
@@ -140,11 +146,26 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
 
     }
-    public void setTextColor(boolean membersClicks){
+    public void setTextColor(boolean membersClicks, int type){
+        Animation animation;
         if (membersClicks){
+            if (type!=0) {
+                animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_slide_in_left);
+                lineMembers.setVisibility(View.VISIBLE);
+//                lineMembers.startAnimation(animation);
+                lineContri.setVisibility(View.INVISIBLE);
+
+            }
             tvMember.setTextColor(getResources().getColor(R.color.black));
             tvContribution.setTextColor(getResources().getColor(R.color.grey));
         }else {
+            if (type!=0) {
+                animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_slide_out_right);
+                lineContri.setVisibility(View.VISIBLE);
+//                lineContri.startAnimation(animation);
+                lineMembers.setVisibility(View.INVISIBLE);
+            }
+
             tvMember.setTextColor(getResources().getColor(R.color.grey));
             tvContribution.setTextColor(getResources().getColor(R.color.black));
         }
@@ -210,7 +231,14 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
             sharedPref.writeBoolean(Constants.IS_UPDATED, true);
             onBackPressed();
 
+
+
         }
+    }
+
+    public void setTitle(String groupName){
+        if (groupName!=null && !groupName.isEmpty())
+            tvTitle.setText(groupName);
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -344,6 +372,9 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
     private void showPopupForDelete(SharedMediaModel mediaModel, int position) {
 
+        if (sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER)==Constants.USER_TEACHER)
+            if (!sharedPref.readString(Constants.USER_ID,"").equals(mediaModel.getUserUuid()))
+                return;
 
         new AlertDialog.Builder(this, R.style.AlertDialogTheme)
                 .setTitle("Delete Media")
@@ -373,7 +404,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
         String userUUId = new MySharedPref(this).readString(Constants.USER_ID, "");
         if (videoAvailable(fileModel)) {
-            String filePath = AppUtils.completePathInSDCard(Constants.VIDEO)+AppUtils.getFileName(fileModel.getFileUrl());
+            String filePath = AppUtils.completePathInSDCard(Constants.VIDEO)+"/"+AppUtils.getFileName(fileModel.getFileUrl());
             DownloadUtility.playVideo(this, filePath, fileModel.getFileName(), userUUId, fileModel.getUuid(), "", fileModel.getDcfId(), "");
         } else {
             downloadVideo(fileModel);

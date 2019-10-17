@@ -49,22 +49,21 @@ public class MyContFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_my_cont, container, false);
 
-        groupUUID = getActivity().getIntent().getStringExtra("groupUUID");
+        groupUUID = getActivity().getIntent().getStringExtra(Constants.GROUP_UUID);
         teacherUUID = getActivity().getIntent().getStringExtra(Constants.TEACHER_UUID);
         initViews(rootView);
+        fetchDataFromDb();
+
 
         setHasOptionsMenu(true);
 
-        ((TeacherInfoTabActivity)getActivity()).setFragmentRefreshListener(new ListRefresh() {
-            @Override
-            public void onRefresh(int position, boolean isDelete) {
+        ((TeacherInfoTabActivity)getActivity()).setFragmentRefreshListener((position, isDelete) -> {
 
-                if (isDelete) {
-                    sharedMediaList.remove(position);
-                    adapter.notifyDataSetChanged();
-                }else {
-                    fetchDataFromDb();
-                }
+            if (isDelete) {
+                sharedMediaList.remove(position);
+                adapter.notifyDataSetChanged();
+            }else {
+                fetchDataFromDb();
             }
         });
 

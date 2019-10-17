@@ -123,6 +123,7 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
     }
 
     private void showToast(String s) {
+        if(!s.isEmpty())
             Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 

@@ -1612,7 +1612,7 @@
     <string name="title_activity_updater">Update service</string>
     <string name="update_available">Version %1$s is available.\n\nFilesize: %2$s\n\nUpdate to version %1$s now?</string>
     <string name="remind_later">later</string>
-    <string name="update">update</string>
+    <string name="update">अपडेट</string>
     <string name="no_update_available">No update available</string>
     <string name="download_started">Download started</string>
     <string name="account_status_tor_unavailable">Tor network unavailable</string>
@@ -2114,8 +2114,8 @@
     <string name="x_has_written">%s has written:</string>
     <string name="type_message_here">Type message here</string>
     <string name="chats">Chats</string>
-    <string name="contributions">Contributions</string>
-    <string name="members">Members</string>
+    <string name="contributions">योगदान</string>
+    <string name="members">सदस्य</string>
     <string name="what_you_want_to_do_with_media">What you want to do with media?</string>
     <string name="applicationId" />
     <string-array name="option_array" >

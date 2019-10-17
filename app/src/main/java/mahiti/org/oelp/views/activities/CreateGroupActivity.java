@@ -1,12 +1,14 @@
 package mahiti.org.oelp.views.activities;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -63,7 +65,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
     private List<UserDetailsModel> userDetailList = new ArrayList<>();
     private AddTeacherToGroupAdapter adapter;
     private String userUUID;
-    private AlertDialog dialog;
+    private Dialog dialog;
     private String groupUUID;
     private String groupTitle;
     private UserDetailsModel model;
@@ -293,6 +295,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void showAlertDialog(UserDetailsModel userDetail) {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
         builder.setMessage(userDetail.getName() + " is already added to some other group");
         builder.setNegativeButton(R.string.ok, (dialog, id) -> dialog.dismiss());

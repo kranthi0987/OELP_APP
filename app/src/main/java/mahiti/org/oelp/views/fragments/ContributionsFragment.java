@@ -579,11 +579,11 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
 
         /*
          * Adding new data to list to reflect in view*/
-        sharedMediaList.add(0,data);
+//        sharedMediaList.add(0,data);
 //       adapter = new MyContAdapter(getActivity(), sharedMediaList);
 //        recyclerView.setAdapter(adapter);
         /*recyclerView.setLayoutManager(manager);*/
-        adapter.setList(sharedMediaList);
+//        adapter.setList(sharedMediaList);
         insertData(model);
     }
 
@@ -593,6 +593,7 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
             MediaContentDao mediaContentDao = new MediaContentDao(getActivity());
             mediaContentDao.insertSharedData(body.getData(), 1);
             sharedPref.writeBoolean(Constants.MEDIACONTENTCHANGE, true);
+            fetchDataFromDb(switchContribution.isChecked());
         }
     }
 

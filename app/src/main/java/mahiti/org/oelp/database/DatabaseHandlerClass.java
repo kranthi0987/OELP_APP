@@ -8,6 +8,8 @@ import net.sqlcipher.database.SQLiteOpenHelper;
 
 import mahiti.org.oelp.utils.Logger;
 import static mahiti.org.oelp.database.DBConstants.CAT_TABLE_NAME;
+import static mahiti.org.oelp.database.DBConstants.CLOSE_BRACKET;
+import static mahiti.org.oelp.database.DBConstants.WATCH_STATUS;
 
 /**
  * Created by RAJ ARYAN on 02/08/19.
@@ -350,6 +352,28 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         } catch (Exception ex) {
             Logger.logE(TAG, ex.getMessage(), ex);
         }
+    }
+
+    public int getNoOfCompletedVideos(){
+        int count = 0;
+
+        String query = DBConstants.SELECT+DBConstants.COUNT+DBConstants.OPEN_BRACKET+WATCH_STATUS+
+                DBConstants.CLOSE_BRACKET+DBConstants.FROM+DBConstants.MEDIA_STATUS_TABLE+
+                DBConstants.WHERE+ DBConstants.WATCH_STATUS+DBConstants.EQUAL_TO+1;
+        Logger.logD(TAG, "Video watch count query : " + query);
+        Cursor cursor = null;
+        initDatabase();
+        try {
+            cursor = database.rawQuery(query, null);
+            // If count is greater than 0, then module is not fully completed
+            cursor.moveToFirst();
+            count = cursor.getInt(cursor.getColumnIndex(WATCH_STATUS));
+        } catch (Exception ex) {
+            Logger.logE("Exception", ex.getMessage(), ex);
+        }finally {
+            closeCursor(cursor);
+        }
+        return count;
     }
 
 

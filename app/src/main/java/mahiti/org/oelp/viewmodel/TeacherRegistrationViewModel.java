@@ -242,7 +242,7 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
 
                     if (activityType.getValue()==0) {
                         sharedPref.writeString(Constants.MOBILE_NO, userDetails);
-                        saveUserIDAndUserTypeAndUserName(model.getUserid(), Constants.USER_TEACHER);
+                        saveUserIDAndUserTypeAndUserName(model.getUseridreg(), Constants.USER_TEACHER);
                     }
 
                 }else {

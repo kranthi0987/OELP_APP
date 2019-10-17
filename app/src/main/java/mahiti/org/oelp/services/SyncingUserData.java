@@ -192,6 +192,7 @@ public class SyncingUserData {
                     @Override
                     public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                         surveyResponseDao.updateSyncStatus(model.getCreationKey());
+                        mySharedPref.writeBoolean(Constants.QACHANGED, false);
                     }
 
                     @Override

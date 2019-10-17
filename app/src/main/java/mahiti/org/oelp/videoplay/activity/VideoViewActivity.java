@@ -29,6 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 
 import java.io.File;
@@ -41,6 +43,7 @@ import java.util.concurrent.TimeUnit;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.DAOs.SurveyResponseDao;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
+import mahiti.org.oelp.models.QuestionAnswerIdModel;
 import mahiti.org.oelp.models.SubmittedAnswerResponse;
 import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.CheckNetwork;
@@ -275,9 +278,9 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
             TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
             assert telephonyManager != null;
             deviceId = telephonyManager.getDeviceId();
-        } else {
+        }/* else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 100);
-        }
+        }*/
         return deviceId;
     }
 
@@ -486,12 +489,13 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         videoDecryptionDb.mediaTrackerUpdateDb(mediaTracker, mediaUUID);
 
 
-       /* if (CheckNetwork.checkNet(this)) {
-            callMediaTrackerApi();
-        }*/
+
         boolean loginType = new MySharedPref(this).readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER;
 
+        new MySharedPref(VideoViewActivity.this).writeBoolean(Constants.VALUE_CHANGED, true);
+
         contentUpdateStatus(mediaUUID);
+
         /*
          * Checking Login Type if Trainer there is no Test Section If Teacher there is Test Section
          * */
@@ -507,8 +511,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
                     if (dcfId != 0) {
                         moveToQuestionAnswerActivity();
                     } else {
-//                        updateDBandCAllApi();
-                        new MySharedPref(VideoViewActivity.this).writeBoolean(Constants.VALUE_CHANGED, true);
+                        updateDBandCAllApi();
                         onBackPressed();
                     }
                 }
@@ -516,37 +519,35 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
                 onBackPressed();
             }
         } else {
-            new MySharedPref(VideoViewActivity.this).writeBoolean(Constants.VALUE_CHANGED, true);
+
+            updateDBandCAllApi();
             onBackPressed();
         }
     }
 
-    /*private void updateDBandCAllApi() {
-        String testUUId = AppUtils.getUUID();
-        List<String> list = new ArrayList<>();
-        list.add("0");
-        list.add("0");
-        surveyResponseDao.insertAnsweredQuestion(testUUId, mediaUUID, sectionUUID, unitUUID, "", AppUtils.getDateTime(), list, 0, 1, "");
-        if (CheckNetwork.checkNet(this)) {
-            List<SubmittedAnswerResponse> arrayList = surveyResponseDao.fetchAnsweredQuestion("", 1);
-            if (arrayList.size() != 0) {
-                for (SubmittedAnswerResponse model : arrayList) {
-                    checkInternetAndCall(model);
-                }
-            } else {
-                Toast.makeText(this, getString(R.string.you_are_offline), Toast.LENGTH_SHORT).show();
-            }
+    private void updateDBandCAllApi() {
+
+        SubmittedAnswerResponse model = new SubmittedAnswerResponse();
+        model.setCreationKey(AppUtils.getUUID());
+        model.setMediacontent(mediaUUID);
+        model.setSectionUUID(sectionUUID);
+        model.setUnitUUID(unitUUID);
+        model.setResponse(null);
+        model.setSubmissionDate(AppUtils.getDateTime());
+        model.setAttempts(0);
+        model.setScore(0f);
+        model.setTotal(null);
+        model.setSyncStatus(1);
+        List<SubmittedAnswerResponse> list = new ArrayList<>();
+        list.add(model);
+
+        if (!list.isEmpty()) {
+            new SurveyResponseDao(this).insertAnsweredQuestion(list);
+            new MySharedPref(this).writeBoolean(Constants.QACHANGED, true);
         }
-
-
-    }*/
-
-    private void checkInternetAndCall(SubmittedAnswerResponse model) {
-        if (CheckNetwork.checkNet(this))
-            postQA(model);
-        else
-            Toast.makeText(this, this.getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
     }
+
+
 
     public void postQA(SubmittedAnswerResponse model) {
         /*String response = "";

@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.DAOs.LocationDao;
 import mahiti.org.oelp.database.DAOs.TeacherDao;
+import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.models.TeacherModel;
 import mahiti.org.oelp.utils.Constants;
 
@@ -19,7 +21,8 @@ public class TeacherInfoFragment extends Fragment {
 
     private View rootView;
 
-    String teacherUUid = "";
+    private String teacherUUid = "";
+    private String teacherContri = "";
     List<TeacherModel> teacherModelList = new ArrayList<>();
 
 
@@ -28,6 +31,7 @@ public class TeacherInfoFragment extends Fragment {
 
         // Inflate the layout for this fragment
         teacherUUid = getActivity().getIntent().getStringExtra(Constants.TEACHER_UUID);
+        teacherContri = getActivity().getIntent().getStringExtra("teachercontri");
 
         TeacherDao teacherDao = new TeacherDao(getActivity());
         teacherModelList = teacherDao.getTeachers(teacherUUid, 2);
@@ -43,28 +47,45 @@ public class TeacherInfoFragment extends Fragment {
         if (teacherModelList.isEmpty())
             return;
 
-        TextView teacherName=rootView.findViewById(R.id.textViewTeacherName);
-        TextView teacherPhoneNumber=rootView.findViewById(R.id.textViewPhoneno);
-        TextView teacherDistrict=rootView.findViewById(R.id.textViewDistrict);
-        TextView teacherBlock=rootView.findViewById(R.id.textViewBlock);
-        TextView teacherNoContributions=rootView.findViewById(R.id.textViewNoofContri);
-        TextView teacherGroupName=rootView.findViewById(R.id.textViewGroupName);
-        TextView teacherSubUnits=rootView.findViewById(R.id.textViewSubunits);
-        TextView teacherLastActive=rootView.findViewById(R.id.textViewLastActive);
-        TextView teacherLastLoggedIn=rootView.findViewById(R.id.textViewLastLoggedin);
-        TextView teacherViewSchool=rootView.findViewById(R.id.textViewSchool);
+        TeacherModel model = teacherModelList.get(0);
+        LocationDao locationDao = new LocationDao(getActivity());
 
-        teacherName.setText(teacherModelList.get(0).getName());
-        teacherPhoneNumber.setText(teacherModelList.get(0).getMobileNumber());
-//        String districtname =
-//        teacherDistrict.setText(teacherModelList.get(0).getBlockName());
-        teacherBlock.setText(teacherModelList.get(0).getBlockName());
-        teacherNoContributions.setText("0");
-        teacherGroupName.setText(teacherModelList.get(0).getGroupName());
-        teacherSubUnits.setText(teacherModelList.get(0).getVideoCoveredCount());
-        teacherLastActive.setText(teacherModelList.get(0).getLastActive());
-        teacherLastLoggedIn.setText(teacherModelList.get(0).getLastLoggedIn());
-        teacherViewSchool.setText(teacherModelList.get(0).getSchool());
+        TextView tvName = rootView.findViewById(R.id.tvName);
+        TextView tvPhone = rootView.findViewById(R.id.tvPhone);
+        TextView tvSchool = rootView.findViewById(R.id.tvSchool);
+        TextView tvBlock = rootView.findViewById(R.id.tvBlock);
+        TextView tvDistrict = rootView.findViewById(R.id.tvDistrict);
+        TextView tvState = rootView.findViewById(R.id.tvState);
+        TextView tvContri = rootView.findViewById(R.id.tvContri);
+        TextView tvGroupName = rootView.findViewById(R.id.tvGroupName);
+        TextView tvVideosCovererd = rootView.findViewById(R.id.tvVideosCovererd);
+        TextView tvLastActive = rootView.findViewById(R.id.tvLastActive);
+        TextView tvLastLoggedin = rootView.findViewById(R.id.tvLastLoggedin);
+        TextView tvSessionUsage = rootView.findViewById(R.id.tvSessionUsage);
+
+        tvName.setText(model.getName());
+        tvPhone.setText(model.getMobileNumber());
+        tvSchool.setText(model.getSchool());
+        if (model.getBlockIds()!=null) {
+            String blockName = locationDao.getName(model.getBlockIds());
+            tvBlock.setText(blockName);
+        }
+        if (model.getDistrictId()!=null) {
+            String DisName = locationDao.getName(model.getDistrictId());
+            tvDistrict.setText(DisName);
+        }
+        if (model.getStateId()!=null) {
+            String stateName = locationDao.getName(model.getStateId());
+            tvState.setText(stateName);
+        }
+        tvContri.setText(teacherContri);
+        tvGroupName.setText(model.getGroupName());
+//        String videoCoveredCount = String.valueOf(new DatabaseHandlerClass(getActivity()).getNoOfCompletedVideos());
+        tvVideosCovererd.setText("");
+        tvLastActive.setText(model.getLastActive());
+        tvLastLoggedin.setText(model.getLastLoggedIn());
+        tvSessionUsage.setText("");
+
 
 
 

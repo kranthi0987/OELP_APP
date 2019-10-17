@@ -106,6 +106,7 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
             } else {
                 Thread.sleep(200);
                 DownloadUtility.writeToFile("Missing Videos.txt", "\n" + (videoTitle).replace("//", DownloadConstant.Slash));
+                ToastUtils.displayToast("Connection error", context);
             }
 
         } catch (Exception e) {

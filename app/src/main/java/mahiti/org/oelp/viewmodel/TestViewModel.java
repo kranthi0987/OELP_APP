@@ -119,7 +119,7 @@ public class TestViewModel extends AndroidViewModel {
     public void saveValueToDb(List<SubmittedAnswerResponse> modelList) {
         if (!modelList.isEmpty()) {
             handlerClass.insertAnsweredQuestion(modelList);
-            new MySharedPref(context).writeBoolean(Constants.VALUE_CHANGED, true);
+            new MySharedPref(context).writeBoolean(Constants.QACHANGED, true);
         }
     }
 
