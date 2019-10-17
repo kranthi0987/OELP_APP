@@ -5,7 +5,7 @@ import android.util.Log;
 import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteOpenHelper;
-import java.io.File;
+
 import mahiti.org.oelp.utils.Logger;
 import static mahiti.org.oelp.database.DBConstants.CAT_TABLE_NAME;
 
@@ -52,13 +52,17 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         String query = DBConstants.CREATE_TABLE_IF_NOT_EXIST + DBConstants.MEDIA_CONTENT_TABLE + DBConstants.OPEN_BRACKET +
                 DBConstants.UUID + DBConstants.TEXT_PRIMARY_KEY + DBConstants.COMMA +
                 DBConstants.MEDIA_NAME + DBConstants.TEXT_COMMA +
+                DBConstants.ACTIVE + DBConstants.INTEGER_COMMA+
                 DBConstants.USER_NAME + DBConstants.TEXT_COMMA +
                 DBConstants.USER_UUID + DBConstants.TEXT_COMMA +
                 DBConstants.GROUP_UUID + DBConstants.TEXT_COMMA +
                 DBConstants.MEDIA_TYPE + DBConstants.TEXT_COMMA +
                 DBConstants.MEDIA_PATH + DBConstants.TEXT_COMMA +
-                DBConstants.MODIFIED + DBConstants.TEXT_COMMA +
-                DBConstants.SHARED_GLOBALLY + DBConstants.INTEGER + DBConstants.NOT_NULL_DEFAULT_ZERO +DBConstants.COMMA + // double not null default 0
+                DBConstants.HASH_KEY + DBConstants.TEXT_COMMA +
+                DBConstants.SUBMISSION_DATE + DBConstants.TEXT_COMMA +
+                DBConstants.MODIFIED_DATE + DBConstants.TEXT_COMMA +
+                DBConstants.IS_GLOBAL_SHARED + DBConstants.INTEGER +DBConstants.NOT_NULL_DEFAULT_ZERO +DBConstants.COMMA +
+                DBConstants.SHARED_GLOBALLY_SYNC_STATUS + DBConstants.INTEGER + DBConstants.NOT_NULL_DEFAULT_ZERO +DBConstants.COMMA + // double not null default 0
                 DBConstants.DELETE_MEDIA + DBConstants.INTEGER + DBConstants.NOT_NULL_DEFAULT_ZERO +DBConstants.COMMA + // double not null default 0
                 DBConstants.SYNC_STATUS + DBConstants.INTEGER + DBConstants.NOT_NULL_DEFAULT_ZERO +  // double not null default 0
                 DBConstants.CLOSE_BRACKET;
@@ -80,6 +84,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         String query = DBConstants.CREATE_TABLE_IF_NOT_EXIST + DBConstants.GROUP_TABLE + DBConstants.OPEN_BRACKET +
                 DBConstants.GROUP_UUID + DBConstants.TEXT_PRIMARY_KEY + DBConstants.COMMA +
                 DBConstants.GROUP_NAME + DBConstants.TEXT_COMMA +
+                DBConstants.MEMBERS_COUNT + DBConstants.INTEGER_COMMA +
                 DBConstants.UUID + DBConstants.TEXT +
                 DBConstants.CLOSE_BRACKET;
         Logger.logD(TAG, "Database creation query :" + query);
@@ -94,7 +99,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 DBConstants.UNIT_UUID + DBConstants.TEXT_COMMA +
                 DBConstants.QA_DATA + DBConstants.TEXT_COMMA +
                 DBConstants.QA_PREVIEW_TEXT + DBConstants.TEXT_COMMA +
-                DBConstants.MODIFIED + DBConstants.DATETIME_COMMA +
+                DBConstants.SUBMISSION_DATE + DBConstants.DATETIME_COMMA +
                 DBConstants.SYNC_STATUS + DBConstants.INTEGER_COMMA +
                 DBConstants.ATTEMPT + DBConstants.INTEGER_COMMA +
                 DBConstants.QA_SCORE + DBConstants.TEXT_COMMA +
@@ -113,7 +118,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 DBConstants.CHOICE_TEXT + DBConstants.TEXT_COMMA +
                 DBConstants.Q_ID + DBConstants.INTEGER_COMMA +
                 DBConstants.ACTIVE + DBConstants.INTEGER_COMMA +
-                DBConstants.MODIFIED + DBConstants.TEXT_COMMA +
+                DBConstants.SUBMISSION_DATE + DBConstants.TEXT_COMMA +
                 DBConstants.ANS_EXPLAIN + DBConstants.TEXT_COMMA +
                 DBConstants.SCORE + DBConstants.INTEGER +
                 DBConstants.CLOSE_BRACKET;
@@ -128,7 +133,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 DBConstants.Q_TEXT + DBConstants.TEXT_COMMA +
                 DBConstants.Q_HELP_TEXT + DBConstants.TEXT_COMMA +
                 DBConstants.ACTIVE + DBConstants.INTEGER_COMMA +
-                DBConstants.MODIFIED + DBConstants.TEXT_COMMA +
+                DBConstants.SUBMISSION_DATE + DBConstants.TEXT_COMMA +
                 DBConstants.DCF + DBConstants.INTEGER +
                 DBConstants.CLOSE_BRACKET;
         Logger.logD(TAG, "Database creation query :" + query);
@@ -144,7 +149,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 DBConstants.ORDER + DBConstants.INTEGER_COMMA +
                 DBConstants.COLOR + DBConstants.TEXT_COMMA +
                 DBConstants.PARENT + DBConstants.TEXT_COMMA +
-                DBConstants.MODIFIED + DBConstants.DATETIME_COMMA +
+                DBConstants.SUBMISSION_DATE + DBConstants.DATETIME_COMMA +
                 DBConstants.ICON_TYPE + DBConstants.TEXT_COMMA +
                 DBConstants.ICON_PATH + DBConstants.TEXT_COMMA +
                 DBConstants.MEDIA_TYPE + DBConstants.TEXT_COMMA +
@@ -165,7 +170,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 DBConstants.ID + DBConstants.TEXT_PRIMARY_KEY + DBConstants.COMMA +
                 DBConstants.ACTIVE + DBConstants.INTEGER_COMMA +
                 DBConstants.CREATED + DBConstants.DATETIME_COMMA +
-                DBConstants.MODIFIED + DBConstants.DATETIME_COMMA +
+                DBConstants.SUBMISSION_DATE + DBConstants.DATETIME_COMMA +
                 DBConstants.NAME + DBConstants.DATETIME_COMMA +
                 DBConstants.BOUNDARY_LEVEL_TYPE + DBConstants.INTEGER_COMMA +
                 DBConstants.PARENT + DBConstants.TEXT +
@@ -203,13 +208,13 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     }
 
     public String getModifiedDate(String tableName) {
-        String selectQuery = DBConstants.SELECT + DBConstants.MAX + DBConstants.OPEN_BRACKET + DBConstants.MODIFIED + DBConstants.CLOSE_BRACKET + DBConstants.AS + DBConstants.MODIFIED + DBConstants.FROM + tableName;
+        String selectQuery = DBConstants.SELECT + DBConstants.MAX + DBConstants.OPEN_BRACKET + DBConstants.SUBMISSION_DATE + DBConstants.CLOSE_BRACKET + DBConstants.AS + DBConstants.SUBMISSION_DATE + DBConstants.FROM + tableName;
         Logger.logD(TAG, selectQuery);
         initDatabase();
         android.database.Cursor cursor = database.rawQuery(selectQuery, null);
         String date = null;
         if (cursor.moveToFirst()) {
-            date = cursor.getString(cursor.getColumnIndex(DBConstants.MODIFIED));
+            date = cursor.getString(cursor.getColumnIndex(DBConstants.SUBMISSION_DATE));
             cursor.close();
         } else {
             cursor.close();
@@ -329,8 +334,14 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
                 case 6:
                     query = DBConstants.DELETE + DBConstants.FROM + DBConstants.GROUP_TABLE;
                     break;
+                case 7:
+                    query = DBConstants.DELETE + DBConstants.FROM + DBConstants.TEACHER_TABLENAME;
+                    break;
                 case 8:
                     query = DBConstants.DELETE + DBConstants.FROM + DBConstants.MEDIA_CONTENT_TABLE;
+                    break;
+                case 9:
+                    query = DBConstants.DELETE + DBConstants.FROM + DBConstants.MEDIA_STATUS_TABLE;
                     break;
 
             }

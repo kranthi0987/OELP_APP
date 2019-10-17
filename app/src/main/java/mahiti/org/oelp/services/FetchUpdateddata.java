@@ -61,6 +61,9 @@ public class FetchUpdateddata {
         databaseHandlerClass = new DatabaseHandlerClass(mContext);
 
         callGroupApi(userUUID);
+        callCatalogApi(userUUID);
+        callQuestionApi(userUUID);
+        callChoicesApi(userUUID);
         callMediaSharedApi(userUUID, sharedPref.readString(Constants.GROUP_UUID_LIST,""));
         callTeacherApi(userUUID);
         callApiForLocation();
@@ -140,7 +143,7 @@ public class FetchUpdateddata {
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                 if (response.body() != null) {
-                    mediaContentDao.insertSharedData(response.body().getData());
+                    mediaContentDao.insertSharedData(response.body().getData(), 0);
                 }
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.FETCH_MEDIA_SHARED + " Response :" + response.body());
             }
@@ -233,8 +236,6 @@ public class FetchUpdateddata {
             @Override
             public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Response :" + t.getMessage());
-                String groupUUIDString = getGroupUUID();
-                callMediaSharedApi(userId, groupUUIDString);
             }
         });
     }
@@ -243,14 +244,13 @@ public class FetchUpdateddata {
         String modifiedDate = databaseHandlerClass.getModifiedDate(DBConstants.CAT_TABLE_NAME);
         ApiInterface apiInterface = RetrofitClass.getAPIService();
         Logger.logD(TAG, "URL :" + RetrofitConstant.BASE_URL + RetrofitConstant.CATALOGUE_URL + " Param : userId:" + userId + " modified_date:" + modifiedDate);
-        apiInterface.catalogData(userId, "").enqueue(new Callback<MobileVerificationResponseModel>() {
+        apiInterface.catalogData(userId, modifiedDate).enqueue(new Callback<MobileVerificationResponseModel>() {
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.CATALOGUE_URL + " Response :" + response.body());
                 MobileVerificationResponseModel model = response.body();
                 if (model != null) {
                     catalogDao.insertDataToCatalogueTable(model.getCatalogueDetailsModel());
-
                 }
             }
 

@@ -79,8 +79,6 @@ public class MyContFragment extends Fragment {
         llMain = view.findViewById(R.id.llMain);
         tvError = view.findViewById(R.id.tvError);
 
-
-
         GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(manager);
         recyclerView.setHasFixedSize(true);
@@ -88,10 +86,8 @@ public class MyContFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setFocusable(false);
 
-        setViewAndDataForMember(1);
 
     }
-
 
     private void fetchDataFromDb() {
         MediaContentDao mediaContentDao = new MediaContentDao(getActivity());
@@ -105,16 +101,6 @@ public class MyContFragment extends Fragment {
             tvError.setVisibility(View.VISIBLE);
             llMain.setVisibility(View.GONE);
         }
-    }
-
-
-
-
-
-    private void setViewAndDataForMember(int i) {
-        progressBar.setVisibility(View.VISIBLE);
-        fetchDataFromDb();
-
     }
 
 }

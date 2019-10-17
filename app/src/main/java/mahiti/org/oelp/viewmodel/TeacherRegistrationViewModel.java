@@ -131,7 +131,7 @@ public class TeacherRegistrationViewModel extends AndroidViewModel{
     }
 
     private void checkDataAndProceed(LocationModel locationModel) {
-        if (locationModel.getStatus().equals(RetrofitConstant.STATUS_TRUE)){
+        if (locationModel.getStatus().equals(RetrofitConstant.STATUS_TRUE) && !locationModel.getLocationContent().isEmpty()){
             insertLong.setValue(locationDao.insertLocationDataToDB(locationModel));
             showProgresBar.setValue(false);
 

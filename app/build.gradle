@@ -70,7 +70,7 @@ android {
         abortOnError false
     }
 
-   /* subprojects {
+    subprojects {
 
         afterEvaluate {
             if (getPlugins().hasPlugin('android') ||
@@ -82,7 +82,7 @@ android {
             }
 
         }
-    }*/
+    }
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'

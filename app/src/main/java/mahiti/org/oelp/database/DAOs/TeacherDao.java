@@ -31,6 +31,8 @@ public class TeacherDao extends DatabaseHandlerClass {
 
 
     public long insertTeacherDataToDB(List<TeacherModel> teacherList) {
+        if(teacherList==null)
+            return 0;
         long insertLong = 0;
         initDatabase();
         deleteTeacherDataFromDB();

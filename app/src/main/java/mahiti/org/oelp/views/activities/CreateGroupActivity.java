@@ -212,7 +212,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
                 .setPositiveButton("Yes", (dialog, which) -> {
                     Intent i = new Intent(CreateGroupActivity.this, TeacherRegistrationActivity.class);
                     i.putExtra("UserDetails", userDetail);
-                    i.putExtra("ActivityType", 0);  // Activity Type 1 for CreateGroupActivity 0 for MobileLoginActivity
+                    i.putExtra("ActivityType", 1);  // Activity Type 1 for CreateGroupActivity 0 for MobileLoginActivity
                     startActivityForResult(i, 100);
                     overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
                     dialog.dismiss();
@@ -238,30 +238,55 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
 
     private boolean validateUser(UserDetailsModel userDetail) {
         boolean status=true;
-        if (userDetail.getName().isEmpty()) {
-            status = false;
-        }
-        if (userDetail.getMobile_number().isEmpty()) {
-            status = false;
-        }
 
-        if (userDetail.getSchool().isEmpty()) {
+        if (userDetail.getName()!=null) {
+            if (userDetail.getName().isEmpty()) {
+                status = false;
+            }
+        }else
             status = false;
-        }
 
-        if (userDetail.getStateName().isEmpty()) {
+        if (userDetail.getMobile_number()!=null) {
+            if (userDetail.getMobile_number().isEmpty()) {
+                status = false;
+            }
+        }else
             status = false;
-        }
 
-        if (userDetail.getDistrictname().isEmpty()) {
+        if (userDetail.getSchool()!=null) {
+            if (userDetail.getSchool().isEmpty()) {
+                status = false;
+            }
+        }else
             status = false;
-        }
-        if (userDetail.getBlockName().isEmpty()) {
+
+        if (userDetail.getStateName()!=null) {
+            if (userDetail.getStateName().isEmpty()) {
+                status = false;
+            }
+        }else
             status = false;
-        }
-        if (userDetail.getVillageName().isEmpty()) {
+
+        if (userDetail.getDistrictname()!=null) {
+            if (userDetail.getDistrictname().isEmpty()) {
+                status = false;
+            }
+        }else
             status = false;
-        }
+
+        if (userDetail.getBlockName()!=null) {
+            if (userDetail.getBlockName().isEmpty()) {
+                status = false;
+            }
+        }else
+            status = false;
+
+        if (userDetail.getVillageName()!=null) {
+            if (userDetail.getVillageName().isEmpty()) {
+                status = false;
+            }
+        }else
+            status = false;
 
         return status;
 
@@ -419,6 +444,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
             public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Response :" + t.getMessage());
                 progressBar.setVisibility(View.GONE);
+                onBackPressed();
             }
         });
     }
@@ -428,7 +454,6 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
             callApiForGroupList(userUUID);
         } else {
             Toast.makeText(this, body.getMessage(), Toast.LENGTH_SHORT).show();
-            onBackPressed();
         }
     }
 
@@ -456,6 +481,7 @@ public class CreateGroupActivity extends AppCompatActivity implements View.OnCli
             public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.GROUP_LIST_URL + " Response :" + t.getMessage());
                 progressBar.setVisibility(View.GONE);
+                onBackPressed();
             }
         });
 

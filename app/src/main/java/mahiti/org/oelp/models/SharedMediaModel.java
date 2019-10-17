@@ -40,11 +40,63 @@ public class SharedMediaModel {
     @Expose
     private String userName;
 
+    @SerializedName("global_access")
+    @Expose
+    private boolean globalAccess;
+
+    @SerializedName("modified_on")
+    @Expose
+    private String modifiedOn;
+
+    @SerializedName("hash_key")
+    @Expose
+    private String hashKey;
+
+    @SerializedName("active")
+    @Expose
+    private Integer active;
+
+    public boolean isGlobalAccess() {
+        return globalAccess;
+    }
+
+    public String getModifiedOn() {
+        return modifiedOn;
+    }
+
+    public void setModifiedOn(String modifiedOn) {
+        this.modifiedOn = modifiedOn;
+    }
+
+    public String getHashKey() {
+        return hashKey;
+    }
+
+    public void setHashKey(String hashKey) {
+        this.hashKey = hashKey;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
+    }
+
+    public boolean getGlobalAccess() {
+        return globalAccess;
+    }
+
+    public void setGlobalAccess(boolean globalAccess) {
+        this.globalAccess = globalAccess;
+    }
+
     private Integer syncStatus=0;  //syncStatus=1 (to Sync), syncStatus=0 (Synced)
 
     private Integer deleteStatus=1;  //deleteStatus=1 (to delete), deleteStatus=0 (Sync)
 
-    private int sharedGlobally;
+    private int sharedGloballySyncStatus;
 
     public Integer getSyncStatus() {
         return syncStatus;
@@ -62,12 +114,12 @@ public class SharedMediaModel {
         this.deleteStatus = deleteStatus;
     }
 
-    public int getSharedGlobally() {
-        return sharedGlobally;
+    public int getSharedGloballySyncStatus() {
+        return sharedGloballySyncStatus;
     }
 
-    public void setSharedGlobally(int sharedGlobally) {
-        this.sharedGlobally = sharedGlobally;
+    public void setSharedGloballySyncStatus(int sharedGloballySyncStatus) {
+        this.sharedGloballySyncStatus = sharedGloballySyncStatus;
     }
 
     public String getMediaUuid() {

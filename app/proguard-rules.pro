@@ -207,3 +207,9 @@
 }
 
 -keep class org.apache.** { *; }
+
+-keep class com.downloader.** {*;}
+
+ -keep class cz.msebera.android.httpclient.** { *; }
+ -keep class com.loopj.android.http.** { *; }
+

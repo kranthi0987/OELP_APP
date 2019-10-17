@@ -13,7 +13,6 @@ import java.util.List;
 import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
 import mahiti.org.oelp.models.SubmittedAnswerResponse;
-import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
 
 /**
@@ -30,6 +29,8 @@ public class SurveyResponseDao extends DatabaseHandlerClass {
 
 
     public void insertAnsweredQuestion(List<SubmittedAnswerResponse> list) {
+        if (list==null)
+            return;
 
         Gson gson = new Gson();
         int attempt = 0;
@@ -50,7 +51,7 @@ public class SurveyResponseDao extends DatabaseHandlerClass {
                 values.put(DBConstants.UNIT_UUID, response.getUnitUUID());
                 values.put(DBConstants.QA_DATA, responseData);
                 values.put(DBConstants.QA_PREVIEW_TEXT, "");
-                values.put(DBConstants.MODIFIED, response.getSubmissionDate());
+                values.put(DBConstants.SUBMISSION_DATE, response.getSubmissionDate());
                 if (response.getAttempts() == 0) {
                     attempt = getAttemptFromDb(response.getMediacontent(), 1);
                 }
@@ -111,7 +112,7 @@ public class SurveyResponseDao extends DatabaseHandlerClass {
             dataFetchQuery = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.QA_TABLENAME +
                     DBConstants.WHERE + DBConstants.SYNC_STATUS + DBConstants.EQUAL_TO + 1;
         } else {
-            dataFetchQuery = DBConstants.SELECT + DBConstants.ALL + DBConstants.COMMA + DBConstants.MAX + DBConstants.OPEN_BRACKET + DBConstants.MODIFIED + DBConstants.CLOSE_BRACKET + DBConstants.FROM + DBConstants.QA_TABLENAME +
+            dataFetchQuery = DBConstants.SELECT + DBConstants.ALL + DBConstants.COMMA + DBConstants.MAX + DBConstants.OPEN_BRACKET + DBConstants.SUBMISSION_DATE + DBConstants.CLOSE_BRACKET + DBConstants.FROM + DBConstants.QA_TABLENAME +
                     DBConstants.WHERE + DBConstants.QA_VIDEOID +
                     DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES + videoId + DBConstants.SINGLE_QUOTES;
         }
@@ -130,7 +131,7 @@ public class SurveyResponseDao extends DatabaseHandlerClass {
                     model.setUnitUUID(cursor.getString(cursor.getColumnIndex(DBConstants.UNIT_UUID)));
                     model.setServerString(cursor.getString(cursor.getColumnIndex(DBConstants.QA_DATA)));
                     model.setPreviewString(cursor.getString(cursor.getColumnIndex(DBConstants.QA_PREVIEW_TEXT)));
-                    model.setSubmissionDate(cursor.getString(cursor.getColumnIndex(DBConstants.MODIFIED)));
+                    model.setSubmissionDate(cursor.getString(cursor.getColumnIndex(DBConstants.SUBMISSION_DATE)));
                     model.setAttempts(cursor.getInt(cursor.getColumnIndex(DBConstants.ATTEMPT)));
                     String scorre;
                     scorre = cursor.getString(cursor.getColumnIndex(DBConstants.QA_SCORE));
@@ -158,7 +159,7 @@ public class SurveyResponseDao extends DatabaseHandlerClass {
     public SubmittedAnswerResponse getCount(String mediaUUID) {
         SubmittedAnswerResponse response = null;
         String query = DBConstants.SELECT + DBConstants.SCORE + DBConstants.COMMA + DBConstants.QA_TOTAL + DBConstants.COMMA
-                + DBConstants.ATTEMPT + DBConstants.COMMA + DBConstants.MAX + DBConstants.OPEN_BRACKET + DBConstants.MODIFIED + DBConstants.CLOSE_BRACKET +
+                + DBConstants.ATTEMPT + DBConstants.COMMA + DBConstants.MAX + DBConstants.OPEN_BRACKET + DBConstants.SUBMISSION_DATE + DBConstants.CLOSE_BRACKET +
                 DBConstants.FROM + DBConstants.QA_TABLENAME + DBConstants.WHERE + DBConstants.QA_VIDEOID + DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES +
                 mediaUUID + DBConstants.SINGLE_QUOTES;
         initDatabase();

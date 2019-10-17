@@ -53,12 +53,13 @@
                     android:layout_centerInParent="true" />
             </RelativeLayout>
 
-            <RelativeLayout
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
 
-                <com.google.android.material.tabs.TabLayout
+               <!-- <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -75,7 +76,57 @@
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/tabs"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+
+
+                <LinearLayout
+
+                    android:weightSum="2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RelativeLayout
+                        android:id="@+id/rlMembers"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/tvMember"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Members"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:layout_centerInParent="true"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlContributions"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/tvContribution"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Contributions"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:layout_centerInParent="true"/>
+                    </RelativeLayout>
+                </LinearLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                <FrameLayout
+                    android:id="@+id/fragment_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
                 <ProgressBar
                     android:visibility="gone"
@@ -87,9 +138,10 @@
                     android:layout_centerInParent="true"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="8dp"/>
+                </RelativeLayout>
 
 
-            </RelativeLayout>
+            </LinearLayout>
 
         </LinearLayout>
 

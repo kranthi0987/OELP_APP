@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,8 +27,10 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
+import ezvcard.property.Related;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.DAOs.MediaContentDao;
 import mahiti.org.oelp.databinding.ActivityChatAndContributionBinding;
@@ -57,8 +60,8 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     private FragmentManager fragManager;
     private ListRefresh refresh;
 
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
+//    private ViewPager viewPager;
+//    private TabLayout tabLayout;
     private ViewPagerAdapter adapter;
     private MySharedPref sharedPref;
     private int userType;
@@ -66,12 +69,17 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     private String groupName;
     private String usertype;
     private TextView tvTitle;
+    private TextView tvMember;
+    private TextView tvContribution;
+    private RelativeLayout rlMembers;
+    private RelativeLayout rlContributions;
     ChatAndContributionViewModel viewModel;
     ActivityChatAndContributionBinding binding;
     private ProgressBar progressBar;
     private String TAG = ChatAndContributionActivity.class.getSimpleName();
     private CallAPIServicesData servicesData;
     private AlertDialog alertDialogPop;
+    private boolean membersClick = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +92,13 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
 
         tvTitle = binding.tvTitle;
+        tvMember = binding.tvMember;
+        tvContribution = binding.tvContribution;
+        rlMembers = binding.rlMembers;
+        rlContributions = binding.rlContributions;
         progressBar = binding.progressBar;
+
+
 
         sharedPref = new MySharedPref(this);
         userType = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
@@ -98,6 +112,24 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
         getIntentValues();
         initViews();
+        setFragment(new MembersFragment());
+        setTextColor(membersClick);
+
+        rlMembers.setOnClickListener(view -> {
+            if (!membersClick) {
+                setFragment(new MembersFragment());
+                setTextColor(!membersClick);
+                membersClick=true;
+            }
+
+        });
+        rlContributions.setOnClickListener(view -> {
+            if (membersClick) {
+                setFragment(new ContributionsFragment());
+                setTextColor(!membersClick);
+                membersClick = false;
+            }
+        });
 
 
         viewModel.getListOfImageToDownload().observe(this, imageListToDownload -> {
@@ -107,6 +139,15 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
         });
 
 
+    }
+    public void setTextColor(boolean membersClicks){
+        if (membersClicks){
+            tvMember.setTextColor(getResources().getColor(R.color.black));
+            tvContribution.setTextColor(getResources().getColor(R.color.grey));
+        }else {
+            tvMember.setTextColor(getResources().getColor(R.color.grey));
+            tvContribution.setTextColor(getResources().getColor(R.color.black));
+        }
     }
 
 
@@ -139,17 +180,17 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     }
 
     private void initViews() {
-        viewPager = findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+//        viewPager = findViewById(R.id.viewpager);
+//        setupViewPager(viewPager);
 
-        tabLayout = findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+//        tabLayout = findViewById(R.id.tabs);
+//        tabLayout.setupWithViewPager(viewPager);
 
         /*if (sharedPref.readBoolean(RetrofitConstant.FETCH_MEDIA_SHARED, false)) {
             progressBar.setVisibility(View.VISIBLE);
         }*/
 
-        viewPager.setOnPageChangeListener(this);
+//        viewPager.setOnPageChangeListener(this);
 
         /*viewModel.insertLong.observe(this, aLong -> {
             if (aLong != null) {
@@ -242,6 +283,8 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
             tvSharedOn.setText(mediaModel.getSubmissionTime());
         }
 
+
+
         btnClose.setOnClickListener(view -> {
             alertDialogPop.dismiss();
         });
@@ -330,7 +373,8 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
         String userUUId = new MySharedPref(this).readString(Constants.USER_ID, "");
         if (videoAvailable(fileModel)) {
-            DownloadUtility.playVideo(this, fileModel.getFileUrl(), fileModel.getFileName(), userUUId, fileModel.getUuid(), "", fileModel.getDcfId(), "");
+            String filePath = AppUtils.completePathInSDCard(Constants.VIDEO)+AppUtils.getFileName(fileModel.getFileUrl());
+            DownloadUtility.playVideo(this, filePath, fileModel.getFileName(), userUUId, fileModel.getUuid(), "", fileModel.getDcfId(), "");
         } else {
             downloadVideo(fileModel);
         }
@@ -365,16 +409,24 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
                 String userUUID = new MySharedPref(this).readString(Constants.USER_ID, "");
                 DownloadUtility.playVideo(this, savedPath, name, userUUID, uuid, "", dcfId, unitUUID);
             }
-        }else {
+        }/*else {
             setupViewPager(viewPager);
-        }
+        }*/
 
+    }
+
+    public void setFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragment_content, fragment).addToBackStack(null).commitAllowingStateLoss();
     }
 
     public void setGroupName(String groupName) {
         if (groupName!=null && !groupName.isEmpty())
             tvTitle.setText(groupName);
     }
+
+
 
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

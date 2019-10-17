@@ -125,7 +125,7 @@ public class AppIntroActivity extends AppCompatActivity {
     private void makeUserLogout() {
         new MySharedPref(this).deleteAllData();
         Intent intent = new Intent(AppIntroActivity.this, MobileLoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
         AppIntroActivity.this.finish();
         startActivity(intent);
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);

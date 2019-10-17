@@ -33,6 +33,8 @@ public class GroupDao extends DatabaseHandlerClass {
     }
 
     public long insertDataToGroupsTable(List<GroupModel> groups) {
+        if (groups == null)
+            return 0;
         long insertData = 0;
         initDatabase();
         List<String> groupUUIDList = new ArrayList<>();
@@ -82,7 +84,7 @@ public class GroupDao extends DatabaseHandlerClass {
             }
         } catch (Exception e) {
             Logger.logE(TAG, "getSubject", e);
-        }finally {
+        } finally {
             closeCursor(cursor);
         }
         return groupList1;

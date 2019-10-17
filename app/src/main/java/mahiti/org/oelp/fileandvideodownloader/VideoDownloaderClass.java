@@ -64,7 +64,9 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
 
 
     public VideoDownloaderClass(Context context, String baseURl, String videoSavingBasePath, List<FileModel> fileModelList, int type, String unitUUID) {
+/*
         PRDownloader.initialize(context);
+*/
         this.context = context;
         this.baseURl = baseURl;
         this.unitUUID = unitUUID;
@@ -277,10 +279,14 @@ public class VideoDownloaderClass extends AsyncTask<Void, String, String> {
     }
 
     private void dismissNotification(boolean isComplete) {
-        if (isComplete)
-            builder.setContentText(context.getString(R.string.down_comp));
-        builder.setProgress(0, 0, false);
-        notificationManager.notify(videoId, builder.build());
+        if(builder!=null) {
+            if (isComplete)
+                builder.setContentText(context.getString(R.string.down_comp));
+            else
+                builder.setContentText("Download Failed");
+            builder.setProgress(0, 0, false);
+            notificationManager.notify(videoId, builder.build());
+        }
     }
 
 
