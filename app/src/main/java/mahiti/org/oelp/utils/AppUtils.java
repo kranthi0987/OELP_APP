@@ -77,7 +77,7 @@ public class AppUtils {
 //    private static KProgressHUD hud;
 
 //    public static void showProgressDialog(Context context) {
-//
+//simulateProgressUpdate
 //        hud = KProgressHUD.create(context)
 //                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
 //                .setAnimationSpeed(2)

@@ -488,8 +488,6 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
 
         videoDecryptionDb.mediaTrackerUpdateDb(mediaTracker, mediaUUID);
 
-
-
         boolean loginType = new MySharedPref(this).readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER;
 
         new MySharedPref(VideoViewActivity.this).writeBoolean(Constants.VALUE_CHANGED, true);
@@ -499,6 +497,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         /*
          * Checking Login Type if Trainer there is no Test Section If Teacher there is Test Section
          * */
+
         takeRetest = getIntent().getBooleanExtra("takeRetest", true);
         /*If login type is teacher will move to next Activity else it will back from here*/
         if (loginType) {

@@ -241,5 +241,11 @@
     <orderEntry type="module" module-name="android-transcoder" />
     <orderEntry type="module" module-name="fullscreenvideoview" />
     <orderEntry type="module" module-name="xmpp-addr" />
+    <orderEntry type="module" module-name="android-transcoder" />
+    <orderEntry type="module" module-name="fullscreenvideoview" />
+    <orderEntry type="module" module-name="xmpp-addr" />
+    <orderEntry type="module" module-name="android-transcoder" />
+    <orderEntry type="module" module-name="fullscreenvideoview" />
+    <orderEntry type="module" module-name="xmpp-addr" />
   </component>
 </module>

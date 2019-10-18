@@ -56,9 +56,6 @@ public class SharedMediaModel {
     @Expose
     private Integer active;
 
-    public boolean isGlobalAccess() {
-        return globalAccess;
-    }
 
     public String getModifiedOn() {
         return modifiedOn;
