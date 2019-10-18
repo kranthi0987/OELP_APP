@@ -202,7 +202,7 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
             @Override
             public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
                 if (response.body() != null) {
-                    new MediaContentDao(getActivity()).insertSharedData(response.body().getData());
+                    new MediaContentDao(getActivity()).insertSharedData(response.body().getData(), 0);
                     fetchDataFromDb(switchContribution.isChecked());
                 }
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.FETCH_MEDIA_SHARED + " Response :" + response.body());
@@ -247,7 +247,7 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
         } catch (Exception ex) {
             Logger.logE(TAG, ex.getMessage(), ex);
         }
-        if (!mediaFile.exists()) {
+        if (mediaFile!=null && !mediaFile.exists()) {
 
             Toast.makeText(getActivity(), "File not found", Toast.LENGTH_SHORT).show();
             return;
@@ -433,9 +433,10 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
     }
 
     public String getPath(Uri uri) {
-        int currentVersion = android.os.Build.VERSION.SDK_INT;
         String path = null;
-        if (currentVersion >= Build.VERSION_CODES.O) {
+        int currentVersion = android.os.Build.VERSION.SDK_INT;
+
+        /*if (currentVersion >= Build.VERSION_CODES.O) {
             path = AppUtils.getRealPathFromURI_OreoAndAbove(uri);
         } else {
             try {
@@ -443,7 +444,17 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
+        }*/
+        if(currentVersion>Build.VERSION_CODES.KITKAT)
+        {
+            // Android OS above sdk version 19.
+            path = AppUtils.getUriRealPathAboveKitkat(getActivity(), uri);
+        }else
+        {
+            // Android OS below sdk version 19
+            path = AppUtils.getImageRealPath(getActivity().getContentResolver(), uri, null);
         }
+
         return path;
     }
 
@@ -568,10 +579,10 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
 
         /*
          * Adding new data to list to reflect in view*/
-        sharedMediaList.add(data);
-       /* adapter = new MyContAdapter(getActivity(), sharedMediaList);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(manager);*/
+        sharedMediaList.add(0,data);
+//       adapter = new MyContAdapter(getActivity(), sharedMediaList);
+//        recyclerView.setAdapter(adapter);
+        /*recyclerView.setLayoutManager(manager);*/
         adapter.setList(sharedMediaList);
         insertData(model);
     }
@@ -580,7 +591,7 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
     private void insertData(MobileVerificationResponseModel body) {
         if (body.getData() != null && !body.getData().isEmpty()) {
             MediaContentDao mediaContentDao = new MediaContentDao(getActivity());
-            mediaContentDao.insertSharedData(body.getData());
+            mediaContentDao.insertSharedData(body.getData(), 1);
             sharedPref.writeBoolean(Constants.MEDIACONTENTCHANGE, true);
         }
     }

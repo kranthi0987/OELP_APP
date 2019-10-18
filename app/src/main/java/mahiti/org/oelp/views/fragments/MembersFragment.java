@@ -65,13 +65,14 @@ public class MembersFragment extends Fragment {
     }
 
     private void checkInternetAndCAllApi() {
-        progressBar.setVisibility(View.VISIBLE);
+//        progressBar.setVisibility(View.VISIBLE);
+        fetchTeacherList();
         if (CheckNetwork.checkNet(getActivity())) {
             callApiForTeacherList(userUUiD);
-        } else {
-            fetchTeacherList();
         }
     }
+
+
 
     private void callApiForTeacherList(String userId) {
         ApiInterface apiInterface = RetrofitClass.getAPIService();
@@ -111,7 +112,7 @@ public class MembersFragment extends Fragment {
         teacherList = teacherDao.getTeachers(groupUUID, 1);
         setDataToAdapter(teacherList);
 //        setDataToAdapter(teacherList);
-        progressBar.setVisibility(View.GONE);
+//        progressBar.setVisibility(View.GONE);
     }
 
     private void setDataToAdapter(List<TeacherModel> teacherList) {

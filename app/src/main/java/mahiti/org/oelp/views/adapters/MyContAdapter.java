@@ -16,7 +16,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.interfaces.SharedMediaClickListener;
@@ -56,10 +55,12 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
 
         viewHolder.tvMediaName.setText(model.getMediaTitle());
         viewHolder.tvUploadedBy.setText(model.getUserName());
+        viewHolder.roundedImageView.setImageDrawable(null);
         if (model.getMediaType().equals("3")) {
             viewHolder.ivPlayButton.setVisibility(View.VISIBLE);
             viewHolder.roundedImageView.setBackgroundColor(context.getResources().getColor(R.color.blackOpaque));
         } else {
+            viewHolder.ivPlayButton.setVisibility(View.GONE);
             showUIForImage(model.getMediaFile(), viewHolder);
         }
 
@@ -69,7 +70,7 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
 
         });
 
-        if (model.getSharedGlobally()==1)
+        if (model.getGlobalAccess())
             viewHolder.ivTickMark.setVisibility(View.VISIBLE);
         else
             viewHolder.ivTickMark.setVisibility(View.GONE);
@@ -82,6 +83,9 @@ public class MyContAdapter extends RecyclerView.Adapter<MyContAdapter.ViewHolder
     }
 
     public void showUIForImage(String path, ViewHolder viewHolder) {
+
+        viewHolder.roundedImageView.setImageDrawable(null);
+
         if (path == null)
             return;
         String fileName = AppUtils.getFileName(path);

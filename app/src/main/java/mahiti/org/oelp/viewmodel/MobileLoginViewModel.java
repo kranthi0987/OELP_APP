@@ -99,18 +99,22 @@ public class MobileLoginViewModel extends AndroidViewModel {
                 Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.MOBILE_VALIDATION_URL + " Response :" + response.body());
 
                 if (response.body() != null) {
-                    MobileVerificationResponseModel model = response.body();
-                    model.setmAction(new Action(Action.STATUS_TRUE));
-                    sharedPref.writeString(Constants.MOBILE_NO_New, mobileNo);
+                    if (response.body().getStatus()==2) {
+                        MobileVerificationResponseModel model = response.body();
+                        model.setmAction(new Action(Action.STATUS_TRUE));
+                        sharedPref.writeString(Constants.MOBILE_NO_New, mobileNo);
 
-                    if (!model.getUserDetails().getUserid().equals(Constants.USER_INVALID)) {
+                        if (!model.getUserDetails().getUserid().equals(Constants.USER_INVALID)) {
 
-                        saveUserDataToPref(model.getUserDetails());
-                        if (!model.getUserDetails().getUserGroup().isEmpty())
-                            saveUserIDAndUserType(model.getUserDetails().getUserid(), model.getUserDetails().getIsTrainer(), model.getUserDetails().getUserGroup().toString());
-                    }
-                    data.setValue(model);
+                            saveUserDataToPref(model.getUserDetails());
+                            if (!model.getUserDetails().getUserGroup().isEmpty())
+                                saveUserIDAndUserType(model.getUserDetails().getUserGroup().toString());
+                        }
+                        data.setValue(model);
+                    }else
+                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     showProgresBar.setValue(false);
+
                 } else {
                     MobileVerificationResponseModel model = new MobileVerificationResponseModel(2,
                             context.getResources().getString(R.string.SOMETHING_WRONG));
@@ -134,9 +138,7 @@ public class MobileLoginViewModel extends AndroidViewModel {
 
     }
 
-    private void saveUserIDAndUserType(String userid, Integer isTrainer, String groupUUIDList) {
-        sharedPref.writeString(Constants.USER_ID, userid);
-        sharedPref.writeInt(Constants.USER_TYPE, isTrainer);
+    private void saveUserIDAndUserType(String groupUUIDList) {
         sharedPref.writeString(Constants.GROUP_UUID_LIST, groupUUIDList);
     }
 
@@ -150,6 +152,10 @@ public class MobileLoginViewModel extends AndroidViewModel {
                 obj.put("blockIds", userDetails.getBlockIds());
                 sharedPref.writeString(Constants.USER_DETAILS, obj.toString());
                 sharedPref.writeString(Constants.USER_NAME, userDetails.getName());
+                sharedPref.writeString(Constants.USER_ID, userDetails.getUserid());
+                sharedPref.writeInt(Constants.USER_TYPE, userDetails.getIsTrainer());
+
+
             } catch (Exception ex) {
                 Logger.logE(TAG, ex.getMessage(), ex);
             }

@@ -30,8 +30,10 @@ public class CatalogDao extends DatabaseHandlerClass {
         super(mContext);
     }
 
-    public Long insertDataToCatalogueTable(List<CatalogueDetailsModel> catalogueDetailsModel) {
-        deleteAllDataFromDB(1);
+    public long insertDataToCatalogueTable(List<CatalogueDetailsModel> catalogueDetailsModel) {
+        if (catalogueDetailsModel==null)
+            return 0;
+//        deleteAllDataFromDB(1);
         long insertLong = 0;
 
         initDatabase();
@@ -50,7 +52,7 @@ public class CatalogDao extends DatabaseHandlerClass {
                 if (detailsModel.getParent() != null)
                     parent_uuis = detailsModel.getParent();
                 values.put(DBConstants.PARENT, parent_uuis);
-                values.put(DBConstants.MODIFIED, detailsModel.getModified());
+                values.put(DBConstants.SUBMISSION_DATE, detailsModel.getModified());
                 values.put(DBConstants.ICON_PATH, detailsModel.getIcon());
                 values.put(DBConstants.ICON_TYPE, detailsModel.getIconType());
                 values.put(DBConstants.MEDIA_TYPE, detailsModel.getContType());
@@ -107,7 +109,7 @@ public class CatalogDao extends DatabaseHandlerClass {
 
                     catalogueDetailsModel.setParent(cursor.getString(cursor.getColumnIndex(DBConstants.PARENT)));
                     catalogueDetailsModel.setDcfid(cursor.getInt(cursor.getColumnIndex(DBConstants.DCF)));
-                    catalogueDetailsModel.setModified(cursor.getString(cursor.getColumnIndex(DBConstants.MODIFIED)));
+                    catalogueDetailsModel.setModified(cursor.getString(cursor.getColumnIndex(DBConstants.SUBMISSION_DATE)));
                     catalogueDetailsModel.setIcon(cursor.getString(cursor.getColumnIndex(DBConstants.ICON_PATH)));
                     catalogueDetailsModel.setIconType(cursor.getString(cursor.getColumnIndex(DBConstants.ICON_TYPE)));
                     catalogueDetailsModel.setContType(cursor.getString(cursor.getColumnIndex(DBConstants.MEDIA_TYPE)));

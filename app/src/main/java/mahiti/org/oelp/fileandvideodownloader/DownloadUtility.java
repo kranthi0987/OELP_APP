@@ -194,7 +194,6 @@ public class DownloadUtility {
     public static void playVideo(Activity activity, String path, String vName, String userId, String mediaUUID, String sectionUUID, int dcfId, String unitUUID) {
         try {
 
-//            File f = new File(AppUtils.completePathInSDCard(Constants.VIDEO) + File.separator + AppUtils.getFileName(path));
             File f = new File(path);
             Logger.logD(TAG, " complete video path : " + f);
             if (f.exists()) {

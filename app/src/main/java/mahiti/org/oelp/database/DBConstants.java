@@ -74,10 +74,12 @@ public class DBConstants {
     public static final String MEDIA_STATUS_TABLE = "mediaStatus";
     public static final String USER_NAME = "username";
     public static final String USER_UUID = "userUUID";
-    public static final String SHARED_GLOBALLY = "sharedGlobally";
+    public static final String SHARED_GLOBALLY_SYNC_STATUS = "shared_globally_sync_status";
     public static final String COUNT = " count ";
     public static final String MEMBERS_COUNT = "membersCount";
     public static final String DELETE_MEDIA = "deleteMedia";
+    public static final String IS_GLOBAL_SHARED = "isGlobalShared";
+    public static final String HASH_KEY = "hash_key";
     public static String EQUAL_TO=" = ";
     public static String NOT_EQUAL_TO=" != ";
     public static String EMPTY="''";
@@ -96,7 +98,8 @@ public class DBConstants {
     public static final String ID = "id";
     public static final String ACTIVE = "active";
     public static final String CREATED = "created";
-    public static final String MODIFIED = "modified";
+    public static final String SUBMISSION_DATE = "submission_date";
+    public static final String MODIFIED_DATE = "modified_date";
     public static final String CT_NAME = "name";
     public static final String BOUNDARY_LEVEL_TYPE = "boundary_level_type";
     public static final String PARENT = "parent";

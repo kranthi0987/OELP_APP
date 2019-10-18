@@ -49,7 +49,7 @@ public class ChoicesDao extends DatabaseHandlerClass {
                     questionChoicesModel.setActive(cursor.getInt(cursor.getColumnIndex(DBConstants.ACTIVE)));
                     Boolean isCorect = cursor.getString(cursor.getColumnIndex(DBConstants.IS_CORRECT)).equalsIgnoreCase("true");
                     questionChoicesModel.setCorrect(isCorect);
-                    questionChoicesModel.setModifiedDate(cursor.getString(cursor.getColumnIndex(DBConstants.MODIFIED)));
+                    questionChoicesModel.setModifiedDate(cursor.getString(cursor.getColumnIndex(DBConstants.SUBMISSION_DATE)));
                     questionChoicesModel.setAnswerExplaination(cursor.getString(cursor.getColumnIndex(DBConstants.ANS_EXPLAIN)));
                     questionChoicesModel.setScore(cursor.getInt(cursor.getColumnIndex(DBConstants.SCORE)));
 
@@ -68,6 +68,8 @@ public class ChoicesDao extends DatabaseHandlerClass {
     }
 
     public void insertDatatoQuestionChoicesTable(List<QuestionChoicesModel> questionChoicesModelList) {
+        if (questionChoicesModelList==null)
+            return;
         initDatabase();
         database.beginTransaction();
         try {
@@ -84,7 +86,7 @@ public class ChoicesDao extends DatabaseHandlerClass {
                 contentValues.put(DBConstants.CHOICE_TEXT, questionModel.getText());
                 contentValues.put(DBConstants.Q_ID, questionModel.getQuestionId());
                 contentValues.put(DBConstants.ACTIVE, questionModel.getActive());
-                contentValues.put(DBConstants.MODIFIED, questionModel.getModifiedDate());
+                contentValues.put(DBConstants.SUBMISSION_DATE, questionModel.getModifiedDate());
                 contentValues.put(DBConstants.ANS_EXPLAIN, questionModel.getAnswerExplaination());
                 contentValues.put(DBConstants.SCORE, questionModel.getScore());
                 Log.d(TAG, QUESTION_CHOICES_TABLE + contentValues.toString());

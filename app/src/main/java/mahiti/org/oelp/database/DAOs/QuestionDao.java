@@ -30,6 +30,8 @@ public class QuestionDao extends DatabaseHandlerClass {
     }
 
     public void insertDatatoQuestionTable(List<QuestionModel> questionModelList) {
+        if (questionModelList==null)
+            return;
         initDatabase();
         database.beginTransaction();
         try {
@@ -40,7 +42,7 @@ public class QuestionDao extends DatabaseHandlerClass {
                 contentValues.put(DBConstants.Q_TEXT, questionModel.getText());
                 contentValues.put(DBConstants.Q_HELP_TEXT, questionModel.getHelpText());
                 contentValues.put(DBConstants.ACTIVE, questionModel.getActive());
-                contentValues.put(DBConstants.MODIFIED, questionModel.getModified());
+                contentValues.put(DBConstants.SUBMISSION_DATE, questionModel.getModified());
                 contentValues.put(DBConstants.DCF, questionModel.getDcf());
                 Log.d(TAG, QUESTION_TABLE + contentValues.toString());
                 database.insertWithOnConflict(QUESTION_TABLE, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
@@ -72,7 +74,7 @@ public class QuestionDao extends DatabaseHandlerClass {
                     questionModel.setText(cursor.getString(cursor.getColumnIndex(DBConstants.Q_TEXT)));
                     questionModel.setHelpText(cursor.getString(cursor.getColumnIndex(DBConstants.Q_HELP_TEXT)));
                     questionModel.setActive(cursor.getInt(cursor.getColumnIndex(DBConstants.ACTIVE)));
-                    questionModel.setModified(cursor.getString(cursor.getColumnIndex(DBConstants.MODIFIED)));
+                    questionModel.setModified(cursor.getString(cursor.getColumnIndex(DBConstants.SUBMISSION_DATE)));
                     questionModel.setDcf(cursor.getInt(cursor.getColumnIndex(DBConstants.DCF)));
                     Logger.logD(TAG, "Data fetched from " + DBConstants.QUESTION_TABLE + questionModel.toString());
                     questionModelsList.add(questionModel);

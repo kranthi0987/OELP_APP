@@ -67,12 +67,8 @@ public class HomeViewModel extends AndroidViewModel {
             updateDeleteMedia();
             updateGlobalShareMedia();
             postQA();
+            getListOfImageFromDb();
         }
-
-
-
-        getListOfImageFromDb();
-//        getListOfImageFromMediaTable();
 
         userType.setValue(sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER));
 

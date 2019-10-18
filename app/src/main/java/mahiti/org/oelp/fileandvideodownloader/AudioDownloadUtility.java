@@ -58,7 +58,9 @@ public class AudioDownloadUtility extends AsyncTask<Void, String, String> {
 
 
     public AudioDownloadUtility(Context context, String baseURl, String videoSavingBasePath, List<FileModel> fileModelList, int type) {
+/*
         PRDownloader.initialize(context);
+*/
         this.context = context;
         this.baseURl = baseURl;
         this.videoSavingBasePath = videoSavingBasePath;

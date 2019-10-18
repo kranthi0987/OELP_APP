@@ -56,7 +56,8 @@ public class TeacherInfoFragment extends Fragment {
 
         teacherName.setText(teacherModelList.get(0).getName());
         teacherPhoneNumber.setText(teacherModelList.get(0).getMobileNumber());
-        teacherDistrict.setText(teacherModelList.get(0).getBlockName());
+//        String districtname =
+//        teacherDistrict.setText(teacherModelList.get(0).getBlockName());
         teacherBlock.setText(teacherModelList.get(0).getBlockName());
         teacherNoContributions.setText("0");
         teacherGroupName.setText(teacherModelList.get(0).getGroupName());

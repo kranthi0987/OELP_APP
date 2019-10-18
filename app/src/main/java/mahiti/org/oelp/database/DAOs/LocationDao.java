@@ -29,7 +29,10 @@ public class LocationDao extends DatabaseHandlerClass {
     }
 
     public long insertLocationDataToDB(LocationModel model) {
+
         List<LocationContent> locationContentList = model.getLocationContent();
+        if (locationContentList==null)
+            return 0;
         long insertLong = 0;
 
         initDatabase();
@@ -40,7 +43,7 @@ public class LocationDao extends DatabaseHandlerClass {
                 values.put(DBConstants.ID, locationContentData.getId());
                 values.put(DBConstants.ACTIVE, locationContentData.getActive());
                 values.put(DBConstants.CREATED, locationContentData.getCreated());
-                values.put(DBConstants.MODIFIED, locationContentData.getModified());
+                values.put(DBConstants.SUBMISSION_DATE, locationContentData.getModified());
                 values.put(DBConstants.CT_NAME, locationContentData.getName());
                 values.put(DBConstants.BOUNDARY_LEVEL_TYPE, locationContentData.getBoundaryLevelType());
                 values.put(DBConstants.PARENT, locationContentData.getParent());
@@ -77,7 +80,7 @@ public class LocationDao extends DatabaseHandlerClass {
                             cursor.getString(cursor.getColumnIndex(DBConstants.CREATED)),
                             cursor.getString(cursor.getColumnIndex(DBConstants.CT_NAME)),
                             cursor.getInt(cursor.getColumnIndex(DBConstants.ACTIVE)),
-                            cursor.getString(cursor.getColumnIndex(DBConstants.MODIFIED)),
+                            cursor.getString(cursor.getColumnIndex(DBConstants.SUBMISSION_DATE)),
                             cursor.getInt(cursor.getColumnIndex(DBConstants.ID)));
                     locationContentList.add(locationContent);
                     locationList.setValue(locationContentList);

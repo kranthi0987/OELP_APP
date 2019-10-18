@@ -42,6 +42,7 @@ public class AppIntroVideoActivity extends AppCompatActivity {
         rlNextButton.setOnClickListener(view -> {
             Intent intent = new Intent(AppIntroVideoActivity.this, HomeActivity.class);
             intent.putExtra("UnitClick", true);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
             startActivity(intent);
             AppIntroVideoActivity.this.finish();
         });

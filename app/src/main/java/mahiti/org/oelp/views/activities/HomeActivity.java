@@ -1,6 +1,7 @@
 package mahiti.org.oelp.views.activities;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -22,6 +23,7 @@ import mahiti.org.oelp.fileandvideodownloader.OnMediaDownloadListener;
 import mahiti.org.oelp.interfaces.ItemClickListerner;
 import mahiti.org.oelp.models.CatalogueDetailsModel;
 import mahiti.org.oelp.models.GroupModel;
+import mahiti.org.oelp.services.NetworkChangeReceiver;
 import mahiti.org.oelp.services.RetrofitConstant;
 import mahiti.org.oelp.services.XmppConnectionService;
 import mahiti.org.oelp.utils.AppUtils;
@@ -44,6 +46,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
     private MySharedPref sharedPref;
     private int clicked = 0;
     private List<GroupModel> groupModelList;
+    private NetworkChangeReceiver networkChangeReceiver;
 
 
     @Override
@@ -135,6 +138,7 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
             }
         }
 
+//        initBroadCast();
     }
 
     private void moveTONextActivity(String groupName, String groupUUID) {
@@ -370,5 +374,18 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
             homeViewModel.apiCountMutable.setValue(0);
             groupsFragment.setValueToAdapter();
         }
+    }
+
+    private void initBroadCast() {
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkChangeReceiver, filter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        unregisterReceiver(networkChangeReceiver);
     }
 }

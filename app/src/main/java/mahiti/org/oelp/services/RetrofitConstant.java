@@ -5,6 +5,14 @@ package mahiti.org.oelp.services;
  */
 public class RetrofitConstant {
 
+    private RetrofitConstant() {
+        throw new IllegalStateException("RetrofitConstant Class");
+    }
+
+
+//    public static final String BASE_URL = "https://oelpbackend.mahiti.org";
+    public static final String BASE_URL = "http://oelpbackenddemo.mahiti.org";
+//    public static final String BASE_URL = "https://oelpstaging.mahiti.org";
 
     public static final String QUESTION_CHOICES_LIST_URL = "/api/choice-list/";
     public static final String GROUP_LIST_URL = "/api/group-list/";
@@ -16,14 +24,6 @@ public class RetrofitConstant {
     public static final String SHARED_MEDIA_GLOBALLY = "/api/share/media/globally/";
     public static final String DELETE_SHARED_MEDIA = "/api/share/media/delete/";
     public static final String UPLAOD_MEDIA_SHARED = "/api/share/media/upload/";
-
-    private RetrofitConstant() {
-        throw new IllegalStateException("RetrofitConstant Class");
-    }
-
-
-//    public static final String BASE_URL = "https://oelpbackend.mahiti.org";
-    public static final String BASE_URL = "http://oelpbackenddemo.mahiti.org";
     public static final String BASE_URL_VIDEO = "https://oelp.mahiti.org/";
     public static final String OTP_VALIDATION_URL = "/api/otp-validation/";
     public static final String MOBILE_VALIDATION_URL = "/api/mobile-validation/";
