@@ -77,9 +77,9 @@ import mahiti.org.oelp.utils.MySharedPref;
 import mahiti.org.oelp.utils.PermissionUtils;
 import mahiti.org.oelp.utils.Resolver;
 import mahiti.org.oelp.utils.SignupUtils;
-import mahiti.org.oelp.utils.TorServiceUtils;
 import mahiti.org.oelp.utils.UIHelper;
 import mahiti.org.oelp.utils.XmppUri;
+import mahiti.org.oelp.views.activities.HomeActivity;
 import mahiti.org.oelp.xml.Element;
 import mahiti.org.oelp.xmpp.OnKeyStatusUpdated;
 import mahiti.org.oelp.xmpp.OnUpdateBlocklist;
@@ -150,15 +150,15 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
             }
 
             XmppConnection connection = mAccount == null ? null : mAccount.getXmppConnection();
-            final boolean startOrbot = mAccount != null && mAccount.getStatus() == Account.State.TOR_NOT_AVAILABLE;
-            if (startOrbot) {
-                if (TorServiceUtils.isOrbotInstalled(EditAccountActivity.this)) {
-                    TorServiceUtils.startOrbot(EditAccountActivity.this, REQUEST_ORBOT);
-                } else {
-                    TorServiceUtils.downloadOrbot(EditAccountActivity.this, REQUEST_ORBOT);
-                }
-                return;
-            }
+//            final boolean startOrbot = mAccount != null && mAccount.getStatus() == Account.State.TOR_NOT_AVAILABLE;
+//            if (startOrbot) {
+//                if (TorServiceUtils.isOrbotInstalled(EditAccountActivity.this)) {
+//                    TorServiceUtils.startOrbot(EditAccountActivity.this, REQUEST_ORBOT);
+//                } else {
+//                    TorServiceUtils.downloadOrbot(EditAccountActivity.this, REQUEST_ORBOT);
+//                }
+//                return;
+//            }
             if (inNeedOfSaslAccept()) {
                 mAccount.setKey(Account.PINNED_MECHANISM_KEY, String.valueOf(-1));
                 if (!xmppConnectionService.updateAccount(mAccount)) {
@@ -281,6 +281,7 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
                 mAccount = new Account(jid.asBareJid(), password);
                 mAccount.setPort(numericPort);
                 mAccount.setHostname(hostname);
+                mAccount.setDisplayName(pref.readString(Constants.USER_NAME, ""));
                 mAccount.setOption(Account.OPTION_USETLS, true);
                 mAccount.setOption(Account.OPTION_USECOMPRESSION, true);
                 mAccount.setOption(Account.OPTION_REGISTER, registerNewAccount);
@@ -295,7 +296,10 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
                 updateAccountInformation(true);
             }
             refreshUiReal();
+            onEditYourNameClicked();
         }
+
+
     };
     private final OnClickListener mCancelButtonClickListener = new OnClickListener() {
 
@@ -314,9 +318,7 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
 
     public void refreshUiReal() {
         invalidateOptionsMenu();
-        if (mAccount != null
-                && mAccount.getStatus() != Account.State.ONLINE
-                && mFetchingAvatar) {
+        if (mAccount != null && mAccount.getStatus() != Account.State.ONLINE && mFetchingAvatar) {
             Intent intent = new Intent(this, StartConversationActivity.class);
             StartConversationActivity.addInviteUri(intent, getIntent());
             startActivity(intent);
@@ -329,6 +331,7 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
             updateAccountInformation(false);
         }
         updateSaveButton();
+
     }
 
     private void next() {
@@ -535,13 +538,15 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
         } else if (mAccount != null && mAccount.getStatus() == Account.State.DISABLED && !mInitMode) {
             this.binding.saveButton.setEnabled(true);
             this.binding.saveButton.setText(R.string.enable);
-        } else if (torNeedsInstall(mAccount)) {
-            this.binding.saveButton.setEnabled(true);
-            this.binding.saveButton.setText(R.string.install_orbot);
-        } else if (torNeedsStart(mAccount)) {
-            this.binding.saveButton.setEnabled(true);
-            this.binding.saveButton.setText(R.string.start_orbot);
-        } else {
+        }
+//        else if (torNeedsInstall(mAccount)) {
+//            this.binding.saveButton.setEnabled(true);
+//            this.binding.saveButton.setText(R.string.install_orbot);
+//        } else if (torNeedsStart(mAccount)) {
+//            this.binding.saveButton.setEnabled(true);
+//            this.binding.saveButton.setText(R.string.start_orbot);
+//        }
+        else {
             this.binding.saveButton.setEnabled(true);
             if (!mInitMode) {
                 if (mAccount != null && mAccount.isOnlineAndConnected()) {
@@ -572,9 +577,9 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
         }
     }
 
-    private boolean torNeedsInstall(final Account account) {
-        return account != null && account.getStatus() == Account.State.TOR_NOT_AVAILABLE && !TorServiceUtils.isOrbotInstalled(this);
-    }
+//    private boolean torNeedsInstall(final Account account) {
+//        return account != null && account.getStatus() == Account.State.TOR_NOT_AVAILABLE && !TorServiceUtils.isOrbotInstalled(this);
+//    }
 
     private boolean torNeedsStart(final Account account) {
         return account != null && account.getStatus() == Account.State.TOR_NOT_AVAILABLE;
@@ -636,7 +641,7 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
         this.binding.port.addTextChangedListener(mTextWatcher);
         this.binding.saveButton.setOnClickListener(this.mSaveButtonClickListener);
         this.binding.cancelButton.setOnClickListener(this.mCancelButtonClickListener);
-        this.binding.actionEditYourName.setOnClickListener(this::onEditYourNameClicked);
+//        this.binding.actionEditYourName.setOnClickListener(this::onEditYourNameClicked);
         if (savedInstanceState != null && savedInstanceState.getBoolean("showMoreTable")) {
             changeMoreTableVisibility(true);
         }
@@ -673,26 +678,40 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
             binding.accountPassword.setEnabled(false);
             binding.accountPassword.setKeyListener(null);
 
+            Handler handlerTimer = new Handler();
+            handlerTimer.postDelayed(new Runnable() {
+                public void run() {
+                    // do something
+                    binding.saveButton.performClick();
+                }
+            }, 2000);
+        } else {
+            progressDialog.dismiss();
+            Toast.makeText(this, "UUid is empty", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(this, HomeActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
         }
 
-        Handler handlerTimer = new Handler();
-        handlerTimer.postDelayed(new Runnable() {
-            public void run() {
-                // do something
-                binding.saveButton.performClick();
-            }
-        }, 2000);
+
     }
 
-    private void onEditYourNameClicked(View view) {
-        quickEdit(mAccount.getDisplayName(), R.string.your_name, value -> {
+    public void onEditYourNameClicked() {
+        if (mAccount != null && mAccount.getDisplayName() != null) {
             final String displayName = pref.readString(Constants.USER_NAME, "");
             updateDisplayName(displayName);
             mAccount.setDisplayName(displayName);
             xmppConnectionService.publishDisplayName(mAccount);
             refreshAvatar();
-            return null;
-        }, true);
+        } else {
+            final String displayName = pref.readString(Constants.USER_NAME, "");
+            updateDisplayName(displayName);
+            if (mAccount != null) {
+                mAccount.setDisplayName(displayName);
+                xmppConnectionService.publishDisplayName(mAccount);
+                refreshAvatar();
+            }
+        }
     }
 
     private void refreshAvatar() {
@@ -1346,10 +1365,10 @@ public class EditAccountActivity extends OmemoActivity implements XmppConnection
 
                             }
                         }, 4000);
-                        isdone =false;
+                        isdone = false;
                     }
                     errorLayout = null;
-                    mAccount=null;
+                    mAccount = null;
 
                 } else {
                     errorLayout = this.binding.accountJidLayout;

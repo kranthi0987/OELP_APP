@@ -1441,7 +1441,7 @@ public class XmppConnectionService extends Service {
         }
     }
 
-    private void logoutAndSave(boolean stop) {
+    public void logoutAndSave(boolean stop) {
         int activeAccounts = 0;
         if (accounts != null) {
             for (final Account account : accounts) {

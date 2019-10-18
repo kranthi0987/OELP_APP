@@ -634,16 +634,21 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
         MenuItem menuActionAccounts = menu.findItem(R.id.action_accounts);
         if (xmppConnectionService != null && xmppConnectionService.getAccounts().size() == 1 && !xmppConnectionService.multipleAccounts()) {
             menuActionAccounts.setTitle(R.string.action_account);
+            menuActionAccounts.setVisible(false);
         } else {
             menuActionAccounts.setTitle(R.string.action_accounts);
+            menuActionAccounts.setVisible(false);
         }
         MenuItem qrCodeScanMenuItem = menu.findItem(R.id.action_scan_qr_code);
         qrCodeScanMenuItem.setVisible(isCameraFeatureAvailable());
         qrCodeScanMenuItem.setVisible(false);
         menuHideOffline.setChecked(this.mHideOfflineContacts);
+        menuHideOffline.setVisible(false);
         mMenuSearchView = menu.findItem(R.id.action_search);
+        mMenuSearchView.setVisible(false);
         mMenuSearchView.setOnActionExpandListener(mOnActionExpandListener);
         View mSearchView = mMenuSearchView.getActionView();
+        mSearchView.setVisibility(View.GONE);
         mSearchEditText = mSearchView.findViewById(R.id.search_field);
         mSearchEditText.addTextChangedListener(mSearchTextWatcher);
         mSearchEditText.setOnEditorActionListener(mSearchDone);
@@ -955,10 +960,10 @@ public class StartConversationActivity extends XmppActivity implements XmppConne
 //            binding.speedDial.close();
 //            return;
 //        }
-//        navigateBack();
+        navigateBack();
 //        Intent i=new Intent(this,ConversationsActivity.class);
 //        startActivity(i);
-        finish();
+        //finish();
     }
 
     private void navigateBack() {
