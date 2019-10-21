@@ -713,7 +713,7 @@ public class AppUtils {
         try {
             for (int i = 0; i < userGroupArray.length; i++) {
                 obj = new JSONObject();
-                obj.put("group_uuid", userGroupArray[i]);
+                obj.put("group_uuid",userGroupArray[i]);
                 array.put(obj);
             }
             jsonArray = array.toString();
