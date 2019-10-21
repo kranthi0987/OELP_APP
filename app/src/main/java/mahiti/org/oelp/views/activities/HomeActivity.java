@@ -60,6 +60,8 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
         sharedPref = new MySharedPref(this);
         userType = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
 
+        homeViewModel.callApi();
+
         toolbar = findViewById(R.id.white_toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {

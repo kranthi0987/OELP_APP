@@ -2117,7 +2117,9 @@
     <string name="contributions">योगदान</string>
     <string name="members">सदस्य</string>
     <string name="what_you_want_to_do_with_media">What you want to do with media?</string>
+    <string name="media_type_selection">Select Media Type</string>
     <string name="applicationId" />
+    <string name="member_info">विवरण</string>
     <string-array name="option_array" >
         <item>Delete Media</item>
         <item>Share Media</item>
@@ -2126,6 +2128,17 @@
         <item>All Contribution</item>
         <item>Others Contribution</item>
     </array>
+    <string-array name="picker_array" >
+        <item>Image</item>
+        <item>Video</item>
+        <item>PDF</item>
+    </string-array>
+
+    <string name="empty_directory">Empty Directory</string>
+    <string name="storage_removed">Storage was removed or unmounted.</string>
+    <string name="error_selecting_file">Error selecting File</string>
+    <string name="internal_storage">Internal storage</string>
+
 </resources>
 
 

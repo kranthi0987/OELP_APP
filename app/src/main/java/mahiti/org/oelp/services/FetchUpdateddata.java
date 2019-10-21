@@ -67,7 +67,7 @@ public class FetchUpdateddata {
         callMediaSharedApi(userUUID, sharedPref.readString(Constants.GROUP_UUID_LIST,""));
         callTeacherApi(userUUID);
         callApiForLocation();
-        if (userType == Constants.USER_TEACHER)
+//        if (userType == Constants.USER_TEACHER)
             callSubmittedAnswerApi(userUUID);
 
 

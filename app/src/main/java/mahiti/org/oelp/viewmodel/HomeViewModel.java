@@ -61,14 +61,7 @@ public class HomeViewModel extends AndroidViewModel {
         dataInserted.setValue(null);
         data = new SyncingUserData(context);
 
-        if (CheckNetwork.checkNet(context)){
-            new FetchUpdateddata(context);
-            updateSharedMedia();
-            updateDeleteMedia();
-            updateGlobalShareMedia();
-            postQA();
-            getListOfImageFromDb();
-        }
+
 
         userType.setValue(sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER));
 
@@ -80,6 +73,13 @@ public class HomeViewModel extends AndroidViewModel {
             groupsClick.setValue(false);
         }
 
+    }
+
+    public void callApi(){
+        if (CheckNetwork.checkNet(context)){
+            new FetchUpdateddata(context);
+            getListOfImageFromDb();
+        }
     }
 
     public void updateSharedMedia(){

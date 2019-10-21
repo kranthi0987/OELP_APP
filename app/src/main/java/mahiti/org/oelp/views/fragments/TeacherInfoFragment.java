@@ -80,7 +80,6 @@ public class TeacherInfoFragment extends Fragment {
         }
         tvContri.setText(teacherContri);
         tvGroupName.setText(model.getGroupName());
-//        String videoCoveredCount = String.valueOf(new DatabaseHandlerClass(getActivity()).getNoOfCompletedVideos());
         tvVideosCovererd.setText("");
         tvLastActive.setText(model.getLastActive());
         tvLastLoggedin.setText(model.getLastLoggedIn());

@@ -80,15 +80,25 @@ public class MediaContentDao extends DatabaseHandlerClass {
         String query;
         if (type == 0) {
             if (forGroup) {
-                query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.MEDIA_CONTENT_TABLE +
-                        DBConstants.WHERE + DBConstants.GROUP_UUID + DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES + groupUUID + DBConstants.SINGLE_QUOTES + DBConstants.AND + DBConstants.DELETE_MEDIA + DBConstants.NOT_EQUAL_TO + 1 + DBConstants.ORDER_BY + DBConstants.SUBMISSION_DATE + DBConstants.DESCENDING;
+                query = DBConstants.SELECT+DBConstants.ALL_FROM+DBConstants.MEDIA_CONTENT_TABLE+DBConstants.WHERE+
+                        DBConstants.DELETE_MEDIA+DBConstants.NOT_EQUAL_TO+1+DBConstants.AND+DBConstants.ACTIVE+DBConstants.EQUAL_TO+2+DBConstants.AND+
+                        DBConstants.OPEN_BRACKET+ DBConstants.GROUP_UUID+DBConstants.EQUAL_TO+DBConstants.SINGLE_QUOTES + groupUUID + DBConstants.SINGLE_QUOTES +DBConstants.OR+
+                        DBConstants.IS_GLOBAL_SHARED+DBConstants.EQUAL_TO+1+DBConstants.CLOSE_BRACKET+DBConstants.ORDER_BY +
+                        DBConstants.SUBMISSION_DATE + DBConstants.DESCENDING;
             } else {
                 query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.MEDIA_CONTENT_TABLE +
-                        DBConstants.WHERE + DBConstants.USER_UUID + DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES + userUUID + DBConstants.SINGLE_QUOTES +DBConstants.AND+DBConstants.GROUP_UUID + DBConstants.EQUAL_TO + DBConstants.SINGLE_QUOTES + groupUUID + DBConstants.SINGLE_QUOTES + DBConstants.AND + DBConstants.DELETE_MEDIA + DBConstants.NOT_EQUAL_TO + 1 + DBConstants.ORDER_BY + DBConstants.SUBMISSION_DATE + DBConstants.DESCENDING;
+                        DBConstants.WHERE + DBConstants.USER_UUID + DBConstants.EQUAL_TO +
+                        DBConstants.SINGLE_QUOTES + userUUID + DBConstants.SINGLE_QUOTES +
+                        DBConstants.AND+DBConstants.GROUP_UUID + DBConstants.EQUAL_TO +
+                        DBConstants.SINGLE_QUOTES + groupUUID + DBConstants.SINGLE_QUOTES +
+                        DBConstants.AND + DBConstants.DELETE_MEDIA + DBConstants.NOT_EQUAL_TO + 1 +
+                        DBConstants.AND+DBConstants.ACTIVE+DBConstants.EQUAL_TO+2+
+                        DBConstants.ORDER_BY + DBConstants.SUBMISSION_DATE + DBConstants.DESCENDING;
             }
         } else {
             query = DBConstants.SELECT + DBConstants.ALL_FROM + DBConstants.MEDIA_CONTENT_TABLE +
-                    DBConstants.WHERE + DBConstants.SYNC_STATUS + DBConstants.EQUAL_TO + 1;
+                    DBConstants.WHERE + DBConstants.SYNC_STATUS + DBConstants.EQUAL_TO + 1+
+                    DBConstants.AND+DBConstants.ACTIVE+DBConstants.EQUAL_TO+2;
 
         }
 
@@ -114,7 +124,7 @@ public class MediaContentDao extends DatabaseHandlerClass {
 
 
                     model.setSharedGloballySyncStatus(cursor.getInt(cursor.getColumnIndex(DBConstants.SHARED_GLOBALLY_SYNC_STATUS)));
-                    boolean isGlobalShare = cursor.getInt(cursor.getColumnIndex(DBConstants.SHARED_GLOBALLY_SYNC_STATUS)) == 1;
+                    boolean isGlobalShare = cursor.getInt(cursor.getColumnIndex(DBConstants.IS_GLOBAL_SHARED)) == 1;
                     model.setGlobalAccess(isGlobalShare);
                     sharedMediaList.add(model);
 
@@ -173,7 +183,7 @@ public class MediaContentDao extends DatabaseHandlerClass {
         String query = DBConstants.SELECT + DBConstants.MEDIA_PATH + DBConstants.COMMA + DBConstants.MEDIA_NAME +
                 DBConstants.COMMA + DBConstants.UUID + DBConstants.FROM + DBConstants.MEDIA_CONTENT_TABLE +
                 DBConstants.WHERE + DBConstants.MEDIA_PATH + DBConstants.NOT_EQUAL_TO + DBConstants.EMPTY +
-                DBConstants.AND + DBConstants.MEDIA_PATH + DBConstants.IS_NOT_NULL + DBConstants.AND + DBConstants.MEDIA_TYPE + DBConstants.EQUAL_TO + 1;
+                DBConstants.AND + DBConstants.MEDIA_PATH + DBConstants.IS_NOT_NULL + DBConstants.AND + DBConstants.MEDIA_TYPE + DBConstants.EQUAL_TO + 1+DBConstants.AND+DBConstants.ACTIVE+DBConstants.EQUAL_TO+2;
         initDatabase();
         Cursor cursor = null;
         try {
@@ -256,7 +266,7 @@ public class MediaContentDao extends DatabaseHandlerClass {
         }
         if (array.length()>0)
             data = array.toString();
-        return data;
+        return data.replace(" ", "");
     }
 
     public long removeDeleteMedia(String mediaUUID) {

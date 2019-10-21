@@ -52,6 +52,7 @@ import java.util.regex.Pattern;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 import androidx.loader.content.CursorLoader;
+
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
@@ -134,7 +135,7 @@ public class AppUtils {
 
     }
 
-    public static void copyDataBase( Context mContext, String destinationFolder) {
+    public static void copyDataBase(Context mContext, String destinationFolder) {
         File destDbFile = new File(destinationFolder);
         if (!destDbFile.exists()) {
             try {
@@ -351,7 +352,7 @@ public class AppUtils {
 
     }
 
-    public static String getRealPathFromURI_API19(Context context, Uri uri){
+    public static String getRealPathFromURI_API19(Context context, Uri uri) {
         String filePath = "";
 
         try {
@@ -374,7 +375,7 @@ public class AppUtils {
                 filePath = cursor.getString(columnIndex);
             }
             cursor.close();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             Logger.logE(TAG, ex.getMessage(), ex);
         }
         return filePath;
@@ -382,7 +383,7 @@ public class AppUtils {
 
 
     public static String getRealPathFromURI_API11to18(Context context, Uri contentUri) {
-        String[] proj = { MediaStore.Images.Media.DATA };
+        String[] proj = {MediaStore.Images.Media.DATA};
         String result = null;
 
         CursorLoader cursorLoader = new CursorLoader(
@@ -390,7 +391,7 @@ public class AppUtils {
                 contentUri, proj, null, null, null);
         Cursor cursor = cursorLoader.loadInBackground();
 
-        if(cursor != null){
+        if (cursor != null) {
             int column_index =
                     cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
@@ -399,8 +400,8 @@ public class AppUtils {
         return result;
     }
 
-    public static String getRealPathFromURI_BelowAPI11(Context context, Uri contentUri){
-        String[] proj = { MediaStore.Images.Media.DATA };
+    public static String getRealPathFromURI_BelowAPI11(Context context, Uri contentUri) {
+        String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
         int column_index
                 = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -454,11 +455,11 @@ public class AppUtils {
             }
             if (dir != null && dir.isDirectory()) {
                 deleteDir(dir);
-                Logger.logD(TAG,"Cache cleared: "+dir.delete());
+                Logger.logD(TAG, "Cache cleared: " + dir.delete());
             }
 
         } catch (Exception e) {
-            Logger.logE(TAG,"deleteCache",e);
+            Logger.logE(TAG, "deleteCache", e);
         }
     }
 
@@ -477,7 +478,7 @@ public class AppUtils {
         return dir.delete();
     }
 
-    public static void clearPreviousUserData(Context context){
+    public static void clearPreviousUserData(Context context) {
         DatabaseHandlerClass dbHandler = new DatabaseHandlerClass(context);
         dbHandler.updateAllWatchStatus();
         dbHandler.deleteAllDataFromDB(5);
@@ -486,7 +487,7 @@ public class AppUtils {
         dbHandler.deleteAllDataFromDB(8);
         MySharedPref sharedPref = new MySharedPref(context);
         /*sharedPref.deleteAllData();*/
-        sharedPref.writeBoolean("ClearCheck",true);
+        sharedPref.writeBoolean("ClearCheck", true);
     }
 
 
@@ -525,15 +526,15 @@ public class AppUtils {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public static int getFileType(String fileName ){
+    public static int getFileType(String fileName) {
         int fileType = Constants.IMAGE;
         String lastFileExtension = fileName.substring(fileName.lastIndexOf("."));
         if (lastFileExtension.contains(".mp4") || lastFileExtension.contains(".3GP") || lastFileExtension.contains(".OGG")
-                || lastFileExtension.contains(".WMV")||lastFileExtension.contains(".WEBM")||lastFileExtension.contains(".FLV")
-                || lastFileExtension.contains(".AVI")||lastFileExtension.contains(".HDV")||lastFileExtension.contains(".MPEG4")){
+                || lastFileExtension.contains(".WMV") || lastFileExtension.contains(".WEBM") || lastFileExtension.contains(".FLV")
+                || lastFileExtension.contains(".AVI") || lastFileExtension.contains(".HDV") || lastFileExtension.contains(".MPEG4")) {
             fileType = Constants.VIDEO;
-        }else {
-            fileType = Constants.IMAGE;
+        } else if (lastFileExtension.contains(".pdf")) {
+            fileType = Constants.PDF;
         }
         return fileType;
     }
@@ -542,9 +543,9 @@ public class AppUtils {
         for (File file : imagesFiles) {
             String fileName = AppUtils.getFileName(file.getAbsolutePath());
             File folderName = null;
-            if (getFileType(fileName)==Constants.VIDEO){
+            if (getFileType(fileName) == Constants.VIDEO) {
                 folderName = AppUtils.completeInternalStoragePath(context, Constants.VIDEO);
-            }else {
+            } else {
                 folderName = AppUtils.completeInternalStoragePath(context, Constants.IMAGE);
             }
             File fileKHPT = new File(folderName, fileName);
@@ -563,8 +564,8 @@ public class AppUtils {
             return;
         }
 
-        FileChannel source=null;
-        FileChannel destination=null;
+        FileChannel source = null;
+        FileChannel destination = null;
         try {
 
 
@@ -587,10 +588,10 @@ public class AppUtils {
     }
 
     public static boolean renameFileName(File oldFile, File newFile) {
-        if(oldFile.renameTo(newFile)){
+        if (oldFile.renameTo(newFile)) {
             System.out.println("File rename success");
             return true;
-        }else{
+        } else {
             System.out.println("File rename failed");
             return false;
         }
@@ -608,7 +609,7 @@ public class AppUtils {
 
     public static String getRealPathFromURI_OreoAndAbove(Uri uri) {
         String filePath = null;
-        if (uri.getPath()!=null) {
+        if (uri.getPath() != null) {
             File file = new File(uri.getPath());//create path from uri
             final String[] split = file.getPath().split(":");//split the path.
             filePath = split[1];//assign it to a string(your choice).
@@ -638,17 +639,16 @@ public class AppUtils {
                 final String type = split[0];
                 if ("image".equals(type)) {
                     uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
                     uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
                 } else if ("audio".equals(type)) {
                     uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                 }
                 selection = "_id=?";
-                selectionArgs = new String[]{ split[1] };
+                selectionArgs = new String[]{split[1]};
             }
         }
         if ("content".equalsIgnoreCase(uri.getScheme())) {
-            String[] projection = { MediaStore.Images.Media.DATA };
+            String[] projection = {MediaStore.Images.Media.DATA};
             Cursor cursor = null;
             try {
                 cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
@@ -690,13 +690,13 @@ public class AppUtils {
     }
 
     public static void chnageToString(MySharedPref sharedPref, List<String> userDetails) {
-        String userData="";
-        if (userDetails!=null){
+        String userData = "";
+        if (userDetails != null) {
             try {
                 Gson gson = new Gson();
                 userData = gson.toJson(userDetails);
                 sharedPref.writeString(Constants.GROUP_UUID_LIST, userData);
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 Logger.logE(TAG, ex.getMessage(), ex);
             }
         }
@@ -705,35 +705,33 @@ public class AppUtils {
 
     public static String makeJsonArray(String usergroup1) {
         String jsonArray = "";
-        JSONArray array= new JSONArray();
+        JSONArray array = new JSONArray();
         JSONObject obj;
-        String use1 = usergroup1.replace("[","");
-        String use = use1.replace("]","");
+        String use1 = usergroup1.replace("[", "");
+        String use = use1.replace("]", "");
         String[] userGroupArray = use.split(",");
         try {
-            for (int i =0; i<userGroupArray.length;i++){
+            for (int i = 0; i < userGroupArray.length; i++) {
                 obj = new JSONObject();
                 obj.put("group_uuid", userGroupArray[i]);
                 array.put(obj);
             }
             jsonArray = array.toString();
-        }catch (Exception ex){
-            Logger.logE(TAG, "group uuid error: "+ex.getMessage(), ex);
+        } catch (Exception ex) {
+            Logger.logE(TAG, "group uuid error: " + ex.getMessage(), ex);
         }
 
-        return jsonArray;
+        return jsonArray.replace(" ", "");
     }
 
     /* Check whether this uri is a content uri or not.
      *  content uri like content://media/external/images/media/1302716
      *  */
-    private static boolean isContentUri(Uri uri)
-    {
+    private static boolean isContentUri(Uri uri) {
         boolean ret = false;
-        if(uri != null) {
+        if (uri != null) {
             String uriSchema = uri.getScheme();
-            if("content".equalsIgnoreCase(uriSchema))
-            {
+            if ("content".equalsIgnoreCase(uriSchema)) {
                 ret = true;
             }
         }
@@ -741,12 +739,10 @@ public class AppUtils {
     }
 
     /* Check whether this document is provided by google photos. */
-    private static boolean isGooglePhotoDoc(String uriAuthority)
-    {
+    private static boolean isGooglePhotoDoc(String uriAuthority) {
         boolean ret = false;
 
-        if("com.google.android.apps.photos.content".equals(uriAuthority))
-        {
+        if ("com.google.android.apps.photos.content".equals(uriAuthority)) {
             ret = true;
         }
 
@@ -754,38 +750,42 @@ public class AppUtils {
     }
 
     /* Return uri represented document file real local path.*/
-    public static String getImageRealPath(ContentResolver contentResolver, Uri uri, String whereClause)
-    {
+    public static String getImageRealPath(ContentResolver contentResolver, Uri uri, String whereClause, Context ctx) {
         String ret = "";
+        Cursor cursor = null;
 
-        // Query the uri with condition.
-        Cursor cursor = contentResolver.query(uri, null, whereClause, null, null);
-
-        if(cursor!=null)
-        {
-            boolean moveToFirst = cursor.moveToFirst();
-            if(moveToFirst)
-            {
-
-                // Get columns name by uri type.
-                String columnName = MediaStore.Images.Media.DATA;
-
-                if( uri==MediaStore.Images.Media.EXTERNAL_CONTENT_URI )
-                {
-                    columnName = MediaStore.Images.Media.DATA;
-                }else if( uri==MediaStore.Audio.Media.EXTERNAL_CONTENT_URI )
-                {
-                    columnName = MediaStore.Audio.Media.DATA;
-                }else if( uri==MediaStore.Video.Media.EXTERNAL_CONTENT_URI )
-                {
-                    columnName = MediaStore.Video.Media.DATA;
+        if (uri.toString().contains("public_downloads")) {
+            try {
+                cursor = ctx.getContentResolver().query(uri, new String[]{MediaStore.MediaColumns.DISPLAY_NAME}, null, null, null);
+                if (cursor != null && cursor.moveToFirst()) {
+                    String fileName = cursor.getString(0);
+                    String path = Environment.getExternalStorageDirectory().toString() + "/Download/" + fileName;
+                    if (!TextUtils.isEmpty(path)) {
+                        return path;
+                    }
                 }
-
-                // Get column index.
-                int imageColumnIndex = cursor.getColumnIndex(columnName);
-
-                // Get column value which is the uri related file local path.
-                ret = cursor.getString(imageColumnIndex);
+            } finally {
+                if (cursor != null) cursor.close();
+            }
+        } else {
+            cursor = contentResolver.query(uri, null, whereClause, null, null);
+            if (cursor != null) {
+                boolean moveToFirst = cursor.moveToFirst();
+                if (moveToFirst) {
+                    // Get columns name by uri type.
+                    String columnName = MediaStore.Images.Media.DATA;
+                    if (uri == MediaStore.Images.Media.EXTERNAL_CONTENT_URI) {
+                        columnName = MediaStore.Images.Media.DATA;
+                    } else if (uri == MediaStore.Audio.Media.EXTERNAL_CONTENT_URI) {
+                        columnName = MediaStore.Audio.Media.DATA;
+                    } else if (uri == MediaStore.Video.Media.EXTERNAL_CONTENT_URI) {
+                        columnName = MediaStore.Video.Media.DATA;
+                    }
+                    // Get column index.
+                    int imageColumnIndex = cursor.getColumnIndex(columnName);
+                    // Get column value which is the uri related file local path.
+                    ret = cursor.getString(imageColumnIndex);
+                }
             }
         }
 
@@ -795,13 +795,11 @@ public class AppUtils {
     /* Check whether this uri is a file uri or not.
      *  file uri like file:///storage/41B7-12F1/DCIM/Camera/IMG_20180211_095139.jpg
      * */
-    private static boolean isFileUri(Uri uri)
-    {
+    private static boolean isFileUri(Uri uri) {
         boolean ret = false;
-        if(uri != null) {
+        if (uri != null) {
             String uriSchema = uri.getScheme();
-            if("file".equalsIgnoreCase(uriSchema))
-            {
+            if ("file".equalsIgnoreCase(uriSchema)) {
                 ret = true;
             }
         }
@@ -809,22 +807,19 @@ public class AppUtils {
     }
 
     /* Check whether this uri represent a document or not. */
-    private static boolean isDocumentUri(Context ctx, Uri uri)
-    {
+    private static boolean isDocumentUri(Context ctx, Uri uri) {
         boolean ret = false;
-        if(ctx != null && uri != null) {
+        if (ctx != null && uri != null) {
             ret = DocumentsContract.isDocumentUri(ctx, uri);
         }
         return ret;
     }
 
     /* Check whether this document is provided by MediaProvider. */
-    private static boolean staisMediaDoc(String uriAuthority)
-    {
+    private static boolean staisMediaDoc(String uriAuthority) {
         boolean ret = false;
 
-        if("com.android.providers.media.documents".equals(uriAuthority))
-        {
+        if ("com.android.providers.media.documents".equals(uriAuthority)) {
             ret = true;
         }
 
@@ -832,12 +827,10 @@ public class AppUtils {
     }
 
     /* Check whether this document is provided by MediaProvider. */
-    private static boolean isMediaDoc(String uriAuthority)
-    {
+    private static boolean isMediaDoc(String uriAuthority) {
         boolean ret = false;
 
-        if("com.android.providers.media.documents".equals(uriAuthority))
-        {
+        if ("com.android.providers.media.documents".equals(uriAuthority)) {
             ret = true;
         }
 
@@ -845,12 +838,10 @@ public class AppUtils {
     }
 
     /* Check whether this document is provided by DownloadsProvider. */
-    private static boolean isDownloadDoc(String uriAuthority)
-    {
+    private static boolean isDownloadDoc(String uriAuthority) {
         boolean ret = false;
 
-        if("com.android.providers.downloads.documents".equals(uriAuthority))
-        {
+        if ("com.android.providers.downloads.documents".equals(uriAuthority)) {
             ret = true;
         }
 
@@ -858,12 +849,10 @@ public class AppUtils {
     }
 
     /* Check whether this document is provided by ExternalStorageProvider. */
-    private static boolean isExternalStoreDoc(String uriAuthority)
-    {
+    private static boolean isExternalStoreDoc(String uriAuthority) {
         boolean ret = false;
 
-        if("com.android.externalstorage.documents".equals(uriAuthority))
-        {
+        if ("com.android.externalstorage.documents".equals(uriAuthority)) {
             ret = true;
         }
 
@@ -871,26 +860,12 @@ public class AppUtils {
     }
 
 
-
-
-
     public static String getUriRealPathAboveKitkat(FragmentActivity ctx, Uri uri) {
-        String path=null;
-        try{
+        String path = null;
+        try {
 
-            if(ctx != null && uri != null) {
-
-                if(isContentUri(uri))
-                {
-                    if(isGooglePhotoDoc(uri.getAuthority()))
-                    {
-                        path = uri.getLastPathSegment();
-                    }else {
-                        path = getImageRealPath(ctx.getContentResolver(), uri, null);
-                    }
-                }else if(isFileUri(uri)) {
-                    path = uri.getPath();
-                }else if(isDocumentUri(ctx, uri)){
+            if (ctx != null && uri != null) {
+                if (isDocumentUri(ctx, uri)) {
 
                     // Get uri related document id.
                     String documentId = DocumentsContract.getDocumentId(uri);
@@ -898,11 +873,9 @@ public class AppUtils {
                     // Get uri authority.
                     String uriAuthority = uri.getAuthority();
 
-                    if(isMediaDoc(uriAuthority))
-                    {
+                    if (isMediaDoc(uriAuthority)) {
                         String idArr[] = documentId.split(":");
-                        if(idArr.length == 2)
-                        {
+                        if (idArr.length == 2) {
                             // First item is document type.
                             String docType = idArr[0];
 
@@ -911,52 +884,54 @@ public class AppUtils {
 
                             // Get content uri by document type.
                             Uri mediaContentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                            if("image".equals(docType))
-                            {
+                            if ("image".equals(docType)) {
                                 mediaContentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                            }else if("video".equals(docType))
-                            {
+                            } else if ("video".equals(docType)) {
                                 mediaContentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                            }else if("audio".equals(docType))
-                            {
+                            } else if ("audio".equals(docType)) {
                                 mediaContentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                             }
 
                             // Get where clause with real document id.
                             String whereClause = MediaStore.Images.Media._ID + " = " + realDocId;
 
-                            path = getImageRealPath(ctx.getContentResolver(), mediaContentUri, whereClause);
+                            path = getImageRealPath(ctx.getContentResolver(), mediaContentUri, whereClause, ctx);
                         }
 
-                    }else if(isDownloadDoc(uriAuthority))
-                    {
+                    } else if (isDownloadDoc(uriAuthority)) {
                         // Build download uri.
                         Uri downloadUri = Uri.parse("content://downloads/public_downloads");
 
                         // Append download document id at uri end.
                         Uri downloadUriAppendId = ContentUris.withAppendedId(downloadUri, Long.valueOf(documentId));
 
-                        path = getImageRealPath(ctx.getContentResolver(), downloadUriAppendId, null);
+                        path = getImageRealPath(ctx.getContentResolver(), downloadUriAppendId, null, ctx);
 
-                    }else if(isExternalStoreDoc(uriAuthority))
-                    {
+                    } else if (isExternalStoreDoc(uriAuthority)) {
                         String idArr[] = documentId.split(":");
-                        if(idArr.length == 2)
-                        {
+                        if (idArr.length == 2) {
                             String type = idArr[0];
                             String realDocId = idArr[1];
 
-                            if("primary".equalsIgnoreCase(type))
-                            {
+                            if ("primary".equalsIgnoreCase(type)) {
                                 path = Environment.getExternalStorageDirectory() + "/" + realDocId;
                             }
                         }
                     }
+                } else if (isContentUri(uri)) {
+                    if (isGooglePhotoDoc(uri.getAuthority())) {
+                        path = uri.getLastPathSegment();
+                    } else {
+                        path = getImageRealPath(ctx.getContentResolver(), uri, null, ctx);
+                    }
+                } else if (isFileUri(uri)) {
+                    path = uri.getPath();
                 }
+
             }
 
             return path;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             Logger.logE(TAG, ex.getMessage(), ex);
         }
         return null;
@@ -975,7 +950,7 @@ public class AppUtils {
 
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         String[] mimeTypes =
-                {"image/*","application/pdf","video/mp4"};
+                {"image/*", "application/pdf", "video/mp4"};
 
         // Filter to only show results that can be "opened", such as a
         // file (as opposed to a list of contacts or timezones)
@@ -993,10 +968,10 @@ public class AppUtils {
 
     }
 
-    public void renderFileView( Intent data) {
+    public void renderFileView(Intent data) {
         Uri result = data.getData();
         ClipData resultMulti = data.getClipData();
-        List<Uri> fileList = getFileList(result,resultMulti);
+        List<Uri> fileList = getFileList(result, resultMulti);
 //        uiHelper.showFileView(fileList);
     }
 
@@ -1015,8 +990,6 @@ public class AppUtils {
         }
         return list;
     }
-
-
 
 
 }

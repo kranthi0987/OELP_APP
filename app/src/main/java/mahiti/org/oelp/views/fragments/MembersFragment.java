@@ -66,7 +66,6 @@ public class MembersFragment extends Fragment {
     }
 
     private void checkInternetAndCAllApi() {
-//        progressBar.setVisibility(View.VISIBLE);
         fetchTeacherList();
         if (CheckNetwork.checkNet(getActivity())) {
             callApiForTeacherList(userUUiD);

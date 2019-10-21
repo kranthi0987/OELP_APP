@@ -36,12 +36,15 @@ public class GroupDao extends DatabaseHandlerClass {
         if (groups == null)
             return 0;
         long insertData = 0;
+        StringBuilder builder = new StringBuilder();
         initDatabase();
         List<String> groupUUIDList = new ArrayList<>();
         database.beginTransaction();
+        GroupModel groupModel;
         try {
             ContentValues values = new ContentValues();
-            for (GroupModel groupModel : groups) {
+            for (int i = 0; i < groups.size(); i++) {
+                groupModel = groups.get(i);
                 values.put(DBConstants.UUID, groupModel.getUserUUID());
                 values.put(DBConstants.GROUP_NAME, groupModel.getGroupName());
                 values.put(DBConstants.GROUP_UUID, groupModel.getGroupUUID());

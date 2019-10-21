@@ -38,11 +38,9 @@ public class SurveyResponseDao extends DatabaseHandlerClass {
         database.beginTransaction();
         try {
             for (SubmittedAnswerResponse response : list) {
-                String responseData = "";
-                try {
+                String responseData = "[]";
+                if (response.getResponse()!=null){
                     responseData = gson.toJson(response.getResponse());
-                } catch (Exception xe) {
-                    Logger.logE("Exception", xe.getMessage(), xe);
                 }
                 ContentValues values = new ContentValues();
                 values.put(DBConstants.UUID, response.getCreationKey());
@@ -156,6 +154,21 @@ public class SurveyResponseDao extends DatabaseHandlerClass {
         Logger.logD("QuestionAnswered", asyncQuestionAnswer.toString());
         return asyncQuestionAnswer;
 
+    }
+
+    public boolean getVideoIdIsAvailable(String videoId){
+        Cursor cursor=null;
+        String query = "select video_id from question_answer where video_id = '"+videoId+"'";
+        initDatabase();
+        try {
+            cursor = database.rawQuery(query, null);
+            return cursor.getCount()>0;
+        }catch (Exception ex){
+            Logger.logE(TAG, ex.getMessage(), ex);
+        }finally {
+            closeCursor(cursor);
+        }
+        return false;
     }
 
     public SubmittedAnswerResponse getCount(String mediaUUID) {

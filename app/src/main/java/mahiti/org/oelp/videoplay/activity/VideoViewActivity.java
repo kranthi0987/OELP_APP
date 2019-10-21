@@ -478,18 +478,17 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         int duration = mediaPlayer.getDuration();
         Log.i(TAG, "onCompletion Track Info " + duration);
 
+        /*Update Media Tracker with media data*/
         mediaTracker = new MediaTracker();
         mediaTracker.setStartTime(getDateTime());
         mediaTracker.setEndTime(getDateTime());
         mediaTracker.setMediaId(mediaUUID);
         mediaTracker.setComStatus(0);
-        mediaTracker.setWatchMin(String.valueOf(getTimeString((long) mediaPlayer.getDuration())));
+        mediaTracker.setWatchMin((getTimeString((long) mediaPlayer.getDuration())));
         mediaTracker.setMediaName("");
-
         videoDecryptionDb.mediaTrackerUpdateDb(mediaTracker, mediaUUID);
 
         boolean loginType = new MySharedPref(this).readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER;
-
         new MySharedPref(VideoViewActivity.this).writeBoolean(Constants.VALUE_CHANGED, true);
 
         contentUpdateStatus(mediaUUID);
@@ -517,14 +516,16 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
             } else {
                 onBackPressed();
             }
-        } else {
-
+        } else {    // If Login type is trainer it will return from this screen
             updateDBandCAllApi();
             onBackPressed();
         }
     }
 
     private void updateDBandCAllApi() {
+        SurveyResponseDao surveyResponseDao = new SurveyResponseDao(this);
+        if (surveyResponseDao.getVideoIdIsAvailable(mediaUUID))
+            return;
 
         SubmittedAnswerResponse model = new SubmittedAnswerResponse();
         model.setCreationKey(AppUtils.getUUID());
@@ -541,7 +542,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         list.add(model);
 
         if (!list.isEmpty()) {
-            new SurveyResponseDao(this).insertAnsweredQuestion(list);
+            surveyResponseDao.insertAnsweredQuestion(list);
             new MySharedPref(this).writeBoolean(Constants.QACHANGED, true);
         }
     }

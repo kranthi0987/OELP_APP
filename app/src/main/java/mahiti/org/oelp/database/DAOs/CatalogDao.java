@@ -137,7 +137,7 @@ public class CatalogDao extends DatabaseHandlerClass {
         List<FileModel> imageList = new ArrayList<>();
         String query = DBConstants.SELECT + DBConstants.ICON_PATH + DBConstants.COMMA + DBConstants.NAME + DBConstants.COMMA + DBConstants.DCF + DBConstants.COMMA + DBConstants.UUID + DBConstants.FROM + DBConstants.CAT_TABLE_NAME +
                 DBConstants.WHERE + ICON_PATH + DBConstants.NOT_EQUAL_TO + DBConstants.EMPTY +
-                DBConstants.AND + DBConstants.ICON_PATH + DBConstants.IS_NOT_NULL;
+                DBConstants.AND + DBConstants.ICON_PATH + DBConstants.IS_NOT_NULL+DBConstants.AND+DBConstants.ACTIVE+DBConstants.EQUAL_TO+2;
         initDatabase();
         Cursor cursor = null;
         try {

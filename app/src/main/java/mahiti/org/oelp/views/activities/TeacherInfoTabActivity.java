@@ -5,6 +5,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.database.DAOs.MediaContentDao;
@@ -38,9 +40,8 @@ import mahiti.org.oelp.utils.CheckNetwork;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
 import mahiti.org.oelp.utils.MySharedPref;
-import mahiti.org.oelp.views.fragments.ContributionsFragment;
+import mahiti.org.oelp.views.fragments.MembersFragment;
 import mahiti.org.oelp.views.fragments.MyContFragment;
-import mahiti.org.oelp.views.fragments.NewTeacherFragment;
 import mahiti.org.oelp.views.fragments.TeacherInfoFragment;
 
 public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, SharedMediaClickListener , OnMediaDownloadListener {
@@ -50,8 +51,6 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
 
     private FragmentManager fragManager;
 
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
     private ViewPagerAdapter adapter;
     private String teacherUuid = "";
     private String tecaherContri="";
@@ -60,16 +59,30 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
     private TextView tvTitle;
     private AlertDialog alertDialogPop;
     private ListRefresh refresh;
+    private View lineMembers;
+    private View lineContri;
+    private LinearLayout llMembersInfo;
+    private LinearLayout llContributions;
+    private TextView tvMemberInfo;
+    private TextView tvContribution;
+    private boolean membersClick = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacherinfo_tab);
-
         toolbar = findViewById(R.id.white_toolbar);
         tvTitle = findViewById(R.id.tvTitle);
+        lineMembers = findViewById(R.id.lineMembers);
+        lineContri = findViewById(R.id.lineContri);
+        llMembersInfo = findViewById(R.id.llMembersInfo);
+        llContributions = findViewById(R.id.llContributions);
+        tvMemberInfo = findViewById(R.id.tvMemberInfo);
+        tvContribution = findViewById(R.id.tvContribution);
         setSupportActionBar(toolbar);
+
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (getSupportActionBar() != null) {
@@ -82,8 +95,25 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
             toolbar.inflateMenu(R.menu.trainer_menu);
         getIntentValues();
 
-        initViews();
-        viewPager.setOnPageChangeListener(this);
+        setFragment(new MembersFragment());
+        setTextColor(membersClick, 0);
+
+        llMembersInfo.setOnClickListener(view -> {
+            if (!membersClick) {
+                setFragment(new TeacherInfoFragment());
+                setTextColor(!membersClick, 1);
+                membersClick=true;
+            }
+
+        });
+        llContributions.setOnClickListener(view -> {
+            if (membersClick) {
+                setFragment(new MyContFragment());
+                setTextColor(!membersClick,1);
+                membersClick = false;
+            }
+        });
+
     }
 
     private void getIntentValues() {
@@ -93,6 +123,33 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
         tecaherContri = getIntent().getStringExtra("teachercontri");
         tvTitle.setText(teacherName);
     }
+
+    public void setFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragment_content, fragment).addToBackStack(null).commitAllowingStateLoss();
+    }
+
+    public void setTextColor(boolean membersClicks, int type){
+        if (membersClicks){
+            if (type!=0) {
+                lineMembers.setVisibility(View.VISIBLE);
+                lineContri.setVisibility(View.INVISIBLE);
+
+            }
+            tvMemberInfo.setTextColor(getResources().getColor(R.color.black));
+            tvContribution.setTextColor(getResources().getColor(R.color.grey));
+        }else {
+            if (type!=0) {
+                lineContri.setVisibility(View.VISIBLE);
+                lineMembers.setVisibility(View.INVISIBLE);
+            }
+
+            tvMemberInfo.setTextColor(getResources().getColor(R.color.grey));
+            tvContribution.setTextColor(getResources().getColor(R.color.black));
+        }
+    }
+
 
 
     @Override
@@ -128,33 +185,6 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
-    private void initViews() {
-
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-    }
-
-    private void setupViewPager(ViewPager viewPager) {
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-        //TeacherInfo1Fragment teacherInfoFragment = new TeacherInfo1Fragment();
-        TeacherInfoFragment teacherInfoFragment = new TeacherInfoFragment();
-        MyContFragment contributionsFragment = new MyContFragment();
-//        MyContFragment newTeacherFragment = new MyContFragment();
-
-
-        adapter.addFragment(teacherInfoFragment, "Teacher Info");
-        adapter.addFragment(contributionsFragment, "Contributions");
-//        adapter.addFragment(newTeacherFragment, "New");
-
-        viewPager.setAdapter(adapter);
-    }
-
 
     @Override
     public void onSharedMediaClick(SharedMediaModel mediaModel, boolean shareGlobally, int position) {

@@ -158,7 +158,7 @@ public class SyncingUserData {
                     mediaContentDao.removeDeleteMedia(mediaUUID);
             }
         } catch (Exception ex) {
-
+            Logger.logE(TAG, ex.getMessage(), ex);
         }
     }
 
@@ -166,7 +166,7 @@ public class SyncingUserData {
         List<SubmittedAnswerResponse> arrayList = surveyResponseDao.fetchAnsweredQuestion("", 1);
         if (arrayList != null && !arrayList.isEmpty()) {
             for (SubmittedAnswerResponse model : arrayList) {
-                String response = "";
+                /*String response = "[]";
                 Gson gson = new Gson();
                 if (model.getResponse() != null) {
                     try {
@@ -174,7 +174,7 @@ public class SyncingUserData {
                     } catch (Exception ex) {
                         Logger.logE(TAG, "Exception in model to json :" + ex.getMessage(), ex);
                     }
-                }
+                }*/
 
                 ApiInterface apiService = RetrofitClass.getAPIService();
                 String userId = new MySharedPref(mContext).readString(Constants.USER_ID, "");
@@ -186,13 +186,15 @@ public class SyncingUserData {
                         model.getMediacontent(),
                         model.getScore(),
                         model.getAttempts(),
-                        response);
+                        model.getServerString());
                 Logger.logD(TAG, "QUESTION_AND_ANSWER_URL : " + RetrofitConstant.BASE_URL + RetrofitConstant.SUBMIT_ANSWER);
                 call.enqueue(new Callback<MobileVerificationResponseModel>() {
                     @Override
                     public void onResponse(Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
-                        surveyResponseDao.updateSyncStatus(model.getCreationKey());
-                        mySharedPref.writeBoolean(Constants.QACHANGED, false);
+                        if (response.body().getStatus()==2) {
+                            surveyResponseDao.updateSyncStatus(model.getCreationKey());
+                            mySharedPref.writeBoolean(Constants.QACHANGED, false);
+                        }
                     }
 
                     @Override

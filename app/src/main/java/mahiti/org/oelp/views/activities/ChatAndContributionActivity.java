@@ -146,13 +146,11 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
 
     }
+
     public void setTextColor(boolean membersClicks, int type){
-        Animation animation;
         if (membersClicks){
             if (type!=0) {
-                animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_slide_in_left);
                 lineMembers.setVisibility(View.VISIBLE);
-//                lineMembers.startAnimation(animation);
                 lineContri.setVisibility(View.INVISIBLE);
 
             }
@@ -160,9 +158,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
             tvContribution.setTextColor(getResources().getColor(R.color.grey));
         }else {
             if (type!=0) {
-                animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_slide_out_right);
                 lineContri.setVisibility(View.VISIBLE);
-//                lineContri.startAnimation(animation);
                 lineMembers.setVisibility(View.INVISIBLE);
             }
 
@@ -350,7 +346,6 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
                 })
                 .show();
-
     }
 
     public ListRefresh getFragmentRefreshListener() {
