@@ -713,7 +713,7 @@ public class AppUtils {
         try {
             for (int i =0; i<userGroupArray.length;i++){
                 obj = new JSONObject();
-                obj.put("group_uuid", userGroupArray[i]);
+                obj.put("group_uuid",userGroupArray[i]);
                 array.put(obj);
             }
             jsonArray = array.toString();
@@ -721,7 +721,7 @@ public class AppUtils {
             Logger.logE(TAG, "group uuid error: "+ex.getMessage(), ex);
         }
 
-        return jsonArray;
+        return jsonArray.replace(" ", "");
     }
 
     /* Check whether this uri is a content uri or not.

@@ -2126,6 +2126,10 @@
         <item>All Contribution</item>
         <item>Others Contribution</item>
     </array>
+    <string-array name="picker_array" >
+        <item>Image</item>
+        <item>Video</item>
+    </string-array>
 </resources>
 
 

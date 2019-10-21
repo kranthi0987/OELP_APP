@@ -19,7 +19,7 @@
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
-        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/src/main/res;file://$MODULE_DIR$/build/generated/fabric/res/debug;file://$MODULE_DIR$/build/generated/res/google-services/debug;file://$MODULE_DIR$/build/generated/res/resValues/debug" />
+        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/src/main/res;file://$MODULE_DIR$/build/generated/fabric/res/debug;file://$MODULE_DIR$/build/generated/res/google-services/debug" />
         <option name="TEST_RES_FOLDERS_RELATIVE_PATH" value="" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
       </configuration>
@@ -238,9 +238,6 @@
     <orderEntry type="library" name="Gradle: org.conscrypt:conscrypt-android:1.4.2@aar" level="project" />
     <orderEntry type="library" name="Gradle: pl.droidsonroids.gif:android-gif-drawable:1.2.15@aar" level="project" />
     <orderEntry type="library" name="Gradle: org.osmdroid:osmdroid-android:6.1.0@aar" level="project" />
-    <orderEntry type="module" module-name="android-transcoder" />
-    <orderEntry type="module" module-name="fullscreenvideoview" />
-    <orderEntry type="module" module-name="xmpp-addr" />
     <orderEntry type="module" module-name="android-transcoder" />
     <orderEntry type="module" module-name="fullscreenvideoview" />
     <orderEntry type="module" module-name="xmpp-addr" />

@@ -38,7 +38,7 @@ public class SurveyResponseDao extends DatabaseHandlerClass {
         database.beginTransaction();
         try {
             for (SubmittedAnswerResponse response : list) {
-                String responseData = "";
+                String responseData = "[]";
                 try {
                     responseData = gson.toJson(response.getResponse());
                 } catch (Exception xe) {

@@ -569,6 +569,7 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
             newFile = new File(fileDestination, mediaCreationUUID + ".mp4");
         file = AppUtils.renameFileName(oldFile, newFile) ?newFile:oldFile;
 */
+        data.setActive(2);
         data.setMediaTitle(fileNAme);
         data.setSubmissionTime(date);
         data.setMediaFile(file.getAbsolutePath());

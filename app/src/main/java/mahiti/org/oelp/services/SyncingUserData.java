@@ -166,7 +166,7 @@ public class SyncingUserData {
         List<SubmittedAnswerResponse> arrayList = surveyResponseDao.fetchAnsweredQuestion("", 1);
         if (arrayList != null && !arrayList.isEmpty()) {
             for (SubmittedAnswerResponse model : arrayList) {
-                String response = "";
+                String response = "[]";
                 Gson gson = new Gson();
                 if (model.getResponse() != null) {
                     try {
