@@ -211,8 +211,11 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
             if (sharedPref.readBoolean(Constants.MEDIACONTENTCHANGE, false)) {
                 homeViewModel.updateSharedMedia();
             }
-            if (sharedPref.readBoolean(Constants.QACHANGED, true)) {
+            if (sharedPref.readBoolean(Constants.QACHANGED, false)) {
                 homeViewModel.postQA();
+            }
+            if (sharedPref.readBoolean(Constants.MEDIATRACKERCHANGED, false)) {
+                homeViewModel.updateMediaTrackerData();
             }
         }
 

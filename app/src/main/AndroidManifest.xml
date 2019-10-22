@@ -120,7 +120,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".videoplay.activity.VideoViewActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".views.activities.TestActivity"
             android:screenOrientation="userPortrait" />

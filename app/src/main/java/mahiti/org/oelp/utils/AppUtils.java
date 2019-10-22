@@ -1,5 +1,6 @@
 package mahiti.org.oelp.utils;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
@@ -10,12 +11,15 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.telephony.TelephonyManager;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
@@ -50,6 +54,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.loader.content.CursorLoader;
 
@@ -968,6 +973,15 @@ public class AppUtils {
 
     }
 
+    public static String getOrientationOfVideo(String videoPath){
+        String screenOrientation="";
+        MediaMetadataRetriever m = new MediaMetadataRetriever();
+
+        m.setDataSource(videoPath);
+        screenOrientation = m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
+        return screenOrientation;
+    }
+
     public void renderFileView(Intent data) {
         Uri result = data.getData();
         ClipData resultMulti = data.getClipData();
@@ -989,6 +1003,19 @@ public class AppUtils {
             }
         }
         return list;
+    }
+
+    @SuppressLint("HardwareIds")
+    public static String getDeviceID(Context context) {
+        String deviceId = "";
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            assert telephonyManager != null;
+            deviceId = telephonyManager.getDeviceId();
+        } else {
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_PHONE_STATE}, 100);
+        }
+        return deviceId;
     }
 
 

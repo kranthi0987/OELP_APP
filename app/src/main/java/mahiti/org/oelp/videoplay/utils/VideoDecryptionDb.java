@@ -195,7 +195,6 @@ public class VideoDecryptionDb extends SQLiteOpenHelper {
         return dbFile.exists();
     }
 
-
     public boolean checkForSeven(String fileName, String key) {
         boolean flag = false;
         Cursor cursor = null;
@@ -239,7 +238,6 @@ public class VideoDecryptionDb extends SQLiteOpenHelper {
         }
         return flag;
     }
-
 
     private boolean checkDates(String oldDate) {
 
@@ -307,7 +305,7 @@ public class VideoDecryptionDb extends SQLiteOpenHelper {
 
     /**
      * @param mediaTracker
-     * @return
+     * @return updated row number
      */
     public long mediaTrackerInsert(MediaTracker mediaTracker) {
         long insertedRecord = -1;
@@ -331,7 +329,6 @@ public class VideoDecryptionDb extends SQLiteOpenHelper {
         return insertedRecord;
     }
 
-
     public void mediaTrackerUpdateDb(MediaTracker mediaTracker, String mediauuid) {
         try {
             SQLiteDatabase database = this.getWritableDatabase();
@@ -351,7 +348,6 @@ public class VideoDecryptionDb extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
-
 
     public JSONArray getMediaDetails() {
 

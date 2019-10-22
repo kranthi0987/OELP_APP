@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -14,10 +16,13 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
+import mahiti.org.oelp.utils.MySharedPref;
 import mahiti.org.oelp.videoplay.CatalogResponseListener;
 import mahiti.org.oelp.videoplay.UpdateDbInterface;
 import mahiti.org.oelp.videoplay.utils.Validation;
+import mahiti.org.oelp.videoplay.utils.VideoDecryptionDb;
 
 public class MediaTrackerApi {
 
@@ -29,7 +34,6 @@ public class MediaTrackerApi {
 
     public MediaTrackerApi(Context context) {
         this.context = context;
-//        this.mContext = (CatalogResponseListener) context;
     }
 
     public void mediaTracking(String url, final String userId, final JSONArray media, final UpdateDbInterface updateDbInterface, String deviceId, boolean hasToFinish) {
@@ -76,4 +80,38 @@ public class MediaTrackerApi {
     }
 
 
+    public void mediaTracking(String url, final String userId, final JSONArray media, String deviceId, boolean hasToFinish) {
+        this.hasToFinish = hasToFinish;
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
+            try {
+                Logger.logD(TAG, "API : " + url + " RESPONSE :" + response);
+                JSONObject object = new JSONObject(response);
+                if (object.getInt("status") == 2) {
+                    new VideoDecryptionDb(context).delMediaTrackerRecords();
+                    new MySharedPref(context).writeBoolean(Constants.MEDIATRACKERCHANGED, false);
+                }
+
+            } catch (JSONException e) {
+                Log.d("VideoAPI", "VideoAPI" + e);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Logger.logE(TAG, error.getMessage(), error);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("deviceId", deviceId);
+                params.put("user_id", userId);
+                params.put("tracker", media.toString());
+                Logger.logD(TAG, "API : " + url + " PARAM :" + params.toString());
+                return params;
+
+            }
+        };
+        Volley.newRequestQueue(context).add(request);
+    }
 }

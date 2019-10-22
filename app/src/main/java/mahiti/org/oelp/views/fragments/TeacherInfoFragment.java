@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.database.DAOs.CatalogDao;
 import mahiti.org.oelp.database.DAOs.LocationDao;
 import mahiti.org.oelp.database.DAOs.TeacherDao;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
@@ -39,6 +40,7 @@ public class TeacherInfoFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_teacher_info, container, false);
 
         displayTeacherInfo();
+        CatalogDao catalogDao = new CatalogDao(getActivity());
         return rootView;
     }
 

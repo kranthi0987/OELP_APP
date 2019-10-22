@@ -2,19 +2,14 @@ package mahiti.org.oelp.services;
 
 import android.content.Context;
 import android.util.Log;
-
-import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
-
 import cz.msebera.android.httpclient.Header;
 import mahiti.org.oelp.database.DAOs.MediaContentDao;
 import mahiti.org.oelp.database.DAOs.SurveyResponseDao;
@@ -26,6 +21,8 @@ import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.Logger;
 import mahiti.org.oelp.utils.MySharedPref;
+import mahiti.org.oelp.videoplay.api.MediaTrackerApi;
+import mahiti.org.oelp.videoplay.utils.VideoDecryptionDb;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,26 +37,23 @@ public class SyncingUserData {
     private Context mContext;
     private MediaContentDao mediaContentDao;
     private SurveyResponseDao surveyResponseDao;
+    private VideoDecryptionDb videoDecryptionDb;
     private String userUUID;
 
     public SyncingUserData(Context mContext) {
         this.mContext = mContext;
         mediaContentDao = new MediaContentDao(mContext);
         surveyResponseDao = new SurveyResponseDao(mContext);
+        videoDecryptionDb = new VideoDecryptionDb(mContext);
         mySharedPref = new MySharedPref(mContext);
         userUUID = mySharedPref.readString(Constants.USER_ID, "");
     }
 
     public void uploadMedia() {
-
         List<SharedMediaModel> sharedMediaModelList = mediaContentDao.fetchSharedMedia("", "", false, 1);
-
         if (sharedMediaModelList != null && !sharedMediaModelList.isEmpty()) {
             for (SharedMediaModel sharedMediaModel : sharedMediaModelList) {
-
                 if (sharedMediaModel.getMediaUuid() != null || !sharedMediaModel.getMediaUuid().isEmpty()) {
-
-
                     AsyncHttpClient client = new AsyncHttpClient();
                     RequestParams paramMap = new RequestParams();
                     paramMap.put("user_uuid", userUUID);
@@ -120,7 +114,6 @@ public class SyncingUserData {
 
     public void shareMediaGlobally() {
         String globalShareData = mediaContentDao.fetchGlobalSharedMedia();
-
         Logger.logD(TAG, "Global Share data :" + globalShareData);
 
         if (!globalShareData.isEmpty()) {
@@ -139,26 +132,6 @@ public class SyncingUserData {
                     Logger.logD(TAG, "URL " + RetrofitConstant.BASE_URL + RetrofitConstant.SHARED_MEDIA_GLOBALLY + " Response :" + t.getMessage());
                 }
             });
-        }
-    }
-
-    /**
-     * @param globalShareData JSON String
-     * @param type            0- update and 1 delete
-     */
-    private void changeToArray(String globalShareData, int type) {
-        try {
-            JSONArray jsonArray = new JSONArray(globalShareData);
-            for (int a = 0; a < jsonArray.length(); a++) {
-                JSONObject obj = jsonArray.getJSONObject(a);
-                String mediaUUID = obj.optString("media_uuid");
-                if (type == 0)
-                    mediaContentDao.updateSyncData(mediaUUID, DBConstants.SHARED_GLOBALLY_SYNC_STATUS);
-                else if (type == 1)
-                    mediaContentDao.removeDeleteMedia(mediaUUID);
-            }
-        } catch (Exception ex) {
-            Logger.logE(TAG, ex.getMessage(), ex);
         }
     }
 
@@ -231,6 +204,33 @@ public class SyncingUserData {
                 model1.setStatus(0);
             }
         });
+    }
+
+    /**
+     * @param globalShareData JSON String
+     * @param type            0- update and 1 delete
+     */
+    private void changeToArray(String globalShareData, int type) {
+        try {
+            JSONArray jsonArray = new JSONArray(globalShareData);
+            for (int a = 0; a < jsonArray.length(); a++) {
+                JSONObject obj = jsonArray.getJSONObject(a);
+                String mediaUUID = obj.optString("media_uuid");
+                if (type == 0)
+                    mediaContentDao.updateSyncData(mediaUUID, DBConstants.SHARED_GLOBALLY_SYNC_STATUS);
+                else if (type == 1)
+                    mediaContentDao.removeDeleteMedia(mediaUUID);
+            }
+        } catch (Exception ex) {
+            Logger.logE(TAG, ex.getMessage(), ex);
+        }
+    }
+
+    public void syncMediaTrackerData(){
+        JSONArray ar = videoDecryptionDb.getMediaDetails();
+        if (ar.length() > 0) {
+            new MediaTrackerApi(mContext).mediaTracking(RetrofitConstant.BASE_URL+RetrofitConstant.MEDIA_TRACKER_API, userUUID, ar, AppUtils.getDeviceID(mContext), true);
+        }
     }
 
 

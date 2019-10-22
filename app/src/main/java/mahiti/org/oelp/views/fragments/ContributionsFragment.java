@@ -186,7 +186,7 @@ public class ContributionsFragment extends Fragment implements CompoundButton.On
         // file (as opposed to a list of contacts or timezones)
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
-        intent.setType("image/*, image/*, application/pdf");
+        intent.setType("image/*, video/*, application/pdf");
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
 
         // Filter to show only images, using the image MIME data type.

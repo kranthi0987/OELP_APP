@@ -10,16 +10,20 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -34,6 +38,7 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -86,7 +91,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     private int playingId;
     TextView toolbarTitle;
     RelativeLayout relativeBack;
-    View actionBar;
+    RelativeLayout actionBar;
     String userId;
     String unitId;
     String videoTitle;
@@ -95,10 +100,13 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     String parentUUID;
     String mediaUUID = "";
     int dcfId = 0;
-    String deviceId = "";
     private String errorMessage;
     private Boolean takeRetest = true;
     private SurveyResponseDao surveyResponseDao;
+    RelativeLayout rlMain;
+    MediaController mediaController;
+    MySharedPref mySharedPref;
+    private boolean isMediaControllerShowing = false;
 
 
     @SuppressLint("DefaultLocale")
@@ -129,10 +137,6 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         return result;
     }
 
-    RelativeLayout rlMain;
-    MediaController mediaController;
-    MySharedPref mySharedPref;
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,8 +146,8 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         setContentView(R.layout.activity_video_view);
         mySharedPref = new MySharedPref(this);
         surveyResponseDao = new SurveyResponseDao(this);
-
         actionBar = findViewById(R.id.toolbar);
+//        hideActionBar(0);
         toolbarTitle = findViewById(R.id.toolbarTitle);
         relativeBack = findViewById(R.id.relativeBack);
         videoView = findViewById(R.id.video_view);
@@ -154,8 +158,25 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         mediaController = new MediaController(this);
         mediaPlayer = new MediaPlayer();
 
+        /*videoView.setOnTouchListener((view, motionEvent) -> {
+            if (videoView.isPlaying()){
+                if (!isMediaControllerShowing){
+                    actionBar.setVisibility(View.VISIBLE);
+                    mediaController.show(100);
+                    hideActionBar(100);
+                }
+            }else {
+                if (isMediaControllerShowing){
+                    actionBar.setVisibility(View.GONE);
+                    mediaController.hide();
+                    isMediaControllerShowing= false;
+                }
+            }
+            return false;
+        });
+*/
 
-        deviceId = getDeviceID();
+
         mediaController.show(3000);
         videoDecryptionDb = new VideoDecryptionDb(this);
         mediaTrackerApi = new MediaTrackerApi(this);
@@ -171,6 +192,17 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         sharedPreferences = getApplicationContext().getSharedPreferences("MyPrefs", MODE_PRIVATE);
         checkNet = new CheckNet(this);
         getIntentData();
+    }
+
+    private void hideActionBar(int timemilli) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+               actionBar.setVisibility(View.GONE);
+                isMediaControllerShowing= false;
+
+            }
+        }, timemilli);
     }
 
 
@@ -245,6 +277,8 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
                 srcPath = new File(path);
 
                 if (srcPath.exists()) {
+//                    String orientation = AppUtils.getOrientationOfVideo(path);
+
                     videoId = getIntent().getIntExtra("videoId", 0);
                     Log.i("VideoId", "" + videoId);
                     videoSelected();
@@ -268,27 +302,49 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
     @Override
     protected void onStart() {
         super.onStart();
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        rotateScreen();
     }
 
-    @SuppressLint("HardwareIds")
-    private String getDeviceID() {
-        String deviceId = "";
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-            TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            assert telephonyManager != null;
-            deviceId = telephonyManager.getDeviceId();
-        }/* else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 100);
-        }*/
-        return deviceId;
+    private void rotateScreen() {
+        try {
+            //Create a new instance of MediaMetadataRetriever
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            //Declare the Bitmap
+            Bitmap bmp;
+            //Set the video Uri as data source for MediaMetadataRetriever
+            Uri pathUri = Uri.parse(path);
+            retriever.setDataSource(this, pathUri);
+            //Get one "frame"/bitmap - * NOTE - no time was set, so the first available frame will be used
+            bmp = retriever.getFrameAtTime();
+
+            //Get the bitmap width and height
+            int videoWidth = bmp.getWidth();
+            int videoHeight = bmp.getHeight();
+
+            //If the width is bigger then the height then it means that the video was taken in landscape mode and we should set the orientation to landscape
+            if (videoWidth > videoHeight) {
+                //Set orientation to landscape
+                this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            }
+            //If the width is smaller then the height then it means that the video was taken in portrait mode and we should set the orientation to portrait
+            if (videoWidth < videoHeight) {
+                //Set orientation to portrait
+                this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            }
+
+        } catch (RuntimeException ex) {
+            //error occurred
+            Log.e("MediaMetadataRetriever", "- Failed to rotate the video");
+
+        }
     }
+
+
 
     @Override
     protected void onResume() {
         super.onResume();
     }
-
 
     @Override
     public void onPrepared(MediaPlayer mp) {
@@ -311,7 +367,25 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
             editor.putInt("id", playingId);
             editor.apply();
             mediaPlayer = mp;
+
+            /*try {
+                mediaPlayer.setOnVideoSizeChangedListener((mediaPlayer, width, height) -> {
+                    if(width < height){
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                        videoView.start();
+                    } else {
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                        videoView.start();
+                    }
+
+                });
+            } catch (IllegalArgumentException | SecurityException | IllegalStateException e) {
+                e.printStackTrace();
+                videoView.start();
+            }*/
             videoView.start();
+
+
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 videoView.setOnInfoListener(this);
@@ -321,6 +395,9 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
 
         }
     }
+
+
+
 
 
     private String getDateTime() {
@@ -339,17 +416,12 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
                 R.anim.anim_slide_out_right);
     }
 
-
     @Override
     public void onBackPressed() {
         updateOnVideoWatching();
-       /* if (CheckNetwork.checkNet(this)) {
-            callMediaTrackerApi();
-        }*/
         contentUpdateStatus(mediaUUID);
         finish();
     }
-
 
     private String getModifiedDate(int tableType) {
 //        return catalogDbHandler.getModifiedDate(tableType);
@@ -372,7 +444,6 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
 
 
     }
-
 
     public JSONArray getMediaDetails() {
         videoDecryptionDb = new VideoDecryptionDb(this);
@@ -432,7 +503,6 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         updateDbAfterApi();
     }
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -472,7 +542,6 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         return false;
     }
 
-    //
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         int duration = mediaPlayer.getDuration();
@@ -494,7 +563,7 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         contentUpdateStatus(mediaUUID);
 
         /*
-         * Checking Login Type if Trainer there is no Test Section If Teacher there is Test Section
+         * Checking Login Type, if Trainer there is no Test Section If Teacher there is Test Section
          * */
 
         takeRetest = getIntent().getBooleanExtra("takeRetest", true);
@@ -520,6 +589,8 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
             updateDBandCAllApi();
             onBackPressed();
         }
+
+        mySharedPref.writeBoolean(Constants.MEDIATRACKERCHANGED, true);
     }
 
     private void updateDBandCAllApi() {
@@ -545,42 +616,6 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
             surveyResponseDao.insertAnsweredQuestion(list);
             new MySharedPref(this).writeBoolean(Constants.QACHANGED, true);
         }
-    }
-
-
-
-    public void postQA(SubmittedAnswerResponse model) {
-        /*String response = "";
-        Gson gson = new Gson();
-        if (model.getResponse() != null) {
-            try {
-                response = gson.toJson(model.getResponse());
-            } catch (Exception ex) {
-                Logger.logE(TAG, "Exception in model to json :" + ex.getMessage(), ex);
-            }
-        }
-
-        ApiInterface apiService = RetrofitClass.getAPIService();
-        String userId = new MySharedPref(this).readString(Constants.USER_ID, "");
-        Call<MobileVerificationResponseModel> call = apiService.submitAnswer(userId, model.getCreationKey(), model.getSectionUUID(), model.getUnitUUID(), model.getSubmissionDate(), model.getMediacontent(),
-                model.getScore(), model.getAttempts(), response);
-        Logger.logD(TAG, "QUESTION_AND_ANSWER_URL : " + RetrofitConstant.BASE_URL + RetrofitConstant.SUBMIT_ANSWER);
-        call.enqueue(new Callback<MobileVerificationResponseModel>()
-
-        {
-            @Override
-            public void onResponse
-                    (Call<MobileVerificationResponseModel> call, Response<MobileVerificationResponseModel> response) {
-                Toast.makeText(VideoViewActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                catalogDbHandler.updateSyncStatus();
-            }
-
-            @Override
-            public void onFailure(Call<MobileVerificationResponseModel> call, Throwable t) {
-
-
-            }
-        });*/
     }
 
     private void moveToAnswerPreview() {
@@ -612,13 +647,12 @@ public class VideoViewActivity extends AppCompatActivity implements SevendaysVar
         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
     }
 
-    public void callMediaTrackerApi() {
+    /*public void callMediaTrackerApi() {
         JSONArray ar = getMediaDetails();
         if (ar.length() > 0) {
             mediaTrackerApi.mediaTracking(mediaApiUrl, userId, getMediaDetails(), this, deviceId, true);
         }
-    }
-
+    }*/
 
     @Override
     public void onSeekComplete(MediaPlayer mediaPlayer) {

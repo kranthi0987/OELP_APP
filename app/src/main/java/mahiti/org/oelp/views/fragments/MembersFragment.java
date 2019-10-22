@@ -100,7 +100,7 @@ public class MembersFragment extends Fragment {
     }
 
     private void insertDataIntoTeacherTable(List<TeacherModel> teachers) {
-        if (!teachers.isEmpty()) {
+        if (teachers!=null && !teachers.isEmpty()) {
             teacherDao.insertTeacherDataToDB(teachers);
 //            teacherList = teacherDao.getTeachers(groupUUID, 1);
             fetchTeacherList();

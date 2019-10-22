@@ -95,7 +95,7 @@ public class TeacherInfoTabActivity extends AppCompatActivity implements ViewPag
             toolbar.inflateMenu(R.menu.trainer_menu);
         getIntentValues();
 
-        setFragment(new MembersFragment());
+        setFragment(new TeacherInfoFragment());
         setTextColor(membersClick, 0);
 
         llMembersInfo.setOnClickListener(view -> {

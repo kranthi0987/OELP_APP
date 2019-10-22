@@ -35,7 +35,6 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
             cursor.close();
     }
 
-
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         createLocationTable(sqLiteDatabase);
@@ -110,7 +109,6 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         Logger.logD(TAG, "Database creation query :" + query);
         sqLiteDatabase.execSQL(query);
     }
-
 
     private void createQuestionChoicesTable(SQLiteDatabase sqLiteDatabase) {
 
@@ -203,7 +201,6 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(query);
     }
 
-
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
@@ -227,7 +224,6 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         return date;
     }
 
-
     public void initDatabase() {
         if (database == null || !database.isOpen() || database.isReadOnly())
             database = this.getWritableDatabase(DBConstants.DATABASESECRETKEY);
@@ -238,7 +234,6 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         /*if (database!=null)
             database.close();*/
     }
-
 
     public Integer getWatchStatus(String uuid) {
         int watchStatus = 0;
@@ -270,7 +265,6 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         Log.d(TAG, "Watch values inserting into  " + DBConstants.MEDIA_STATUS_TABLE + cv.toString());
     }
 
-
     public void updateAllWatchStatus() {
         initDatabase();
         ContentValues cv = new ContentValues();
@@ -289,7 +283,6 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         cv.put(DBConstants.WATCH_STATUS, 1); //These Fields should be your String values of actual column names
         database.update(DBConstants.MEDIA_STATUS_TABLE, cv, "uuid = ?", new String[]{mediaUUID});
     }
-
 
     public boolean getContentIsOpen(String uuid) {
         boolean isOpen = false;
@@ -311,7 +304,6 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         }
         return isOpen;
     }
-
 
     public void deleteAllDataFromDB(int type) {
         initDatabase();

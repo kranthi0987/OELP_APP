@@ -28,11 +28,13 @@ public class PermissionClass {
         int internet = ContextCompat.checkSelfPermission(activity, Manifest.permission.INTERNET);
         int networkstate = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_NETWORK_STATE);
         int readphonestate = ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_PHONE_STATE);
+        int wakelock = ContextCompat.checkSelfPermission(activity, Manifest.permission.WAKE_LOCK);
 
         return externalRead == PackageManager.PERMISSION_GRANTED &&
                 externalWrite == PackageManager.PERMISSION_GRANTED &&
                 internet == PackageManager.PERMISSION_GRANTED &&
                 networkstate == PackageManager.PERMISSION_GRANTED &&
+                wakelock == PackageManager.PERMISSION_GRANTED &&
                 readphonestate == PackageManager.PERMISSION_GRANTED;
 
     }
@@ -46,10 +48,12 @@ public class PermissionClass {
             list.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.INTERNET))
             list.add(Manifest.permission.INTERNET);
-        if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.INTERNET))
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_NETWORK_STATE))
             list.add(Manifest.permission.ACCESS_NETWORK_STATE);
-        if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.INTERNET))
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_PHONE_STATE))
             list.add(Manifest.permission.READ_PHONE_STATE);
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.WAKE_LOCK))
+            list.add(Manifest.permission.WAKE_LOCK);
 
         String[] stockArr = new String[list.size()];
         stockArr = list.toArray(stockArr);

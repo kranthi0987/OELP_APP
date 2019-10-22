@@ -94,6 +94,10 @@ public class HomeViewModel extends AndroidViewModel {
         data.shareMediaGlobally();
     }
 
+    public void updateMediaTrackerData(){
+        data.syncMediaTrackerData();
+    }
+
     public void postQA(){
         data.postQA();
     }

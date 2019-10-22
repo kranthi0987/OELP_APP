@@ -65,8 +65,22 @@ public class MediaContentDao extends DatabaseHandlerClass {
         } finally {
             database.endTransaction();
         }
-
+//        deleteInActiveData();
         return insertlong;
+    }
+
+    public void deleteInActiveData(){
+        String query = DBConstants.DELETE+DBConstants.MEDIA_CONTENT_TABLE+DBConstants.WHERE+DBConstants.ACTIVE
+                +DBConstants.EQUAL_TO+1;
+        initDatabase();
+        Cursor cursor= null;
+        try{
+            cursor = database.rawQuery(query, null);
+        }catch (Exception ex){
+            Logger.logE(TAG, ex.getMessage(), ex);
+        }finally {
+            closeCursor(cursor);
+        }
     }
 
     /**
@@ -74,6 +88,7 @@ public class MediaContentDao extends DatabaseHandlerClass {
      * @param type     0 for both sync and unsync data and 1 for unsync data
      * @param userUUID useruuid
      * @param groupUUID groupuuid
+     * @return SharedMediaList
      */
     public List<SharedMediaModel> fetchSharedMedia(String userUUID, String groupUUID, boolean forGroup, int type) {
         List<SharedMediaModel> sharedMediaList = new ArrayList<>();
@@ -152,13 +167,11 @@ public class MediaContentDao extends DatabaseHandlerClass {
     }
 
     /**
-     *
      * @param mediaUUID media uuid to update
      * @param columnName column name which has to update
      */
     public void updateSyncData(String mediaUUID, String columnName) {
         if (mediaUUID!=null && !mediaUUID.isEmpty()) {
-            long updateLong = 0;
             initDatabase();
             ContentValues cv = new ContentValues();
             cv.put(DBConstants.UUID, mediaUUID);
