@@ -2,25 +2,14 @@ package mahiti.org.oelp.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.google.android.material.tabs.TabLayout;
-import com.makeramen.roundedimageview.RoundedImageView;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -33,7 +22,31 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
+
+import com.bumptech.glide.Glide;
+import com.makeramen.roundedimageview.RoundedImageView;
+
+import org.jivesoftware.smack.SmackConfiguration;
+import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.XMPPConnection;
+import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smackx.muc.DiscussionHistory;
+import org.jivesoftware.smackx.muc.MultiUserChat;
+import org.jivesoftware.smackx.muc.MultiUserChatException;
+import org.jivesoftware.smackx.muc.MultiUserChatManager;
+import org.jxmpp.jid.EntityBareJid;
+import org.jxmpp.jid.impl.JidCreate;
+import org.jxmpp.jid.parts.Resourcepart;
+import org.jxmpp.stringprep.XmppStringprepException;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.chat.ConversationActivity;
+import mahiti.org.oelp.chat.service.XMPP;
+import mahiti.org.oelp.chat.utilies.ConnectionUtils;
 import mahiti.org.oelp.database.DAOs.MediaContentDao;
 import mahiti.org.oelp.databinding.ActivityChatAndContributionBinding;
 import mahiti.org.oelp.fileandvideodownloader.DownloadClass;
@@ -62,9 +75,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     private FragmentManager fragManager;
     private ListRefresh refresh;
 
-//    private ViewPager viewPager;
-//    private TabLayout tabLayout;
-    private ViewPagerAdapter adapter;
+    ConnectionUtils connectionUtils;
     private MySharedPref sharedPref;
     private int userType;
     private String groupUUID;
@@ -84,6 +95,10 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
     private CallAPIServicesData servicesData;
     private AlertDialog alertDialogPop;
     private boolean membersClick = true;
+    //    private ViewPager viewPager;
+//    private TabLayout tabLayout;
+    private ViewPagerAdapter adapter;
+    private XMPPConnection connection = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +108,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
         viewModel = ViewModelProviders.of(this).get(ChatAndContributionViewModel.class);
         binding.setChatAndContributionViewModel(viewModel);
         binding.setLifecycleOwner(this);
-
+        connectionUtils = new ConnectionUtils();
 
         tvTitle = binding.tvTitle;
         tvMember = binding.tvMember;
@@ -105,7 +120,6 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
         progressBar = binding.progressBar;
 
 
-
         sharedPref = new MySharedPref(this);
         userType = sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER);
         toolbar = findViewById(R.id.white_toolbar);
@@ -114,6 +128,9 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
+        }
+        if (sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER) {
+            binding.floatingActionButton.setVisibility(View.VISIBLE);
         }
 
         getIntentValues();
@@ -125,39 +142,68 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
             if (!membersClick) {
                 setFragment(new MembersFragment());
                 setTextColor(!membersClick, 1);
-                membersClick=true;
+                membersClick = true;
             }
 
         });
         rlContributions.setOnClickListener(view -> {
             if (membersClick) {
                 setFragment(new ContributionsFragment());
-                setTextColor(!membersClick,1);
+                setTextColor(!membersClick, 1);
                 membersClick = false;
+                binding.floatingActionButton.setVisibility(View.GONE);
             }
         });
 
 
         viewModel.getListOfImageToDownload().observe(this, imageListToDownload -> {
             if (imageListToDownload != null && !imageListToDownload.isEmpty()) {
-                new DownloadClass(Constants.IMAGE, this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard( Constants.IMAGE).getAbsolutePath(), imageListToDownload, "");
+                new DownloadClass(Constants.IMAGE, this, RetrofitConstant.BASE_URL, AppUtils.completePathInSDCard(Constants.IMAGE).getAbsolutePath(), imageListToDownload, "");
             }
         });
 
-
+        binding.floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (CheckNetwork.checkNet(ChatAndContributionActivity.this)) {
+                    if (XMPP.getInstance().isReconnectNeeded()) {
+                        if (joinGroup(groupUUID, sharedPref.readString(Constants.USER_NAME, ""))) {
+                            Intent i = new Intent(ChatAndContributionActivity.this, ConversationActivity.class);
+                            i.putExtra("group_name", groupName);
+                            i.putExtra("group_uuid", groupUUID);
+                            i.putExtra("username", sharedPref.readString(Constants.USER_NAME, ""));
+//                            i.putExtra("group", groupUUID);
+//                            i.putExtra("username", sharedPref.readString(Constants.USER_NAME, ""));
+                            startActivity(i);
+                        }
+                    } else {
+                        if (XMPP.getInstance().reconnectAndLogin(sharedPref.readString(mahiti.org.oelp.utils.Constants.USER_ID, "")))
+                            if (joinGroup(groupUUID, sharedPref.readString(Constants.USER_NAME, ""))) {
+                                Intent i = new Intent(ChatAndContributionActivity.this, ConversationActivity.class);
+                                i.putExtra("group_name", groupName);
+                                i.putExtra("group_uuid", groupUUID);
+                                i.putExtra("username", sharedPref.readString(Constants.USER_NAME, ""));
+                                startActivity(i);
+                            }
+                    }
+                } else {
+                    Toast.makeText(ChatAndContributionActivity.this, getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
-    public void setTextColor(boolean membersClicks, int type){
-        if (membersClicks){
-            if (type!=0) {
+    public void setTextColor(boolean membersClicks, int type) {
+        if (membersClicks) {
+            if (type != 0) {
                 lineMembers.setVisibility(View.VISIBLE);
                 lineContri.setVisibility(View.INVISIBLE);
 
             }
             tvMember.setTextColor(getResources().getColor(R.color.black));
             tvContribution.setTextColor(getResources().getColor(R.color.grey));
-        }else {
-            if (type!=0) {
+        } else {
+            if (type != 0) {
                 lineContri.setVisibility(View.VISIBLE);
                 lineMembers.setVisibility(View.INVISIBLE);
             }
@@ -228,12 +274,11 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
             onBackPressed();
 
 
-
         }
     }
 
-    public void setTitle(String groupName){
-        if (groupName!=null && !groupName.isEmpty())
+    public void setTitle(String groupName) {
+        if (groupName != null && !groupName.isEmpty())
             tvTitle.setText(groupName);
     }
 
@@ -308,7 +353,6 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
         }
 
 
-
         btnClose.setOnClickListener(view -> {
             alertDialogPop.dismiss();
         });
@@ -367,8 +411,8 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
     private void showPopupForDelete(SharedMediaModel mediaModel, int position) {
 
-        if (sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER)==Constants.USER_TEACHER)
-            if (!sharedPref.readString(Constants.USER_ID,"").equals(mediaModel.getUserUuid()))
+        if (sharedPref.readInt(Constants.USER_TYPE, Constants.USER_TEACHER) == Constants.USER_TEACHER)
+            if (!sharedPref.readString(Constants.USER_ID, "").equals(mediaModel.getUserUuid()))
                 return;
 
         new AlertDialog.Builder(this, R.style.AlertDialogTheme)
@@ -399,7 +443,7 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
         String userUUId = new MySharedPref(this).readString(Constants.USER_ID, "");
         if (videoAvailable(fileModel)) {
-            String filePath = AppUtils.completePathInSDCard(Constants.VIDEO)+"/"+AppUtils.getFileName(fileModel.getFileUrl());
+            String filePath = AppUtils.completePathInSDCard(Constants.VIDEO) + "/" + AppUtils.getFileName(fileModel.getFileUrl());
             DownloadUtility.playVideo(this, filePath, fileModel.getFileName(), userUUId, fileModel.getUuid(), "", fileModel.getDcfId(), "");
         } else {
             downloadVideo(fileModel);
@@ -441,18 +485,16 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
     }
 
-    public void setFragment(Fragment fragment){
+    public void setFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment_content, fragment).addToBackStack(null).commitAllowingStateLoss();
     }
 
     public void setGroupName(String groupName) {
-        if (groupName!=null && !groupName.isEmpty())
+        if (groupName != null && !groupName.isEmpty())
             tvTitle.setText(groupName);
     }
-
-
 
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -500,12 +542,45 @@ public class ChatAndContributionActivity extends AppCompatActivity implements Vi
 
     }
 
-//
+    //
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        getMenuInflater().inflate(R.menu.group_menu, menu);
 //        return true;
 //    }
+    public boolean joinGroup(String roomName, String nickName) {
+        if (connection == null)
+            connection = connectionUtils.getXmptcConnection();
+        MultiUserChatManager manager = MultiUserChatManager.getInstanceFor(connection);
+        String str = roomName.replace(" ", "");
+        try {
+            // Create the XMPP address (JID) of the MUC.
+            EntityBareJid mucJid = JidCreate.entityBareFrom(str + "@conference." + mahiti.org.oelp.chat.Constants.HOST);
+            // Create a MultiUserChat using an XMPPConnection for a room
+            MultiUserChat muc = manager.getMultiUserChat(mucJid);
+            Log.d(TAG, "username" + sharedPref.readString(mahiti.org.oelp.utils.Constants.USER_NAME, ""));
+            Resourcepart nickname = Resourcepart.from(sharedPref.readString(mahiti.org.oelp.utils.Constants.USER_NAME, ""));
 
+            DiscussionHistory history = new DiscussionHistory();
+            history.setMaxStanzas(Integer.MAX_VALUE);
+
+            muc.join(nickname, "", history, SmackConfiguration.getDefaultPacketReplyTimeout());
+            Toast.makeText(ChatAndContributionActivity.this, "joined to group", Toast.LENGTH_SHORT).show();
+            return true;
+        } catch (SmackException.NotConnectedException e1) {
+            e1.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (SmackException.NoResponseException e) {
+            e.printStackTrace();
+        } catch (XMPPException.XMPPErrorException e) {
+            e.printStackTrace();
+        } catch (XmppStringprepException e) {
+            e.printStackTrace();
+        } catch (MultiUserChatException.NotAMucServiceException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }

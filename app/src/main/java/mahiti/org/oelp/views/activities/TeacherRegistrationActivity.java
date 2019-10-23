@@ -1,14 +1,8 @@
 package mahiti.org.oelp.views.activities;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
-
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -16,10 +10,22 @@ import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
+
+import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.XMPPException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.chat.service.XMPP;
+import mahiti.org.oelp.chat.utilies.ConnectionUtils;
 import mahiti.org.oelp.databinding.ActivityTeacherRegistrationBinding;
 import mahiti.org.oelp.models.LocationContent;
 import mahiti.org.oelp.models.MobileVerificationResponseModel;
@@ -28,6 +34,7 @@ import mahiti.org.oelp.utils.Action;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.MySharedPref;
 import mahiti.org.oelp.viewmodel.TeacherRegistrationViewModel;
+import mahiti.org.oelp.xmpp.XmppConnection;
 
 
 public class TeacherRegistrationActivity extends AppCompatActivity implements View.OnClickListener {
@@ -40,6 +47,9 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
     RelativeLayout rlBlock;
     String mobileNo;
     private int activityType;
+
+    XmppConnection connection = null;
+    ConnectionUtils connectionUtils = new ConnectionUtils();
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -123,12 +133,12 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
     }
 
     private void showToast(String s) {
-        if(!s.isEmpty())
+        if (!s.isEmpty())
             Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
     private void setErrorState(String s) {
-        if (!s.isEmpty()){
+        if (!s.isEmpty()) {
             showToast(s);
         }
 
@@ -136,32 +146,32 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
 
 
     private void getIntentData() {
-        activityType = getIntent().getIntExtra("ActivityType",0);
+        activityType = getIntent().getIntExtra("ActivityType", 0);
         teacherRegistrationViewModel.setActivityType(activityType);
-        if (activityType==0) {
+        if (activityType == 0) {
             mobileNo = new MySharedPref(this).readString(Constants.MOBILE_NO_New, "");
             teacherRegistrationViewModel.phoneNo.setValue(mobileNo);
-        }else {
+        } else {
             UserDetailsModel userDetail = getIntent().getParcelableExtra("UserDetails");
-            if (userDetail.getName()!=null && !userDetail.getName().isEmpty()){
+            if (userDetail.getName() != null && !userDetail.getName().isEmpty()) {
                 teacherRegistrationViewModel.name.setValue(userDetail.getName());
             }
-            if (userDetail.getMobile_number()!=null && userDetail.getMobile_number().isEmpty()){
+            if (userDetail.getMobile_number() != null && userDetail.getMobile_number().isEmpty()) {
                 teacherRegistrationViewModel.phoneNo.setValue(userDetail.getMobile_number());
             }
-            if (userDetail.getSchool()!=null && userDetail.getSchool().isEmpty()){
+            if (userDetail.getSchool() != null && userDetail.getSchool().isEmpty()) {
                 teacherRegistrationViewModel.school.setValue(userDetail.getSchool());
             }
-            if (userDetail.getStateName()!=null && userDetail.getStateName().isEmpty()){
+            if (userDetail.getStateName() != null && userDetail.getStateName().isEmpty()) {
                 teacherRegistrationViewModel.state.setValue(userDetail.getStateName());
             }
-            if (userDetail.getDistrictname()!=null && userDetail.getDistrictname().isEmpty()){
+            if (userDetail.getDistrictname() != null && userDetail.getDistrictname().isEmpty()) {
                 teacherRegistrationViewModel.district.setValue(userDetail.getDistrictname());
             }
-            if (userDetail.getBlockName()!=null && userDetail.getBlockName().isEmpty()){
+            if (userDetail.getBlockName() != null && userDetail.getBlockName().isEmpty()) {
                 teacherRegistrationViewModel.block.setValue(userDetail.getBlockName());
             }
-            if (userDetail.getVillageName()!=null && userDetail.getVillageName().isEmpty()){
+            if (userDetail.getVillageName() != null && userDetail.getVillageName().isEmpty()) {
                 teacherRegistrationViewModel.village.setValue(userDetail.getVillageName());
             }
         }
@@ -172,17 +182,18 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
         if (data.getmAction().getValue() == Action.STATUS_FALSE) {
             Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
         } else if (data.getmAction().getValue() == Action.STATUS_TRUE) {
-            if (activityType==0)
-                moveToVerifyActivity(data.getUserDetails());
+            if (activityType == 0)
+                if (register(data.getUseridreg(), Constants.CHAT_PASSWORD))
+                    moveToVerifyActivity(data.getUserDetails());
             else
                 movetOPreviousActivity(teacherRegistrationViewModel.getUserDetailsData());
         }
     }
 
     private void movetOPreviousActivity(UserDetailsModel userDetailsData) {
-        Intent intent= new Intent();
-        intent.putExtra("UserDetails",userDetailsData);
-        setResult(RESULT_OK,intent);
+        Intent intent = new Intent();
+        intent.putExtra("UserDetails", userDetailsData);
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -202,7 +213,7 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
         locationContent.setName(getResources().getString(R.string.please_select_state));
         contentArrayList.add(locationContent);
         List<LocationContent> stateList = teacherRegistrationViewModel.getStateSpinnerData().getValue();
-        if (stateList!=null && !stateList.isEmpty()){
+        if (stateList != null && !stateList.isEmpty()) {
             contentArrayList.addAll(stateList);
         }
 
@@ -253,7 +264,7 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
         locationContent.setName(getResources().getString(R.string.please_select_district));
         contentArrayList.add(locationContent);
         List<LocationContent> districtList = teacherRegistrationViewModel.getDistrictSpinnerData(id, boundaryLevelType).getValue();
-        if (districtList!=null && !districtList.isEmpty()){
+        if (districtList != null && !districtList.isEmpty()) {
             contentArrayList.addAll(districtList);
         }
 
@@ -299,7 +310,7 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
         locationContent.setName(getResources().getString(R.string.please_select_block));
         contentArrayList.add(locationContent);
         List<LocationContent> blockList = teacherRegistrationViewModel.getBlockSpinnerData(id, boundaryLevelType).getValue();
-        if (blockList!=null && !blockList.isEmpty()){
+        if (blockList != null && !blockList.isEmpty()) {
             contentArrayList.addAll(blockList);
         }
 
@@ -366,6 +377,26 @@ public class TeacherRegistrationActivity extends AppCompatActivity implements Vi
         }
     }
 
+    private boolean register(final String paramString1, final String paramString2) {
+        try {
+            XMPP.getInstance().register(paramString1, paramString2);
+            return true;
+
+        } catch (XMPPException localXMPPException) {
+            localXMPPException.printStackTrace();
+        } catch (SmackException.NoResponseException e) {
+            e.printStackTrace();
+        } catch (SmackException.NotConnectedException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SmackException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     private void moveToNextActivity() {
 //        Intent intent = new Intent(TeacherRegistrationActivity.this, AppIntroActivity.class);

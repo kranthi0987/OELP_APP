@@ -1,5 +1,8 @@
 package mahiti.org.oelp.utils;
 
+import mahiti.org.oelp.MyApplication;
+import mahiti.org.oelp.database.DatabaseHandlerClass;
+
 /**
  * Created by RAJ ARYAN on 16/07/19.
  */
@@ -59,7 +62,8 @@ public class Constants {
     public static Integer No_Internet= 101;
     public static Integer Api_FAilure = 102;
     public static final int READ_REQUEST_CODE = 332;
-
+    public static final String CHAT_PASSWORD = "123456";
+    public static DatabaseHandlerClass databaseHandlerClass = new DatabaseHandlerClass(MyApplication.getContext());
 
 
     public enum TransitionType {

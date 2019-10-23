@@ -109,6 +109,9 @@
         </receiver>
 
         <activity
+            android:name=".chat.ConversationActivity"
+            android:label="@string/title_activity_conversation" />
+        <activity
             android:name=".views.activities.ChangeMobileNoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />

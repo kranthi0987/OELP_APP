@@ -8,14 +8,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.util.List;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+
+import java.util.List;
+
 import mahiti.org.oelp.R;
 import mahiti.org.oelp.databinding.ActivityHomeBinding;
 import mahiti.org.oelp.fileandvideodownloader.DownloadClass;
@@ -25,7 +26,6 @@ import mahiti.org.oelp.models.CatalogueDetailsModel;
 import mahiti.org.oelp.models.GroupModel;
 import mahiti.org.oelp.services.NetworkChangeReceiver;
 import mahiti.org.oelp.services.RetrofitConstant;
-import mahiti.org.oelp.services.XmppConnectionService;
 import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.CheckNetwork;
 import mahiti.org.oelp.utils.Constants;
@@ -35,7 +35,6 @@ import mahiti.org.oelp.viewmodel.HomeViewModel;
 import mahiti.org.oelp.views.fragments.GroupsFragment;
 import mahiti.org.oelp.views.fragments.HomeFragment;
 import mahiti.org.oelp.views.fragments.UnitsFragment;
-import mahiti.org.oelp.xmpp.XmppConnection;
 
 public class HomeActivity extends AppCompatActivity implements ItemClickListerner, OnMediaDownloadListener {
 
@@ -284,9 +283,9 @@ public class HomeActivity extends AppCompatActivity implements ItemClickListerne
 //                service.logoutAndSave(true);
 
                 return true;
-            case R.id.chats:
-                showChatUI();
-                return true;
+//            case R.id.chats:
+//                showChatUI();
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

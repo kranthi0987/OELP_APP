@@ -1,14 +1,8 @@
 package mahiti.org.oelp.views.activities;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.IntentFilter;
-
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.WindowManager;
@@ -16,8 +10,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.tcp.XMPPTCPConnection;
+
+import java.io.IOException;
+
 import mahiti.org.oelp.MySMSBroadCastReceiver;
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.chat.service.XMPP;
+import mahiti.org.oelp.chat.utilies.ConnectionUtils;
 import mahiti.org.oelp.databinding.ActivityVerificationBinding;
 import mahiti.org.oelp.models.MobileVerificationResponseModel;
 import mahiti.org.oelp.models.UserDetailsModel;
@@ -26,6 +34,8 @@ import mahiti.org.oelp.utils.AppUtils;
 import mahiti.org.oelp.utils.Constants;
 import mahiti.org.oelp.utils.MySharedPref;
 import mahiti.org.oelp.viewmodel.OTPVerificationViewModel;
+
+import static mahiti.org.oelp.chat.Constants.ACTION_LOGGED_IN;
 
 
 public class OTPVerificationActivity extends AppCompatActivity {
@@ -43,7 +53,8 @@ public class OTPVerificationActivity extends AppCompatActivity {
     private EditText etOtp4;
     /*private OneTimeWorkRequest workRequest;*/
     MySharedPref sharedPref;
-
+    XMPPTCPConnection connection = null;
+    ConnectionUtils connectionUtils = new ConnectionUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +69,6 @@ public class OTPVerificationActivity extends AppCompatActivity {
         btnResend = verificationActivityBinding.btnResend;
         btnSubmit = verificationActivityBinding.btnSubmit;
         btnSubmit.setEnabled(false);
-
 
 
         sharedPref = new MySharedPref(this);
@@ -292,12 +302,14 @@ public class OTPVerificationActivity extends AppCompatActivity {
             Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
         } else if (data.getmAction().getValue() == Action.VERIFY_OTP) {
             compareUserTypeAndMoveToNextActivity();
+            login(sharedPref.readString(Constants.USER_ID, ""), Constants.CHAT_PASSWORD);
+
         } else if (data.getmAction().getValue() == Action.MOVE_TO_CHANGE_MOBILE_ACTIVITY) {
             moveToChangeMobileNoActivity();
 //            saveUserTypeToPref();
         } else {
             Toast.makeText(this, data.getMessage(), Toast.LENGTH_SHORT).show();
-            if(data.getmAction().getValue()== Action.STATUS_FALSE)
+            if (data.getmAction().getValue() == Action.STATUS_FALSE)
                 clearAllOTPText();
         }
     }
@@ -318,5 +330,40 @@ public class OTPVerificationActivity extends AppCompatActivity {
         startActivity(intent);
         overridePendingTransition(R.anim.anim_slide_in_left,
                 R.anim.anim_slide_out_left);
+    }
+
+    private boolean login(final String user, final String pass) {
+        if (connection == null)
+            connection = connectionUtils.getXmptcConnection();
+        try {
+
+            XMPP.getInstance().getConnection().login(user, pass);
+            sendBroadcast(new Intent(ACTION_LOGGED_IN));
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                XMPP.getInstance().getConnection().login(user, pass);
+                sendBroadcast(new Intent(ACTION_LOGGED_IN));
+
+                return true;
+            } catch (XMPPException e1) {
+                e1.printStackTrace();
+                return false;
+            } catch (SmackException e1) {
+                e1.printStackTrace();
+                return false;
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+                return false;
+            } catch (IOException e1) {
+                e1.printStackTrace();
+                return false;
+            } catch (Exception e1) {
+                e1.printStackTrace();
+                return false;
+            }
+        }
     }
 }

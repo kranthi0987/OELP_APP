@@ -213,3 +213,4 @@
  -keep class cz.msebera.android.httpclient.** { *; }
  -keep class com.loopj.android.http.** { *; }
 
+-keep class org.jivesoftware.** { *; }

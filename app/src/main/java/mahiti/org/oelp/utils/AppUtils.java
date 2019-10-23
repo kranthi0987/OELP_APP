@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
@@ -24,12 +23,18 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.loader.content.CursorLoader;
 
 import com.google.gson.Gson;
 
@@ -44,7 +49,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.nio.channels.FileChannel;
-import java.sql.Struct;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,15 +57,10 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentActivity;
-import androidx.loader.content.CursorLoader;
-
 import mahiti.org.oelp.R;
+import mahiti.org.oelp.chat.service.XMPP;
 import mahiti.org.oelp.database.DBConstants;
 import mahiti.org.oelp.database.DatabaseHandlerClass;
-import mahiti.org.oelp.models.UserDetailsModel;
 import mahiti.org.oelp.ui.StartUI;
 import mahiti.org.oelp.views.activities.AboutUsActivity;
 import mahiti.org.oelp.views.activities.MobileLoginActivity;
@@ -343,7 +342,7 @@ public class AppUtils {
 
     public static boolean textEmpty(String text) {
 
-        return text != null && !text.isEmpty() ? false : true;
+        return text == null || text.isEmpty();
 
     }
 
@@ -506,6 +505,11 @@ public class AppUtils {
         context.startActivity(intent);
         ((AppCompatActivity) context).finish();
         ((AppCompatActivity) context).overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
+        try {
+            XMPP.getInstance().close();
+        } catch (Exception e) {
+            Log.e(TAG, "makeUserLogout: ", e);
+        }
     }
 
     public static void showAboutUsActivity(Context context) {
@@ -879,7 +883,7 @@ public class AppUtils {
                     String uriAuthority = uri.getAuthority();
 
                     if (isMediaDoc(uriAuthority)) {
-                        String idArr[] = documentId.split(":");
+                        String[] idArr = documentId.split(":");
                         if (idArr.length == 2) {
                             // First item is document type.
                             String docType = idArr[0];
@@ -913,7 +917,7 @@ public class AppUtils {
                         path = getImageRealPath(ctx.getContentResolver(), downloadUriAppendId, null, ctx);
 
                     } else if (isExternalStoreDoc(uriAuthority)) {
-                        String idArr[] = documentId.split(":");
+                        String[] idArr = documentId.split(":");
                         if (idArr.length == 2) {
                             String type = idArr[0];
                             String realDocId = idArr[1];

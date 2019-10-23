@@ -83,9 +83,10 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/ivChat"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/ic_menu_green"
+                android:src="@drawable/chat_icon001"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

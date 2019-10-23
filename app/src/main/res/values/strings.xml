@@ -2138,6 +2138,7 @@
     <string name="storage_removed">Storage was removed or unmounted.</string>
     <string name="error_selecting_file">Error selecting File</string>
     <string name="internal_storage">Internal storage</string>
+    <string name="title_activity_conversation">conversation</string>
 
 </resources>
 

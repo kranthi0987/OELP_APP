@@ -6,7 +6,7 @@
         android:title="@string/about_us"/>
     <item  android:id="@+id/logout"
         android:title="@string/logout"/>
-    <item  android:id="@+id/chats"
-        android:title="@string/chats"/>
+    <!--    <item  android:id="@+id/chats"-->
+    <!--        android:title="@string/chats"/>-->
 
 </menu>

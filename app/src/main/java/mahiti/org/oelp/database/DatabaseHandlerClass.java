@@ -1,14 +1,16 @@
 package mahiti.org.oelp.database;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
+
 import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteOpenHelper;
 
 import mahiti.org.oelp.utils.Logger;
+
 import static mahiti.org.oelp.database.DBConstants.CAT_TABLE_NAME;
-import static mahiti.org.oelp.database.DBConstants.CLOSE_BRACKET;
 import static mahiti.org.oelp.database.DBConstants.WATCH_STATUS;
 
 /**
@@ -46,6 +48,7 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
         createTeacherTable(sqLiteDatabase);
         createMediaStateTable(sqLiteDatabase);
         createMediaContentTable(sqLiteDatabase);
+        createMessageTable(sqLiteDatabase);
 
     }
 
@@ -369,4 +372,23 @@ public class DatabaseHandlerClass extends SQLiteOpenHelper {
     }
 
 
+    private void createMessageTable(SQLiteDatabase sqLiteDatabase) {
+        String query = "CREATE TABLE IF NOT EXISTS tbl_messages (" +
+                "uuid TEXT," +
+                "message TEXT," +
+                "from_user TEXT," +
+                "to_user TEXT," +
+                "message_date TEXT," +
+                "status integer DEFAULT 2 )";
+        Logger.logD(TAG, "Database creation query :" + query);
+        sqLiteDatabase.execSQL(query);
+    }
+
+
+    public SQLiteDatabase getWriteDb() {
+        if (database != null && database.isOpen())
+            return database;
+        else
+            return getWritableDatabase(DBConstants.DATABASESECRETKEY);
+    }
 }

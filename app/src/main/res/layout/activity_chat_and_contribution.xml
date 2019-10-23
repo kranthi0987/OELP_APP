@@ -144,11 +144,22 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                 <FrameLayout
                     android:id="@+id/fragment_content"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent">
 
+                </FrameLayout>
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/floatingActionButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:clickable="true"
+                        app:srcCompat="@drawable/chat_icon002" />
                 <ProgressBar
                     android:visibility="gone"
                     android:theme="@style/AppTheme.WhiteAccent"
